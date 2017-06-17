@@ -1,0 +1,16 @@
+machine:
+    timezone:
+        America/Los_Angeles
+
+dependencies:
+    pre:
+        - sudo apt-get -y update
+        - python setup.py install
+    override:
+        - pip install -r requirements.txt
+
+test:
+    override:
+        - pep8 --config=pep8.cfg .
+        - mkdir -p $CIRCLE_TEST_REPORTS/unit/
+        - pytest tests.py --junitxml=$CIRCLE_TEST_REPORTS/unit/pytest.xml
