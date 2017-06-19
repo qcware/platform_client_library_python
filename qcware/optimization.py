@@ -18,12 +18,13 @@ def mat_to_dict(mat):
 
 
 # Note: this is good for both HOBOs and QUBOs
-def solve_binary(Q, need_mat_to_dict=True, max_runs=3100, isakov_solver=0, brute_force_solver=0, constrained_to_unconstrained=False,
-               soft_or_hard_constraints=0, max_rep=4, prefactor=1, A=None, B=None, list_quad_equal=None,
-               list_quad_lin_inequal=None, multiple=False, gauge=False, software_or_hardware=0, jintra_val=-1.5,
-               hardware_je_set=False, dwave_param=False, num_reads_sol=1000, num_reads=1000, num_reads_je=1000,
-               n_gauges=3, num_reads_gauge=500, pi_elite_fraction=0.1, embedding="", n_sweeps=200,
-               n_repititions=1000, name_solver="an_ss_ge_fi_vdeg", hobo=False, key=""):
+def solve_binary(Q, need_mat_to_dict=True, max_runs=3100, isakov_solver=0, brute_force_solver=0,
+                 constrained_to_unconstrained=False,
+                 soft_or_hard_constraints=0, max_rep=4, prefactor=1, A=None, B=None, list_quad_equal=None,
+                 list_quad_lin_inequal=None, multiple=False, gauge=False, software_or_hardware=0, jintra_val=-1.5,
+                 hardware_je_set=False, dwave_param=False, num_reads_sol=1000, num_reads=1000, num_reads_je=1000,
+                 n_gauges=3, num_reads_gauge=500, pi_elite_fraction=0.1, embedding="", n_sweeps=200,
+                 n_repititions=1000, name_solver="an_ss_ge_fi_vdeg", hobo=False, key=""):
     params = {
         "Q": (mat_to_dict(Q) if need_mat_to_dict else Q),
         "max_runs": max_runs,
@@ -61,7 +62,7 @@ def solve_binary(Q, need_mat_to_dict=True, max_runs=3100, isakov_solver=0, brute
 
 
 def solve_integer(c=None, A_eq=None, b_eq=None, A=None, b=None, l=None, u=None, prefactor=1, software_or_hardware=0,
-              constrained_to_unconstrained=0, soft_or_hard_constraints=0, max_rep=4, key=""):
+                  constrained_to_unconstrained=0, soft_or_hard_constraints=0, max_rep=4, key=""):
     params = {
         "c": c,
         "A_eq": A_eq,
