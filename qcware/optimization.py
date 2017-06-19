@@ -18,7 +18,7 @@ def mat_to_dict(mat):
 
 
 # Note: this is good for both HOBOs and QUBOs
-def solve_qubo(Q, need_mat_to_dict=True, max_runs=3100, isakov_solver=0, brute_force_solver=0, constrained_to_unconstrained=False,
+def solve_binary(Q, need_mat_to_dict=True, max_runs=3100, isakov_solver=0, brute_force_solver=0, constrained_to_unconstrained=False,
                soft_or_hard_constraints=0, max_rep=4, prefactor=1, A=None, B=None, list_quad_equal=None,
                list_quad_lin_inequal=None, multiple=False, gauge=False, software_or_hardware=0, jintra_val=-1.5,
                hardware_je_set=False, dwave_param=False, num_reads_sol=1000, num_reads=1000, num_reads_je=1000,
@@ -57,10 +57,10 @@ def solve_qubo(Q, need_mat_to_dict=True, max_runs=3100, isakov_solver=0, brute_f
         "key": key
     }
 
-    return request.post("https://platform.qcware.com/api/solve_binary_quad", params)
+    return request.post("https://platform.qcware.com/api/v2/solve_binary", params)
 
 
-def solve_ilp(c=None, A_eq=None, b_eq=None, A=None, b=None, l=None, u=None, prefactor=1, software_or_hardware=0,
+def solve_integer(c=None, A_eq=None, b_eq=None, A=None, b=None, l=None, u=None, prefactor=1, software_or_hardware=0,
               constrained_to_unconstrained=0, soft_or_hard_constraints=0, max_rep=4, key=""):
     params = {
         "c": c,
@@ -78,4 +78,4 @@ def solve_ilp(c=None, A_eq=None, b_eq=None, A=None, b=None, l=None, u=None, pref
         "key": key
     }
 
-    return request.post("https://platform.qcware.com/api/solve_integer_lp", params)
+    return request.post("https://platform.qcware.com/api/v2/solve_integer", params)

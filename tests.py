@@ -8,7 +8,7 @@ def test_valid():
     pos = nx.spring_layout(my_graph)
     adj = nx.adjacency_matrix(my_graph).todense()
     adj = -(np.diag(np.squeeze((np.matrix(adj) * np.ones([adj.shape[0], 1])).A)) - np.matrix(adj)).astype(int)
-    r = qcware.optimization.solve_qubo(Q=adj, key="BH1ewSDXdbLJ")
+    r = qcware.optimization.solve_binary(Q=adj, key="BH1ewSDXdbLJ")
 
     assert(len(r['solution']) == 4)
 
@@ -20,7 +20,7 @@ def test_invalid_1():
     pos = nx.spring_layout(my_graph)
     adj = nx.adjacency_matrix(my_graph).todense()
     adj = -(np.diag(np.squeeze((np.matrix(adj) * np.ones([adj.shape[0], 1])).A)) - np.matrix(adj)).astype(int)
-    r = qcware.optimization.solve_qubo(Q=adj, key="BAD_KEY")
+    r = qcware.optimization.solve_binary(Q=adj, key="BAD_KEY")
 
     assert(r.get('error'))
 
@@ -32,7 +32,7 @@ def test_invalid_2():
     pos = nx.spring_layout(my_graph)
     adj = nx.adjacency_matrix(my_graph).todense()
     adj = -(np.diag(np.squeeze((np.matrix(adj) * np.ones([adj.shape[0], 1])).A)) - np.matrix(adj)).astype(int)
-    r = qcware.optimization.solve_qubo(Q=adj)
+    r = qcware.optimization.solve_binary(Q=adj)
 
     assert(r.get('error'))
 
