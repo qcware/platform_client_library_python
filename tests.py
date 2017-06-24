@@ -25,15 +25,3 @@ def test_invalid_1():
     assert(r.get('error'))
 
     return
-
-
-def test_invalid_2():
-    my_graph = nx.complete_graph(4)
-    pos = nx.spring_layout(my_graph)
-    adj = nx.adjacency_matrix(my_graph).todense()
-    adj = -(np.diag(np.squeeze((np.matrix(adj) * np.ones([adj.shape[0], 1])).A)) - np.matrix(adj)).astype(int)
-    r = qcware.optimization.solve_binary(Q=adj)
-
-    assert(r.get('error'))
-
-    return
