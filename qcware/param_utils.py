@@ -12,15 +12,15 @@ def convert(params):
     return param_dict
 
 def isInt(a):
-    return isinstance(v, (int, np.integer))
+    return isinstance(a, (int, np.integer))
 
 def python_to_proto(param_dict, k, v):
     if k == "Q":
-        setattr(param_dict, k, dict_to_protodict(v, isTensor=True))
+        getattr(param_dict, k).CopyFrom(dict_to_protodict(v, isTensor=True))
     elif k == "constraints_linear_A":
-        setattr(param_dict, k, dict_to_protodict(mat_to_dict(v)))
+        getattr(param_dict, k).CopyFrom(dict_to_protodict(mat_to_dict(v))) 
     elif k == "constraints_linear_b":
-        getattr(param_dict, k).extend(v)
+        getattr(param_dict, k).CopyFrom(vec_to_protovec(v))
     elif k == "constraints_equality_R" or k == "constraints_inequality_S":
         getattr(param_dict, k).extend(mat_array_to_protodict_array(v))
     elif k == "constraints_equality_c" or k == "constraints_inequality_d":
@@ -50,7 +50,7 @@ def mat_to_dict(mat, symmetrize=False):
 def dict_to_protodict(pydict, isTensor=False):
     pb_obj = params_pb2.params.Tensor() if isTensor else params_pb2.params.Matrix()
     for k,v in pydict.items():
-        entry = pb_pbj.entries.add()
+        entry = pb_obj.entries.add()
         if isTensor:
             entry.indices.extend(k)
         else:
