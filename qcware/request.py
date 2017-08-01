@@ -4,6 +4,7 @@ import pickle
 import requests
 import param_utils
 
+
 def pickle_json(json_object):
     if isinstance(json_object, dict):
         r = {}
@@ -18,9 +19,11 @@ def pickle_json(json_object):
     else:
         return pickle.dumps(json_object, protocol=0)
 
+
 def post(api_endpoint_url, param_dictionary):
     pbuffed_params = param_utils.convert(param_dictionary)
-    r = requests.post(api_endpoint_url, data=pbuffed_params.SerializeToString())
+    r = requests.post(api_endpoint_url,
+                      data=pbuffed_params.SerializeToString())
 
     r = json.loads(r.text)
     if r.get('solution'):
