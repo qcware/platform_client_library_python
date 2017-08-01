@@ -71,4 +71,4 @@ def solve_binary(key,
         "sa_num_sweeps": sa_num_sweeps
     }
 
-    return request.post("https://platform.qcware.com/api/v2/solve_binary", params)
+    return request.post("http://localhost:8000/api/v2/solve_binary", params)
