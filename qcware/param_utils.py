@@ -8,7 +8,6 @@ def convert(params):
     for k,v in params.items():
         if k in valid_keys:
             python_to_proto(param_dict, k, v)
-    print(param_dict)
     return param_dict
 
 def isInt(a):
