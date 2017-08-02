@@ -11,6 +11,6 @@ dependencies:
 
 test:
     override:
-        - pep8 --config=pep8.cfg .
+        - pep8 --config=pep8.cfg . --exclude=platform_client_server_utils,qcware/params_pb2.py
         - mkdir -p $CIRCLE_TEST_REPORTS/unit/
         - pytest tests.py --junitxml=$CIRCLE_TEST_REPORTS/unit/pytest.xml
