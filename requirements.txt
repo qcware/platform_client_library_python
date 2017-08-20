@@ -3,3 +3,4 @@ scipy
 networkx
 requests
 pytest
+protobuf==3.3.0
