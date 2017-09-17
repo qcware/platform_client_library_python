@@ -44,9 +44,9 @@ def solve_binary(key,
                  dwave_embedding="",
                  sa_num_sweeps=200,
                  use_sample_persistence=False,
-                 sample_persistence_solution_threshold = 0.5,
-                 sample_persistence_persistence_threshold = 0.5,
-                 sample_persistence_persistence_iterations = 0
+                 sample_persistence_solution_threshold=0.5,
+                 sample_persistence_persistence_threshold=0.5,
+                 sample_persistence_persistence_iterations=0
                  ):
     params = {
         "key": key,
