@@ -42,7 +42,12 @@ def solve_binary(key,
                  dwave_num_runs_gauge_selection=500,
                  dwave_chain_coupling_pi_fraction=0.1,
                  dwave_embedding="",
-                 sa_num_sweeps=200):
+                 sa_num_sweeps=200,
+                 use_sample_persistence=False,
+                 sample_persistence_solution_threshold = 0.5,
+                 sample_persistence_persistence_threshold = 0.5,
+                 sample_persistence_persistence_iterations = 0
+                 ):
     params = {
         "key": key,
         "Q": mat_to_dict(Q) if not isinstance(Q, dict) else Q,
@@ -68,7 +73,11 @@ def solve_binary(key,
         "dwave_num_runs_gauge_selection": dwave_num_runs_gauge_selection,
         "dwave_chain_coupling_pi_fraction": dwave_chain_coupling_pi_fraction,
         "dwave_embedding": dwave_embedding,
-        "sa_num_sweeps": sa_num_sweeps
+        "sa_num_sweeps": sa_num_sweeps,
+        "use_sample_persistence": use_sample_persistence,
+        "sample_persistence_solution_threshold": sample_persistence_solution_threshold,
+        "sample_persistence_persistence_threshold": sample_persistence_persistence_threshold,
+        "sample_persistence_persistence_iterations": sample_persistence_persistence_iterations
     }
 
     return request.post("https://platform.qcware.com/api/v2/solve_binary", params)
