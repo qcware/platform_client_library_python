@@ -47,7 +47,8 @@ def solve_binary(key,
                  use_sample_persistence=False,
                  sample_persistence_solution_threshold=0.5,
                  sample_persistence_persistence_threshold=0.5,
-                 sample_persistence_persistence_iterations=0
+                 sample_persistence_persistence_iterations=0,
+                 host="https://platform.qcware.com",
                  ):
     params = {
         "key": key,
@@ -82,4 +83,4 @@ def solve_binary(key,
         "sample_persistence_persistence_iterations": sample_persistence_persistence_iterations
     }
 
-    return request.post("https://platform.qcware.com/api/v2/solve_binary", params)
+    return request.post(host + "/api/v2/solve_binary", params)
