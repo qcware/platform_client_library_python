@@ -17,37 +17,70 @@ def mat_to_dict(mat):
     return Q_new
 
 
-# VQE call
-def solve_vqe(key,
-
-                 molecule,
-                 basis = 'sto-3g'
-                 solver =  "simulator",
-                 multiplicity =  1,
-                 charge =  0,
-                 sampling =  False,
-                 sampling_trials =  1000,
-                 guess_amplitudes =  None,
-                 initial_state =  'UCCSD'
-                 minimizer =  'CG'
-
+# Note: this is good for both HOBOs and QUBOs
+def solve_binary(key,
+                 Q,
+                 higher_order=False,
+                 solver="dwave_software",
+                 constraints_linear_A=[],
+                 constraints_linear_b=[],
+                 constraints_sat_max_runs=3100,
+                 constraints_hard=False,
+                 constraints_penalty_scaling_factor=1,
+                 constraints_equality_R=[],
+                 constraints_equality_c=[],
+                 constraints_inequality_S=[],
+                 constraints_inequality_d=[],
+                 return_all_solutions=False,
+                 num_runs=1000,
+                 dwave_chain_coupling=-1.5,
+                 dwave_optimize_chain_coupling=False,
+                 dwave_num_runs_chain_coupling=1000,
+                 dwave_use_dwave_embedder=False,
+                 dwave_use_full_embedding=False,
+                 dwave_use_gauges=False,
+                 dwave_num_gauges=3,
+                 dwave_num_runs_gauge_selection=500,
+                 dwave_chain_coupling_pi_fraction=0.1,
+                 dwave_embedding="",
+                 sa_num_sweeps=200,
+                 use_sample_persistence=False,
+                 sample_persistence_solution_threshold=0.5,
+                 sample_persistence_persistence_threshold=0.5,
+                 sample_persistence_persistence_iterations=0,
                  host="https://platform.qcware.com",
                  ):
     params = {
         "key": key,
-
-        "molecule" : molecule,
-        "basis": basis,
+        "Q": mat_to_dict(Q) if not isinstance(Q, dict) else Q,
+        "higher_order": higher_order,
         "solver": solver,
-        "multiplicity": multiplicity,
-        "charge": charge,
-        "sampling": sampling,
-        "sampling_trials": sampling_trials,
-        'guess_amplitudes': guess_amplitudes,
-        'initial_state': initial_state
-        'minimizer': minimizer
-
-
+        "constraints_linear_A": constraints_linear_A,
+        "constraints_linear_b": constraints_linear_b,
+        "constraints_sat_max_runs": constraints_sat_max_runs,
+        "constraints_hard": constraints_hard,
+        "constraints_penalty_scaling_factor": constraints_penalty_scaling_factor,
+        "constraints_equality_R": constraints_equality_R,
+        "constraints_equality_c": constraints_equality_c,
+        "constraints_inequality_S": constraints_inequality_S,
+        "constraints_inequality_d": constraints_inequality_d,
+        "return_all_solutions": return_all_solutions,
+        "num_runs": num_runs,
+        "dwave_chain_coupling": dwave_chain_coupling,
+        "dwave_optimize_chain_coupling": dwave_optimize_chain_coupling,
+        "dwave_num_runs_chain_coupling": dwave_num_runs_chain_coupling,
+        "dwave_use_dwave_embedder": dwave_use_dwave_embedder,
+        "dwave_use_full_embedding": dwave_use_full_embedding,
+        "dwave_use_gauges": dwave_use_gauges,
+        "dwave_num_gauges": dwave_num_gauges,
+        "dwave_num_runs_gauge_selection": dwave_num_runs_gauge_selection,
+        "dwave_chain_coupling_pi_fraction": dwave_chain_coupling_pi_fraction,
+        "dwave_embedding": dwave_embedding,
+        "sa_num_sweeps": sa_num_sweeps,
+        "use_sample_persistence": use_sample_persistence,
+        "sample_persistence_solution_threshold": sample_persistence_solution_threshold,
+        "sample_persistence_persistence_threshold": sample_persistence_persistence_threshold,
+        "sample_persistence_persistence_iterations": sample_persistence_persistence_iterations
     }
 
-    return request.post(host + "/api/v2/solve_vqe", params)
+    return request.post(host + "/api/v2/solve_binary", params)
