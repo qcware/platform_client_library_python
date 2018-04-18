@@ -3,8 +3,10 @@ from google.protobuf import descriptor
 import numpy as np
 
 
-def convert(params):
+def convert(params, endpoint_type):
     param_dict = params_pb2.params()
+    if endpoint_type != "solve_binary":
+        param_dict = params_pb2.params_vqe()
     valid_keys = [f.name for f in param_dict.DESCRIPTOR.fields]
     for k, v in params.items():
         if k in valid_keys:
@@ -27,6 +29,8 @@ def python_to_proto(param_dict, k, v):
         getattr(param_dict, k).extend(mat_array_to_protodict_array(v))
     elif k == "constraints_equality_c" or k == "constraints_inequality_d":
         getattr(param_dict, k).extend(vec_array_to_protovec_array(v))
+    elif k == "molecule":
+        getattr(param_dict, k).CopyFrom(array_to_molecule_vqe(v))
     else:
         # Must be a 'primitive' of some type
         setattr(param_dict, k, v)
@@ -64,6 +68,20 @@ def dict_to_protodict(pydict, isTensor=False):
             entry.int_val = v
         else:
             entry.float_val = v
+    return pb_obj
+
+
+def array_to_molecule_vqe(arr):
+    pb_obj = params_pb2.params_vqe.Molecule()
+    for atom in arr:
+        entry = pb_obj.entries.add()
+        entry.atom = atom[0]
+        for pos in atom[1]:
+            coord = entry.coord.add()
+            if isInt(pos):
+                coord.x_int = pos
+            else:
+                coord.x_float = pos
     return pb_obj
 
 

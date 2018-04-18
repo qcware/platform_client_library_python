@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='params.proto',
   package='com.qcware',
   syntax='proto2',
-  serialized_pb=_b('\n\x0cparams.proto\x12\ncom.qcware\"\xe8\n\n\x06params\x12\x0b\n\x03key\x18\x01 \x01(\t\x12$\n\x01Q\x18\x02 \x01(\x0b\x32\x19.com.qcware.params.Tensor\x12\x14\n\x0chigher_order\x18\x03 \x01(\x08\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x37\n\x14\x63onstraints_linear_A\x18\x05 \x01(\x0b\x32\x19.com.qcware.params.Matrix\x12\x37\n\x14\x63onstraints_linear_b\x18\x06 \x01(\x0b\x32\x19.com.qcware.params.Vector\x12 \n\x18\x63onstraints_sat_max_runs\x18\x07 \x01(\x05\x12\x18\n\x10\x63onstraints_hard\x18\x08 \x01(\x08\x12*\n\"constraints_penalty_scaling_factor\x18\t \x01(\x01\x12\x39\n\x16\x63onstraints_equality_R\x18\n \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12\x39\n\x16\x63onstraints_equality_c\x18\x0b \x03(\x0b\x32\x19.com.qcware.params.Vector\x12;\n\x18\x63onstraints_inequality_S\x18\x0c \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12;\n\x18\x63onstraints_inequality_d\x18\r \x03(\x0b\x32\x19.com.qcware.params.Vector\x12\x1c\n\x14return_all_solutions\x18\x0e \x01(\x08\x12\x10\n\x08num_runs\x18\x0f \x01(\x05\x12\x1c\n\x14\x64wave_chain_coupling\x18\x10 \x01(\x01\x12%\n\x1d\x64wave_optimize_chain_coupling\x18\x11 \x01(\x08\x12%\n\x1d\x64wave_num_runs_chain_coupling\x18\x12 \x01(\x05\x12 \n\x18\x64wave_use_dwave_embedder\x18\x13 \x01(\x08\x12\x18\n\x10\x64wave_use_gauges\x18\x14 \x01(\x08\x12\x18\n\x10\x64wave_num_gauges\x18\x15 \x01(\x05\x12&\n\x1e\x64wave_num_runs_gauge_selection\x18\x16 \x01(\x05\x12(\n dwave_chain_coupling_pi_fraction\x18\x17 \x01(\x01\x12\x17\n\x0f\x64wave_embedding\x18\x18 \x01(\t\x12 \n\x18\x64wave_use_full_embedding\x18\x19 \x01(\x08\x12\x15\n\rsa_num_sweeps\x18\x1a \x01(\x05\x1aT\n\x0bTensorEntry\x12\x0f\n\x07indices\x18\x01 \x03(\x05\x12\x11\n\x07int_val\x18\x02 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x03 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Tensor\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.TensorEntry\x1aY\n\x0bMatrixEntry\x12\t\n\x01i\x18\x01 \x01(\x05\x12\t\n\x01j\x18\x02 \x01(\x05\x12\x11\n\x07int_val\x18\x03 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x04 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x43\n\x0bVectorEntry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Vector\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.VectorEntry\x1a\x39\n\x06Matrix\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.MatrixEntry')
+  serialized_pb=_b('\n\x0cparams.proto\x12\ncom.qcware\"\x9c\x0c\n\x06params\x12\x0b\n\x03key\x18\x01 \x01(\t\x12$\n\x01Q\x18\x02 \x01(\x0b\x32\x19.com.qcware.params.Tensor\x12\x14\n\x0chigher_order\x18\x03 \x01(\x08\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x37\n\x14\x63onstraints_linear_A\x18\x05 \x01(\x0b\x32\x19.com.qcware.params.Matrix\x12\x37\n\x14\x63onstraints_linear_b\x18\x06 \x01(\x0b\x32\x19.com.qcware.params.Vector\x12 \n\x18\x63onstraints_sat_max_runs\x18\x07 \x01(\x05\x12\x18\n\x10\x63onstraints_hard\x18\x08 \x01(\x08\x12*\n\"constraints_penalty_scaling_factor\x18\t \x01(\x01\x12\x39\n\x16\x63onstraints_equality_R\x18\n \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12\x39\n\x16\x63onstraints_equality_c\x18\x0b \x03(\x0b\x32\x19.com.qcware.params.Vector\x12;\n\x18\x63onstraints_inequality_S\x18\x0c \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12;\n\x18\x63onstraints_inequality_d\x18\r \x03(\x0b\x32\x19.com.qcware.params.Vector\x12\x1c\n\x14return_all_solutions\x18\x0e \x01(\x08\x12\x10\n\x08num_runs\x18\x0f \x01(\x05\x12\x1c\n\x14\x64wave_chain_coupling\x18\x10 \x01(\x01\x12%\n\x1d\x64wave_optimize_chain_coupling\x18\x11 \x01(\x08\x12%\n\x1d\x64wave_num_runs_chain_coupling\x18\x12 \x01(\x05\x12 \n\x18\x64wave_use_dwave_embedder\x18\x13 \x01(\x08\x12\x18\n\x10\x64wave_use_gauges\x18\x14 \x01(\x08\x12\x18\n\x10\x64wave_num_gauges\x18\x15 \x01(\x05\x12&\n\x1e\x64wave_num_runs_gauge_selection\x18\x16 \x01(\x05\x12(\n dwave_chain_coupling_pi_fraction\x18\x17 \x01(\x01\x12\x17\n\x0f\x64wave_embedding\x18\x18 \x01(\t\x12 \n\x18\x64wave_use_full_embedding\x18\x19 \x01(\x08\x12\x15\n\rsa_num_sweeps\x18\x1a \x01(\x05\x12\x1e\n\x16use_sample_persistence\x18\x1b \x01(\x08\x12-\n%sample_persistence_solution_threshold\x18\x1c \x01(\x01\x12\x30\n(sample_persistence_persistence_threshold\x18\x1d \x01(\x01\x12\x31\n)sample_persistence_persistence_iterations\x18\x1e \x01(\x05\x1aT\n\x0bTensorEntry\x12\x0f\n\x07indices\x18\x01 \x03(\x05\x12\x11\n\x07int_val\x18\x02 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x03 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Tensor\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.TensorEntry\x1aY\n\x0bMatrixEntry\x12\t\n\x01i\x18\x01 \x01(\x05\x12\t\n\x01j\x18\x02 \x01(\x05\x12\x11\n\x07int_val\x18\x03 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x04 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x43\n\x0bVectorEntry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Vector\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.VectorEntry\x1a\x39\n\x06Matrix\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.MatrixEntry\"\xf3\x04\n\nparams_vqe\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x31\n\x08molecule\x18\x02 \x02(\x0b\x32\x1f.com.qcware.params_vqe.Molecule\x12\r\n\x05\x62\x61sis\x18\x03 \x01(\t\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x14\n\x0cmultiplicity\x18\x05 \x01(\x05\x12\x0e\n\x06\x63harge\x18\x06 \x01(\x05\x12\x10\n\x08sampling\x18\x07 \x01(\x08\x12\x17\n\x0fsampling_trials\x18\x08 \x01(\x05\x12\x38\n\x10guess_amplitudes\x18\t \x01(\x0b\x32\x1e.com.qcware.params_vqe.Vector2\x12\x15\n\rinitial_state\x18\n \x01(\t\x12\x11\n\tminimizer\x18\x0b \x01(\t\x1a\x44\n\x0cVector2Entry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a?\n\x07Vector2\x12\x34\n\x07\x65ntries\x18\x01 \x03(\x0b\x32#.com.qcware.params_vqe.Vector2Entry\x1a>\n\nCoordinate\x12\x0f\n\x05x_int\x18\x01 \x01(\x05H\x00\x12\x11\n\x07x_float\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1aK\n\tAtomEntry\x12\x0c\n\x04\x61tom\x18\x01 \x02(\t\x12\x30\n\x05\x63oord\x18\x02 \x03(\x0b\x32!.com.qcware.params_vqe.Coordinate\x1a=\n\x08Molecule\x12\x31\n\x07\x65ntries\x18\x01 \x03(\x0b\x32 .com.qcware.params_vqe.AtomEntry')
 )
 
 
@@ -68,8 +68,8 @@ _PARAMS_TENSORENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params.TensorEntry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=992,
-  serialized_end=1076,
+  serialized_start=1172,
+  serialized_end=1256,
 )
 
 _PARAMS_TENSOR = _descriptor.Descriptor(
@@ -98,8 +98,8 @@ _PARAMS_TENSOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1078,
-  serialized_end=1135,
+  serialized_start=1258,
+  serialized_end=1315,
 )
 
 _PARAMS_MATRIXENTRY = _descriptor.Descriptor(
@@ -152,8 +152,8 @@ _PARAMS_MATRIXENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params.MatrixEntry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1137,
-  serialized_end=1226,
+  serialized_start=1317,
+  serialized_end=1406,
 )
 
 _PARAMS_VECTORENTRY = _descriptor.Descriptor(
@@ -192,8 +192,8 @@ _PARAMS_VECTORENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params.VectorEntry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1228,
-  serialized_end=1295,
+  serialized_start=1408,
+  serialized_end=1475,
 )
 
 _PARAMS_VECTOR = _descriptor.Descriptor(
@@ -222,8 +222,8 @@ _PARAMS_VECTOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1297,
-  serialized_end=1354,
+  serialized_start=1477,
+  serialized_end=1534,
 )
 
 _PARAMS_MATRIX = _descriptor.Descriptor(
@@ -252,8 +252,8 @@ _PARAMS_MATRIX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1356,
-  serialized_end=1413,
+  serialized_start=1536,
+  serialized_end=1593,
 )
 
 _PARAMS = _descriptor.Descriptor(
@@ -445,6 +445,34 @@ _PARAMS = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='use_sample_persistence', full_name='com.qcware.params.use_sample_persistence', index=26,
+      number=27, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='sample_persistence_solution_threshold', full_name='com.qcware.params.sample_persistence_solution_threshold', index=27,
+      number=28, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='sample_persistence_persistence_threshold', full_name='com.qcware.params.sample_persistence_persistence_threshold', index=28,
+      number=29, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='sample_persistence_persistence_iterations', full_name='com.qcware.params.sample_persistence_persistence_iterations', index=29,
+      number=30, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -458,7 +486,285 @@ _PARAMS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=29,
-  serialized_end=1413,
+  serialized_end=1593,
+)
+
+
+_PARAMS_VQE_VECTOR2ENTRY = _descriptor.Descriptor(
+  name='Vector2Entry',
+  full_name='com.qcware.params_vqe.Vector2Entry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='int_val', full_name='com.qcware.params_vqe.Vector2Entry.int_val', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='float_val', full_name='com.qcware.params_vqe.Vector2Entry.float_val', index=1,
+      number=2, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='intOrFloat', full_name='com.qcware.params_vqe.Vector2Entry.intOrFloat',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=1886,
+  serialized_end=1954,
+)
+
+_PARAMS_VQE_VECTOR2 = _descriptor.Descriptor(
+  name='Vector2',
+  full_name='com.qcware.params_vqe.Vector2',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='entries', full_name='com.qcware.params_vqe.Vector2.entries', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1956,
+  serialized_end=2019,
+)
+
+_PARAMS_VQE_COORDINATE = _descriptor.Descriptor(
+  name='Coordinate',
+  full_name='com.qcware.params_vqe.Coordinate',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='x_int', full_name='com.qcware.params_vqe.Coordinate.x_int', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='x_float', full_name='com.qcware.params_vqe.Coordinate.x_float', index=1,
+      number=2, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='intOrFloat', full_name='com.qcware.params_vqe.Coordinate.intOrFloat',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=2021,
+  serialized_end=2083,
+)
+
+_PARAMS_VQE_ATOMENTRY = _descriptor.Descriptor(
+  name='AtomEntry',
+  full_name='com.qcware.params_vqe.AtomEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='atom', full_name='com.qcware.params_vqe.AtomEntry.atom', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='coord', full_name='com.qcware.params_vqe.AtomEntry.coord', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2085,
+  serialized_end=2160,
+)
+
+_PARAMS_VQE_MOLECULE = _descriptor.Descriptor(
+  name='Molecule',
+  full_name='com.qcware.params_vqe.Molecule',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='entries', full_name='com.qcware.params_vqe.Molecule.entries', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2162,
+  serialized_end=2223,
+)
+
+_PARAMS_VQE = _descriptor.Descriptor(
+  name='params_vqe',
+  full_name='com.qcware.params_vqe',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='com.qcware.params_vqe.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='molecule', full_name='com.qcware.params_vqe.molecule', index=1,
+      number=2, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='basis', full_name='com.qcware.params_vqe.basis', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='solver', full_name='com.qcware.params_vqe.solver', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='multiplicity', full_name='com.qcware.params_vqe.multiplicity', index=4,
+      number=5, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='charge', full_name='com.qcware.params_vqe.charge', index=5,
+      number=6, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='sampling', full_name='com.qcware.params_vqe.sampling', index=6,
+      number=7, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='sampling_trials', full_name='com.qcware.params_vqe.sampling_trials', index=7,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='guess_amplitudes', full_name='com.qcware.params_vqe.guess_amplitudes', index=8,
+      number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='initial_state', full_name='com.qcware.params_vqe.initial_state', index=9,
+      number=10, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='minimizer', full_name='com.qcware.params_vqe.minimizer', index=10,
+      number=11, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_PARAMS_VQE_VECTOR2ENTRY, _PARAMS_VQE_VECTOR2, _PARAMS_VQE_COORDINATE, _PARAMS_VQE_ATOMENTRY, _PARAMS_VQE_MOLECULE, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1596,
+  serialized_end=2223,
 )
 
 _PARAMS_TENSORENTRY.containing_type = _PARAMS
@@ -495,7 +801,30 @@ _PARAMS.fields_by_name['constraints_equality_R'].message_type = _PARAMS_MATRIX
 _PARAMS.fields_by_name['constraints_equality_c'].message_type = _PARAMS_VECTOR
 _PARAMS.fields_by_name['constraints_inequality_S'].message_type = _PARAMS_MATRIX
 _PARAMS.fields_by_name['constraints_inequality_d'].message_type = _PARAMS_VECTOR
+_PARAMS_VQE_VECTOR2ENTRY.containing_type = _PARAMS_VQE
+_PARAMS_VQE_VECTOR2ENTRY.oneofs_by_name['intOrFloat'].fields.append(
+  _PARAMS_VQE_VECTOR2ENTRY.fields_by_name['int_val'])
+_PARAMS_VQE_VECTOR2ENTRY.fields_by_name['int_val'].containing_oneof = _PARAMS_VQE_VECTOR2ENTRY.oneofs_by_name['intOrFloat']
+_PARAMS_VQE_VECTOR2ENTRY.oneofs_by_name['intOrFloat'].fields.append(
+  _PARAMS_VQE_VECTOR2ENTRY.fields_by_name['float_val'])
+_PARAMS_VQE_VECTOR2ENTRY.fields_by_name['float_val'].containing_oneof = _PARAMS_VQE_VECTOR2ENTRY.oneofs_by_name['intOrFloat']
+_PARAMS_VQE_VECTOR2.fields_by_name['entries'].message_type = _PARAMS_VQE_VECTOR2ENTRY
+_PARAMS_VQE_VECTOR2.containing_type = _PARAMS_VQE
+_PARAMS_VQE_COORDINATE.containing_type = _PARAMS_VQE
+_PARAMS_VQE_COORDINATE.oneofs_by_name['intOrFloat'].fields.append(
+  _PARAMS_VQE_COORDINATE.fields_by_name['x_int'])
+_PARAMS_VQE_COORDINATE.fields_by_name['x_int'].containing_oneof = _PARAMS_VQE_COORDINATE.oneofs_by_name['intOrFloat']
+_PARAMS_VQE_COORDINATE.oneofs_by_name['intOrFloat'].fields.append(
+  _PARAMS_VQE_COORDINATE.fields_by_name['x_float'])
+_PARAMS_VQE_COORDINATE.fields_by_name['x_float'].containing_oneof = _PARAMS_VQE_COORDINATE.oneofs_by_name['intOrFloat']
+_PARAMS_VQE_ATOMENTRY.fields_by_name['coord'].message_type = _PARAMS_VQE_COORDINATE
+_PARAMS_VQE_ATOMENTRY.containing_type = _PARAMS_VQE
+_PARAMS_VQE_MOLECULE.fields_by_name['entries'].message_type = _PARAMS_VQE_ATOMENTRY
+_PARAMS_VQE_MOLECULE.containing_type = _PARAMS_VQE
+_PARAMS_VQE.fields_by_name['molecule'].message_type = _PARAMS_VQE_MOLECULE
+_PARAMS_VQE.fields_by_name['guess_amplitudes'].message_type = _PARAMS_VQE_VECTOR2
 DESCRIPTOR.message_types_by_name['params'] = _PARAMS
+DESCRIPTOR.message_types_by_name['params_vqe'] = _PARAMS_VQE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 params = _reflection.GeneratedProtocolMessageType('params', (_message.Message,), dict(
@@ -552,6 +881,53 @@ _sym_db.RegisterMessage(params.MatrixEntry)
 _sym_db.RegisterMessage(params.VectorEntry)
 _sym_db.RegisterMessage(params.Vector)
 _sym_db.RegisterMessage(params.Matrix)
+
+params_vqe = _reflection.GeneratedProtocolMessageType('params_vqe', (_message.Message,), dict(
+
+  Vector2Entry = _reflection.GeneratedProtocolMessageType('Vector2Entry', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_VQE_VECTOR2ENTRY,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params_vqe.Vector2Entry)
+    ))
+  ,
+
+  Vector2 = _reflection.GeneratedProtocolMessageType('Vector2', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_VQE_VECTOR2,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params_vqe.Vector2)
+    ))
+  ,
+
+  Coordinate = _reflection.GeneratedProtocolMessageType('Coordinate', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_VQE_COORDINATE,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params_vqe.Coordinate)
+    ))
+  ,
+
+  AtomEntry = _reflection.GeneratedProtocolMessageType('AtomEntry', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_VQE_ATOMENTRY,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params_vqe.AtomEntry)
+    ))
+  ,
+
+  Molecule = _reflection.GeneratedProtocolMessageType('Molecule', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_VQE_MOLECULE,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params_vqe.Molecule)
+    ))
+  ,
+  DESCRIPTOR = _PARAMS_VQE,
+  __module__ = 'params_pb2'
+  # @@protoc_insertion_point(class_scope:com.qcware.params_vqe)
+  ))
+_sym_db.RegisterMessage(params_vqe)
+_sym_db.RegisterMessage(params_vqe.Vector2Entry)
+_sym_db.RegisterMessage(params_vqe.Vector2)
+_sym_db.RegisterMessage(params_vqe.Coordinate)
+_sym_db.RegisterMessage(params_vqe.AtomEntry)
+_sym_db.RegisterMessage(params_vqe.Molecule)
 
 
 # @@protoc_insertion_point(module_scope)
