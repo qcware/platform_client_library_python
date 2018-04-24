@@ -83,4 +83,4 @@ def solve_binary(key,
         "sample_persistence_persistence_iterations": sample_persistence_persistence_iterations
     }
 
-    return request.post(host + "/api/v2/solve_binary", params)
+    return request.post(host + "/api/v2/solve_binary", params, "solve_binary")

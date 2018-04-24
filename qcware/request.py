@@ -20,8 +20,8 @@ def pickle_json(json_object):
         return pickle.dumps(json_object, protocol=0)
 
 
-def post(api_endpoint_url, param_dictionary):
-    pbuffed_params = param_utils.convert(param_dictionary)
+def post(api_endpoint_url, param_dictionary, endpoint_type):
+    pbuffed_params = param_utils.convert(param_dictionary, endpoint_type)
     r = requests.post(api_endpoint_url,
                       data=pbuffed_params.SerializeToString())
 
