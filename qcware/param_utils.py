@@ -93,9 +93,9 @@ def array_to_amplitudes_vqe(arr):
     for amplitude in arr:
         entry = pb_obj.entries.add()
         if isInt(amplitude):
-            entry.x_int = amplitude
+            entry.int_val = amplitude
         else:
-            entry.x_float = amplitude
+            entry.float_val = amplitude
     return pb_obj
 
 
