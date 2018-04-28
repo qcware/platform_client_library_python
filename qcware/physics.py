@@ -47,5 +47,5 @@ def find_ground_state_energy(key,
         'minimizer': minimizer
         }
 
-    return request.post(host + "/api/v2/solve_vqe", params,'VQE')
+    return request.post(host + "/api/v2/find_ground_state_energy", params,'VQE')
 
