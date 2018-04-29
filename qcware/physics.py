@@ -23,7 +23,7 @@ def find_ground_state_energy(key,
                              molecule,
                              basis='sto-3g',
                              solver="simulator",
-                             multiplicity= 1,
+                             multiplicity=1,
                              charge=0,
                              sampling=False,
                              sampling_trials=1000,
@@ -48,4 +48,4 @@ def find_ground_state_energy(key,
         'minimizer': minimizer
         }
 
-    return request.post(host + "/api/v2/find_ground_state_energy",params,'VQE')
+    return request.post(host + "/api/v2/find_ground_state_energy", params, 'VQE')
