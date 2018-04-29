@@ -88,6 +88,7 @@ def array_to_molecule_vqe(arr):
                 coord.x_float = pos
     return pb_obj
 
+
 def array_to_amplitudes_vqe(arr):
     pb_obj = params_pb2.params_vqe.Vector2()
     for amplitude in arr:

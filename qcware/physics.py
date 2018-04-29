@@ -17,25 +17,26 @@ def mat_to_dict(mat):
     return Q_new
 
 
-# VQE call                                                                                                                                
-def find_ground_state_energy(key,
-              molecule,
-              basis = 'sto-3g',
-              solver =  "simulator",
-              multiplicity =  1,
-              charge =  0,
-              sampling =  False,
-              sampling_trials =  1000,
-              guess_amplitudes =  [],
-              initial_state =  'UCCSD',
-              minimizer =  'CG',
+# VQE call
 
-              host="https://platform.qcware.com",
-              ):
+def find_ground_state_energy(key,
+                             molecule,
+                             basis='sto-3g',
+                             solver="simulator",
+                             multiplicity= 1,
+                             charge=0,
+                             sampling=False,
+                             sampling_trials=1000,
+                             guess_amplitudes=[],
+                             initial_state='UCCSD',
+                             minimizer='CG',
+
+                             host="https://platform.qcware.com",
+                             ):
 
     params = {
         "key": key,
-        "molecule" : molecule,
+        "molecule": molecule,
         "basis": basis,
         "solver": solver,
         "multiplicity": multiplicity,
@@ -47,5 +48,4 @@ def find_ground_state_energy(key,
         'minimizer': minimizer
         }
 
-    return request.post(host + "/api/v2/find_ground_state_energy", params,'VQE')
-
+    return request.post(host + "/api/v2/find_ground_state_energy",params,'VQE')
