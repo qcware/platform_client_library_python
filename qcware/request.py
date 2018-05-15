@@ -26,7 +26,7 @@ def post(api_endpoint_url, param_dictionary, endpoint_type):
                       data=pbuffed_params.SerializeToString())
 
     r = json.loads(r.text)
-    if r.get('solution'):
+    if r.get('solution') and endpoint_type == 'solve_binary':
         r['solution'] = ast.literal_eval(r['solution'])
 
     return r
