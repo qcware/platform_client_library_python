@@ -15,5 +15,6 @@ setup(
   classifiers=[],
   install_requires=[
     'protobuf',
+    'requests',
   ],
 )
