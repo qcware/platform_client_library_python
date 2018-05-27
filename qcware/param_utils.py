@@ -113,6 +113,7 @@ def vec_array_to_protovec_array(vec_array):
         pb_vecs.append(pb_vec)
     return pb_vecs
 
+
 def dict_to_cirq_arguments_optimizer(pydict):
     pb_obj = params_pb2.params.CirqArgumentsOptimizer()
     if 'init_point' in pydict:
