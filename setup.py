@@ -14,6 +14,7 @@ setup(
   keywords=['quantum', 'computing', 'cloud', 'API'],
   classifiers=[],
   install_requires=[
+    'numpy',
     'protobuf',
     'requests',
   ],
