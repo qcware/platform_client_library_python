@@ -48,6 +48,11 @@ def solve_binary(key,
                  sample_persistence_solution_threshold=0.5,
                  sample_persistence_persistence_threshold=0.5,
                  sample_persistence_persistence_iterations=0,
+                 cirq_num_steps=1,
+                 cirq_n_samples=1000,
+                 cirq_arguments_optimizer={},
+                 cirq_step_sampling=True,
+                 cirq_n_samples_step_sampling=1000,
                  host="https://platform.qcware.com",
                  ):
     params = {
@@ -80,7 +85,12 @@ def solve_binary(key,
         "use_sample_persistence": use_sample_persistence,
         "sample_persistence_solution_threshold": sample_persistence_solution_threshold,
         "sample_persistence_persistence_threshold": sample_persistence_persistence_threshold,
-        "sample_persistence_persistence_iterations": sample_persistence_persistence_iterations
+        "sample_persistence_persistence_iterations": sample_persistence_persistence_iterations,
+        "cirq_num_steps": cirq_num_steps,
+        "cirq_n_samples": cirq_n_samples,
+        "cirq_arguments_optimizer": cirq_arguments_optimizer,
+        "cirq_step_sampling": cirq_step_sampling,
+        "cirq_n_samples_step_sampling": cirq_n_samples_step_sampling,
     }
 
     return request.post(host + "/api/v2/solve_binary", params, "solve_binary")
