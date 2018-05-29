@@ -4,6 +4,7 @@ import numpy as np
 
 Aqua_key = os.environ['AQUA_TEST_KEY']
 
+
 def test_qubo():
     Q = {(0, 0): 1, (0, 1): 1, (1, 1): 1, (1, 2): 1, (2, 2): -1}
     solver = 'dwave_software'
@@ -20,5 +21,3 @@ def test_qubo():
 
 if __name__ == "__main__":
     test_qubo()
-
-
