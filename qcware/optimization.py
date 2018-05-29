@@ -55,6 +55,22 @@ def solve_binary(key,
                  cirq_n_samples_step_sampling=1000,
                  host="https://platform.qcware.com",
                  ):
+    """Solve a variety of optimization problems, in particular Quadratic
+    Unconstrained Binary Optimization (QUBO) or Higher Order Binary
+    Optimization (HOBO) problems.
+
+    In its most basic form, given an objective matrix Q, solves the
+    problem of finding the vector x which minimizes the equation
+    xT*Q*x.  Linear equality constraints can be added and a variety of
+    solvers used.
+
+    Returns a dictionary containing several entries; the entry
+    `solution` contains the chosen solution, but other information can
+    be obtained from keys such as `num_qubits`, `num_runs`,
+    `num_logical_variables`, etc.  If an error occurred, it will be
+    under the entry `error`.
+
+    """
     params = {
         "key": key,
         "Q": mat_to_dict(Q) if not isinstance(Q, dict) else Q,
