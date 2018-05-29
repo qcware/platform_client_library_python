@@ -1,4 +1,4 @@
-import params_pb2
+from . import params_pb2
 from google.protobuf import descriptor
 import numpy as np
 
