@@ -21,5 +21,6 @@ workflows:
   version: 2
   run-tests:
     jobs:
-      - toxify
+      - toxify:
+          context: aqua-test
       - pep8
