@@ -14,8 +14,8 @@ jobs:
       - image: themattrix/tox
     steps:
       - checkout
-      - run: pip install pep8
-      - run: pep8 --config=pep8.cfg . --exclude=platform_client_server_utils,qcware/params_pb2.py,./build/lib/qcware/params_pb2.py
+      - run: pip install pycodestyle
+      - run: pycodestyle --config=pycodestyle.cfg . --exclude=platform_client_server_utils,qcware/params_pb2.py,./build/lib/qcware/params_pb2.py
 
 workflows:
   version: 2
