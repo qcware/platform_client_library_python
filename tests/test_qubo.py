@@ -21,3 +21,6 @@ def test_qubo():
 
 if __name__ == "__main__":
     test_qubo()
+
+
+    
