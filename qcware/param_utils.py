@@ -6,7 +6,9 @@ import numpy as np
 def convert(params, endpoint_type):
     param_dict = params_pb2.params()
     if endpoint_type != "solve_binary":
+        print('here')
         param_dict = params_pb2.params_vqe()
+#    print(param_dict)
     valid_keys = [f.name for f in param_dict.DESCRIPTOR.fields]
     for k, v in params.items():
         if k in valid_keys:
@@ -33,6 +35,8 @@ def python_to_proto(param_dict, k, v):
         getattr(param_dict, k).CopyFrom(dict_to_cirq_arguments_optimizer(v))
     elif k == "molecule":
         getattr(param_dict, k).CopyFrom(array_to_molecule_vqe(v))
+    elif k == "guess_amplitudes":
+        getattr(param_dict, k).CopyFrom(array_to_amplitudes_vqe(v))
     else:
         # Must be a 'primitive' of some type
         setattr(param_dict, k, v)
@@ -84,6 +88,17 @@ def array_to_molecule_vqe(arr):
                 coord.x_int = pos
             else:
                 coord.x_float = pos
+    return pb_obj
+
+
+def array_to_amplitudes_vqe(arr):
+    pb_obj = params_pb2.params_vqe.Vector2()
+    for amplitude in arr:
+        entry = pb_obj.entries.add()
+        if isInt(amplitude):
+            entry.int_val = amplitude
+        else:
+            entry.float_val = amplitude
     return pb_obj
 
 
