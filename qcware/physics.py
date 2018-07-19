@@ -22,14 +22,14 @@ def mat_to_dict(mat):
 def find_ground_state_energy(key,
                              molecule,
                              basis='sto-3g',
-                             solver="simulator",
+                             solver='projectq',
                              multiplicity=1,
                              charge=0,
                              sampling=False,
                              sampling_trials=1000,
-                             guess_amplitudes=[],
+                             guess_amplitudes=None,
                              initial_state='UCCSD',
-                             minimizer='CG',
+                             minimizer='swarm',
 
                              host="https://platform.qcware.com",
                              ):
