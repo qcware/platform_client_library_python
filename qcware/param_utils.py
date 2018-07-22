@@ -6,9 +6,7 @@ import numpy as np
 def convert(params, endpoint_type):
     param_dict = params_pb2.params()
     if endpoint_type != "solve_binary":
-        print('here')
         param_dict = params_pb2.params_vqe()
-#    print(param_dict)
     valid_keys = [f.name for f in param_dict.DESCRIPTOR.fields]
     for k, v in params.items():
         if k in valid_keys:
