@@ -27,7 +27,7 @@ def find_ground_state_energy(key,
                              charge=0,
                              sampling=False,
                              sampling_trials=1000,
-                             guess_amplitudes=None,
+                             guess_amplitudes=[],
                              initial_state='UCCSD',
                              minimizer='swarm',
 
