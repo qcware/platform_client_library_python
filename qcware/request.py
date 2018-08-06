@@ -2,7 +2,7 @@ import ast
 import json
 import pickle
 import requests
-import param_utils
+from . import param_utils
 
 
 def pickle_json(json_object):
