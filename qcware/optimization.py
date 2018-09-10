@@ -102,11 +102,11 @@ def solve_binary(key,
         "sample_persistence_solution_threshold": sample_persistence_solution_threshold,
         "sample_persistence_persistence_threshold": sample_persistence_persistence_threshold,
         "sample_persistence_persistence_iterations": sample_persistence_persistence_iterations,
-        "google_num_steps": cirq_num_steps,
-        "google_n_samples": cirq_n_samples,
-        "google_arguments_optimizer": cirq_arguments_optimizer,
-        "google_step_sampling": cirq_step_sampling,
-        "google_n_samples_step_sampling": cirq_n_samples_step_sampling,
+        "google_num_steps": google_num_steps,
+        "google_n_samples": google_n_samples,
+        "google_arguments_optimizer": google_arguments_optimizer,
+        "google_step_sampling": google_step_sampling,
+        "google_n_samples_step_sampling": google_n_samples_step_sampling,
     }
 
     return request.post(host + "/api/v2/solve_binary", params, "solve_binary")
