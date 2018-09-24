@@ -28,7 +28,7 @@ def python_to_proto(param_dict, k, v):
     elif k == "constraints_equality_R" or k == "constraints_inequality_S":
         getattr(param_dict, k).extend(mat_array_to_protodict_array(v))
     elif k == "constraints_equality_c" or k == "constraints_inequality_d":
-        getattr(param_dict, k).extend(vec_array_to_protovec_array(v))
+        getattr(param_dict, k).CopyFrom(vec_to_protovec(v))
     elif k == "cirq_arguments_optimizer":
         getattr(param_dict, k).CopyFrom(dict_to_cirq_arguments_optimizer(v))
     elif k == "molecule":
