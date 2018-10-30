@@ -29,8 +29,8 @@ def python_to_proto(param_dict, k, v):
         getattr(param_dict, k).extend(mat_array_to_protodict_array(v))
     elif k == "constraints_equality_c" or k == "constraints_inequality_d":
         getattr(param_dict, k).CopyFrom(vec_to_protovec(v))
-    elif k == "cirq_arguments_optimizer":
-        getattr(param_dict, k).CopyFrom(dict_to_cirq_arguments_optimizer(v))
+    elif k == "google_arguments_optimizer":
+        getattr(param_dict, k).CopyFrom(dict_to_google_arguments_optimizer(v))
     elif k == "molecule":
         getattr(param_dict, k).CopyFrom(array_to_molecule_vqe(v))
     elif k == "guess_amplitudes":
@@ -127,8 +127,8 @@ def vec_array_to_protovec_array(vec_array):
     return pb_vecs
 
 
-def dict_to_cirq_arguments_optimizer(pydict):
-    pb_obj = params_pb2.params.CirqArgumentsOptimizer()
+def dict_to_google_arguments_optimizer(pydict):
+    pb_obj = params_pb2.params.GoogleArgumentsOptimizer()
     if 'init_point' in pydict:
         pb_obj.init_point = pydict['init_point']
     if 'number_iter' in pydict:
