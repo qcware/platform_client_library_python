@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='params.proto',
   package='com.qcware',
   syntax='proto2',
-  serialized_pb=_b('\n\x0cparams.proto\x12\ncom.qcware\"\xad\x0e\n\x06params\x12\x0b\n\x03key\x18\x01 \x01(\t\x12$\n\x01Q\x18\x02 \x01(\x0b\x32\x19.com.qcware.params.Tensor\x12\x14\n\x0chigher_order\x18\x03 \x01(\x08\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x37\n\x14\x63onstraints_linear_A\x18\x05 \x01(\x0b\x32\x19.com.qcware.params.Matrix\x12\x37\n\x14\x63onstraints_linear_b\x18\x06 \x01(\x0b\x32\x19.com.qcware.params.Vector\x12 \n\x18\x63onstraints_sat_max_runs\x18\x07 \x01(\x05\x12\x18\n\x10\x63onstraints_hard\x18\x08 \x01(\x08\x12*\n\"constraints_penalty_scaling_factor\x18\t \x01(\x01\x12\x39\n\x16\x63onstraints_equality_R\x18\n \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12\x39\n\x16\x63onstraints_equality_c\x18\x0b \x01(\x0b\x32\x19.com.qcware.params.Vector\x12;\n\x18\x63onstraints_inequality_S\x18\x0c \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12;\n\x18\x63onstraints_inequality_d\x18\r \x01(\x0b\x32\x19.com.qcware.params.Vector\x12\x1c\n\x14return_all_solutions\x18\x0e \x01(\x08\x12\x10\n\x08num_runs\x18\x0f \x01(\x05\x12\x1c\n\x14\x64wave_chain_coupling\x18\x10 \x01(\x01\x12%\n\x1d\x64wave_optimize_chain_coupling\x18\x11 \x01(\x08\x12%\n\x1d\x64wave_num_runs_chain_coupling\x18\x12 \x01(\x05\x12 \n\x18\x64wave_use_dwave_embedder\x18\x13 \x01(\x08\x12\x18\n\x10\x64wave_use_gauges\x18\x14 \x01(\x08\x12\x18\n\x10\x64wave_num_gauges\x18\x15 \x01(\x05\x12&\n\x1e\x64wave_num_runs_gauge_selection\x18\x16 \x01(\x05\x12(\n dwave_chain_coupling_pi_fraction\x18\x17 \x01(\x01\x12\x17\n\x0f\x64wave_embedding\x18\x18 \x01(\t\x12 \n\x18\x64wave_use_full_embedding\x18\x19 \x01(\x08\x12\x15\n\rsa_num_sweeps\x18\x1a \x01(\x05\x12\x1e\n\x16use_sample_persistence\x18\x1b \x01(\x08\x12-\n%sample_persistence_solution_threshold\x18\x1c \x01(\x01\x12\x30\n(sample_persistence_persistence_threshold\x18\x1d \x01(\x01\x12\x31\n)sample_persistence_persistence_iterations\x18\x1e \x01(\x05\x12\x16\n\x0e\x63irq_num_steps\x18\x1f \x01(\x05\x12\x16\n\x0e\x63irq_n_samples\x18  \x01(\x05\x12K\n\x18\x63irq_arguments_optimizer\x18! \x01(\x0b\x32).com.qcware.params.CirqArgumentsOptimizer\x12\x1a\n\x12\x63irq_step_sampling\x18\" \x01(\x08\x12$\n\x1c\x63irq_n_samples_step_sampling\x18# \x01(\x05\x1aT\n\x0bTensorEntry\x12\x0f\n\x07indices\x18\x01 \x03(\x05\x12\x11\n\x07int_val\x18\x02 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x03 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Tensor\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.TensorEntry\x1aY\n\x0bMatrixEntry\x12\t\n\x01i\x18\x01 \x01(\x05\x12\t\n\x01j\x18\x02 \x01(\x05\x12\x11\n\x07int_val\x18\x03 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x04 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x43\n\x0bVectorEntry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Vector\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.VectorEntry\x1a\x39\n\x06Matrix\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.MatrixEntry\x1aP\n\x16\x43irqArgumentsOptimizer\x12\x12\n\ninit_point\x18\x01 \x01(\x05\x12\x13\n\x0bnumber_iter\x18\x02 \x01(\x05\x12\r\n\x05kappa\x18\x03 \x01(\x05\"\xf3\x04\n\nparams_vqe\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x31\n\x08molecule\x18\x02 \x02(\x0b\x32\x1f.com.qcware.params_vqe.Molecule\x12\r\n\x05\x62\x61sis\x18\x03 \x01(\t\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x14\n\x0cmultiplicity\x18\x05 \x01(\x05\x12\x0e\n\x06\x63harge\x18\x06 \x01(\x05\x12\x10\n\x08sampling\x18\x07 \x01(\x08\x12\x17\n\x0fsampling_trials\x18\x08 \x01(\x05\x12\x38\n\x10guess_amplitudes\x18\t \x01(\x0b\x32\x1e.com.qcware.params_vqe.Vector2\x12\x15\n\rinitial_state\x18\n \x01(\t\x12\x11\n\tminimizer\x18\x0b \x01(\t\x1a\x44\n\x0cVector2Entry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a?\n\x07Vector2\x12\x34\n\x07\x65ntries\x18\x01 \x03(\x0b\x32#.com.qcware.params_vqe.Vector2Entry\x1a>\n\nCoordinate\x12\x0f\n\x05x_int\x18\x01 \x01(\x05H\x00\x12\x11\n\x07x_float\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1aK\n\tAtomEntry\x12\x0c\n\x04\x61tom\x18\x01 \x02(\t\x12\x30\n\x05\x63oord\x18\x02 \x03(\x0b\x32!.com.qcware.params_vqe.Coordinate\x1a=\n\x08Molecule\x12\x31\n\x07\x65ntries\x18\x01 \x03(\x0b\x32 .com.qcware.params_vqe.AtomEntry')
+  serialized_pb=_b('\n\x0cparams.proto\x12\ncom.qcware\"\xc9\x0e\n\x06params\x12\x0b\n\x03key\x18\x01 \x01(\t\x12$\n\x01Q\x18\x02 \x01(\x0b\x32\x19.com.qcware.params.Tensor\x12\x14\n\x0chigher_order\x18\x03 \x01(\x08\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x37\n\x14\x63onstraints_linear_A\x18\x05 \x01(\x0b\x32\x19.com.qcware.params.Matrix\x12\x37\n\x14\x63onstraints_linear_b\x18\x06 \x01(\x0b\x32\x19.com.qcware.params.Vector\x12 \n\x18\x63onstraints_sat_max_runs\x18\x07 \x01(\x05\x12\x18\n\x10\x63onstraints_hard\x18\x08 \x01(\x08\x12*\n\"constraints_penalty_scaling_factor\x18\t \x01(\x01\x12\x39\n\x16\x63onstraints_equality_R\x18\n \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12\x39\n\x16\x63onstraints_equality_c\x18\x0b \x01(\x0b\x32\x19.com.qcware.params.Vector\x12;\n\x18\x63onstraints_inequality_S\x18\x0c \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12;\n\x18\x63onstraints_inequality_d\x18\r \x01(\x0b\x32\x19.com.qcware.params.Vector\x12\x1c\n\x14return_all_solutions\x18\x0e \x01(\x08\x12\x10\n\x08num_runs\x18\x0f \x01(\x05\x12\x1c\n\x14\x64wave_chain_coupling\x18\x10 \x01(\x01\x12%\n\x1d\x64wave_optimize_chain_coupling\x18\x11 \x01(\x08\x12%\n\x1d\x64wave_num_runs_chain_coupling\x18\x12 \x01(\x05\x12 \n\x18\x64wave_use_dwave_embedder\x18\x13 \x01(\x08\x12\x18\n\x10\x64wave_use_gauges\x18\x14 \x01(\x08\x12\x18\n\x10\x64wave_num_gauges\x18\x15 \x01(\x05\x12&\n\x1e\x64wave_num_runs_gauge_selection\x18\x16 \x01(\x05\x12(\n dwave_chain_coupling_pi_fraction\x18\x17 \x01(\x01\x12\x17\n\x0f\x64wave_embedding\x18\x18 \x01(\t\x12 \n\x18\x64wave_use_full_embedding\x18\x19 \x01(\x08\x12\x15\n\rsa_num_sweeps\x18\x1a \x01(\x05\x12\x1e\n\x16use_sample_persistence\x18\x1b \x01(\x08\x12-\n%sample_persistence_solution_threshold\x18\x1c \x01(\x01\x12\x30\n(sample_persistence_persistence_threshold\x18\x1d \x01(\x01\x12\x31\n)sample_persistence_persistence_iterations\x18\x1e \x01(\x05\x12\x18\n\x10google_num_steps\x18\x1f \x01(\x05\x12\x18\n\x10google_n_samples\x18  \x01(\x05\x12M\n\x1agoogle_arguments_optimizer\x18! \x01(\x0b\x32).com.qcware.params.CirqArgumentsOptimizer\x12\x1c\n\x14google_step_sampling\x18\" \x01(\x08\x12&\n\x1egoogle_n_samples_step_sampling\x18# \x01(\x05\x12\x10\n\x08\x64\x65lta_AO\x18$ \x01(\x01\x1aT\n\x0bTensorEntry\x12\x0f\n\x07indices\x18\x01 \x03(\x05\x12\x11\n\x07int_val\x18\x02 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x03 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Tensor\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.TensorEntry\x1aY\n\x0bMatrixEntry\x12\t\n\x01i\x18\x01 \x01(\x05\x12\t\n\x01j\x18\x02 \x01(\x05\x12\x11\n\x07int_val\x18\x03 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x04 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x43\n\x0bVectorEntry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Vector\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.VectorEntry\x1a\x39\n\x06Matrix\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.MatrixEntry\x1aP\n\x16\x43irqArgumentsOptimizer\x12\x12\n\ninit_point\x18\x01 \x01(\x05\x12\x13\n\x0bnumber_iter\x18\x02 \x01(\x05\x12\r\n\x05kappa\x18\x03 \x01(\x05\"\xf3\x04\n\nparams_vqe\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x31\n\x08molecule\x18\x02 \x02(\x0b\x32\x1f.com.qcware.params_vqe.Molecule\x12\r\n\x05\x62\x61sis\x18\x03 \x01(\t\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x14\n\x0cmultiplicity\x18\x05 \x01(\x05\x12\x0e\n\x06\x63harge\x18\x06 \x01(\x05\x12\x10\n\x08sampling\x18\x07 \x01(\x08\x12\x17\n\x0fsampling_trials\x18\x08 \x01(\x05\x12\x38\n\x10guess_amplitudes\x18\t \x01(\x0b\x32\x1e.com.qcware.params_vqe.Vector2\x12\x15\n\rinitial_state\x18\n \x01(\t\x12\x11\n\tminimizer\x18\x0b \x01(\t\x1a\x44\n\x0cVector2Entry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a?\n\x07Vector2\x12\x34\n\x07\x65ntries\x18\x01 \x03(\x0b\x32#.com.qcware.params_vqe.Vector2Entry\x1a>\n\nCoordinate\x12\x0f\n\x05x_int\x18\x01 \x01(\x05H\x00\x12\x11\n\x07x_float\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1aK\n\tAtomEntry\x12\x0c\n\x04\x61tom\x18\x01 \x02(\t\x12\x30\n\x05\x63oord\x18\x02 \x03(\x0b\x32!.com.qcware.params_vqe.Coordinate\x1a=\n\x08Molecule\x12\x31\n\x07\x65ntries\x18\x01 \x03(\x0b\x32 .com.qcware.params_vqe.AtomEntry')
 )
 
 
@@ -68,8 +68,8 @@ _PARAMS_TENSORENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params.TensorEntry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1363,
-  serialized_end=1447,
+  serialized_start=1391,
+  serialized_end=1475,
 )
 
 _PARAMS_TENSOR = _descriptor.Descriptor(
@@ -98,8 +98,8 @@ _PARAMS_TENSOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1449,
-  serialized_end=1506,
+  serialized_start=1477,
+  serialized_end=1534,
 )
 
 _PARAMS_MATRIXENTRY = _descriptor.Descriptor(
@@ -152,8 +152,8 @@ _PARAMS_MATRIXENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params.MatrixEntry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1508,
-  serialized_end=1597,
+  serialized_start=1536,
+  serialized_end=1625,
 )
 
 _PARAMS_VECTORENTRY = _descriptor.Descriptor(
@@ -192,8 +192,8 @@ _PARAMS_VECTORENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params.VectorEntry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1599,
-  serialized_end=1666,
+  serialized_start=1627,
+  serialized_end=1694,
 )
 
 _PARAMS_VECTOR = _descriptor.Descriptor(
@@ -222,8 +222,8 @@ _PARAMS_VECTOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1668,
-  serialized_end=1725,
+  serialized_start=1696,
+  serialized_end=1753,
 )
 
 _PARAMS_MATRIX = _descriptor.Descriptor(
@@ -252,8 +252,8 @@ _PARAMS_MATRIX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1727,
-  serialized_end=1784,
+  serialized_start=1755,
+  serialized_end=1812,
 )
 
 _PARAMS_CIRQARGUMENTSOPTIMIZER = _descriptor.Descriptor(
@@ -296,8 +296,8 @@ _PARAMS_CIRQARGUMENTSOPTIMIZER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1786,
-  serialized_end=1866,
+  serialized_start=1814,
+  serialized_end=1894,
 )
 
 _PARAMS = _descriptor.Descriptor(
@@ -518,37 +518,44 @@ _PARAMS = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='cirq_num_steps', full_name='com.qcware.params.cirq_num_steps', index=30,
+      name='google_num_steps', full_name='com.qcware.params.google_num_steps', index=30,
       number=31, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='cirq_n_samples', full_name='com.qcware.params.cirq_n_samples', index=31,
+      name='google_n_samples', full_name='com.qcware.params.google_n_samples', index=31,
       number=32, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='cirq_arguments_optimizer', full_name='com.qcware.params.cirq_arguments_optimizer', index=32,
+      name='google_arguments_optimizer', full_name='com.qcware.params.google_arguments_optimizer', index=32,
       number=33, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='cirq_step_sampling', full_name='com.qcware.params.cirq_step_sampling', index=33,
+      name='google_step_sampling', full_name='com.qcware.params.google_step_sampling', index=33,
       number=34, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='cirq_n_samples_step_sampling', full_name='com.qcware.params.cirq_n_samples_step_sampling', index=34,
+      name='google_n_samples_step_sampling', full_name='com.qcware.params.google_n_samples_step_sampling', index=34,
       number=35, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='delta_AO', full_name='com.qcware.params.delta_AO', index=35,
+      number=36, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -565,7 +572,7 @@ _PARAMS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=29,
-  serialized_end=1866,
+  serialized_end=1894,
 )
 
 
@@ -605,8 +612,8 @@ _PARAMS_VQE_VECTOR2ENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params_vqe.Vector2Entry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2159,
-  serialized_end=2227,
+  serialized_start=2187,
+  serialized_end=2255,
 )
 
 _PARAMS_VQE_VECTOR2 = _descriptor.Descriptor(
@@ -635,8 +642,8 @@ _PARAMS_VQE_VECTOR2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2229,
-  serialized_end=2292,
+  serialized_start=2257,
+  serialized_end=2320,
 )
 
 _PARAMS_VQE_COORDINATE = _descriptor.Descriptor(
@@ -675,8 +682,8 @@ _PARAMS_VQE_COORDINATE = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params_vqe.Coordinate.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2294,
-  serialized_end=2356,
+  serialized_start=2322,
+  serialized_end=2384,
 )
 
 _PARAMS_VQE_ATOMENTRY = _descriptor.Descriptor(
@@ -712,8 +719,8 @@ _PARAMS_VQE_ATOMENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2358,
-  serialized_end=2433,
+  serialized_start=2386,
+  serialized_end=2461,
 )
 
 _PARAMS_VQE_MOLECULE = _descriptor.Descriptor(
@@ -742,8 +749,8 @@ _PARAMS_VQE_MOLECULE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2435,
-  serialized_end=2496,
+  serialized_start=2463,
+  serialized_end=2524,
 )
 
 _PARAMS_VQE = _descriptor.Descriptor(
@@ -842,8 +849,8 @@ _PARAMS_VQE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1869,
-  serialized_end=2496,
+  serialized_start=1897,
+  serialized_end=2524,
 )
 
 _PARAMS_TENSORENTRY.containing_type = _PARAMS
@@ -881,7 +888,7 @@ _PARAMS.fields_by_name['constraints_equality_R'].message_type = _PARAMS_MATRIX
 _PARAMS.fields_by_name['constraints_equality_c'].message_type = _PARAMS_VECTOR
 _PARAMS.fields_by_name['constraints_inequality_S'].message_type = _PARAMS_MATRIX
 _PARAMS.fields_by_name['constraints_inequality_d'].message_type = _PARAMS_VECTOR
-_PARAMS.fields_by_name['cirq_arguments_optimizer'].message_type = _PARAMS_CIRQARGUMENTSOPTIMIZER
+_PARAMS.fields_by_name['google_arguments_optimizer'].message_type = _PARAMS_CIRQARGUMENTSOPTIMIZER
 _PARAMS_VQE_VECTOR2ENTRY.containing_type = _PARAMS_VQE
 _PARAMS_VQE_VECTOR2ENTRY.oneofs_by_name['intOrFloat'].fields.append(
   _PARAMS_VQE_VECTOR2ENTRY.fields_by_name['int_val'])
