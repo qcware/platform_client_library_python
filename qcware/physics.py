@@ -19,20 +19,20 @@ def mat_to_dict(mat):
 
 # VQE call
 
-def find_ground_state_energy(key,
-                             molecule,
-                             basis='sto-3g',
-                             solver='projectq',
-                             multiplicity=1,
-                             charge=0,
-                             sampling=False,
-                             sampling_trials=1000,
-                             guess_amplitudes=[],
-                             initial_state='UCCSD',
-                             minimizer='swarm',
-
-                             host="https://platform.qcware.com",
-                             ):
+def find_ground_state_energy(
+    key,
+    molecule,
+    basis='sto-3g',
+    solver='projectq',
+    multiplicity=1,
+    charge=0,
+    sampling=False,
+    sampling_trials=1000,
+    guess_amplitudes=[],
+    initial_state='UCCSD',
+    minimizer='swarm',
+    host="https://platform.qcware.com",
+    ):
 
     params = {
         "key": key,
@@ -49,3 +49,36 @@ def find_ground_state_energy(key,
         }
 
     return request.post(host + "/api/v2/find_ground_state_energy", params, 'VQE')
+
+
+async def async_find_ground_state_energy(
+    client,
+    key,
+    molecule,
+    basis='sto-3g',
+    solver='projectq',
+    multiplicity=1,
+    charge=0,
+    sampling=False,
+    sampling_trials=1000,
+    guess_amplitudes=[],
+    initial_state='UCCSD',
+    minimizer='swarm',
+    host="https://platform.qcware.com",
+    ):
+
+    params = {
+        "key": key,
+        "molecule": molecule,
+        "basis": basis,
+        "solver": solver,
+        "multiplicity": multiplicity,
+        "charge": charge,
+        "sampling": sampling,
+        "sampling_trials": sampling_trials,
+        'guess_amplitudes': guess_amplitudes,
+        'initial_state': initial_state,
+        'minimizer': minimizer
+        }
+
+    return await request.async_post(client, host + "/api/v2/find_ground_state_energy", params, 'VQE')
