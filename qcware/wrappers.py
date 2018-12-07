@@ -16,7 +16,7 @@ def print_errors(f):
                 msg = "Error: {0} (code: {1})".format(
                     result["error"], result["error_code"]
                 )
-                warnings.warn(msg, stacklevel=2)
+                warnings.warn(msg, stacklevel=3)
             elif "error" in result and "exception_type" in result:
                 msg = "{0}; examine result for traceback".format(
                     result["error"]
