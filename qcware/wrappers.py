@@ -21,7 +21,7 @@ def print_errors(f):
                 msg = "{0}; examine result for traceback".format(
                     result["error"]
                 )
-                warnings.warn(msg, stacklevel=2)
+                warnings.warn(msg, stacklevel=3)
         return result
 
     return decorated
