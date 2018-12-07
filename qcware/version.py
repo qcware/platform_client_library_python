@@ -2,7 +2,7 @@ from distutils.version import StrictVersion
 
 
 def parameter_api_version():
-    return "2.0"
+    return "2.1"
 
 
 def version_is_greater(version_str):
