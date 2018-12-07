@@ -5,7 +5,7 @@ import setuptools
 setup(
   name='qcware',
   packages=['qcware'],
-  version='0.2.15',
+  version='0.2.16',
   description='Functions for easily interfacing with the QC Ware Platform from Python',
   author='QC Ware Corp.',
   author_email='info@qcware.com',
