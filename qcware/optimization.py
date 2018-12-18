@@ -1,4 +1,5 @@
 from . import request
+from qcware.wrappers import print_errors, print_api_mismatch
 
 
 def mat_to_dict(mat):
@@ -18,6 +19,8 @@ def mat_to_dict(mat):
 
 
 # Note: this is good for both HOBOs and QUBOs
+@print_api_mismatch
+@print_errors
 def solve_binary(
     key,
     Q,
