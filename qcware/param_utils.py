@@ -128,7 +128,7 @@ def vec_array_to_protovec_array(vec_array):
 
 
 def dict_to_google_arguments_optimizer(pydict):
-    pb_obj = params_pb2.params.GoogleArgumentsOptimizer()
+    pb_obj = params_pb2.params.CirqArgumentsOptimizer()
     if 'init_point' in pydict:
         pb_obj.init_point = pydict['init_point']
     if 'number_iter' in pydict:
