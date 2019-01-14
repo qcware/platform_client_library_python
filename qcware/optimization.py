@@ -37,16 +37,10 @@ def solve_binary(
     constraints_inequality_d=[],
     return_all_solutions=False,
     num_runs=1000,
-    dwave_chain_coupling=-1.5,
-    dwave_optimize_chain_coupling=False,
-    dwave_num_runs_chain_coupling=1000,
-    dwave_use_dwave_embedder=False,
-    dwave_use_full_embedding=False,
-    dwave_use_gauges=False,
-    dwave_num_gauges=3,
-    dwave_num_runs_gauge_selection=500,
-    dwave_chain_coupling_pi_fraction=0.1,
-    dwave_embedding="",
+    dwave_algorithm=None,
+    dwave_solver_limit=None,
+    dwave_target_energy=None,
+    dwave_find_max=False,
     sa_num_sweeps=200,
     use_sample_persistence=False,
     sample_persistence_solution_threshold=0.5,
@@ -91,16 +85,7 @@ def solve_binary(
         "constraints_inequality_d": constraints_inequality_d,
         "return_all_solutions": return_all_solutions,
         "num_runs": num_runs,
-        "dwave_chain_coupling": dwave_chain_coupling,
-        "dwave_optimize_chain_coupling": dwave_optimize_chain_coupling,
-        "dwave_num_runs_chain_coupling": dwave_num_runs_chain_coupling,
-        "dwave_use_dwave_embedder": dwave_use_dwave_embedder,
-        "dwave_use_full_embedding": dwave_use_full_embedding,
-        "dwave_use_gauges": dwave_use_gauges,
-        "dwave_num_gauges": dwave_num_gauges,
-        "dwave_num_runs_gauge_selection": dwave_num_runs_gauge_selection,
-        "dwave_chain_coupling_pi_fraction": dwave_chain_coupling_pi_fraction,
-        "dwave_embedding": dwave_embedding,
+        "dwave_find_max": dwave_find_max,
         "sa_num_sweeps": sa_num_sweeps,
         "use_sample_persistence": use_sample_persistence,
         "sample_persistence_solution_threshold": sample_persistence_solution_threshold,
@@ -112,6 +97,13 @@ def solve_binary(
         "google_step_sampling": google_step_sampling,
         "google_n_samples_step_sampling": google_n_samples_step_sampling,
     }
+
+    if dwave_algorithm is not None:
+        params["dwave_algorithm"] = dwave_algorithm
+    if dwave_solver_limit is not None:
+        params["dwave_solver_limit"] = dwave_solver_limit
+    if dwave_target_energy is not None:
+        params["dwave_target_energy"] = dwave_target_energy
 
     return request.post(host + "/api/v2/solve_binary", params, "solve_binary")
 
@@ -133,16 +125,10 @@ async def async_solve_binary(
     constraints_inequality_d=[],
     return_all_solutions=False,
     num_runs=1000,
-    dwave_chain_coupling=-1.5,
-    dwave_optimize_chain_coupling=False,
-    dwave_num_runs_chain_coupling=1000,
-    dwave_use_dwave_embedder=False,
-    dwave_use_full_embedding=False,
-    dwave_use_gauges=False,
-    dwave_num_gauges=3,
-    dwave_num_runs_gauge_selection=500,
-    dwave_chain_coupling_pi_fraction=0.1,
-    dwave_embedding="",
+    dwave_algorithm=None,
+    dwave_solver_limit=None,
+    dwave_target_energy=None,
+    dwave_find_max=False,
     sa_num_sweeps=200,
     use_sample_persistence=False,
     sample_persistence_solution_threshold=0.5,
@@ -187,16 +173,7 @@ async def async_solve_binary(
         "constraints_inequality_d": constraints_inequality_d,
         "return_all_solutions": return_all_solutions,
         "num_runs": num_runs,
-        "dwave_chain_coupling": dwave_chain_coupling,
-        "dwave_optimize_chain_coupling": dwave_optimize_chain_coupling,
-        "dwave_num_runs_chain_coupling": dwave_num_runs_chain_coupling,
-        "dwave_use_dwave_embedder": dwave_use_dwave_embedder,
-        "dwave_use_full_embedding": dwave_use_full_embedding,
-        "dwave_use_gauges": dwave_use_gauges,
-        "dwave_num_gauges": dwave_num_gauges,
-        "dwave_num_runs_gauge_selection": dwave_num_runs_gauge_selection,
-        "dwave_chain_coupling_pi_fraction": dwave_chain_coupling_pi_fraction,
-        "dwave_embedding": dwave_embedding,
+        "dwave_find_max": dwave_find_max,
         "sa_num_sweeps": sa_num_sweeps,
         "use_sample_persistence": use_sample_persistence,
         "sample_persistence_solution_threshold": sample_persistence_solution_threshold,
@@ -208,5 +185,12 @@ async def async_solve_binary(
         "google_step_sampling": google_step_sampling,
         "google_n_samples_step_sampling": google_n_samples_step_sampling,
     }
+
+    if dwave_algorithm is not None:
+        params["dwave_algorithm"] = dwave_algorithm
+    if dwave_solver_limit is not None:
+        params["dwave_solver_limit"] = dwave_solver_limit
+    if dwave_target_energy is not None:
+        params["dwave_target_energy"] = dwave_target_energy
 
     return await request.async_post(client, host + "/api/v2/solve_binary", params, "solve_binary")
