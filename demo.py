@@ -7,6 +7,7 @@ Q = {(0, 0): 1, (0, 1): 1, (1, 1): 1, (1, 2): 1, (2, 2): -1}
 P = {(0, 0): 1, (0, 1): 1, (1, 1): -1, (1, 2): 1, (2, 2): -1, (0, 3): 1, (1, 3): -1, (3, 2): 1}
 solver = 'dwave_software'
 
+
 async def get_solve_binary_result(client, M):
     rand_wait = random.randint(1, 5)
     await asyncio.sleep(rand_wait)
@@ -16,6 +17,7 @@ async def get_solve_binary_result(client, M):
         print('Solution: ' + str(result['solution']))
     else:
         print('Error: ' + result['error'])
+
 
 async def main():
     async with aiohttp.ClientSession() as client:

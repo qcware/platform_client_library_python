@@ -38,7 +38,8 @@ async def async_post(client, api_endpoint_url, param_dictionary, endpoint_type):
     pbuffed_params = param_utils.convert(param_dictionary, endpoint_type)
 
     async with client.post(
-        api_endpoint_url, data=pbuffed_params.SerializeToString()) as r:
+            api_endpoint_url,
+            data=pbuffed_params.SerializeToString()) as r:
 
         print(r.status)
         text = await r.text()

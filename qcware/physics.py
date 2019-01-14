@@ -20,19 +20,19 @@ def mat_to_dict(mat):
 # VQE call
 
 def find_ground_state_energy(
-    key,
-    molecule,
-    basis='sto-3g',
-    solver='projectq',
-    multiplicity=1,
-    charge=0,
-    sampling=False,
-    sampling_trials=1000,
-    guess_amplitudes=[],
-    initial_state='UCCSD',
-    minimizer='swarm',
-    host="https://platform.qcware.com",
-    ):
+        key,
+        molecule,
+        basis='sto-3g',
+        solver='projectq',
+        multiplicity=1,
+        charge=0,
+        sampling=False,
+        sampling_trials=1000,
+        guess_amplitudes=[],
+        initial_state='UCCSD',
+        minimizer='swarm',
+        host="https://platform.qcware.com",
+        ):
 
     params = {
         "key": key,
@@ -52,20 +52,20 @@ def find_ground_state_energy(
 
 
 async def async_find_ground_state_energy(
-    client,
-    key,
-    molecule,
-    basis='sto-3g',
-    solver='projectq',
-    multiplicity=1,
-    charge=0,
-    sampling=False,
-    sampling_trials=1000,
-    guess_amplitudes=[],
-    initial_state='UCCSD',
-    minimizer='swarm',
-    host="https://platform.qcware.com",
-    ):
+        client,
+        key,
+        molecule,
+        basis='sto-3g',
+        solver='projectq',
+        multiplicity=1,
+        charge=0,
+        sampling=False,
+        sampling_trials=1000,
+        guess_amplitudes=[],
+        initial_state='UCCSD',
+        minimizer='swarm',
+        host="https://platform.qcware.com",
+        ):
 
     params = {
         "key": key,
