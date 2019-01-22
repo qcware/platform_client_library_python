@@ -35,11 +35,28 @@ def solve_binary(key,
                  constraints_inequality_S=[],
                  constraints_inequality_d=[],
                  return_all_solutions=False,
-                 num_runs=1000,
+                 num_runs=50,
                  dwave_algorithm=None,
                  dwave_solver_limit=None,
                  dwave_target_energy=None,
-                 dwave_find_max=False,
+                 dwave_find_max=None,
+                 dwave_reduce_intersample_correlation=None,
+                 dwave_num_spin_reversal_transforms=None,
+                 dwave_programming_thermalization=None,
+                 dwave_reinitialize_state=None,
+                 dwave_anneal_offsets=None,
+                 dwave_num_reads=None,
+                 dwave_max_answers=None,
+                 dwave_flux_biases=None,
+                 dwave_beta=None,
+                 dwave_answer_mode=None,
+                 dwave_auto_scale=None,
+                 dwave_postprocess=None,
+                 dwave_annealing_time=None,
+                 dwave_anneal_schedule=None,
+                 dwave_initial_state=None,
+                 dwave_chains=None,
+                 dwave_flux_drift_compensation=None,
                  sa_num_sweeps=200,
                  use_sample_persistence=False,
                  sample_persistence_solution_threshold=0.5,
@@ -63,8 +80,7 @@ def solve_binary(key,
 
     Returns a dictionary containing several entries; the entry
     `solution` contains the chosen solution, but other information can
-    be obtained from keys such as `num_qubits`, `num_runs`,
-    `num_logical_variables`, etc.  If an error occurred, it will be
+    be provided as well. If an error occurred, it will be
     under the entry `error`.
 
     """
@@ -84,7 +100,6 @@ def solve_binary(key,
         "constraints_inequality_d": constraints_inequality_d,
         "return_all_solutions": return_all_solutions,
         "num_runs": num_runs,
-        "dwave_find_max": dwave_find_max,
         "sa_num_sweeps": sa_num_sweeps,
         "use_sample_persistence": use_sample_persistence,
         "sample_persistence_solution_threshold": sample_persistence_solution_threshold,
@@ -103,5 +118,41 @@ def solve_binary(key,
         params["dwave_solver_limit"] = dwave_solver_limit
     if dwave_target_energy is not None:
         params["dwave_target_energy"] = dwave_target_energy
+    if dwave_find_max is not None:
+        params["dwave_find_max"] = dwave_find_max
+    if dwave_reduce_intersample_correlation is not None:
+        params["dwave_reduce_intersample_correlation"] = dwave_reduce_intersample_correlation
+    if dwave_num_spin_reversal_transforms is not None:
+        params["dwave_num_spin_reversal_transforms"] = dwave_num_spin_reversal_transforms
+    if dwave_programming_thermalization is not None:
+        params["dwave_programming_thermalization"] = dwave_programming_thermalization
+    if dwave_reinitialize_state is not None:
+        params["dwave_reinitialize_state"] = dwave_reinitialize_state
+    if dwave_anneal_offsets is not None:
+        params["dwave_anneal_offsets"] = dwave_anneal_offsets
+    if dwave_num_reads is not None:
+        params["dwave_num_reads"] = dwave_num_reads
+    if dwave_max_answers is not None:
+        params["dwave_max_answers"] = dwave_max_answers
+    if dwave_flux_biases is not None:
+        params["dwave_flux_biases"] = dwave_flux_biases
+    if dwave_beta is not None:
+        params["dwave_beta"] = dwave_beta
+    if dwave_answer_mode is not None:
+        params["dwave_answer_mode"] = dwave_answer_mode
+    if dwave_auto_scale is not None:
+        params["dwave_auto_scale"] = dwave_auto_scale
+    if dwave_postprocess is not None:
+        params["dwave_postprocess"] = dwave_postprocess
+    if dwave_annealing_time is not None:
+        params["dwave_annealing_time"] = dwave_annealing_time
+    if dwave_anneal_schedule is not None:
+        params["dwave_anneal_schedule"] = dwave_anneal_schedule
+    if dwave_initial_state is not None:
+        params["dwave_initial_state"] = dwave_initial_state
+    if dwave_chains is not None:
+        params["dwave_chains"] = dwave_chains
+    if dwave_flux_drift_compensation is not None:
+        params["dwave_flux_drift_compensation"] = dwave_flux_drift_compensation
 
     return request.post(host + "/api/v2/solve_binary", params, "solve_binary")

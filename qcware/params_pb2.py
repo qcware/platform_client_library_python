@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='params.proto',
   package='com.qcware',
   syntax='proto2',
-  serialized_pb=_b('\n\x0cparams.proto\x12\ncom.qcware\"\xd1\x0f\n\x06params\x12\x0b\n\x03key\x18\x01 \x01(\t\x12$\n\x01Q\x18\x02 \x01(\x0b\x32\x19.com.qcware.params.Tensor\x12\x14\n\x0chigher_order\x18\x03 \x01(\x08\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x37\n\x14\x63onstraints_linear_A\x18\x05 \x01(\x0b\x32\x19.com.qcware.params.Matrix\x12\x37\n\x14\x63onstraints_linear_b\x18\x06 \x01(\x0b\x32\x19.com.qcware.params.Vector\x12 \n\x18\x63onstraints_sat_max_runs\x18\x07 \x01(\x05\x12\x18\n\x10\x63onstraints_hard\x18\x08 \x01(\x08\x12*\n\"constraints_penalty_scaling_factor\x18\t \x01(\x01\x12\x39\n\x16\x63onstraints_equality_R\x18\n \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12\x39\n\x16\x63onstraints_equality_c\x18\x0b \x01(\x0b\x32\x19.com.qcware.params.Vector\x12;\n\x18\x63onstraints_inequality_S\x18\x0c \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12;\n\x18\x63onstraints_inequality_d\x18\r \x01(\x0b\x32\x19.com.qcware.params.Vector\x12\x1c\n\x14return_all_solutions\x18\x0e \x01(\x08\x12\x10\n\x08num_runs\x18\x0f \x01(\x05\x12\x1c\n\x14\x64wave_chain_coupling\x18\x10 \x01(\x01\x12%\n\x1d\x64wave_optimize_chain_coupling\x18\x11 \x01(\x08\x12%\n\x1d\x64wave_num_runs_chain_coupling\x18\x12 \x01(\x05\x12 \n\x18\x64wave_use_dwave_embedder\x18\x13 \x01(\x08\x12\x18\n\x10\x64wave_use_gauges\x18\x14 \x01(\x08\x12\x18\n\x10\x64wave_num_gauges\x18\x15 \x01(\x05\x12&\n\x1e\x64wave_num_runs_gauge_selection\x18\x16 \x01(\x05\x12(\n dwave_chain_coupling_pi_fraction\x18\x17 \x01(\x01\x12\x17\n\x0f\x64wave_embedding\x18\x18 \x01(\t\x12 \n\x18\x64wave_use_full_embedding\x18\x19 \x01(\x08\x12\x15\n\rsa_num_sweeps\x18\x1a \x01(\x05\x12\x1e\n\x16use_sample_persistence\x18\x1b \x01(\x08\x12-\n%sample_persistence_solution_threshold\x18\x1c \x01(\x01\x12\x30\n(sample_persistence_persistence_threshold\x18\x1d \x01(\x01\x12\x31\n)sample_persistence_persistence_iterations\x18\x1e \x01(\x05\x12\x18\n\x10google_num_steps\x18\x1f \x01(\x05\x12\x18\n\x10google_n_samples\x18  \x01(\x05\x12M\n\x1agoogle_arguments_optimizer\x18! \x01(\x0b\x32).com.qcware.params.CirqArgumentsOptimizer\x12\x1c\n\x14google_step_sampling\x18\" \x01(\x08\x12&\n\x1egoogle_n_samples_step_sampling\x18# \x01(\x05\x12\x10\n\x08\x64\x65lta_AO\x18$ \x01(\x01\x12\x1c\n\x14\x64wave_chain_strength\x18% \x01(\x01\x12\x17\n\x0f\x64wave_algorithm\x18& \x01(\x05\x12\x1a\n\x12\x64wave_solver_limit\x18\' \x01(\x05\x12\x1b\n\x13\x64wave_target_energy\x18( \x01(\x01\x12\x16\n\x0e\x64wave_find_max\x18) \x01(\x08\x1aT\n\x0bTensorEntry\x12\x0f\n\x07indices\x18\x01 \x03(\x05\x12\x11\n\x07int_val\x18\x02 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x03 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Tensor\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.TensorEntry\x1aY\n\x0bMatrixEntry\x12\t\n\x01i\x18\x01 \x01(\x05\x12\t\n\x01j\x18\x02 \x01(\x05\x12\x11\n\x07int_val\x18\x03 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x04 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x43\n\x0bVectorEntry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Vector\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.VectorEntry\x1a\x39\n\x06Matrix\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.MatrixEntry\x1aP\n\x16\x43irqArgumentsOptimizer\x12\x12\n\ninit_point\x18\x01 \x01(\x05\x12\x13\n\x0bnumber_iter\x18\x02 \x01(\x05\x12\r\n\x05kappa\x18\x03 \x01(\x05\"\xf3\x04\n\nparams_vqe\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x31\n\x08molecule\x18\x02 \x02(\x0b\x32\x1f.com.qcware.params_vqe.Molecule\x12\r\n\x05\x62\x61sis\x18\x03 \x01(\t\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x14\n\x0cmultiplicity\x18\x05 \x01(\x05\x12\x0e\n\x06\x63harge\x18\x06 \x01(\x05\x12\x10\n\x08sampling\x18\x07 \x01(\x08\x12\x17\n\x0fsampling_trials\x18\x08 \x01(\x05\x12\x38\n\x10guess_amplitudes\x18\t \x01(\x0b\x32\x1e.com.qcware.params_vqe.Vector2\x12\x15\n\rinitial_state\x18\n \x01(\t\x12\x11\n\tminimizer\x18\x0b \x01(\t\x1a\x44\n\x0cVector2Entry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a?\n\x07Vector2\x12\x34\n\x07\x65ntries\x18\x01 \x03(\x0b\x32#.com.qcware.params_vqe.Vector2Entry\x1a>\n\nCoordinate\x12\x0f\n\x05x_int\x18\x01 \x01(\x05H\x00\x12\x11\n\x07x_float\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1aK\n\tAtomEntry\x12\x0c\n\x04\x61tom\x18\x01 \x02(\t\x12\x30\n\x05\x63oord\x18\x02 \x03(\x0b\x32!.com.qcware.params_vqe.Coordinate\x1a=\n\x08Molecule\x12\x31\n\x07\x65ntries\x18\x01 \x03(\x0b\x32 .com.qcware.params_vqe.AtomEntry')
+  serialized_pb=_b('\n\x0cparams.proto\x12\ncom.qcware\"\xff\x16\n\x06params\x12\x0b\n\x03key\x18\x01 \x01(\t\x12$\n\x01Q\x18\x02 \x01(\x0b\x32\x19.com.qcware.params.Tensor\x12\x14\n\x0chigher_order\x18\x03 \x01(\x08\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x37\n\x14\x63onstraints_linear_A\x18\x05 \x01(\x0b\x32\x19.com.qcware.params.Matrix\x12\x37\n\x14\x63onstraints_linear_b\x18\x06 \x01(\x0b\x32\x19.com.qcware.params.Vector\x12 \n\x18\x63onstraints_sat_max_runs\x18\x07 \x01(\x05\x12\x18\n\x10\x63onstraints_hard\x18\x08 \x01(\x08\x12*\n\"constraints_penalty_scaling_factor\x18\t \x01(\x01\x12\x39\n\x16\x63onstraints_equality_R\x18\n \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12\x39\n\x16\x63onstraints_equality_c\x18\x0b \x01(\x0b\x32\x19.com.qcware.params.Vector\x12;\n\x18\x63onstraints_inequality_S\x18\x0c \x03(\x0b\x32\x19.com.qcware.params.Matrix\x12;\n\x18\x63onstraints_inequality_d\x18\r \x01(\x0b\x32\x19.com.qcware.params.Vector\x12\x1c\n\x14return_all_solutions\x18\x0e \x01(\x08\x12\x10\n\x08num_runs\x18\x0f \x01(\x05\x12\x1c\n\x14\x64wave_chain_coupling\x18\x10 \x01(\x01\x12%\n\x1d\x64wave_optimize_chain_coupling\x18\x11 \x01(\x08\x12%\n\x1d\x64wave_num_runs_chain_coupling\x18\x12 \x01(\x05\x12 \n\x18\x64wave_use_dwave_embedder\x18\x13 \x01(\x08\x12\x18\n\x10\x64wave_use_gauges\x18\x14 \x01(\x08\x12\x18\n\x10\x64wave_num_gauges\x18\x15 \x01(\x05\x12&\n\x1e\x64wave_num_runs_gauge_selection\x18\x16 \x01(\x05\x12(\n dwave_chain_coupling_pi_fraction\x18\x17 \x01(\x01\x12\x17\n\x0f\x64wave_embedding\x18\x18 \x01(\t\x12 \n\x18\x64wave_use_full_embedding\x18\x19 \x01(\x08\x12\x15\n\rsa_num_sweeps\x18\x1a \x01(\x05\x12\x1e\n\x16use_sample_persistence\x18\x1b \x01(\x08\x12-\n%sample_persistence_solution_threshold\x18\x1c \x01(\x01\x12\x30\n(sample_persistence_persistence_threshold\x18\x1d \x01(\x01\x12\x31\n)sample_persistence_persistence_iterations\x18\x1e \x01(\x05\x12\x18\n\x10google_num_steps\x18\x1f \x01(\x05\x12\x18\n\x10google_n_samples\x18  \x01(\x05\x12M\n\x1agoogle_arguments_optimizer\x18! \x01(\x0b\x32).com.qcware.params.CirqArgumentsOptimizer\x12\x1c\n\x14google_step_sampling\x18\" \x01(\x08\x12&\n\x1egoogle_n_samples_step_sampling\x18# \x01(\x05\x12\x10\n\x08\x64\x65lta_AO\x18$ \x01(\x01\x12\x1c\n\x14\x64wave_chain_strength\x18% \x01(\x01\x12\x17\n\x0f\x64wave_algorithm\x18& \x01(\x05\x12\x1a\n\x12\x64wave_solver_limit\x18\' \x01(\x05\x12\x1b\n\x13\x64wave_target_energy\x18( \x01(\x01\x12\x16\n\x0e\x64wave_find_max\x18) \x01(\x08\x12,\n$dwave_reduce_intersample_correlation\x18* \x01(\x08\x12*\n\"dwave_num_spin_reversal_transforms\x18+ \x01(\x05\x12(\n dwave_programming_thermalization\x18, \x01(\x05\x12 \n\x18\x64wave_reinitialize_state\x18- \x01(\x08\x12\x1c\n\x14\x64wave_anneal_offsets\x18. \x03(\x01\x12\x17\n\x0f\x64wave_num_reads\x18/ \x01(\x05\x12\x19\n\x11\x64wave_max_answers\x18\x30 \x01(\x05\x12\x19\n\x11\x64wave_flux_biases\x18\x31 \x03(\x01\x12\x12\n\ndwave_beta\x18\x32 \x01(\x01\x12\x19\n\x11\x64wave_answer_mode\x18\x33 \x01(\t\x12\x18\n\x10\x64wave_auto_scale\x18\x34 \x01(\x08\x12\x19\n\x11\x64wave_postprocess\x18\x35 \x01(\t\x12\x1c\n\x14\x64wave_annealing_time\x18\x36 \x01(\x05\x12\x45\n\x15\x64wave_anneal_schedule\x18\x37 \x01(\x0b\x32&.com.qcware.params.DWaveAnnealSchedule\x12\x41\n\x13\x64wave_initial_state\x18\x38 \x01(\x0b\x32$.com.qcware.params.DWaveInitialState\x12\x33\n\x0c\x64wave_chains\x18\x39 \x03(\x0b\x32\x1d.com.qcware.params.DWaveChain\x12%\n\x1d\x64wave_flux_drift_compensation\x18: \x01(\x08\x1aT\n\x0bTensorEntry\x12\x0f\n\x07indices\x18\x01 \x03(\x05\x12\x11\n\x07int_val\x18\x02 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x03 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Tensor\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.TensorEntry\x1aY\n\x0bMatrixEntry\x12\t\n\x01i\x18\x01 \x01(\x05\x12\t\n\x01j\x18\x02 \x01(\x05\x12\x11\n\x07int_val\x18\x03 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x04 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x43\n\x0bVectorEntry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a\x39\n\x06Vector\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.VectorEntry\x1a\x39\n\x06Matrix\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.com.qcware.params.MatrixEntry\x1aP\n\x16\x43irqArgumentsOptimizer\x12\x12\n\ninit_point\x18\x01 \x01(\x05\x12\x13\n\x0bnumber_iter\x18\x02 \x01(\x05\x12\r\n\x05kappa\x18\x03 \x01(\x05\x1a\x38\n\x17\x44WaveAnnealSchedulePair\x12\x0c\n\x04time\x18\x01 \x01(\x05\x12\x0f\n\x07\x63urrent\x18\x02 \x01(\x01\x1aR\n\x13\x44WaveAnnealSchedule\x12;\n\x07\x65ntries\x18\x01 \x03(\x0b\x32*.com.qcware.params.DWaveAnnealSchedulePair\x1a\x35\n\x15\x44WaveInitialStatePair\x12\r\n\x05qubit\x18\x01 \x01(\x05\x12\r\n\x05state\x18\x02 \x01(\x05\x1aN\n\x11\x44WaveInitialState\x12\x39\n\x07\x65ntries\x18\x01 \x03(\x0b\x32(.com.qcware.params.DWaveInitialStatePair\x1a\x1c\n\nDWaveChain\x12\x0e\n\x06qubits\x18\x01 \x03(\x05\"\xf3\x04\n\nparams_vqe\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x31\n\x08molecule\x18\x02 \x02(\x0b\x32\x1f.com.qcware.params_vqe.Molecule\x12\r\n\x05\x62\x61sis\x18\x03 \x01(\t\x12\x0e\n\x06solver\x18\x04 \x01(\t\x12\x14\n\x0cmultiplicity\x18\x05 \x01(\x05\x12\x0e\n\x06\x63harge\x18\x06 \x01(\x05\x12\x10\n\x08sampling\x18\x07 \x01(\x08\x12\x17\n\x0fsampling_trials\x18\x08 \x01(\x05\x12\x38\n\x10guess_amplitudes\x18\t \x01(\x0b\x32\x1e.com.qcware.params_vqe.Vector2\x12\x15\n\rinitial_state\x18\n \x01(\t\x12\x11\n\tminimizer\x18\x0b \x01(\t\x1a\x44\n\x0cVector2Entry\x12\x11\n\x07int_val\x18\x01 \x01(\x05H\x00\x12\x13\n\tfloat_val\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1a?\n\x07Vector2\x12\x34\n\x07\x65ntries\x18\x01 \x03(\x0b\x32#.com.qcware.params_vqe.Vector2Entry\x1a>\n\nCoordinate\x12\x0f\n\x05x_int\x18\x01 \x01(\x05H\x00\x12\x11\n\x07x_float\x18\x02 \x01(\x02H\x00\x42\x0c\n\nintOrFloat\x1aK\n\tAtomEntry\x12\x0c\n\x04\x61tom\x18\x01 \x02(\t\x12\x30\n\x05\x63oord\x18\x02 \x03(\x0b\x32!.com.qcware.params_vqe.Coordinate\x1a=\n\x08Molecule\x12\x31\n\x07\x65ntries\x18\x01 \x03(\x0b\x32 .com.qcware.params_vqe.AtomEntry')
 )
 
 
@@ -68,8 +68,8 @@ _PARAMS_TENSORENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params.TensorEntry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1527,
-  serialized_end=1611,
+  serialized_start=2162,
+  serialized_end=2246,
 )
 
 _PARAMS_TENSOR = _descriptor.Descriptor(
@@ -98,8 +98,8 @@ _PARAMS_TENSOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1613,
-  serialized_end=1670,
+  serialized_start=2248,
+  serialized_end=2305,
 )
 
 _PARAMS_MATRIXENTRY = _descriptor.Descriptor(
@@ -152,8 +152,8 @@ _PARAMS_MATRIXENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params.MatrixEntry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1672,
-  serialized_end=1761,
+  serialized_start=2307,
+  serialized_end=2396,
 )
 
 _PARAMS_VECTORENTRY = _descriptor.Descriptor(
@@ -192,8 +192,8 @@ _PARAMS_VECTORENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params.VectorEntry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1763,
-  serialized_end=1830,
+  serialized_start=2398,
+  serialized_end=2465,
 )
 
 _PARAMS_VECTOR = _descriptor.Descriptor(
@@ -222,8 +222,8 @@ _PARAMS_VECTOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1832,
-  serialized_end=1889,
+  serialized_start=2467,
+  serialized_end=2524,
 )
 
 _PARAMS_MATRIX = _descriptor.Descriptor(
@@ -252,8 +252,8 @@ _PARAMS_MATRIX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1891,
-  serialized_end=1948,
+  serialized_start=2526,
+  serialized_end=2583,
 )
 
 _PARAMS_CIRQARGUMENTSOPTIMIZER = _descriptor.Descriptor(
@@ -296,8 +296,172 @@ _PARAMS_CIRQARGUMENTSOPTIMIZER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1950,
-  serialized_end=2030,
+  serialized_start=2585,
+  serialized_end=2665,
+)
+
+_PARAMS_DWAVEANNEALSCHEDULEPAIR = _descriptor.Descriptor(
+  name='DWaveAnnealSchedulePair',
+  full_name='com.qcware.params.DWaveAnnealSchedulePair',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='time', full_name='com.qcware.params.DWaveAnnealSchedulePair.time', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='current', full_name='com.qcware.params.DWaveAnnealSchedulePair.current', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2667,
+  serialized_end=2723,
+)
+
+_PARAMS_DWAVEANNEALSCHEDULE = _descriptor.Descriptor(
+  name='DWaveAnnealSchedule',
+  full_name='com.qcware.params.DWaveAnnealSchedule',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='entries', full_name='com.qcware.params.DWaveAnnealSchedule.entries', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2725,
+  serialized_end=2807,
+)
+
+_PARAMS_DWAVEINITIALSTATEPAIR = _descriptor.Descriptor(
+  name='DWaveInitialStatePair',
+  full_name='com.qcware.params.DWaveInitialStatePair',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='qubit', full_name='com.qcware.params.DWaveInitialStatePair.qubit', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='state', full_name='com.qcware.params.DWaveInitialStatePair.state', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2809,
+  serialized_end=2862,
+)
+
+_PARAMS_DWAVEINITIALSTATE = _descriptor.Descriptor(
+  name='DWaveInitialState',
+  full_name='com.qcware.params.DWaveInitialState',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='entries', full_name='com.qcware.params.DWaveInitialState.entries', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2864,
+  serialized_end=2942,
+)
+
+_PARAMS_DWAVECHAIN = _descriptor.Descriptor(
+  name='DWaveChain',
+  full_name='com.qcware.params.DWaveChain',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='qubits', full_name='com.qcware.params.DWaveChain.qubits', index=0,
+      number=1, type=5, cpp_type=1, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2944,
+  serialized_end=2972,
 )
 
 _PARAMS = _descriptor.Descriptor(
@@ -594,10 +758,129 @@ _PARAMS = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_reduce_intersample_correlation', full_name='com.qcware.params.dwave_reduce_intersample_correlation', index=41,
+      number=42, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_num_spin_reversal_transforms', full_name='com.qcware.params.dwave_num_spin_reversal_transforms', index=42,
+      number=43, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_programming_thermalization', full_name='com.qcware.params.dwave_programming_thermalization', index=43,
+      number=44, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_reinitialize_state', full_name='com.qcware.params.dwave_reinitialize_state', index=44,
+      number=45, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_anneal_offsets', full_name='com.qcware.params.dwave_anneal_offsets', index=45,
+      number=46, type=1, cpp_type=5, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_num_reads', full_name='com.qcware.params.dwave_num_reads', index=46,
+      number=47, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_max_answers', full_name='com.qcware.params.dwave_max_answers', index=47,
+      number=48, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_flux_biases', full_name='com.qcware.params.dwave_flux_biases', index=48,
+      number=49, type=1, cpp_type=5, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_beta', full_name='com.qcware.params.dwave_beta', index=49,
+      number=50, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_answer_mode', full_name='com.qcware.params.dwave_answer_mode', index=50,
+      number=51, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_auto_scale', full_name='com.qcware.params.dwave_auto_scale', index=51,
+      number=52, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_postprocess', full_name='com.qcware.params.dwave_postprocess', index=52,
+      number=53, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_annealing_time', full_name='com.qcware.params.dwave_annealing_time', index=53,
+      number=54, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_anneal_schedule', full_name='com.qcware.params.dwave_anneal_schedule', index=54,
+      number=55, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_initial_state', full_name='com.qcware.params.dwave_initial_state', index=55,
+      number=56, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_chains', full_name='com.qcware.params.dwave_chains', index=56,
+      number=57, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dwave_flux_drift_compensation', full_name='com.qcware.params.dwave_flux_drift_compensation', index=57,
+      number=58, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
-  nested_types=[_PARAMS_TENSORENTRY, _PARAMS_TENSOR, _PARAMS_MATRIXENTRY, _PARAMS_VECTORENTRY, _PARAMS_VECTOR, _PARAMS_MATRIX, _PARAMS_CIRQARGUMENTSOPTIMIZER, ],
+  nested_types=[_PARAMS_TENSORENTRY, _PARAMS_TENSOR, _PARAMS_MATRIXENTRY, _PARAMS_VECTORENTRY, _PARAMS_VECTOR, _PARAMS_MATRIX, _PARAMS_CIRQARGUMENTSOPTIMIZER, _PARAMS_DWAVEANNEALSCHEDULEPAIR, _PARAMS_DWAVEANNEALSCHEDULE, _PARAMS_DWAVEINITIALSTATEPAIR, _PARAMS_DWAVEINITIALSTATE, _PARAMS_DWAVECHAIN, ],
   enum_types=[
   ],
   options=None,
@@ -607,7 +890,7 @@ _PARAMS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=29,
-  serialized_end=2030,
+  serialized_end=2972,
 )
 
 
@@ -647,8 +930,8 @@ _PARAMS_VQE_VECTOR2ENTRY = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params_vqe.Vector2Entry.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2323,
-  serialized_end=2391,
+  serialized_start=3265,
+  serialized_end=3333,
 )
 
 _PARAMS_VQE_VECTOR2 = _descriptor.Descriptor(
@@ -677,8 +960,8 @@ _PARAMS_VQE_VECTOR2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2393,
-  serialized_end=2456,
+  serialized_start=3335,
+  serialized_end=3398,
 )
 
 _PARAMS_VQE_COORDINATE = _descriptor.Descriptor(
@@ -717,8 +1000,8 @@ _PARAMS_VQE_COORDINATE = _descriptor.Descriptor(
       name='intOrFloat', full_name='com.qcware.params_vqe.Coordinate.intOrFloat',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2458,
-  serialized_end=2520,
+  serialized_start=3400,
+  serialized_end=3462,
 )
 
 _PARAMS_VQE_ATOMENTRY = _descriptor.Descriptor(
@@ -754,8 +1037,8 @@ _PARAMS_VQE_ATOMENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2522,
-  serialized_end=2597,
+  serialized_start=3464,
+  serialized_end=3539,
 )
 
 _PARAMS_VQE_MOLECULE = _descriptor.Descriptor(
@@ -784,8 +1067,8 @@ _PARAMS_VQE_MOLECULE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2599,
-  serialized_end=2660,
+  serialized_start=3541,
+  serialized_end=3602,
 )
 
 _PARAMS_VQE = _descriptor.Descriptor(
@@ -884,8 +1167,8 @@ _PARAMS_VQE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2033,
-  serialized_end=2660,
+  serialized_start=2975,
+  serialized_end=3602,
 )
 
 _PARAMS_TENSORENTRY.containing_type = _PARAMS
@@ -916,6 +1199,13 @@ _PARAMS_VECTOR.containing_type = _PARAMS
 _PARAMS_MATRIX.fields_by_name['entries'].message_type = _PARAMS_MATRIXENTRY
 _PARAMS_MATRIX.containing_type = _PARAMS
 _PARAMS_CIRQARGUMENTSOPTIMIZER.containing_type = _PARAMS
+_PARAMS_DWAVEANNEALSCHEDULEPAIR.containing_type = _PARAMS
+_PARAMS_DWAVEANNEALSCHEDULE.fields_by_name['entries'].message_type = _PARAMS_DWAVEANNEALSCHEDULEPAIR
+_PARAMS_DWAVEANNEALSCHEDULE.containing_type = _PARAMS
+_PARAMS_DWAVEINITIALSTATEPAIR.containing_type = _PARAMS
+_PARAMS_DWAVEINITIALSTATE.fields_by_name['entries'].message_type = _PARAMS_DWAVEINITIALSTATEPAIR
+_PARAMS_DWAVEINITIALSTATE.containing_type = _PARAMS
+_PARAMS_DWAVECHAIN.containing_type = _PARAMS
 _PARAMS.fields_by_name['Q'].message_type = _PARAMS_TENSOR
 _PARAMS.fields_by_name['constraints_linear_A'].message_type = _PARAMS_MATRIX
 _PARAMS.fields_by_name['constraints_linear_b'].message_type = _PARAMS_VECTOR
@@ -924,6 +1214,9 @@ _PARAMS.fields_by_name['constraints_equality_c'].message_type = _PARAMS_VECTOR
 _PARAMS.fields_by_name['constraints_inequality_S'].message_type = _PARAMS_MATRIX
 _PARAMS.fields_by_name['constraints_inequality_d'].message_type = _PARAMS_VECTOR
 _PARAMS.fields_by_name['google_arguments_optimizer'].message_type = _PARAMS_CIRQARGUMENTSOPTIMIZER
+_PARAMS.fields_by_name['dwave_anneal_schedule'].message_type = _PARAMS_DWAVEANNEALSCHEDULE
+_PARAMS.fields_by_name['dwave_initial_state'].message_type = _PARAMS_DWAVEINITIALSTATE
+_PARAMS.fields_by_name['dwave_chains'].message_type = _PARAMS_DWAVECHAIN
 _PARAMS_VQE_VECTOR2ENTRY.containing_type = _PARAMS_VQE
 _PARAMS_VQE_VECTOR2ENTRY.oneofs_by_name['intOrFloat'].fields.append(
   _PARAMS_VQE_VECTOR2ENTRY.fields_by_name['int_val'])
@@ -1000,6 +1293,41 @@ params = _reflection.GeneratedProtocolMessageType('params', (_message.Message,),
     # @@protoc_insertion_point(class_scope:com.qcware.params.CirqArgumentsOptimizer)
     ))
   ,
+
+  DWaveAnnealSchedulePair = _reflection.GeneratedProtocolMessageType('DWaveAnnealSchedulePair', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_DWAVEANNEALSCHEDULEPAIR,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params.DWaveAnnealSchedulePair)
+    ))
+  ,
+
+  DWaveAnnealSchedule = _reflection.GeneratedProtocolMessageType('DWaveAnnealSchedule', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_DWAVEANNEALSCHEDULE,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params.DWaveAnnealSchedule)
+    ))
+  ,
+
+  DWaveInitialStatePair = _reflection.GeneratedProtocolMessageType('DWaveInitialStatePair', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_DWAVEINITIALSTATEPAIR,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params.DWaveInitialStatePair)
+    ))
+  ,
+
+  DWaveInitialState = _reflection.GeneratedProtocolMessageType('DWaveInitialState', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_DWAVEINITIALSTATE,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params.DWaveInitialState)
+    ))
+  ,
+
+  DWaveChain = _reflection.GeneratedProtocolMessageType('DWaveChain', (_message.Message,), dict(
+    DESCRIPTOR = _PARAMS_DWAVECHAIN,
+    __module__ = 'params_pb2'
+    # @@protoc_insertion_point(class_scope:com.qcware.params.DWaveChain)
+    ))
+  ,
   DESCRIPTOR = _PARAMS,
   __module__ = 'params_pb2'
   # @@protoc_insertion_point(class_scope:com.qcware.params)
@@ -1012,6 +1340,11 @@ _sym_db.RegisterMessage(params.VectorEntry)
 _sym_db.RegisterMessage(params.Vector)
 _sym_db.RegisterMessage(params.Matrix)
 _sym_db.RegisterMessage(params.CirqArgumentsOptimizer)
+_sym_db.RegisterMessage(params.DWaveAnnealSchedulePair)
+_sym_db.RegisterMessage(params.DWaveAnnealSchedule)
+_sym_db.RegisterMessage(params.DWaveInitialStatePair)
+_sym_db.RegisterMessage(params.DWaveInitialState)
+_sym_db.RegisterMessage(params.DWaveChain)
 
 params_vqe = _reflection.GeneratedProtocolMessageType('params_vqe', (_message.Message,), dict(
 

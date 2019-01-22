@@ -29,6 +29,19 @@ def python_to_proto(param_dict, k, v):
         getattr(param_dict, k).extend(mat_array_to_protodict_array(v))
     elif k == "constraints_equality_c" or k == "constraints_inequality_d":
         getattr(param_dict, k).CopyFrom(vec_to_protovec(v))
+    elif k == "dwave_anneal_offsets":
+        param_dict.dwave_anneal_offsets.extend(v)
+    elif k == "dwave_flux_biases":
+        param_dict.dwave_flux_biases.extend(v)
+    elif k == "dwave_anneal_schedule":
+        getattr(param_dict, k).CopyFrom(array_to_anneal_schedule(v))
+    elif k == "dwave_initial_state":
+        getattr(param_dict, k).CopyFrom(array_to_initial_state(v))
+    elif k == "dwave_chains":
+        for arr in v:
+            pb_obj = params_pb2.params.DWaveChain()
+            pb_obj.qubits.extend(arr)
+            param_dict.dwave_chains.extend([pb_obj])
     elif k == "google_arguments_optimizer":
         getattr(param_dict, k).CopyFrom(dict_to_google_arguments_optimizer(v))
     elif k == "molecule":
@@ -72,6 +85,24 @@ def dict_to_protodict(pydict, isTensor=False):
             entry.int_val = v
         else:
             entry.float_val = v
+    return pb_obj
+
+
+def array_to_anneal_schedule(arr):
+    pb_obj = params_pb2.params.DWaveAnnealSchedule()
+    for pair in arr:
+        entry = pb_obj.entries.add()
+        entry.time = pair[0]
+        entry.current = pair[1]
+    return pb_obj
+
+
+def array_to_initial_state(arr):
+    pb_obj = params_pb2.params.DWaveInitialState()
+    for pair in arr:
+        entry = pb_obj.entries.add()
+        entry.qubit = pair[0]
+        entry.state = pair[1]
     return pb_obj
 
 
