@@ -89,7 +89,7 @@ def dict_to_protodict(pydict, isTensor=False):
 
 
 def array_to_anneal_schedule(arr):
-    pb_obj = params_pb2.params.DWaveAnnealSchedule();
+    pb_obj = params_pb2.params.DWaveAnnealSchedule()
     for pair in arr:
         entry = pb_obj.entries.add()
         entry.time = pair[0]
@@ -98,7 +98,7 @@ def array_to_anneal_schedule(arr):
 
 
 def array_to_initial_state(arr):
-    pb_obj = params_pb2.params.DWaveInitialState();
+    pb_obj = params_pb2.params.DWaveInitialState()
     for pair in arr:
         entry = pb_obj.entries.add()
         entry.qubit = pair[0]
