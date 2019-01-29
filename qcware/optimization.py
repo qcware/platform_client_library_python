@@ -1,4 +1,4 @@
-import request
+from . import request
 from qcware.wrappers import print_errors, print_api_mismatch
 
 
