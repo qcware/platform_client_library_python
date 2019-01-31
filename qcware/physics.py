@@ -96,8 +96,10 @@ def find_ground_state_energy(key,
             seeding initialization parameters for the 'UCCSD' parametrized state.
             Only available for 'CG' in 'projectq'
 
-        initial_state (:obj:`string`, optional): Sets the type of parametrized
-            parametrized ansatz to
+        initial_state (:obj: `string`, optional): Sets the type of parametrized
+            parametrized ansatz used to optimize ground state energy. Default value
+            set to 'UCCSD'. Currently only available option, to be expanded in
+            the future.
 
         host (:obj:`string`, optional): The AQUA server to which the client
             library should connect.  Defaults to https://platform.qcware.com .
