@@ -40,73 +40,72 @@ def find_ground_state_energy(key,
     corresponds to the energy and parameters that minimize the energy.
 
     Args:
-        key (:obj:`str`) : An API key for the platform.  Keys can be allocated
-        and managed from the Platform Key Manager website
+        key (:obj:`string`) : An API key for the platform.  Keys can be allocated
+            and managed from the Platform Key Manager website
 
         molecule (:obj:`list`): List of tuples/lists the form
-        [[Element,Position], [Element,Position]]
-        where Element is the periodic table symbol for atom
-        and Position is a list [x,y,z] with cartesian coordinates
-        representing the given atom's position in the molecular geometry input
-        assuming Bohr-Oppenheimer approximation that the nuclei are at fixed
-        coordinates. Distances are assumed to be in angstrom
+            [[Element,Position], [Element,Position]]
+            where Element is the periodic table symbol for atom
+            and Position is a list [x,y,z] with cartesian coordinates
+            representing the given atom's position in the molecular geometry input
+            assuming Bohr-Oppenheimer approximation that the nuclei are at fixed
+            coordinates. Distances are assumed to be in angstroms.
 
-        minimizer (:obj:`str`): classical optimizer used to minimize
-        parameters in ansatz used for the state preparation. If solver is set to
-        'projectq' minimizer default is 'swarm' representing swarming algorithm
-        and if solver is set to 'ibm_software' or 'ibm_hardware' default value
-        is set to 'cobyla'. More minimizers will be available in the future.
+        minimizer (:obj:`string`): classical optimizer used to minimize
+            parameters in ansatz used for the state preparation. If solver is set to
+            'projectq' minimizer default is 'swarm' representing swarming algorithm
+            and if solver is set to 'ibm_software' or 'ibm_hardware' default value
+            is set to 'cobyla'. More minimizers will be available in the future.
 
-        * For 'projectq' valid minimizers are:
-            * 'CG' for conjugate gradient
-            * 'swarm' for pyswarm implementation of swarming algorithm
+            * For 'projectq' valid minimizers are:
+                * 'CG' for conjugate gradient
+                * 'swarm' for pyswarm implementation of swarming algorithm
+            * For 'ibm_x' valid minimizers are:
+                * 'cobyla' Constrained optimization by linear approximation
+                * 'spsa' simultaneous perturbation stochastic approximation
 
-        * For 'ibm_x' valid minimizers are:
-            * 'cobyla' Constrained optimization by linear approximation
-            * 'spsa' simultaneous perturbation stochastic approximation
+        basis (:obj:`string`, optional): Orbital basis set used in classical
+            computation of molecular hamiltonian. Accepted values are
+            the ones natively used in psi4 chemistry package. Default value
+            set to :obj:`sto-3g`
 
-        basis: (:obj: `str`, optional): Orbital basis set used in classical
-        computation of molecular hamiltonian. Accepted values are
-        the ones natively used in psi4 chemistry package. Default value
-        set to :obj: `sto-3g`
-
-        solver (:obj:`str`, optional): The name of the solver to use for
-        the given problem.  Valid values are:
+        solver (:obj:`string`, optional): The name of the solver to use for
+            the given problem.  Valid values are:
 
             * "projectq": Run on a physical D-Wave machine
             * "ibm_software": Run on D-Wave's software simulator
             * "ibm_hardware": Run using a brute force algorithm
 
         multiplicity (:obj:`int`, optional): integer setting the spin
-        multiplicity (:math: `2 M_s+1`). Default set to 1
+            multiplicity (:math:`2 M_s+1`). Default set to 1
 
         charge (:obj:`int`, optional): integer setting the molecular charge.
-        Default set to 0.
+            Default set to 0.
 
         sampling (:obj:`bool`, optional): boolean determining whether
-        expectation value of energy will be estimated for sampling from the
-        prepared state or from directly computing an inner product with the
-        wavefunction. Applicable only to the `projectq` solver.
+            expectation value of energy will be estimated for sampling from the
+            prepared state or from directly computing an inner product with the
+            wavefunction. Applicable only to the `projectq` solver.
 
         sampling_trials (:obj:`int`, optional): if 'sampling' is set to
-        :obj: `True`, then this parameter sets the number of samples
-        taken to estimate expectation value of each term in the molecular
-        hamiltonian. Applicable only to the `projectq` solver.
+            :obj:`True`, then this parameter sets the number of samples
+            taken to estimate expectation value of each term in the molecular
+            hamiltonian. Applicable only to the `projectq` solver.
 
         guess_amplitudes (:obj:`list`, optional): optional list for
-        seeding initialization parameters for the 'UCCSD' parametrized state.
-        Only available for 'CG' in 'projectq'
+            seeding initialization parameters for the 'UCCSD' parametrized state.
+            Only available for 'CG' in 'projectq'
 
-        initial_state (:obj: `str`, optional): Sets the type of parametrized
-        parametrized ansatz to
+        initial_state (:obj:`string`, optional): Sets the type of parametrized
+            parametrized ansatz to
 
-        host (:obj:`str`, optional): The AQUA server to which the client
-        library should connect.  Defaults to https://platform.qcware.com .
+        host (:obj:`string`, optional): The AQUA server to which the client
+            library should connect.  Defaults to https://platform.qcware.com .
 
     Returns:
          JSON object: A JSON object, possibly containing the fields:
             * 'solution' (:obj:`list`): A Python list representing the solution
-               found for the ground state energy of input molecule.
+              found for the ground state energy of input molecule.
             * 'params' (:obj:`list`): the optimized parameters for the
               parametrized ansatz which minimizes the expectation value
               of the hamiltonian.
