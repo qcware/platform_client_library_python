@@ -70,6 +70,8 @@ def solve_binary(key,
                  dwave_initial_state=None,
                  dwave_chains=None,
                  dwave_flux_drift_compensation=None,
+                 dwave_beta_range=None,
+                 dwave_num_sweeps=None,
                  sa_num_sweeps=200,
                  use_sample_persistence=False,
                  sample_persistence_solution_threshold=0.5,
@@ -255,6 +257,10 @@ def solve_binary(key,
         dwave_chains (:obj:`[[int]]`, optional): D-Wave hardware system parameter. See `chains <https://docs.dwavesys.com/docs/latest/c_solver_1.html#chains>`_.
 
         dwave_flux_drift_compensation (:obj:`bool`, optional): D-Wave hardware system parameter. See `flux_drift_compensation <https://docs.dwavesys.com/docs/latest/c_solver_1.html#flux-drift-compensation>`_.
+
+        dwave_beta_range (:obj:`[int]`, optional): D-Wave software system parameter. See `beta_range <https://docs.ocean.dwavesys.com/projects/dimod/en/latest/reference/generated/dimod.reference.samplers.SimulatedAnnealingSampler.sample.html>`_.
+
+        dwave_num_sweeps (:obj:`int`, optional): D-Wave software system parameter. See `num_sweeps <https://docs.ocean.dwavesys.com/projects/dimod/en/latest/reference/generated/dimod.reference.samplers.SimulatedAnnealingSampler.sample.html>`_.
 
         sa_num_sweeps (:obj:`int`, optional): If using a simulated annealing solver, how many sweeps to perform per
             run of the algorithm.  Default value :obj:`200`.
