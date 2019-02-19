@@ -44,6 +44,10 @@ def python_to_proto(param_dict, k, v):
             param_dict.dwave_chains.extend([pb_obj])
     elif k == "dwave_beta_range":
         getattr(param_dict, k).CopyFrom(array_to_beta_range(v))
+    elif k == "dwave_precision_ancillas_tuples":
+        for arr in v:
+            tup = array_to_precision_ancillas_tuple(arr)
+            param_dict.dwave_precision_ancillas_tuples.extend([tup])
     elif k == "google_arguments_optimizer":
         getattr(param_dict, k).CopyFrom(dict_to_google_arguments_optimizer(v))
     elif k == "molecule":
@@ -112,6 +116,13 @@ def array_to_beta_range(arr):
     pb_obj = params_pb2.params.DWaveBetaRange()
     pb_obj.start = arr[0]
     pb_obj.end = arr[1]
+    return pb_obj
+
+
+def array_to_precision_ancillas_tuple(arr):
+    pb_obj = params_pb2.params.DWavePrecisionAncillasTuple()
+    pb_obj.first = arr[0]
+    pb_obj.second = arr[1]
     return pb_obj
 
 
