@@ -6,14 +6,14 @@ from . import request
 def find_ground_state_energy(key,
                              molecule,
                              minimizer=None,
-                             basis='sto-3g',
-                             solver='projectq',
-                             multiplicity=1,
-                             charge=0,
-                             sampling=False,
-                             sampling_trials=1000,
-                             guess_amplitudes=[],
-                             initial_state='UCCSD',
+                             basis=None,
+                             solver=None,
+                             multiplicity=None,
+                             charge=None,
+                             sampling=None,
+                             sampling_trials=None,
+                             guess_amplitudes=None,
+                             initial_state=None,
 
                              host="https://platform.qcware.com",
                              ):
@@ -123,16 +123,26 @@ def find_ground_state_energy(key,
     params = {
         "key": key,
         "molecule": molecule,
-        "basis": basis,
-        "solver": solver,
-        "multiplicity": multiplicity,
-        "charge": charge,
-        "sampling": sampling,
-        "sampling_trials": sampling_trials,
-        'guess_amplitudes': guess_amplitudes,
-        'initial_state': initial_state,
-        'minimizer': minimizer
         }
+
+    if basis is not None:
+        params["basis"] = basis
+    if solver is not None:
+        params["solver"] = solver
+    if multiplicity is not None:
+        params["multiplicity"] = multiplicity
+    if charge is not None:
+        params["charge"] = charge
+    if sampling is not None:
+        params["sampling"] = sampling
+    if sampling_trials is not None:
+        params["sampling_trials"] = sampling_trials
+    if guess_amplitudes is not None:
+        params["guess_amplitudes"] = guess_amplitudes
+    if initial_state is not None:
+        params["initial_state"] = initial_state
+    if minimizer is not None:
+        params["minimizer"] = minimizer
 
     return request.post(host + "/api/v2/find_ground_state_energy",
                         params, 'VQE')
