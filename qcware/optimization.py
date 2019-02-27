@@ -74,6 +74,7 @@ def solve_binary(key,
                  dwave_num_sweeps=None,
                  dwave_precision_ancillas=None,
                  dwave_precision_ancillas_tuples=None,
+                 constraints_hard_num=4,
                  sa_num_sweeps=200,
                  use_sample_persistence=False,
                  sample_persistence_solution_threshold=0.5,
@@ -268,6 +269,8 @@ def solve_binary(key,
 
         dwave_precision_ancillas_tuples (:obj:`[[int]]`, optional):
 
+        constraints_hard_num (:obj:`[[int]]`, optional):
+
         sa_num_sweeps (:obj:`int`, optional): If using a simulated annealing solver, how many sweeps to perform per
             run of the algorithm.  Default value :obj:`200`.
 
@@ -402,5 +405,7 @@ def solve_binary(key,
         params["dwave_precision_ancillas"] = dwave_precision_ancillas
     if dwave_precision_ancillas_tuples is not None:
         params["dwave_precision_ancillas_tuples"] = dwave_precision_ancillas_tuples
+    if constraints_hard_num is not None:
+        params["constraints_hard_num"] = constraints_hard_num
 
     return request.post(host + "/api/v2/solve_binary", params, "solve_binary")
