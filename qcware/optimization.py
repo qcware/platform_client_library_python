@@ -23,7 +23,7 @@ def mat_to_dict(mat):
     Q_new = {}
     for it in the_dict.keys():
         val_loop = the_dict[it]
-    if (it[1], it[0]) in the_dict.keys() and it[1] != it[0] and it[1] > it[0]:
+        if (it[1], it[0]) in the_dict.keys() and it[1] != it[0] and it[1] > it[0]:
             val_loop += the_dict[(it[1], it[0])]
             Q_new[it] = val_loop
         elif it[1] == it[0]:
