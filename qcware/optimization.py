@@ -23,7 +23,7 @@ def mat_to_dict(mat):
     Q_new = {}
     for it in the_dict.keys():
         val_loop = the_dict[it]
-        if (it[1], it[0]) in the_dict.keys() and it[1] != it[0] and it[1] > it[0]:
+    if (it[1], it[0]) in the_dict.keys() and it[1] != it[0] and it[1] > it[0]:
             val_loop += the_dict[(it[1], it[0])]
             Q_new[it] = val_loop
         elif it[1] == it[0]:
@@ -70,6 +70,12 @@ def solve_binary(key,
                  dwave_initial_state=None,
                  dwave_chains=None,
                  dwave_flux_drift_compensation=None,
+                 dwave_beta_range=None,
+                 dwave_num_sweeps=None,
+                 dwave_precision_ancillas=None,
+                 dwave_precision_ancillas_tuples=None,
+                 constraints_hard_num=None,
+
                  sa_num_sweeps=None,
                  use_sample_persistence=None,
                  sample_persistence_solution_threshold=None,
@@ -256,6 +262,16 @@ def solve_binary(key,
 
         dwave_flux_drift_compensation (:obj:`bool`, optional): D-Wave hardware system parameter. See `flux_drift_compensation <https://docs.dwavesys.com/docs/latest/c_solver_1.html#flux-drift-compensation>`_.
 
+        dwave_beta_range (:obj:`[int]`, optional): D-Wave software system parameter. See `beta_range <https://docs.ocean.dwavesys.com/projects/dimod/en/latest/reference/generated/dimod.reference.samplers.SimulatedAnnealingSampler.sample.html>`_.
+
+        dwave_num_sweeps (:obj:`int`, optional): D-Wave software system parameter. See `num_sweeps <https://docs.ocean.dwavesys.com/projects/dimod/en/latest/reference/generated/dimod.reference.samplers.SimulatedAnnealingSampler.sample.html>`_.
+
+        dwave_precision_ancillas (:obj:`bool`, optional):
+
+        dwave_precision_ancillas_tuples (:obj:`[[int]]`, optional):
+
+        constraints_hard_num (:obj:`[[int]]`, optional):
+
         sa_num_sweeps (:obj:`int`, optional): If using a simulated annealing solver, how many sweeps to perform per
             run of the algorithm.  Default value :obj:`200`.
 
@@ -385,6 +401,16 @@ def solve_binary(key,
         params["dwave_chains"] = dwave_chains
     if dwave_flux_drift_compensation is not None:
         params["dwave_flux_drift_compensation"] = dwave_flux_drift_compensation
+    if dwave_beta_range is not None:
+        params["dwave_beta_range"] = dwave_beta_range
+    if dwave_num_sweeps is not None:
+        params["dwave_num_sweeps"] = dwave_num_sweeps
+    if dwave_precision_ancillas is not None:
+        params["dwave_precision_ancillas"] = dwave_precision_ancillas
+    if dwave_precision_ancillas_tuples is not None:
+        params["dwave_precision_ancillas_tuples"] = dwave_precision_ancillas_tuples
+    if constraints_hard_num is not None:
+        params["constraints_hard_num"] = constraints_hard_num
     if sa_num_sweeps is not None:
         params["sa_num_sweeps"] = sa_num_sweeps
     if use_sample_persistence is not None:
@@ -405,6 +431,5 @@ def solve_binary(key,
         params["google_step_sampling"] = google_step_sampling
     if google_n_samples_step_sampling is not None:
         params["google_n_samples_step_sampling"] = google_n_samples_step_sampling
-
 
     return request.post(host + "/api/v2/solve_binary", params, "solve_binary")
