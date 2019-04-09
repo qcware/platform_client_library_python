@@ -31,6 +31,32 @@ def mat_to_dict(mat):
     return Q_new
 
 
+def enumerate_Q(Q):
+    r"""Replace the keys of Q with an enumeration of the input variables.
+
+    Args:
+        Q (:obj:`dict`): A dictionary representation of :math:`Q` where the keys are tuples of ints or strings
+
+    Returns:
+        :obj:`dict`: A dictionary representation of :math:`Q` where the keys are ints
+        :obj:`dict`: A dictionary mapping those ints to the original key values
+    """
+    enumerated_Q = {}
+    enumeration_mapping = {}
+    reverse_mapping = {}
+    enumeration = 0
+    for k, v in Q.items():
+        enumerated_key = []
+        for var in k:
+            if var not in enumeration_mapping:
+                enumeration_mapping[var] = enumeration
+                reverse_mapping[enumeration] = var
+                enumeration += 1
+            enumerated_key.append(enumeration_mapping[var])
+        enumerated_Q[tuple(enumerated_key)] = v
+    return enumerated_Q, reverse_mapping
+
+
 # Note: this is good for both HOBOs and QUBOs
 @print_api_mismatch
 @print_errors
@@ -100,7 +126,7 @@ def solve_binary(key,
         \text{such that} \\
         Ax = b \\
         x^T R_i x = c_i \\
-        x^T S_i x \leq d_i \\
+        x^T S_i x \geq d_i \\
 
     Here, :math:`x` is a length-:math:`n` vector of binary values, i.e., :math:`\{0,1\}^n` (this is what the solver
     finds).  :math:`Q` is a :math:`(n\times n)` matrix of reals.  :math:`A` is a :math:`(m \times n)` matrix of reals
@@ -156,9 +182,9 @@ def solve_binary(key,
             :math:`n`-dimensional matrix (a tensor).
 
             Since :math:`Q` is usually sparse, :math:`Q` should be specified
-            as a Python dictionary with integer pairs :math:`(i,j)` as keys (representing the :math:`(i,j)`th entry of
-            :math:`Q`) and integer or float values.  In the case of a cubic function, for example, some dictionary
-            keys will be 3-tuples of integers, rather than pairs.
+            as a Python dictionary with integer or string pairs :math:`(i,j)` as keys (representing the :math:`(i,j)`th
+            entry of :math:`Q`) and integer or float values.  In the case of a cubic function, for example, some
+            dictionary keys will be 3-tuples of integers, rather than pairs.
 
             Alternatively, :math:`Q` may be specified as a numpy array, in which case :obj:`mat_to_dict` is called on
             :math:`Q` before sending it to the platform.  Note that that helper function assumes :math:`Q` is symmetric,
@@ -327,9 +353,17 @@ def solve_binary(key,
             * 'extra_info' (:obj:`list`): A Python list containing additional information returned by a solver.
 
     """
+
+    converted_Q = mat_to_dict(Q) if not isinstance(Q, dict) else Q
+    print('converted: ', converted_Q)
+    enumerated_Q, mapping = enumerate_Q(converted_Q)
+    print('enumerated: ', enumerated_Q)
+    print('mapping: ', mapping)
+
     params = {
         "key": key,
-        "Q": mat_to_dict(Q) if not isinstance(Q, dict) else Q,
+        # "Q": mat_to_dict(Q) if not isinstance(Q, dict) else Q,
+        "Q": enumerated_Q,
         "higher_order": higher_order,
         "solver": solver,
         "constraints_linear_A": constraints_linear_A,
@@ -408,4 +442,7 @@ def solve_binary(key,
     if constraints_hard_num is not None:
         params["constraints_hard_num"] = constraints_hard_num
 
-    return request.post(host + "/api/v2/solve_binary", params, "solve_binary")
+    result = request.post(host + "/api/v2/solve_binary", params, "solve_binary")
+    result['enumeration'] = mapping
+
+    return result
