@@ -197,10 +197,12 @@ def solve_binary(key,
 
             * "dwave_hardware": Run on a physical D-Wave machine
             * "dwave_software": Run on D-Wave's software simulator
+            * "dwave_hybrid": Run with an optimized D-Wave software algorithm
             * "brute_force": Run using a brute force algorithm
             * "hfs": Run using the Hamze-de Freitas-Selby algorithm
             * "google_qaoa": Run using the Google simulator implementation of the QAOA algorithm
-            * "qiskit_aqua_qaoa": Run using the IBM simulator implementation of the QAOA algorithm
+            * "ibm_hw_qaoa": Run the QAOA algorithm on a physical IBM machine
+            * "ibm_sw_qaoa": Run the QAOA algorithm on IBM's software simulator of the QAOA algorithm
 
 
             Note that only certain solvers may be enabled depending on your account.  Default value "dwave_software".
