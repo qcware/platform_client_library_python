@@ -3,7 +3,7 @@ import setuptools
 
 
 setup(
-  name='qcwaretest',
+  name='qcware',
   packages=['qcware'],
   version='0.2.19',
   description='Functions for easily interfacing with the QC Ware Platform from Python',
