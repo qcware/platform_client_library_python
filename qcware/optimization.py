@@ -357,14 +357,10 @@ def solve_binary(key,
     """
 
     converted_Q = mat_to_dict(Q) if not isinstance(Q, dict) else Q
-    print('converted: ', converted_Q)
     enumerated_Q, mapping = enumerate_Q(converted_Q)
-    print('enumerated: ', enumerated_Q)
-    print('mapping: ', mapping)
 
     params = {
         "key": key,
-        # "Q": mat_to_dict(Q) if not isinstance(Q, dict) else Q,
         "Q": enumerated_Q,
         "higher_order": higher_order,
         "solver": solver,
