@@ -84,6 +84,7 @@ def solve_binary(key,
                  dwave_programming_thermalization=None,
                  dwave_reinitialize_state=None,
                  dwave_anneal_offsets=None,
+                 dwave_anneal_offsets_delta=None,
                  dwave_num_reads=None,
                  dwave_max_answers=None,
                  dwave_flux_biases=None,
@@ -265,6 +266,8 @@ def solve_binary(key,
 
         dwave_anneal_offsets (:obj:`[float]`, optional): D-Wave hardware system parameter. See `anneal_offsets <https://docs.dwavesys.com/docs/latest/c_solver_1.html#anneal-offsets>`_.
 
+        dwave_anneal_offsets_delta: (:obj:`float`, optional): Parameter in [0, 1] that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. See `<https://arxiv.org/pdf/1806.11091.pdf>`_.
+
         dwave_num_reads (:obj:`int`, optional): D-Wave hardware system parameter. See `num_reads <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-reads>`_.
 
         dwave_max_answers (:obj:`int`, optional): D-Wave hardware system parameter. See `max_answers <https://docs.dwavesys.com/docs/latest/c_solver_1.html#max-answers>`_.
@@ -405,6 +408,8 @@ def solve_binary(key,
         params["dwave_reinitialize_state"] = dwave_reinitialize_state
     if dwave_anneal_offsets is not None:
         params["dwave_anneal_offsets"] = dwave_anneal_offsets
+    if dwave_anneal_offsets_delta is not None:
+        params["dwave_anneal_offsets_delta"] = dwave_anneal_offsets_delta
     if dwave_num_reads is not None:
         params["dwave_num_reads"] = dwave_num_reads
     if dwave_max_answers is not None:
