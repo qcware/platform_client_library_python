@@ -6,14 +6,14 @@ from qcware.wrappers import print_errors, print_api_mismatch
 @print_api_mismatch
 @print_errors
 def classify(
-    key,
-    X=[],
-    y=[],
-    T=[],
-    backend="simulator",
-    clf_type="nearest_centroids",
-    clf_params={},
-    host="https://platform.qcware.com"):
+        key,
+        X=[],
+        y=[],
+        T=[],
+        backend="simulator",
+        clf_type="nearest_centroids",
+        clf_params={},
+        host="https://platform.qcware.com"):
     r"""Classifies test data according to input training data and a selected backend and classifier type
 
     It is strongly recommended to wrap a call to :obj:`classify` in a try/catch block since it is possible for the
