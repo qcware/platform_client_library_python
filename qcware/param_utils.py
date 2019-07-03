@@ -54,6 +54,10 @@ def python_to_proto(param_dict, k, v):
         getattr(param_dict, k).CopyFrom(array_to_molecule_vqe(v))
     elif k == "guess_amplitudes":
         getattr(param_dict, k).CopyFrom(array_to_amplitudes_vqe(v))
+    elif k == "initial_solution":
+        # jank, but it'll do
+        pb_obj = params_pb2.params(initial_solution=v)
+        getattr(param_dict, k).MergeFrom(pb_obj.initial_solution)
     else:
         # Must be a 'primitive' of some type
         setattr(param_dict, k, v)
