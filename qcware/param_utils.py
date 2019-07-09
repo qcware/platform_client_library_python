@@ -7,6 +7,8 @@ def convert(params, endpoint_type):
     param_dict = params_pb2.params()
     if endpoint_type != "solve_binary":
         param_dict = params_pb2.params_vqe()
+    if endpoint_type == "qml":
+        param_dict = params_pb2.params_qml()
     valid_keys = [f.name for f in param_dict.DESCRIPTOR.fields]
     for k, v in params.items():
         if k in valid_keys:
@@ -54,6 +56,16 @@ def python_to_proto(param_dict, k, v):
         getattr(param_dict, k).CopyFrom(array_to_molecule_vqe(v))
     elif k == "guess_amplitudes":
         getattr(param_dict, k).CopyFrom(array_to_amplitudes_vqe(v))
+    elif k == "X":
+        getattr(param_dict, k).CopyFrom(array_to_data(v))
+    elif k == "y":
+        getattr(param_dict, k).CopyFrom(array_to_target_vector(v))
+    elif k == "T":
+        getattr(param_dict, k).CopyFrom(array_to_data(v))
+    elif k == "clf_params":
+        # jank, but it'll do
+        pb_obj = params_pb2.params_qml(clf_params=v)
+        getattr(param_dict, k).MergeFrom(pb_obj.clf_params)
     elif k == "initial_solution":
         # jank, but it'll do
         pb_obj = params_pb2.params(initial_solution=v)
@@ -152,6 +164,22 @@ def array_to_amplitudes_vqe(arr):
             entry.int_val = amplitude
         else:
             entry.float_val = amplitude
+    return pb_obj
+
+
+def array_to_target_vector(arr):
+    pb_obj = params_pb2.params_qml.TargetVector()
+    for val in arr:
+        pb_obj.targets.append(val)
+    return pb_obj
+
+
+def array_to_data(arr):
+    pb_obj = params_pb2.params_qml.Data()
+    for sample in arr:
+        row = pb_obj.rows.add()
+        for val in sample:
+            row.values.append(val)
     return pb_obj
 
 

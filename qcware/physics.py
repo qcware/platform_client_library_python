@@ -41,7 +41,7 @@ def find_ground_state_energy(key,
 
     Args:
         key (:obj:`string`) : An API key for the platform.  Keys can be allocated
-            and managed from the Platform Key Manager website
+            and managed from the Forge web portal.
 
         molecule (:obj:`list`): List of tuples/lists the form
             [[Element,Position], [Element,Position]]

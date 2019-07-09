@@ -181,8 +181,7 @@ def solve_binary(
     platform or the client library to raise an exception.
 
     Args:
-        key (:obj:`str`): An API key for the platform.  Keys can be allocated and managed from the Platform Key Manager
-            website.
+        key (:obj:`str`): An API key for the platform.  Keys can be allocated and managed from the Forge web portal.
 
         Q (:obj:`dict`): The objective function matrix in the optimization problem described above.  In the case of a
             quadratic problem, this is a 2D matrix; generally, in the case of higher-order problems, this is an
