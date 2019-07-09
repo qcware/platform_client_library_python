@@ -63,8 +63,13 @@ def python_to_proto(param_dict, k, v):
     elif k == "T":
         getattr(param_dict, k).CopyFrom(array_to_data(v))
     elif k == "clf_params":
-        pass
-        # getattr(param_dict, k).CopyFrom(v)
+        # jank, but it'll do
+        pb_obj = params_pb2.params_qml(clf_params=v)
+        getattr(param_dict, k).MergeFrom(pb_obj.clf_params)
+    elif k == "initial_solution":
+        # jank, but it'll do
+        pb_obj = params_pb2.params(initial_solution=v)
+        getattr(param_dict, k).MergeFrom(pb_obj.initial_solution)
     else:
         # Must be a 'primitive' of some type
         setattr(param_dict, k, v)

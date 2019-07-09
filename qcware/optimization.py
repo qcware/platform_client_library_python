@@ -60,60 +60,66 @@ def enumerate_Q(Q):
 # Note: this is good for both HOBOs and QUBOs
 @print_api_mismatch
 @print_errors
-def solve_binary(key,
-                 Q,
-                 higher_order=False,
-                 solver="dwave_software",
-                 constraints_linear_A=[],
-                 constraints_linear_b=[],
-                 constraints_sat_max_runs=3100,
-                 constraints_hard=False,
-                 constraints_penalty_scaling_factor=1,
-                 constraints_equality_R=[],
-                 constraints_equality_c=[],
-                 constraints_inequality_S=[],
-                 constraints_inequality_d=[],
-                 return_all_solutions=False,
-                 num_runs=50,
-                 dwave_algorithm=None,
-                 dwave_solver_limit=None,
-                 dwave_target_energy=None,
-                 dwave_find_max=None,
-                 dwave_reduce_intersample_correlation=None,
-                 dwave_num_spin_reversal_transforms=None,
-                 dwave_programming_thermalization=None,
-                 dwave_reinitialize_state=None,
-                 dwave_anneal_offsets=None,
-                 dwave_anneal_offsets_delta=None,
-                 dwave_num_reads=None,
-                 dwave_max_answers=None,
-                 dwave_flux_biases=None,
-                 dwave_beta=None,
-                 dwave_answer_mode=None,
-                 dwave_auto_scale=None,
-                 dwave_postprocess=None,
-                 dwave_annealing_time=None,
-                 dwave_anneal_schedule=None,
-                 dwave_initial_state=None,
-                 dwave_chains=None,
-                 dwave_flux_drift_compensation=None,
-                 dwave_beta_range=None,
-                 dwave_num_sweeps=None,
-                 dwave_precision_ancillas=None,
-                 dwave_precision_ancillas_tuples=None,
-                 constraints_hard_num=4,
-                 sa_num_sweeps=200,
-                 use_sample_persistence=False,
-                 sample_persistence_solution_threshold=0.5,
-                 sample_persistence_persistence_threshold=0.5,
-                 sample_persistence_persistence_iterations=0,
-                 google_num_steps=1,
-                 google_n_samples=1000,
-                 google_arguments_optimizer={},
-                 google_step_sampling=True,
-                 google_n_samples_step_sampling=1000,
-                 host="https://platform.qcware.com",
-                 ):
+def solve_binary(
+        key,
+        Q,
+        higher_order=False,
+        solver="dwave_software",
+        constraints_linear_A=[],
+        constraints_linear_b=[],
+        constraints_sat_max_runs=3100,
+        constraints_hard=False,
+        constraints_penalty_scaling_factor=1,
+        constraints_equality_R=[],
+        constraints_equality_c=[],
+        constraints_inequality_S=[],
+        constraints_inequality_d=[],
+        return_all_solutions=False,
+        num_runs=50,
+        dwave_algorithm=None,
+        dwave_solver_limit=None,
+        dwave_target_energy=None,
+        dwave_find_max=None,
+        dwave_reduce_intersample_correlation=None,
+        dwave_num_spin_reversal_transforms=None,
+        dwave_programming_thermalization=None,
+        dwave_reinitialize_state=None,
+        dwave_anneal_offsets=None,
+        dwave_anneal_offsets_delta=None,
+        dwave_num_reads=None,
+        dwave_max_answers=None,
+        dwave_flux_biases=None,
+        dwave_beta=None,
+        dwave_answer_mode=None,
+        dwave_auto_scale=None,
+        dwave_postprocess=None,
+        dwave_annealing_time=None,
+        dwave_anneal_schedule=None,
+        dwave_initial_state=None,
+        dwave_chains=None,
+        dwave_flux_drift_compensation=None,
+        dwave_beta_range=None,
+        dwave_num_sweeps=None,
+        dwave_precision_ancillas=None,
+        dwave_precision_ancillas_tuples=None,
+        constraints_hard_num=4,
+        sa_num_sweeps=200,
+        use_sample_persistence=False,
+        sample_persistence_solution_threshold=0.5,
+        sample_persistence_persistence_threshold=0.5,
+        sample_persistence_persistence_iterations=0,
+        google_num_steps=1,
+        google_n_samples=1000,
+        google_arguments_optimizer={},
+        google_step_sampling=True,
+        google_n_samples_step_sampling=1000,
+        number_of_blocks=1,
+        iterations=50,
+        initial_solution=None,
+        always_update_with_best=True,
+        update_q_each_block_solution=True,
+        host="https://platform.qcware.com",
+        ):
     r"""Solve a binary optimization problem using one of the solvers provided by the platform.
 
     This function solves a binary optimization problem that is either:
@@ -334,6 +340,27 @@ def solve_binary(key,
         google_n_samples_step_sampling (:obj:`int`, optional): The number of runs corresponding to
             sampling at every step of the optimization.  Default value :obj:`1000`.
 
+        number_of_blocks (:obj:`int`, optional): number of blocks to decompose problem into using
+            random decomposition. Default value :obj: `1` meaning no decomposition.
+
+        iterations (:obj:`int`, optional): number of iterations to cycle through when using
+            random decomposition. Only valid if :obj: `number_of_blocks` is greater than 1.
+            Each iterations corresponds to solving all blocks of the decomposition once.
+            Default value :obj:`50`.
+
+        initial_solution (:obj:`dict`, optional): initial solution seed for constructing the
+            blocks using random decomposition. If none is provided, a random solution is
+            initialized. Default value :obj: `None`.
+
+        always_update_with_best (:obj:`bool`, optional):  solutions found using decomposition
+            do not monotonically get better with each iterations. The best solution is always returned,
+            but this flag determines whether or not to construct new decomposition using best solution.
+            Default value :obj: `True`.
+
+        update_q_each_block_solution (:obj:`bool`, optional): each blocks decomposed Q matrix
+            can be constructed at the onset of block composition, or updated every time a block is
+            solved. Default value :obj: `True`.
+
         host (:obj:`str`, optional): The AQUA server to which the client library should connect.  Defaults to https://platform.qcware.com .
 
 
@@ -387,6 +414,10 @@ def solve_binary(key,
         "google_arguments_optimizer": google_arguments_optimizer,
         "google_step_sampling": google_step_sampling,
         "google_n_samples_step_sampling": google_n_samples_step_sampling,
+        "number_of_blocks": number_of_blocks,
+        "iterations": iterations,
+        "always_update_with_best": always_update_with_best,
+        "update_q_each_block_solution": update_q_each_block_solution,
     }
 
     if dwave_algorithm is not None:
@@ -443,6 +474,8 @@ def solve_binary(key,
         params["dwave_precision_ancillas_tuples"] = dwave_precision_ancillas_tuples
     if constraints_hard_num is not None:
         params["constraints_hard_num"] = constraints_hard_num
+    if initial_solution is not None:
+        params["initial_solution"] = initial_solution
 
     result = request.post(host + "/api/v2/solve_binary", params, "solve_binary")
     result['enumeration'] = mapping
