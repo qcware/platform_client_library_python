@@ -10,9 +10,9 @@ def fit_and_predict(
         X=[],
         y=[],
         T=[],
+        backend="simulator",
         clf_type="nearest_centroids",
         clf_params={},
-        solver="simulator",
         host="https://platform.qcware.com"):
     r"""Classifies test data according to input training data and a selected backend and classifier type
 
@@ -30,19 +30,19 @@ def fit_and_predict(
 
         T (:obj:`[[float]]`): Test data vectors.
 
+        backend (:obj:`string`): Selects the specific backend used to run the computation.
+
+            * "simulator": Runs the algorithms on a software simulator
+            * "hardware": Runs on physical hardware
+
+            Defaults to "simulator".
+
         clf_type (:obj:`string`): Selects the classifier used to run the computation. Options include
             "nearest_centroids", "nearest_clusters", and "nearest_neighbors".
 
             Defaults to "nearest_centroids".
 
         clf_params (:obj:`dict`): You can put parameters specific to each classifier here.
-
-        solver (:obj:`string`): Selects the specific solver used to run the computation.
-
-            * "simulator": Runs the algorithms on a software simulator
-            * "hardware": Runs on physical hardware
-
-            Defaults to "simulator".
 
     Returns:
         JSON object: A JSON object, possibly containing the fields:
@@ -55,9 +55,11 @@ def fit_and_predict(
         "X": X if not isinstance(X, numpy.ndarray) else X.tolist(),
         "y": y if not isinstance(y, numpy.ndarray) else y.tolist(),
         "T": T if not isinstance(T, numpy.ndarray) else T.tolist(),
+        "backend": backend,
         "clf_type": clf_type,
         "clf_params": clf_params,
-        "solver": solver
+        # temp hack to get around platform's resource check
+        "solver": backend
     }
 
     result = request.post(host + "/api/v2/fit_and_predict", params, "qml")
