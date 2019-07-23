@@ -13,6 +13,7 @@ def fit_and_predict(
         backend="simulator",
         clf_type="nearest_centroids",
         clf_params={},
+        solver="dwave_software",
         host="https://platform.qcware.com"):
     r"""Classifies test data according to input training data and a selected backend and classifier type
 
@@ -58,8 +59,7 @@ def fit_and_predict(
         "backend": backend,
         "clf_type": clf_type,
         "clf_params": clf_params,
-        # temp hack to get around platform's resource check
-        "solver": backend
+        "solver": solver
     }
 
     result = request.post(host + "/api/v2/fit_and_predict", params, "qml")
