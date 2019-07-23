@@ -5,7 +5,7 @@ from qcware.wrappers import print_errors, print_api_mismatch
 
 @print_api_mismatch
 @print_errors
-def classify(
+def fit_and_predict(
         key,
         X=[],
         y=[],
@@ -16,7 +16,7 @@ def classify(
         host="https://platform.qcware.com"):
     r"""Classifies test data according to input training data and a selected backend and classifier type
 
-    It is strongly recommended to wrap a call to :obj:`classify` in a try/catch block since it is possible for the
+    It is strongly recommended to wrap a call to :obj:`fit_and_predict` in a try/catch block since it is possible for the
     platform or the client library to raise an exception.
 
     Args:
@@ -60,6 +60,6 @@ def classify(
         "clf_params": clf_params
     }
 
-    result = request.post(host + "/api/v2/classify", params, "qml")
+    result = request.post(host + "/api/v2/fit_and_predict", params, "qml")
 
     return result
