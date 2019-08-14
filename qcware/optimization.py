@@ -207,7 +207,7 @@ def solve_binary(
             * "brute_force": Run using a brute force algorithm
             * "hfs": Run using the Hamze-de Freitas-Selby algorithm
             * "google_qaoa": Run using the Google simulator implementation of the QAOA algorithm
-            * "ibm_hw_qaoa": Run the QAOA algorithm on a physical IBM machine
+            * "ibm_hw_qaoa": Run the QAOA algorithm on a physical IBM machine, this may take over 2 hours for even small problems!
             * "ibm_sw_qaoa": Run the QAOA algorithm on IBM's software simulator of the QAOA algorithm
 
 
