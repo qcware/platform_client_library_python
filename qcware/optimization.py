@@ -202,8 +202,7 @@ def solve_binary(
         solver (:obj:`str`, optional): The name of the solver to use for the given problem.  Valid values are:
 
             * "dwave_hardware": Run on a physical D-Wave machine
-            * "dwave_software": Run on D-Wave's software simulator
-            * "dwave_hybrid": Run with an optimized D-Wave software algorithm
+            * "dwave_software": Run on D-Wave's software simulator (requires additional permissions)
             * "brute_force": Run using a brute force algorithm
             * "hfs": Run using the Hamze-de Freitas-Selby algorithm
             * "google_qaoa": Run using the Google simulator implementation of the QAOA algorithm
