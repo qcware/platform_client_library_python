@@ -1,5 +1,24 @@
 from . import request
+from .request import post_json
 
+
+def solve_mcvqe(key,
+                 host, 
+                 filenames=None,
+                 N=2, 
+                 connectivity='linear',
+                 backend_name='quasar', 
+                 nmeasurement=None,
+                 nmeasurement_subspace=None, 
+                 nstate=3,
+                 vqe_circuit_type='mark1x'):
+
+    endpoint_url = "/".join([host, "api/v2/mcvqe"])
+
+    return post_json(endpoint_url, dict(key=key, filenames=filenames, N=N, connectivity=connectivity,
+                 backend_name=backend_name, nmeasurement=nmeasurement,
+                 nmeasurement_subspace=nmeasurement_subspace, nstate=nstate,
+                 vqe_circuit_type=vqe_circuit_type))
 
 # VQE call
 
@@ -136,3 +155,4 @@ def find_ground_state_energy(key,
 
     return request.post(host + "/api/v2/find_ground_state_energy",
                         params, 'VQE')
+
