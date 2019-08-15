@@ -30,3 +30,11 @@ def post(api_endpoint_url, param_dictionary, endpoint_type):
         r['solution'] = ast.literal_eval(r['solution'])
 
     return r
+
+def post_json(endpoint_url, param_dictionary):
+    # just a straightforward no-frills JSON call to an endpoint without
+    # any checking, for illustrative purposes
+    data = json.dumps(param_dictionary)
+    response = requests.post(endpoint_url, data=data)
+    result = json.loads(response.text)
+    return result
