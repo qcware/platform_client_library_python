@@ -56,8 +56,14 @@ def convert_solutions(f):
     """
     @wraps(f)
     def decorated(*args, **kwargs):
+        # see solve_binary for ordering of args
+        Q = kwargs["Q"] if "Q" in kwargs else args[1]
         result = f(*args, **kwargs)
-        _recursively_convert_solutions(result)
+        
+        # If the user provides the QUBO in list or array form, don't convert
+        # it to a dictionary!
+        if isinstance(Q, dict):
+            _recursively_convert_solutions(result, Q_type=Q_type)
         return result
 
     return decorated
@@ -65,7 +71,7 @@ def convert_solutions(f):
 
 def _recursively_convert_solutions(result, mapping=None):
     r"""Convert solutions with their enumeration.
-
+    
     The output of the request to `solve_binary` is a dictionary with various
     keys. `mapping` is a `dict` that maps indicies of the solutions lists to
     the keys that the user originally used in their QUBO `dict`. This
