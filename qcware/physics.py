@@ -3,15 +3,15 @@ from .request import post_json
 
 
 def solve_mcvqe(key,
-                 host, 
-                 filenames=None,
-                 N=2, 
-                 connectivity='linear',
-                 backend_name='quasar', 
-                 nmeasurement=None,
-                 nmeasurement_subspace=None, 
-                 nstate=3,
-                 vqe_circuit_type='mark1x'):
+                host,
+                filenames=None,
+                N=2,
+                connectivity='linear',
+                backend_name='quasar',
+                nmeasurement=None,
+                nmeasurement_subspace=None,
+                nstate=3,
+                vqe_circuit_type='mark1x'):
 
     endpoint_url = "/".join([host, "api/v2/mcvqe"])
 
@@ -21,6 +21,7 @@ def solve_mcvqe(key,
                  vqe_circuit_type=vqe_circuit_type))
 
 # VQE call
+
 
 def find_ground_state_energy(key,
                              molecule,
@@ -155,4 +156,3 @@ def find_ground_state_energy(key,
 
     return request.post(host + "/api/v2/find_ground_state_energy",
                         params, 'VQE')
-
