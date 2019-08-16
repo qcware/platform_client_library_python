@@ -103,5 +103,5 @@ def _recursively_convert_solutions(result, mapping=None):
         for k, v in tuple(result.items()):
             if isinstance(v, dict):
                 _recursively_convert_solutions(v, mapping)
-            elif k in ("solution", "all_solutions", "unique_solutions"):
+            elif k in ("solution", "all_solutions", "unique_solutions", "most_common_measurement"):
                 result[k] = _recursively_convert_solutions(v, mapping)
