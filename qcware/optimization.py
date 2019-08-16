@@ -1,5 +1,6 @@
 from . import request
-from qcware.wrappers import print_errors, print_api_mismatch, convert_solutions
+from qcware.wrappers import print_errors, print_api_mismatch
+import numpy as np
 
 
 def mat_to_dict(mat):
@@ -58,10 +59,47 @@ def enumerate_Q(Q):
     return enumerated_Q, reverse_mapping, enumeration_mapping
 
 
+def recursively_convert_solutions(result, mapping):
+    r"""Convert solutions with their enumeration.
+
+    The output of the request to `solve_binary` is a dictionary with various
+    keys. `mapping` is a `dict` that maps indicies of the solutions lists to
+    the keys that the user originally used in their QUBO `dict`. This
+    function recursively goes through the result and converts all solution
+    lists to a dictionary that maps the user's original keys to the correct
+    values. Note that the `result` dictionary is modified in place!
+
+    Args:
+        result (:obj:`dict`): The output of `qcware.optimization.solve_binary`.
+        mapping (:obj:`dict`): Dictionary that maps integer indices used in the QUBO to the user's original inputs.
+            If `mapping is None`, then we just make sure all bits are integers.
+
+    Returns:
+        None. The `result` dictionary is modified in place.
+    """
+    # through recursive calls
+    if isinstance(result, list):
+        try:
+            if mapping:
+                return {mapping[i]: int(v) for i, v in enumerate(result)}
+            else:
+                # if no mapping, just go through and make sure bits are ints, not float!
+                # return in np.array form
+                return np.array([int(v) for v in result])
+        except (KeyError, TypeError):
+            return [recursively_convert_solutions(x, mapping) for x in result]
+
+    elif isinstance(result, dict):
+        for k, v in tuple(result.items()):
+            if isinstance(v, dict):
+                recursively_convert_solutions(v, mapping)
+            elif k in ("solution", "all_solutions", "unique_solutions", "most_common_measurement"):
+                result[k] = recursively_convert_solutions(v, mapping)
+
+
 # Note: this is good for both HOBOs and QUBOs
 @print_api_mismatch
 @print_errors
-@convert_solutions
 def solve_binary(
         key,
         Q,
@@ -482,6 +520,8 @@ def solve_binary(
                                       for k, v in initial_solution.items()}
 
     result = request.post(host + "/api/v2/solve_binary", params, "solve_binary")
-    result['enumeration'] = mapping
+
+    enumeration = mapping if isinstance(Q, dict) else None
+    recursively_convert_solutions(result, enumeration)
 
     return result
