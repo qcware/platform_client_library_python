@@ -47,3 +47,55 @@ def print_api_mismatch(f):
         return result
 
     return decorated
+
+
+def convert_solutions(f):
+    """Maps solution outputs from `solve_binary` to the form that they were inputted.
+
+    See `_recursively_convert_solutions` for more info.
+    """
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        result = f(*args, **kwargs)
+        _recursively_convert_solutions(result)
+        return result
+
+    return decorated
+
+
+def _recursively_convert_solutions(result, mapping=None):
+    r"""Convert solutions with their enumeration.
+
+    The output of the request to `solve_binary` is a dictionary with various
+    keys. `mapping` is a `dict` that maps indicies of the solutions lists to
+    the keys that the user originally used in their QUBO `dict`. This
+    function recursively goes through the result and converts all solution
+    lists to a dictionary that maps the user's original keys to the correct
+    values. Note that the `result` dictionary is modified in place!
+
+    Args:
+        result (:obj:`dict`): The output of `qcware.optimization.solve_binary`.
+        mapping (:obj:`dict`): Dictionary that maps integer indices used in the QUBO to the user's original inputs.
+            If `mapping` is not provided, then we look for a key `enumeration` in `result`.
+
+    Returns:
+        None. The `result` dictionary is modified in place.
+    """
+    if mapping is None:
+        if "enumeration" not in result:
+            return
+        mapping = result["enumeration"]
+
+    # through recursive calls
+    if isinstance(result, list):
+        try:
+            return {mapping[i]: int(v) for i, v in enumerate(result)}
+        except (KeyError, TypeError):
+            return [_recursively_convert_solutions(x, mapping) for x in result]
+
+    elif isinstance(result, dict):
+        for k, v in tuple(result.items()):
+            if isinstance(v, dict):
+                _recursively_convert_solutions(v, mapping)
+            elif k in ("solution", "all_solutions", "unique_solutions"):
+                result[k] = _recursively_convert_solutions(v, mapping)

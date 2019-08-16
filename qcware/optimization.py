@@ -1,5 +1,5 @@
 from . import request
-from qcware.wrappers import print_errors, print_api_mismatch
+from qcware.wrappers import print_errors, print_api_mismatch, convert_solutions
 
 
 def mat_to_dict(mat):
@@ -40,6 +40,7 @@ def enumerate_Q(Q):
     Returns:
         :obj:`dict`: A dictionary representation of :math:`Q` where the keys are ints
         :obj:`dict`: A dictionary mapping those ints to the original key values
+        :obj:`dict`: A dictionary mapping those the original key values to those ints
     """
     enumerated_Q = {}
     enumeration_mapping = {}
@@ -54,12 +55,13 @@ def enumerate_Q(Q):
                 enumeration += 1
             enumerated_key.append(enumeration_mapping[var])
         enumerated_Q[tuple(enumerated_key)] = v
-    return enumerated_Q, reverse_mapping
+    return enumerated_Q, reverse_mapping, enumeration_mapping
 
 
 # Note: this is good for both HOBOs and QUBOs
 @print_api_mismatch
 @print_errors
+@convert_solutions
 def solve_binary(
         key,
         Q,
@@ -385,7 +387,7 @@ def solve_binary(
     """
 
     converted_Q = mat_to_dict(Q) if not isinstance(Q, dict) else Q
-    enumerated_Q, mapping = enumerate_Q(converted_Q)
+    enumerated_Q, mapping, reverse_mapping = enumerate_Q(converted_Q)
 
     params = {
         "key": key,
@@ -474,7 +476,10 @@ def solve_binary(
     if constraints_hard_num is not None:
         params["constraints_hard_num"] = constraints_hard_num
     if initial_solution is not None:
-        params["initial_solution"] = initial_solution
+        if not isinstance(initial_solution, dict):
+            raise ValueError("initial_solution should be a dict")
+        params["initial_solution"] = {reverse_mapping[k]: v
+                                      for k, v in initial_solution.items()}
 
     result = request.post(host + "/api/v2/solve_binary", params, "solve_binary")
     result['enumeration'] = mapping
