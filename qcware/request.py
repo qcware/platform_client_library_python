@@ -31,6 +31,7 @@ def post(api_endpoint_url, param_dictionary, endpoint_type):
 
     return r
 
+
 def post_json(endpoint_url, param_dictionary):
     # just a straightforward no-frills JSON call to an endpoint without
     # any checking, for illustrative purposes
