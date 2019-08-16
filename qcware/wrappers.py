@@ -63,7 +63,7 @@ def convert_solutions(f):
         # If the user provides the QUBO in list or array form, don't convert
         # it to a dictionary!
         if isinstance(Q, dict):
-            _recursively_convert_solutions(result, Q_type=Q_type)
+            _recursively_convert_solutions(result)
         return result
 
     return decorated
