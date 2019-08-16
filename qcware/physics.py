@@ -16,9 +16,9 @@ def solve_mcvqe(key,
     endpoint_url = "/".join([host, "api/v2/mcvqe"])
 
     return post_json(endpoint_url, dict(key=key, filenames=filenames, N=N, connectivity=connectivity,
-                 backend_name=backend_name, nmeasurement=nmeasurement,
-                 nmeasurement_subspace=nmeasurement_subspace, nstate=nstate,
-                 vqe_circuit_type=vqe_circuit_type))
+                     backend_name=backend_name, nmeasurement=nmeasurement,
+                     nmeasurement_subspace=nmeasurement_subspace, nstate=nstate,
+                     vqe_circuit_type=vqe_circuit_type))
 
 # VQE call
 
