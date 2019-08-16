@@ -22,6 +22,7 @@ def solve_mcvqe(key,
 
 # VQE call
 
+
 def find_ground_state_energy(key,
                              molecule,
                              minimizer=None,
@@ -155,4 +156,3 @@ def find_ground_state_energy(key,
 
     return request.post(host + "/api/v2/find_ground_state_energy",
                         params, 'VQE')
-
