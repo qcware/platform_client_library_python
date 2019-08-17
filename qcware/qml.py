@@ -57,7 +57,7 @@ def fit_and_predict(
                 For clf_type = "nearest_clusters", clf_params is the empty dictionary.
 
                 For clf_type = "nearest_neighbors", clf_params is the dictionary {"k": n_neighbors} 
-                    where n_neighbors is the non-zero natural number of nearest neighbours to be computed for each point.
+                    where n_neighbors is the (positive integer) number of nearest neighbours to be computed for each point.
     Returns:
         JSON object: A JSON object, possibly containing the fields:
             * 'labels' (:obj:`list`): A Python list representing the classification labels.
