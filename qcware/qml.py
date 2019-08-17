@@ -24,12 +24,15 @@ def fit_and_predict(
         key (:obj:`str`): An API key for the platform.  Keys can be allocated and managed from the Forge web portal
             website.
 
-        X (:obj:`[[float]]`): Input training vector, with the number of samples and the number of features as the
-            dimensions.
+        X (:obj:`[[float]]`): Training data array of dimension m by n, where m equals the number of samples 
+            and n the number of features. Both m and n are assumed to be powers of two.
 
-        y (:obj:`[int]`): Target values.
+        y (:obj:`[int]`): Target values array of dimension 1 by m, where m is the number of rows in X 
+            (i.e the number of samples in X). For clf_type = "nearest_clusters", it is assumed that each target value
+            has at least two occurences in y.
 
-        T (:obj:`[[float]]`): Test data vectors.
+        T (:obj:`[[float]]`): Test data array of dimension d by n, where d is any positive integer
+            and n equals the number of columns in X  (i.e the number of features in X).
 
         backend (:obj:`string`): Selects the specific backend used to run the computation.
 
@@ -44,7 +47,17 @@ def fit_and_predict(
             Defaults to "nearest_centroids".
 
         clf_params (:obj:`dict`): You can put parameters specific to each classifier here.
+            
+            The structure of clf_params depends on clf_type and is the following:
+                
+                For clf_type = "nearest_centroids", clf_params is {"mode": s} is either the string "exact" or the string "sample".
+                    If mode="sample", then the classifier samples a centroid with probability propotional to the closeness to the test point. 
+                    If mode="exact", then multiple samples are taken in order to choose the nearest centroid with high probability. 
+                
+                For clf_type = "nearest_clusters", clf_params is the empty dictionary.
 
+                For clf_type = "nearest_neighbors", clf_params is the dictionary {"k": n_neighbors} 
+                    where n_neighbors is the non-zero natural number of nearest neighbours to be computed for each point.
     Returns:
         JSON object: A JSON object, possibly containing the fields:
             * 'labels' (:obj:`list`): A Python list representing the classification labels.
