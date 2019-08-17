@@ -25,7 +25,7 @@ def test_qubo():
         solver=solver,
         host=AQUA_HOST)
     print(result)
-    assert isinstance(result.get("solution", None), list)
+    assert isinstance(result.get("solution", None), np.array)
 
 
 if __name__ == "__main__":
