@@ -240,9 +240,9 @@ def solve_binary(
             entry of :math:`Q`) and integer or float values.  In the case of a cubic function, for example, some
             dictionary keys will be 3-tuples of integers, rather than pairs.
 
-            Alternatively, :math:`Q` may be specified as a numpy array, in which case :obj:`mat_to_dict` is called on
+            Alternatively, :math:`Q` may be specified as a numpy array or list, in which case :obj:`mat_to_dict` is called on
             :math:`Q` before sending it to the platform.  Note that that helper function assumes :math:`Q` is symmetric,
-            which may not be true in general.  It is strongly encouraged to format :math:`Q` is a dictionary.
+            which may not be true in general. It is strongly encouraged to format :math:`Q` is a dictionary.
 
         higher_order (:obj:`bool`, optional): Whether the problem being solved has higher order than quadratic.
             Defaults to :obj:`False`.
@@ -397,7 +397,8 @@ def solve_binary(
 
         initial_solution (:obj:`dict`, optional): initial solution seed for constructing the
             blocks using random decomposition. If none is provided, a random solution is
-            initialized. Default value :obj: `None`.
+            initialized. Default value :obj: `None`. `initial_solution` should be the same type
+            as `Q`.
 
         always_update_with_best (:obj:`bool`, optional):  solutions found using decomposition
             do not monotonically get better with each iterations. The best solution is always returned,
@@ -522,10 +523,18 @@ def solve_binary(
     if constraints_hard_num is not None:
         params["constraints_hard_num"] = constraints_hard_num
     if initial_solution is not None:
-        if not isinstance(initial_solution, dict):
-            raise ValueError("initial_solution should be a dict")
-        params["initial_solution"] = {reverse_mapping[k]: v
-                                      for k, v in initial_solution.items()}
+        if isinstance(Q, dict):
+            if not isinstance(initial_solution, dict):
+                raise ValueError("initial_solution should be a dict")
+            params["initial_solution"] = {reverse_mapping[k]: v
+                                          for k, v in initial_solution.items()}
+        elif isinstance(Q, (list, np.ndarray)):
+            if not isinstance(initial_solution, (list, np.ndarray)):
+                raise ValueError("initial_solution should be a list or np.array")
+            params["initial_solution"] = {reverse_mapping[k]: v
+                                          for k, v in enumerate(initial_solution)}
+        else:
+            raise ValueError("Q formatted incorrectly")
 
     result = request.post(host + "/api/v2/solve_binary", params, "solve_binary")
 
