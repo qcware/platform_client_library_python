@@ -112,7 +112,7 @@ def solve_binary(
         key,
         Q,
         higher_order=False,
-        solver="dwave_software",
+        solver="dwave_hybrid",
         constraints_linear_A=[],
         constraints_linear_b=[],
         constraints_sat_max_runs=3100,
