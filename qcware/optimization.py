@@ -318,7 +318,7 @@ def solve_binary(
 
         dwave_anneal_offsets (:obj:`[float]`, optional): D-Wave hardware system parameter. See `anneal_offsets <https://docs.dwavesys.com/docs/latest/c_solver_1.html#anneal-offsets>`_.
 
-        dwave_anneal_offsets_delta: (:obj:`float`, optional): Parameter in [0, 1] that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. See `<https://arxiv.org/pdf/1806.11091.pdf>`_.
+        dwave_anneal_offsets_delta: (:obj:`float`, optional): Parameter greater or equal to 0 that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. We recommend the value to be in [0, 0.05]. See `<https://arxiv.org/pdf/1806.11091.pdf>`_.
 
         dwave_num_reads (:obj:`int`, optional): D-Wave hardware system parameter. See `num_reads <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-reads>`_.
 
