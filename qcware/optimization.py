@@ -27,7 +27,7 @@ class SolverWarning(SolveBinaryWarning):
 
 
 def _warnings(params):
-    r"""Warn user about their inputs. 
+    r"""Warn user about their inputs.
 
     Args:
         params (:obj:`dict`): the input parameters to `solve_binary`.
@@ -44,7 +44,7 @@ def _warnings(params):
     # Warn about parameters not being used
     if "dwave_anneal_offsets" in params and "dwave_anneal_offsets_delta" in params:
         SolveBinaryWarning.warn("`dwave_anneal_offsets` and `dwave_anneal_offsets_delta` "
-                                 "are not both used in the same call.")
+                                "are not both used in the same call.")
 
     # TODO: more warnings. ie any inconsistencies that the user provides, etc.
 
