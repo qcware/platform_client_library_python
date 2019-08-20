@@ -579,14 +579,14 @@ def qubo_to_ising(Q, offset=0):
             for a in (i, j):
                 val = h.get(a, 0) + v / 4
                 if val:
-                     h[a] = val
+                    h[a] = val
                 else:
-                     h.pop(a, 0)
+                    h.pop(a, 0)
 
             offset += v / 4
 
         else:
-            
+
             val = h.get(i, 0) + v / 2
             if val:
                 h[i] = val
