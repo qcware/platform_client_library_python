@@ -266,8 +266,6 @@ def solve_binary(
     +------------+----------------------------------------+
     | 11         | D-Wave hardware solver returned error. |
     +------------+----------------------------------------+
-    | 12         | D-Wave software solver returned error. |
-    +------------+----------------------------------------+
     | 100        | Invalid solver selected.               |
     +------------+----------------------------------------+
 
@@ -296,7 +294,6 @@ def solve_binary(
         solver (:obj:`str`, optional): The name of the solver to use for the given problem.  Valid values are:
 
             * "dwave_hw": Run on a physical D-Wave machine
-            * "dwave_sw": Run on D-Wave's software simulator (requires additional permissions)
             * "brute_force": Run using a brute force algorithm
             * "hfs": Run using the Hamze-de Freitas-Selby algorithm
             * "google_sw_qaoa": Run using the Google simulator implementation of the QAOA algorithm
@@ -460,8 +457,10 @@ def solve_binary(
 
     Returns:
         JSON object: A JSON object, possibly containing the fields:
-            * 'solution' (:obj:`list`): A Python list representing the solution vector.  If :obj:`return_all_solutions`
-              is :obj:`True`, this is a list of lists.
+            * 'solution' (:obj:`dict`): A Python dictionary representing the solution vector.  If :obj:`return_all_solutions`
+              is :obj:`True`, this is a list of dicts. However, if the input :obj:`Q` is a 2D numpy array, then each :obj`solution` will
+              be a 1D numpy array; if the input :obj:`Q` is a list of lists, then each :obj`solution` will also be a list. :obj`solution`
+              maps variables labels to their binary values, thus :obj`solution[i]` is the value of the :obj`i`th binary variable.
             * 'num_runs' (:obj:`int`): How many total runs of the chosen solver were performed in order to produce the
               returned solution.
             * 'num_qubits' (:obj:`int`): How many physical qubits (or simulated qubits, in the case of a software
