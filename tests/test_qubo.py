@@ -15,7 +15,16 @@ def test_qubo():
         Q,
         solver=solver,
         host=AQUA_HOST)
-    print(result)
+    # print(result)
+
+
+def test_solve_binary_output_type():
+    qs = {(0, 0): 1, (0, 1): -2}, [[1, -2], [0, 0]], np.array([[1, -2], [0, 0]])
+    for Q in qs:
+        result = qcware.optimization.solve_binary(
+            AQUA_KEY, Q, solver=solver, host=AQUA_HOST)
+        assert isinstance(result.get("solution", 0), type(Q))
+
 
 
 if __name__ == "__main__":
