@@ -593,7 +593,7 @@ def solve_binary(
     return result
 
 
-##### Utilities ###### noqa
+# Utilities
 
 def qubo_to_ising(Q, offset=0):
     r"""Convert the specified QUBO problem into an Ising problem.
