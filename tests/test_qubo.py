@@ -28,3 +28,4 @@ def test_solve_binary_output_type():
 
 if __name__ == "__main__":
     test_qubo()
+    test_solve_binary_output_type()
