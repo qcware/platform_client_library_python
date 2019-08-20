@@ -542,3 +542,80 @@ def solve_binary(
     result['enumeration'] = mapping
 
     return result
+
+
+def qubo_to_ising(Q, offset=0):
+    r"""Convert the specified QUBO problem into an Ising problem. 
+    Note that QUBO {0, 1} values go to Ising {-1, 1} values in that order!
+
+    Args:
+        Q (:obj:`dict`): QUBO dictionary.
+            Maps tuples of binary variables indices to the Q value.
+        offset (:obj:`float`, optional): defaults to 0.
+                 The part of the objective function that does not depend on the
+                 variables.
+
+    Returns:
+        result (:object:`tuple`): (h, J, offset).
+            h (:obj:`dict`): Field values.
+                The field of each spin in the Ising formulation.
+                ``h[i]`` is the field value for the ith spin.
+            J (:obj:`dict`): Coupling values.
+                ``J[(i, j)]`` is the coupling between the ith and jth spin.
+            offset : float.
+                It is the sum of the terms in the formulation that don't involve any variables.
+    """
+    h, J = {}, {}
+
+    for (i, j), v in Q.items():
+        if i != j:
+            J[(i, j)] = J.get((i, j), 0) + v / 4
+            h[i] = h.get(i, 0) + v / 4
+            h[j] = h.get(j, 0) + v / 4
+            offset += v / 4
+        else:
+            h[i] = h.get(i, 0) + v / 2
+            offset += v / 2
+
+    return h, J, offset
+
+
+def ising_to_qubo(h, J, offset=0):
+    """Convert the specified Ising problem into a QUBO problem.
+    Note that Ising {-1, 1} values go to QUBO {0, 1} values in that order!
+
+    Args:
+        h (:obj:`dict`): Field dictionary.
+            Maps spin indices to the field value.
+        J (:obj:`dict`): Coupling dictionary.
+            Maps tuples of spin indices to the coupling value. Note
+            that J cannot have a key that has a repeated index, ie (1, 1) is an
+            invalid key.
+        offset : float (optional, defaults to 0).
+            The part of the objective function that does not depend on the
+            variables.
+
+    Return:
+        result (:obj:`tuple`): (Q, offset).
+        Q (:obj:`dict`): QUBO dictionary.
+            Maps tuples of binary variables indices to the Q value.
+        offset (:obj:`float`, optional): defaults to 0.
+                 The part of the objective function that does not depend on the
+                 variables.
+    """
+    Q = {}
+
+    for (i, j), v in J.items():
+        if i == j:
+            raise KeyError("J formatted incorrectly, key cannot "
+                           "have repeated indices")
+        Q[(i, j)] = Q.get((i, j), 0) + 4 * v
+        Q[(i, i)] = Q.get((i, i), 0) - 2 * v
+        Q[(j, j)] = Q.get((j, j), 0) - 2 * v
+        offset += v
+
+    for i, v in h.items():
+        Q[(i, i)] = Q.get((i, i), 0) + 2 * v
+        offset -= v
+
+    return Q, offset
