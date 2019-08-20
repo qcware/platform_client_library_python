@@ -21,6 +21,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 project = 'qcware'
 copyright = '2019, QC Ware Corp.'
 author = 'Bryan E. Burr (bryan@qcware.com)'
+master_doc = 'index'
 
 
 # -- General configuration ---------------------------------------------------
