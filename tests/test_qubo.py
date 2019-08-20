@@ -26,6 +26,5 @@ def test_solve_binary_output_type():
         assert isinstance(result.get("solution", 0), type(Q))
 
 
-
 if __name__ == "__main__":
     test_qubo()
