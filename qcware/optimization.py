@@ -1,6 +1,52 @@
 from . import request
 from qcware.wrappers import print_errors, print_api_mismatch
 import numpy as np
+import warnings
+
+
+class SolveBinaryWarning(UserWarning):
+    r"""Warning type for warnings from `qcware.optimization.solve_binary`.
+
+    Initiate warning with `SolveBinaryWarning.warn("message")`.
+    """
+    @classmethod
+    def warn(cls, message):
+        r"""Warn with cls at a default level.
+
+        Args:
+            message (:obj:`str`): message to show with the warning.
+        """
+        warnings.warn(message, cls, 2)
+
+
+class SolverWarning(SolveBinaryWarning):
+    r"""Warning type for solver related warnings in `qcware.optimization.solve_binary`.
+
+    Initiate warning with `SolverWarning.warn("message")`.
+    """
+
+
+def _warnings(params):
+    r"""Warn user about their inputs. 
+
+    Args:
+        params (:obj:`dict`): the input parameters to `solve_binary`.
+
+    Returns:
+        None
+    """
+
+    # Warn about long computation times
+    if params["solver"] == "ibm_hw_qaoa":
+        SolverWarning.warn("Running QAOA on IBM hardware will be a very long "
+                           "computation! Be prepared to wait hours for an output.")
+
+    # Warn about parameters not being used
+    if "dwave_anneal_offsets" in params and "dwave_anneal_offsets_delta" in params:
+        SolveBinaryWarning.warn("`dwave_anneal_offsets` and `dwave_anneal_offsets_delta` "
+                                 "are not both used in the same call.")
+
+    # TODO: more warnings. ie any inconsistencies that the user provides, etc.
 
 
 def mat_to_dict(mat):
@@ -112,7 +158,7 @@ def solve_binary(
         key,
         Q,
         higher_order=False,
-        solver="dwave_hybrid",
+        solver="dwave_hw",
         constraints_linear_A=[],
         constraints_linear_b=[],
         constraints_sat_max_runs=3100,
@@ -249,16 +295,16 @@ def solve_binary(
 
         solver (:obj:`str`, optional): The name of the solver to use for the given problem.  Valid values are:
 
-            * "dwave_hardware": Run on a physical D-Wave machine
-            * "dwave_software": Run on D-Wave's software simulator (requires additional permissions)
+            * "dwave_hw": Run on a physical D-Wave machine
+            * "dwave_sw": Run on D-Wave's software simulator (requires additional permissions)
             * "brute_force": Run using a brute force algorithm
             * "hfs": Run using the Hamze-de Freitas-Selby algorithm
-            * "google_qaoa": Run using the Google simulator implementation of the QAOA algorithm
+            * "google_sw_qaoa": Run using the Google simulator implementation of the QAOA algorithm
             * "ibm_hw_qaoa": Run the QAOA algorithm on a physical IBM machine, this may take over 2 hours for even small problems!
             * "ibm_sw_qaoa": Run the QAOA algorithm on IBM's software simulator of the QAOA algorithm
 
 
-            Note that only certain solvers may be enabled depending on your account.  Default value "dwave_software".
+            Note that only certain solvers may be enabled depending on your account.  Default value "dwave_hw".
 
         constraints_linear_A (:obj:`list`, optional): The :math:`A` matrix for specifying linear constraints.  :math:`A`
             should be formatted as a two-dimensional Python list.  Default value :obj:`[]`.
@@ -536,6 +582,9 @@ def solve_binary(
         else:
             raise ValueError("Q formatted incorrectly")
 
+    # warn user about their inputs
+    _warnings(params)
+
     result = request.post(host + "/api/v2/solve_binary", params, "solve_binary")
 
     _recursively_convert_solutions(result, mapping, Q)
@@ -551,17 +600,18 @@ def qubo_to_ising(Q, offset=0):
     Args:
         Q (:obj:`dict`): QUBO dictionary.
             Maps tuples of binary variables indices to the Q value.
+            ie `Q[(i, j)]` is the `(i, j)` QUBO value.
         offset (:obj:`float`, optional): defaults to 0.
-                 The part of the objective function that does not depend on the
-                 variables.
+            The part of the objective function that does not depend on the
+            variables.
 
     Returns:
         result (:object:`tuple`): (h, J, offset).
             h (:obj:`dict`): Field values.
                 The field of each spin in the Ising formulation.
-                ``h[i]`` is the field value for the ith spin.
+                `h[i]` is the field value for the ith spin.
             J (:obj:`dict`): Coupling values.
-                ``J[(i, j)]`` is the coupling between the ith and jth spin.
+                `J[(i, j)]` is the coupling between the ith and jth spin.
             offset : float.
                 It is the sum of the terms in the formulation that don't involve any variables.
     """
@@ -570,30 +620,30 @@ def qubo_to_ising(Q, offset=0):
     for (i, j), v in Q.items():
         if i != j:
 
-            val = J.get((i, j), 0) + v / 4
+            val = J.get((i, j), 0) + v / 4.
             if val:
                 J[(i, j)] = val
             else:
                 J.pop((i, j), 0)
 
             for a in (i, j):
-                val = h.get(a, 0) + v / 4
+                val = h.get(a, 0) + v / 4.
                 if val:
                     h[a] = val
                 else:
                     h.pop(a, 0)
 
-            offset += v / 4
+            offset += v / 4.
 
         else:
 
-            val = h.get(i, 0) + v / 2
+            val = h.get(i, 0) + v / 2.
             if val:
                 h[i] = val
             else:
                 h.pop(i, 0)
 
-            offset += v / 2
+            offset += v / 2.
 
     return h, J, offset
 
@@ -603,23 +653,24 @@ def ising_to_qubo(h, J, offset=0):
     Note that Ising {-1, 1} values go to QUBO {0, 1} values in that order!
 
     Args:
-        h (:obj:`dict`): Field dictionary.
-            Maps spin indices to the field value.
-        J (:obj:`dict`): Coupling dictionary.
-            Maps tuples of spin indices to the coupling value. Note
-            that J cannot have a key that has a repeated index, ie (1, 1) is an
+        h (:obj:`dict`): Field values.
+            The field of each spin in the Ising formulation.
+            `h[i]` is the field value for the ith spin.
+        J (:obj:`dict`): Coupling values.
+            `J[(i, j)]` is the coupling between the ith and jth spin. Note
+            that `J` cannot have a key that has a repeated index, ie `(1, 1)` is an
             invalid key.
-        offset : float (optional, defaults to 0).
-            The part of the objective function that does not depend on the
-            variables.
+        offset (:obj:`float`, optional): Defaults to 0.
+            It is the sum of the terms in the formulation that don't involve any variables.
 
     Return:
         result (:obj:`tuple`): (Q, offset).
         Q (:obj:`dict`): QUBO dictionary.
             Maps tuples of binary variables indices to the Q value.
-        offset (:obj:`float`, optional): defaults to 0.
-                 The part of the objective function that does not depend on the
-                 variables.
+            ie `Q[(i, j)]` is the `(i, j)` QUBO value.
+        offset (:obj:`float`): Numeric.
+            The part of the objective function that does not depend on the
+            variables.
     """
     Q = {}
 
@@ -627,14 +678,14 @@ def ising_to_qubo(h, J, offset=0):
         if i == j:
             raise KeyError("J formatted incorrectly, key cannot "
                            "have repeated indices")
-        val = Q.get((i, j), 0) + 4 * v
+        val = Q.get((i, j), 0) + 4. * v
         if val:
             Q[(i, j)] = val
         else:
             Q.pop((i, j), 0)
 
         for a in (i, j):
-            val = Q.get((a, a), 0) - 2 * v
+            val = Q.get((a, a), 0) - 2. * v
             if val:
                 Q[(a, a)] = val
             else:
@@ -643,7 +694,7 @@ def ising_to_qubo(h, J, offset=0):
         offset += v
 
     for i, v in h.items():
-        val = Q.get((i, i), 0) + 2 * v
+        val = Q.get((i, i), 0) + 2. * v
         if val:
             Q[(i, i)] = val
         else:
