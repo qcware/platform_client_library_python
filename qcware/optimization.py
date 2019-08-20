@@ -545,7 +545,7 @@ def solve_binary(
 
 
 def qubo_to_ising(Q, offset=0):
-    r"""Convert the specified QUBO problem into an Ising problem. 
+    r"""Convert the specified QUBO problem into an Ising problem.
     Note that QUBO {0, 1} values go to Ising {-1, 1} values in that order!
 
     Args:
