@@ -569,12 +569,30 @@ def qubo_to_ising(Q, offset=0):
 
     for (i, j), v in Q.items():
         if i != j:
-            J[(i, j)] = J.get((i, j), 0) + v / 4
-            h[i] = h.get(i, 0) + v / 4
-            h[j] = h.get(j, 0) + v / 4
+
+            val = J.get((i, j), 0) + v / 4
+            if val:
+                J[(i, j)] = val
+            else:
+                J.pop((i, j), 0)
+
+            for a in (i, j):
+                val = h.get(a, 0) + v / 4
+                if val:
+                     h[a] = val
+                else:
+                     h.pop(a, 0)
+
             offset += v / 4
+
         else:
-            h[i] = h.get(i, 0) + v / 2
+            
+            val = h.get(i, 0) + v / 2
+            if val:
+                h[i] = val
+            else:
+                h.pop(i, 0)
+
             offset += v / 2
 
     return h, J, offset
@@ -609,13 +627,28 @@ def ising_to_qubo(h, J, offset=0):
         if i == j:
             raise KeyError("J formatted incorrectly, key cannot "
                            "have repeated indices")
-        Q[(i, j)] = Q.get((i, j), 0) + 4 * v
-        Q[(i, i)] = Q.get((i, i), 0) - 2 * v
-        Q[(j, j)] = Q.get((j, j), 0) - 2 * v
+        val = Q.get((i, j), 0) + 4 * v
+        if val:
+            Q[(i, j)] = val
+        else:
+            Q.pop((i, j), 0)
+
+        for a in (i, j):
+            val = Q.get((a, a), 0) - 2 * v
+            if val:
+                Q[(a, a)] = val
+            else:
+                Q.pop((a, a), 0)
+
         offset += v
 
     for i, v in h.items():
-        Q[(i, i)] = Q.get((i, i), 0) + 2 * v
+        val = Q.get((i, i), 0) + 2 * v
+        if val:
+            Q[(i, i)] = val
+        else:
+            Q.pop((i, i), 0)
+
         offset -= v
 
     return Q, offset
