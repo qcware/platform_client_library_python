@@ -593,6 +593,8 @@ def solve_binary(
     return result
 
 
+##### Utilities ###### noqa
+
 def qubo_to_ising(Q, offset=0):
     r"""Convert the specified QUBO problem into an Ising problem.
     Note that QUBO {0, 1} values go to Ising {-1, 1} values in that order!
@@ -703,3 +705,47 @@ def ising_to_qubo(h, J, offset=0):
         offset -= v
 
     return Q, offset
+
+
+def qubo_value(x, Q, offset=0):
+    r"""Find the value of the QUBO objective function for a given bit string.
+
+    Args:
+        x (:obj:`dict` or :obj:`iterable`): Bit string.
+            Maps binary variable indices to their binary values, 0 or 1. Ie
+            `x[i]` must be the binary value of variable i.
+        Q (:obj:`dict`): QUBO dictionary.
+            Maps tuples of binary variables indices to the Q value.
+        offset (:obj:`float`, optional): Defaults to 0.
+            The part of the objective function that does not depend on the
+            variables.
+
+    Return:
+        value (:obj:`float`): The value of the QUBO with the given assignment `x`.
+    """
+    return sum(v * x[i] * x[j] for (i, j), v in Q.items()) + offset
+
+
+def ising_value(z, h, J, offset=0):
+    r"""Find the value of the Ising objective function for a given spin configuration.
+
+    Args:
+        z (:obj:`dict` or :obj:`iterable`): spin configuration.
+            Maps variable labels to their values, -1 or 1. Ie `z[i]` must be the
+            value of variable i.
+        J (:obj:`dict`): Coupling dictionary.
+            Maps pairs of variables labels to the J value.
+        h (:obj:`dict`): Field dictionary.
+            Maps variable names to their field value.
+        offset (:obj:`float`, optional): Defaults to 0.
+            The part of the objective function that does not depend on the
+            variables.
+
+    Return:
+        value (:obj:`float`): The value of the Ising with the given assignment `z`.
+    """
+    return sum(
+        v * z[i] * z[j] for (i, j), v in J.items()
+    ) + sum(
+        v * z[i] for i, v in h.items()
+    ) + offset
