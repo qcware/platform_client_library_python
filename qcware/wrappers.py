@@ -47,3 +47,23 @@ def print_api_mismatch(f):
         return result
 
     return decorated
+
+
+def convert_solutions(f):
+    """Maps solution outputs from `solve_binary` to the form that they were inputted.
+
+    See `_recursively_convert_solutions` for more info.
+    """
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        # see solve_binary for ordering of args
+        Q = kwargs["Q"] if "Q" in kwargs else args[1]
+        result = f(*args, **kwargs)
+
+        # If the user provides the QUBO in list or array form, don't convert
+        # it to a dictionary!
+        if isinstance(Q, dict):
+            _recursively_convert_solutions(result)
+        return result
+
+    return decorated

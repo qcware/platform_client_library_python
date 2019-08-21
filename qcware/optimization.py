@@ -1,5 +1,52 @@
 from . import request
 from qcware.wrappers import print_errors, print_api_mismatch
+import numpy as np
+import warnings
+
+
+class SolveBinaryWarning(UserWarning):
+    r"""Warning type for warnings from `qcware.optimization.solve_binary`.
+
+    Initiate warning with `SolveBinaryWarning.warn("message")`.
+    """
+    @classmethod
+    def warn(cls, message):
+        r"""Warn with cls at a default level.
+
+        Args:
+            message (:obj:`str`): message to show with the warning.
+        """
+        warnings.warn(message, cls, 2)
+
+
+class SolverWarning(SolveBinaryWarning):
+    r"""Warning type for solver related warnings in `qcware.optimization.solve_binary`.
+
+    Initiate warning with `SolverWarning.warn("message")`.
+    """
+
+
+def _warnings(params):
+    r"""Warn user about their inputs.
+
+    Args:
+        params (:obj:`dict`): the input parameters to `solve_binary`.
+
+    Returns:
+        None
+    """
+
+    # Warn about long computation times
+    if params["solver"] == "ibm_hw_qaoa":
+        SolverWarning.warn("Running QAOA on IBM hardware will be a very long "
+                           "computation! Be prepared to wait hours for an output.")
+
+    # Warn about parameters not being used
+    if "dwave_anneal_offsets" in params and "dwave_anneal_offsets_delta" in params:
+        SolveBinaryWarning.warn("`dwave_anneal_offsets` and `dwave_anneal_offsets_delta` "
+                                "are not both used in the same call.")
+
+    # TODO: more warnings. ie any inconsistencies that the user provides, etc.
 
 
 def mat_to_dict(mat):
@@ -16,6 +63,9 @@ def mat_to_dict(mat):
     Returns:
         :obj:`dict`: A dictionary representation of :math:`Q` that can be sent to the platform.
     """
+    if isinstance(mat, list):
+        mat = np.array(mat)
+
     the_dict = {}
     for i in range(mat.shape[0]):
         for j in range(mat.shape[1]):
@@ -40,6 +90,7 @@ def enumerate_Q(Q):
     Returns:
         :obj:`dict`: A dictionary representation of :math:`Q` where the keys are ints
         :obj:`dict`: A dictionary mapping those ints to the original key values
+        :obj:`dict`: A dictionary mapping those the original key values to those ints
     """
     enumerated_Q = {}
     enumeration_mapping = {}
@@ -54,7 +105,50 @@ def enumerate_Q(Q):
                 enumeration += 1
             enumerated_key.append(enumeration_mapping[var])
         enumerated_Q[tuple(enumerated_key)] = v
-    return enumerated_Q, reverse_mapping
+    return enumerated_Q, reverse_mapping, enumeration_mapping
+
+
+_solution_keys = {"solution", "all_solutions", "unique_solutions", "most_common_measurement"}
+
+
+def _recursively_convert_solutions(result, mapping, Q):
+    r"""Convert solutions with their enumeration.
+
+    The output of the request to `solve_binary` is a dictionary with various
+    keys. `mapping` is a `dict` that maps indicies of the solutions lists to
+    the keys that the user originally used in their QUBO `dict`. This
+    function recursively goes through the result and converts all solution
+    lists to a dictionary that maps the user's original keys to the correct
+    values. Note that the `result` dictionary is modified in place!
+
+    Args:
+        result (:obj:`dict`): The output of `qcware.optimization.solve_binary`.
+        mapping (:obj:`dict`): Dictionary that maps integer indices used in the QUBO to the user's original inputs.
+        Q (:obj:`dict`,:obj:`list`,or :obj:`np.array`): QUBO dictionary.
+
+    Returns:
+        None. The `result` dictionary is modified in place.
+    """
+    # through recursive calls
+    if isinstance(result, list):
+        try:
+            if isinstance(Q, dict):
+                return {mapping[i]: int(v) for i, v in enumerate(result)}
+            elif isinstance(Q, np.ndarray):
+                return np.array([int(v) for v in result])
+            elif isinstance(Q, list):
+                return [int(v) for v in result]
+            else:
+                raise ValueError("Invalid Q type")
+        except (KeyError, TypeError):
+            return [_recursively_convert_solutions(x, mapping, Q) for x in result]
+
+    elif isinstance(result, dict):
+        for k, v in tuple(result.items()):
+            if isinstance(v, dict):
+                _recursively_convert_solutions(v, mapping, Q)
+            elif k in _solution_keys:
+                result[k] = _recursively_convert_solutions(v, mapping, Q)
 
 
 # Note: this is good for both HOBOs and QUBOs
@@ -63,8 +157,7 @@ def enumerate_Q(Q):
 def solve_binary(
         key,
         Q,
-        higher_order=False,
-        solver="dwave_software",
+        solver="dwave_hw",
         constraints_linear_A=[],
         constraints_linear_b=[],
         constraints_sat_max_runs=3100,
@@ -118,7 +211,7 @@ def solve_binary(
         initial_solution=None,
         always_update_with_best=True,
         update_q_each_block_solution=True,
-        host="https://platform.qcware.com",
+        host="https://forge.qcware.com",
         ):
     r"""Solve a binary optimization problem using one of the solvers provided by the platform.
 
@@ -172,8 +265,6 @@ def solve_binary(
     +------------+----------------------------------------+
     | 11         | D-Wave hardware solver returned error. |
     +------------+----------------------------------------+
-    | 12         | D-Wave software solver returned error. |
-    +------------+----------------------------------------+
     | 100        | Invalid solver selected.               |
     +------------+----------------------------------------+
 
@@ -192,25 +283,21 @@ def solve_binary(
             entry of :math:`Q`) and integer or float values.  In the case of a cubic function, for example, some
             dictionary keys will be 3-tuples of integers, rather than pairs.
 
-            Alternatively, :math:`Q` may be specified as a numpy array, in which case :obj:`mat_to_dict` is called on
+            Alternatively, :math:`Q` may be specified as a numpy array or list, in which case :obj:`mat_to_dict` is called on
             :math:`Q` before sending it to the platform.  Note that that helper function assumes :math:`Q` is symmetric,
-            which may not be true in general.  It is strongly encouraged to format :math:`Q` is a dictionary.
-
-        higher_order (:obj:`bool`, optional): Whether the problem being solved has higher order than quadratic.
-            Defaults to :obj:`False`.
+            which may not be true in general. It is strongly encouraged to format :math:`Q` is a dictionary.
 
         solver (:obj:`str`, optional): The name of the solver to use for the given problem.  Valid values are:
 
-            * "dwave_hardware": Run on a physical D-Wave machine
-            * "dwave_software": Run on D-Wave's software simulator (requires additional permissions)
+            * "dwave_hw": Run on a physical D-Wave machine
             * "brute_force": Run using a brute force algorithm
             * "hfs": Run using the Hamze-de Freitas-Selby algorithm
-            * "google_qaoa": Run using the Google simulator implementation of the QAOA algorithm
+            * "google_sw_qaoa": Run using the Google simulator implementation of the QAOA algorithm
             * "ibm_hw_qaoa": Run the QAOA algorithm on a physical IBM machine, this may take over 2 hours for even small problems!
             * "ibm_sw_qaoa": Run the QAOA algorithm on IBM's software simulator of the QAOA algorithm
 
 
-            Note that only certain solvers may be enabled depending on your account.  Default value "dwave_software".
+            Note that only certain solvers may be enabled depending on your account.  Default value "dwave_hw".
 
         constraints_linear_A (:obj:`list`, optional): The :math:`A` matrix for specifying linear constraints.  :math:`A`
             should be formatted as a two-dimensional Python list.  Default value :obj:`[]`.
@@ -270,7 +357,7 @@ def solve_binary(
 
         dwave_anneal_offsets (:obj:`[float]`, optional): D-Wave hardware system parameter. See `anneal_offsets <https://docs.dwavesys.com/docs/latest/c_solver_1.html#anneal-offsets>`_.
 
-        dwave_anneal_offsets_delta: (:obj:`float`, optional): Parameter in [0, 1] that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. See `<https://arxiv.org/pdf/1806.11091.pdf>`_.
+        dwave_anneal_offsets_delta: (:obj:`float`, optional): Parameter greater or equal to 0 that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. We recommend the value to be in [0, 0.05]. See `<https://arxiv.org/pdf/1806.11091.pdf>`_.
 
         dwave_num_reads (:obj:`int`, optional): D-Wave hardware system parameter. See `num_reads <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-reads>`_.
 
@@ -349,7 +436,8 @@ def solve_binary(
 
         initial_solution (:obj:`dict`, optional): initial solution seed for constructing the
             blocks using random decomposition. If none is provided, a random solution is
-            initialized. Default value :obj: `None`.
+            initialized. Default value :obj: `None`. `initial_solution` should be the same type
+            as `Q`.
 
         always_update_with_best (:obj:`bool`, optional):  solutions found using decomposition
             do not monotonically get better with each iterations. The best solution is always returned,
@@ -365,8 +453,10 @@ def solve_binary(
 
     Returns:
         JSON object: A JSON object, possibly containing the fields:
-            * 'solution' (:obj:`list`): A Python list representing the solution vector.  If :obj:`return_all_solutions`
-              is :obj:`True`, this is a list of lists.
+            * 'solution' (:obj:`dict`): A Python dictionary representing the solution vector.  If :obj:`return_all_solutions`
+              is :obj:`True`, this is a list of dicts. However, if the input :obj:`Q` is a 2D numpy array, then each :obj`solution` will
+              be a 1D numpy array; if the input :obj:`Q` is a list of lists, then each :obj`solution` will also be a list. :obj`solution`
+              maps variables labels to their binary values, thus :obj`solution[i]` is the value of the :obj`i`th binary variable.
             * 'num_runs' (:obj:`int`): How many total runs of the chosen solver were performed in order to produce the
               returned solution.
             * 'num_qubits' (:obj:`int`): How many physical qubits (or simulated qubits, in the case of a software
@@ -385,12 +475,12 @@ def solve_binary(
     """
 
     converted_Q = mat_to_dict(Q) if not isinstance(Q, dict) else Q
-    enumerated_Q, mapping = enumerate_Q(converted_Q)
+    enumerated_Q, mapping, reverse_mapping = enumerate_Q(converted_Q)
 
     params = {
         "key": key,
         "Q": enumerated_Q,
-        "higher_order": higher_order,
+        "higher_order": False,
         "solver": solver,
         "constraints_linear_A": constraints_linear_A,
         "constraints_linear_b": constraints_linear_b,
@@ -474,9 +564,183 @@ def solve_binary(
     if constraints_hard_num is not None:
         params["constraints_hard_num"] = constraints_hard_num
     if initial_solution is not None:
-        params["initial_solution"] = initial_solution
+        if isinstance(Q, dict):
+            if not isinstance(initial_solution, dict):
+                raise ValueError("initial_solution should be a dict")
+            params["initial_solution"] = {reverse_mapping[k]: v
+                                          for k, v in initial_solution.items()}
+        elif isinstance(Q, (list, np.ndarray)):
+            if not isinstance(initial_solution, (list, np.ndarray)):
+                raise ValueError("initial_solution should be a list or np.array")
+            params["initial_solution"] = {reverse_mapping[k]: v
+                                          for k, v in enumerate(initial_solution)}
+        else:
+            raise ValueError("Q formatted incorrectly")
+
+    # warn user about their inputs
+    _warnings(params)
 
     result = request.post(host + "/api/v2/solve_binary", params, "solve_binary")
+
+    _recursively_convert_solutions(result, mapping, Q)
     result['enumeration'] = mapping
 
     return result
+
+
+# Utilities
+
+def qubo_to_ising(Q, offset=0):
+    r"""Convert the specified QUBO problem into an Ising problem.
+    Note that QUBO {0, 1} values go to Ising {-1, 1} values in that order!
+
+    Args:
+        Q (:obj:`dict`): QUBO dictionary.
+            Maps tuples of binary variables indices to the Q value.
+            ie `Q[(i, j)]` is the `(i, j)` QUBO value.
+        offset (:obj:`float`, optional): defaults to 0.
+            The part of the objective function that does not depend on the
+            variables.
+
+    Returns:
+        result (:object:`tuple`): (h, J, offset).
+            h (:obj:`dict`): Field values.
+                The field of each spin in the Ising formulation.
+                `h[i]` is the field value for the ith spin.
+            J (:obj:`dict`): Coupling values.
+                `J[(i, j)]` is the coupling between the ith and jth spin.
+            offset : float.
+                It is the sum of the terms in the formulation that don't involve any variables.
+    """
+    h, J = {}, {}
+
+    for (i, j), v in Q.items():
+        if i != j:
+
+            val = J.get((i, j), 0) + v / 4.
+            if val:
+                J[(i, j)] = val
+            else:
+                J.pop((i, j), 0)
+
+            for a in (i, j):
+                val = h.get(a, 0) + v / 4.
+                if val:
+                    h[a] = val
+                else:
+                    h.pop(a, 0)
+
+            offset += v / 4.
+
+        else:
+
+            val = h.get(i, 0) + v / 2.
+            if val:
+                h[i] = val
+            else:
+                h.pop(i, 0)
+
+            offset += v / 2.
+
+    return h, J, offset
+
+
+def ising_to_qubo(h, J, offset=0):
+    """Convert the specified Ising problem into a QUBO problem.
+    Note that Ising {-1, 1} values go to QUBO {0, 1} values in that order!
+
+    Args:
+        h (:obj:`dict`): Field values.
+            The field of each spin in the Ising formulation.
+            `h[i]` is the field value for the ith spin.
+        J (:obj:`dict`): Coupling values.
+            `J[(i, j)]` is the coupling between the ith and jth spin. Note
+            that `J` cannot have a key that has a repeated index, ie `(1, 1)` is an
+            invalid key.
+        offset (:obj:`float`, optional): Defaults to 0.
+            It is the sum of the terms in the formulation that don't involve any variables.
+
+    Return:
+        result (:obj:`tuple`): (Q, offset).
+        Q (:obj:`dict`): QUBO dictionary.
+            Maps tuples of binary variables indices to the Q value.
+            ie `Q[(i, j)]` is the `(i, j)` QUBO value.
+        offset (:obj:`float`): Numeric.
+            The part of the objective function that does not depend on the
+            variables.
+    """
+    Q = {}
+
+    for (i, j), v in J.items():
+        if i == j:
+            raise KeyError("J formatted incorrectly, key cannot "
+                           "have repeated indices")
+        val = Q.get((i, j), 0) + 4. * v
+        if val:
+            Q[(i, j)] = val
+        else:
+            Q.pop((i, j), 0)
+
+        for a in (i, j):
+            val = Q.get((a, a), 0) - 2. * v
+            if val:
+                Q[(a, a)] = val
+            else:
+                Q.pop((a, a), 0)
+
+        offset += v
+
+    for i, v in h.items():
+        val = Q.get((i, i), 0) + 2. * v
+        if val:
+            Q[(i, i)] = val
+        else:
+            Q.pop((i, i), 0)
+
+        offset -= v
+
+    return Q, offset
+
+
+def qubo_value(x, Q, offset=0):
+    r"""Find the value of the QUBO objective function for a given bit string.
+
+    Args:
+        x (:obj:`dict` or :obj:`iterable`): Bit string.
+            Maps binary variable indices to their binary values, 0 or 1. Ie
+            `x[i]` must be the binary value of variable i.
+        Q (:obj:`dict`): QUBO dictionary.
+            Maps tuples of binary variables indices to the Q value.
+        offset (:obj:`float`, optional): Defaults to 0.
+            The part of the objective function that does not depend on the
+            variables.
+
+    Return:
+        value (:obj:`float`): The value of the QUBO with the given assignment `x`.
+    """
+    return sum(v * x[i] * x[j] for (i, j), v in Q.items()) + offset
+
+
+def ising_value(z, h, J, offset=0):
+    r"""Find the value of the Ising objective function for a given spin configuration.
+
+    Args:
+        z (:obj:`dict` or :obj:`iterable`): spin configuration.
+            Maps variable labels to their values, -1 or 1. Ie `z[i]` must be the
+            value of variable i.
+        J (:obj:`dict`): Coupling dictionary.
+            Maps pairs of variables labels to the J value.
+        h (:obj:`dict`): Field dictionary.
+            Maps variable names to their field value.
+        offset (:obj:`float`, optional): Defaults to 0.
+            The part of the objective function that does not depend on the
+            variables.
+
+    Return:
+        value (:obj:`float`): The value of the Ising with the given assignment `z`.
+    """
+    return sum(
+        v * z[i] * z[j] for (i, j), v in J.items()
+    ) + sum(
+        v * z[i] for i, v in h.items()
+    ) + offset
