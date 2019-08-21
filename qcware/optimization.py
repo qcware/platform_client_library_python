@@ -5,9 +5,9 @@ import warnings
 
 
 class SolveBinaryWarning(UserWarning):
-    r"""Warning type for warnings from `qcware.optimization.solve_binary`.
+    r"""Warning type for warnings from :obj:`qcware.optimization.solve_binary`.
 
-    Initiate warning with `SolveBinaryWarning.warn("message")`.
+    Initiate warning with :obj:`SolveBinaryWarning.warn("message")`.
     """
     @classmethod
     def warn(cls, message):
@@ -22,7 +22,7 @@ class SolveBinaryWarning(UserWarning):
 class SolverWarning(SolveBinaryWarning):
     r"""Warning type for solver related warnings in `qcware.optimization.solve_binary`.
 
-    Initiate warning with `SolverWarning.warn("message")`.
+    Initiate warning with :obj:`SolverWarning.warn("message")`.
     """
 
 
@@ -127,7 +127,7 @@ def _recursively_convert_solutions(result, mapping, Q):
         Q (:obj:`dict`,:obj:`list`,or :obj:`np.array`): QUBO dictionary.
 
     Returns:
-        None. The `result` dictionary is modified in place.
+        None. The :obj:`result` dictionary is modified in place.
     """
     # through recursive calls
     if isinstance(result, list):
@@ -339,13 +339,6 @@ def solve_binary(
         num_runs (:obj:`int`, optional): The number of iterations to run with the selected solver.  Default value
             :obj:`50`.
 
-        dwave_algorithm (:obj:`int`, optional): D-Wave software system parameter. See `algorithm <https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample>`_.
-
-        dwave_solver_limit (:obj:`int`, optional): D-Wave software system parameter. See `solver_limit <https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample>`_.
-
-        dwave_target_energy (:obj:`float`, optional): D-Wave software system parameter. See `target_energy <https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample>`_.
-
-        dwave_find_max (:obj:`bool`, optional): D-Wave software system parameter. See `D-Wave find_max <https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample>`_.
 
         dwave_reduce_intersample_correlation (:obj:`bool`, optional): D-Wave hardware system parameter. See `reduce_intersample_correlation <https://docs.dwavesys.com/docs/latest/c_solver_1.html#reduce-intersample-correlation>`_.
 
@@ -436,8 +429,8 @@ def solve_binary(
 
         initial_solution (:obj:`dict`, optional): initial solution seed for constructing the
             blocks using random decomposition. If none is provided, a random solution is
-            initialized. Default value :obj: `None`. `initial_solution` should be the same type
-            as `Q`.
+            initialized. Default value :obj: `None`. :obj:`initial_solution` should be the same type
+            as :obj:`Q`.
 
         always_update_with_best (:obj:`bool`, optional):  solutions found using decomposition
             do not monotonically get better with each iterations. The best solution is always returned,
@@ -448,7 +441,7 @@ def solve_binary(
             can be constructed at the onset of block composition, or updated every time a block is
             solved. Default value :obj: `True`.
 
-        host (:obj:`str`, optional): The AQUA server to which the client library should connect.  Defaults to https://platform.qcware.com .
+        host (:obj:`str`, optional): The AQUA server to which the client library should connect.  Defaults to https://forge.qcware.com .
 
 
     Returns:
@@ -509,14 +502,6 @@ def solve_binary(
         "update_q_each_block_solution": update_q_each_block_solution,
     }
 
-    if dwave_algorithm is not None:
-        params["dwave_algorithm"] = dwave_algorithm
-    if dwave_solver_limit is not None:
-        params["dwave_solver_limit"] = dwave_solver_limit
-    if dwave_target_energy is not None:
-        params["dwave_target_energy"] = dwave_target_energy
-    if dwave_find_max is not None:
-        params["dwave_find_max"] = dwave_find_max
     if dwave_reduce_intersample_correlation is not None:
         params["dwave_reduce_intersample_correlation"] = dwave_reduce_intersample_correlation
     if dwave_num_spin_reversal_transforms is not None:
