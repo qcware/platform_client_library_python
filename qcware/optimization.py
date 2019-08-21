@@ -448,7 +448,7 @@ def solve_binary(
             can be constructed at the onset of block composition, or updated every time a block is
             solved. Default value :obj: `True`.
 
-        host (:obj:`str`, optional): The AQUA server to which the client library should connect.  Defaults to https://platform.qcware.com .
+        host (:obj:`str`, optional): The AQUA server to which the client library should connect.  Defaults to https://forge.qcware.com .
 
 
     Returns:
