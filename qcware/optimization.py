@@ -595,7 +595,7 @@ def qubo_to_ising(Q, offset=0):
             J (:obj:`dict`): Coupling values.
                 `J[(i, j)]` is the coupling between the ith and jth spin.
             offset : float.
-                It is the sum of the terms in the formulation that don't involve any variables.
+                The sum of the terms in the formulation that don't involve any variables.
     """
     h, J = {}, {}
 
@@ -647,12 +647,12 @@ def ising_to_qubo(h, J, offset=0):
 
     Return:
         result (:obj:`tuple`): (Q, offset).
-        Q (:obj:`dict`): QUBO dictionary.
-            Maps tuples of binary variables indices to the Q value.
-            ie `Q[(i, j)]` is the `(i, j)` QUBO value.
-        offset (:obj:`float`): Numeric.
-            The part of the objective function that does not depend on the
-            variables.
+            Q (:obj:`dict`): QUBO dictionary.
+                Maps tuples of binary variables indices to the Q value.
+                ie `Q[(i, j)]` is the `(i, j)` QUBO value.
+            offset (:obj:`float`): Numeric.
+                The part of the objective function that does not depend on the
+                variables.
     """
     Q = {}
 

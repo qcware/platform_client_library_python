@@ -156,6 +156,30 @@
 <h1>Welcome to qcware’s documentation!<a class="headerlink" href="#welcome-to-qcware-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-qcware.optimization">
 <span id="optimization"></span><h2>Optimization<a class="headerlink" href="#module-qcware.optimization" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="qcware.optimization.SolveBinaryWarning">
+<em class="property">exception </em><code class="sig-prename descclassname">qcware.optimization.</code><code class="sig-name descname">SolveBinaryWarning</code><a class="headerlink" href="#qcware.optimization.SolveBinaryWarning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Warning type for warnings from <a class="reference internal" href="#qcware.optimization.solve_binary" title="qcware.optimization.solve_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qcware.optimization.solve_binary</span></code></a>.</p>
+<p>Initiate warning with <code class="xref py py-obj docutils literal notranslate"><span class="pre">SolveBinaryWarning.warn(&quot;message&quot;)</span></code>.</p>
+<dl class="method">
+<dt id="qcware.optimization.SolveBinaryWarning.warn">
+<em class="property">classmethod </em><code class="sig-name descname">warn</code><span class="sig-paren">(</span><em class="sig-param">message</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.optimization.SolveBinaryWarning.warn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Warn with cls at a default level.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): message to show with the warning.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="qcware.optimization.SolverWarning">
+<em class="property">exception </em><code class="sig-prename descclassname">qcware.optimization.</code><code class="sig-name descname">SolverWarning</code><a class="headerlink" href="#qcware.optimization.SolverWarning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Warning type for solver related warnings in <cite>qcware.optimization.solve_binary</cite>.</p>
+<p>Initiate warning with <code class="xref py py-obj docutils literal notranslate"><span class="pre">SolverWarning.warn(&quot;message&quot;)</span></code>.</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="qcware.optimization.enumerate_Q">
 <code class="sig-prename descclassname">qcware.optimization.</code><code class="sig-name descname">enumerate_Q</code><span class="sig-paren">(</span><em class="sig-param">Q</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.optimization.enumerate_Q" title="Permalink to this definition">¶</a></dt>
@@ -164,7 +188,64 @@
 <dt>Args:</dt><dd><p>Q (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): A dictionary representation of <span class="math notranslate nohighlight">\(Q\)</span> where the keys are tuples of ints or strings</p>
 </dd>
 <dt>Returns:</dt><dd><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>: A dictionary representation of <span class="math notranslate nohighlight">\(Q\)</span> where the keys are ints
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>: A dictionary mapping those ints to the original key values</p>
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>: A dictionary mapping those ints to the original key values
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>: A dictionary mapping those the original key values to those ints</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="qcware.optimization.ising_to_qubo">
+<code class="sig-prename descclassname">qcware.optimization.</code><code class="sig-name descname">ising_to_qubo</code><span class="sig-paren">(</span><em class="sig-param">h</em>, <em class="sig-param">J</em>, <em class="sig-param">offset=0</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.optimization.ising_to_qubo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the specified Ising problem into a QUBO problem.
+Note that Ising {-1, 1} values go to QUBO {0, 1} values in that order!</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>h (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): Field values.</dt><dd><p>The field of each spin in the Ising formulation.
+<cite>h[i]</cite> is the field value for the ith spin.</p>
+</dd>
+<dt>J (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): Coupling values.</dt><dd><p><cite>J[(i, j)]</cite> is the coupling between the ith and jth spin. Note
+that <cite>J</cite> cannot have a key that has a repeated index, ie <cite>(1, 1)</cite> is an
+invalid key.</p>
+</dd>
+<dt>offset (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional): Defaults to 0.</dt><dd><p>It is the sum of the terms in the formulation that don’t involve any variables.</p>
+</dd>
+</dl>
+</dd>
+<dt>Return:</dt><dd><dl class="simple">
+<dt>result (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code>): (Q, offset).</dt><dd><dl class="simple">
+<dt>Q (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): QUBO dictionary.</dt><dd><p>Maps tuples of binary variables indices to the Q value.
+ie <cite>Q[(i, j)]</cite> is the <cite>(i, j)</cite> QUBO value.</p>
+</dd>
+<dt>offset (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Numeric.</dt><dd><p>The part of the objective function that does not depend on the
+variables.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="qcware.optimization.ising_value">
+<code class="sig-prename descclassname">qcware.optimization.</code><code class="sig-name descname">ising_value</code><span class="sig-paren">(</span><em class="sig-param">z</em>, <em class="sig-param">h</em>, <em class="sig-param">J</em>, <em class="sig-param">offset=0</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.optimization.ising_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the value of the Ising objective function for a given spin configuration.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>z (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">iterable</span></code>): spin configuration.</dt><dd><p>Maps variable labels to their values, -1 or 1. Ie <cite>z[i]</cite> must be the
+value of variable i.</p>
+</dd>
+<dt>J (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): Coupling dictionary.</dt><dd><p>Maps pairs of variables labels to the J value.</p>
+</dd>
+<dt>h (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): Field dictionary.</dt><dd><p>Maps variable names to their field value.</p>
+</dd>
+<dt>offset (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional): Defaults to 0.</dt><dd><p>The part of the objective function that does not depend on the
+variables.</p>
+</dd>
+</dl>
+</dd>
+<dt>Return:</dt><dd><p>value (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): The value of the Ising with the given assignment <cite>z</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -188,8 +269,60 @@ are encoded as values in the dictionary.  <span class="math notranslate nohighli
 </dd></dl>
 
 <dl class="function">
+<dt id="qcware.optimization.qubo_to_ising">
+<code class="sig-prename descclassname">qcware.optimization.</code><code class="sig-name descname">qubo_to_ising</code><span class="sig-paren">(</span><em class="sig-param">Q</em>, <em class="sig-param">offset=0</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.optimization.qubo_to_ising" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the specified QUBO problem into an Ising problem.
+Note that QUBO {0, 1} values go to Ising {-1, 1} values in that order!</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>Q (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): QUBO dictionary.</dt><dd><p>Maps tuples of binary variables indices to the Q value.
+ie <cite>Q[(i, j)]</cite> is the <cite>(i, j)</cite> QUBO value.</p>
+</dd>
+<dt>offset (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional): defaults to 0.</dt><dd><p>The part of the objective function that does not depend on the
+variables.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>result (<a href="#id1"><span class="problematic" id="id2">:object:`tuple`</span></a>): (h, J, offset).</dt><dd><dl class="simple">
+<dt>h (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): Field values.</dt><dd><p>The field of each spin in the Ising formulation.
+<cite>h[i]</cite> is the field value for the ith spin.</p>
+</dd>
+<dt>J (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): Coupling values.</dt><dd><p><cite>J[(i, j)]</cite> is the coupling between the ith and jth spin.</p>
+</dd>
+<dt>offset<span class="classifier">float.</span></dt><dd><p>The sum of the terms in the formulation that don’t involve any variables.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="qcware.optimization.qubo_value">
+<code class="sig-prename descclassname">qcware.optimization.</code><code class="sig-name descname">qubo_value</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">Q</em>, <em class="sig-param">offset=0</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.optimization.qubo_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the value of the QUBO objective function for a given bit string.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>x (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">iterable</span></code>): Bit string.</dt><dd><p>Maps binary variable indices to their binary values, 0 or 1. Ie
+<cite>x[i]</cite> must be the binary value of variable i.</p>
+</dd>
+<dt>Q (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): QUBO dictionary.</dt><dd><p>Maps tuples of binary variables indices to the Q value.</p>
+</dd>
+<dt>offset (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional): Defaults to 0.</dt><dd><p>The part of the objective function that does not depend on the
+variables.</p>
+</dd>
+</dl>
+</dd>
+<dt>Return:</dt><dd><p>value (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): The value of the QUBO with the given assignment <cite>x</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="qcware.optimization.solve_binary">
-<code class="sig-prename descclassname">qcware.optimization.</code><code class="sig-name descname">solve_binary</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">Q</em>, <em class="sig-param">higher_order=False</em>, <em class="sig-param">solver='dwave_software'</em>, <em class="sig-param">constraints_linear_A=[]</em>, <em class="sig-param">constraints_linear_b=[]</em>, <em class="sig-param">constraints_sat_max_runs=3100</em>, <em class="sig-param">constraints_hard=False</em>, <em class="sig-param">constraints_penalty_scaling_factor=1</em>, <em class="sig-param">constraints_equality_R=[]</em>, <em class="sig-param">constraints_equality_c=[]</em>, <em class="sig-param">constraints_inequality_S=[]</em>, <em class="sig-param">constraints_inequality_d=[]</em>, <em class="sig-param">return_all_solutions=False</em>, <em class="sig-param">num_runs=50</em>, <em class="sig-param">dwave_algorithm=None</em>, <em class="sig-param">dwave_solver_limit=None</em>, <em class="sig-param">dwave_target_energy=None</em>, <em class="sig-param">dwave_find_max=None</em>, <em class="sig-param">dwave_reduce_intersample_correlation=None</em>, <em class="sig-param">dwave_num_spin_reversal_transforms=None</em>, <em class="sig-param">dwave_programming_thermalization=None</em>, <em class="sig-param">dwave_reinitialize_state=None</em>, <em class="sig-param">dwave_anneal_offsets=None</em>, <em class="sig-param">dwave_anneal_offsets_delta=None</em>, <em class="sig-param">dwave_num_reads=None</em>, <em class="sig-param">dwave_max_answers=None</em>, <em class="sig-param">dwave_flux_biases=None</em>, <em class="sig-param">dwave_beta=None</em>, <em class="sig-param">dwave_answer_mode=None</em>, <em class="sig-param">dwave_auto_scale=None</em>, <em class="sig-param">dwave_postprocess=None</em>, <em class="sig-param">dwave_annealing_time=None</em>, <em class="sig-param">dwave_anneal_schedule=None</em>, <em class="sig-param">dwave_initial_state=None</em>, <em class="sig-param">dwave_chains=None</em>, <em class="sig-param">dwave_flux_drift_compensation=None</em>, <em class="sig-param">dwave_beta_range=None</em>, <em class="sig-param">dwave_num_sweeps=None</em>, <em class="sig-param">dwave_precision_ancillas=None</em>, <em class="sig-param">dwave_precision_ancillas_tuples=None</em>, <em class="sig-param">constraints_hard_num=4</em>, <em class="sig-param">sa_num_sweeps=200</em>, <em class="sig-param">use_sample_persistence=False</em>, <em class="sig-param">sample_persistence_solution_threshold=0.5</em>, <em class="sig-param">sample_persistence_persistence_threshold=0.5</em>, <em class="sig-param">sample_persistence_persistence_iterations=0</em>, <em class="sig-param">google_num_steps=1</em>, <em class="sig-param">google_n_samples=1000</em>, <em class="sig-param">google_arguments_optimizer={}</em>, <em class="sig-param">google_step_sampling=True</em>, <em class="sig-param">google_n_samples_step_sampling=1000</em>, <em class="sig-param">number_of_blocks=1</em>, <em class="sig-param">iterations=50</em>, <em class="sig-param">initial_solution=None</em>, <em class="sig-param">always_update_with_best=True</em>, <em class="sig-param">update_q_each_block_solution=True</em>, <em class="sig-param">host='https://platform.qcware.com'</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.optimization.solve_binary" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">qcware.optimization.</code><code class="sig-name descname">solve_binary</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">Q</em>, <em class="sig-param">solver='dwave_hw'</em>, <em class="sig-param">constraints_linear_A=[]</em>, <em class="sig-param">constraints_linear_b=[]</em>, <em class="sig-param">constraints_sat_max_runs=3100</em>, <em class="sig-param">constraints_hard=False</em>, <em class="sig-param">constraints_penalty_scaling_factor=1</em>, <em class="sig-param">constraints_equality_R=[]</em>, <em class="sig-param">constraints_equality_c=[]</em>, <em class="sig-param">constraints_inequality_S=[]</em>, <em class="sig-param">constraints_inequality_d=[]</em>, <em class="sig-param">return_all_solutions=False</em>, <em class="sig-param">num_runs=50</em>, <em class="sig-param">dwave_algorithm=None</em>, <em class="sig-param">dwave_solver_limit=None</em>, <em class="sig-param">dwave_target_energy=None</em>, <em class="sig-param">dwave_find_max=None</em>, <em class="sig-param">dwave_reduce_intersample_correlation=None</em>, <em class="sig-param">dwave_num_spin_reversal_transforms=None</em>, <em class="sig-param">dwave_programming_thermalization=None</em>, <em class="sig-param">dwave_reinitialize_state=None</em>, <em class="sig-param">dwave_anneal_offsets=None</em>, <em class="sig-param">dwave_anneal_offsets_delta=None</em>, <em class="sig-param">dwave_num_reads=None</em>, <em class="sig-param">dwave_max_answers=None</em>, <em class="sig-param">dwave_flux_biases=None</em>, <em class="sig-param">dwave_beta=None</em>, <em class="sig-param">dwave_answer_mode=None</em>, <em class="sig-param">dwave_auto_scale=None</em>, <em class="sig-param">dwave_postprocess=None</em>, <em class="sig-param">dwave_annealing_time=None</em>, <em class="sig-param">dwave_anneal_schedule=None</em>, <em class="sig-param">dwave_initial_state=None</em>, <em class="sig-param">dwave_chains=None</em>, <em class="sig-param">dwave_flux_drift_compensation=None</em>, <em class="sig-param">dwave_beta_range=None</em>, <em class="sig-param">dwave_num_sweeps=None</em>, <em class="sig-param">dwave_precision_ancillas=None</em>, <em class="sig-param">dwave_precision_ancillas_tuples=None</em>, <em class="sig-param">constraints_hard_num=4</em>, <em class="sig-param">sa_num_sweeps=200</em>, <em class="sig-param">use_sample_persistence=False</em>, <em class="sig-param">sample_persistence_solution_threshold=0.5</em>, <em class="sig-param">sample_persistence_persistence_threshold=0.5</em>, <em class="sig-param">sample_persistence_persistence_iterations=0</em>, <em class="sig-param">google_num_steps=1</em>, <em class="sig-param">google_n_samples=1000</em>, <em class="sig-param">google_arguments_optimizer={}</em>, <em class="sig-param">google_step_sampling=True</em>, <em class="sig-param">google_n_samples_step_sampling=1000</em>, <em class="sig-param">number_of_blocks=1</em>, <em class="sig-param">iterations=50</em>, <em class="sig-param">initial_solution=None</em>, <em class="sig-param">always_update_with_best=True</em>, <em class="sig-param">update_q_each_block_solution=True</em>, <em class="sig-param">host='https://forge.qcware.com'</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.optimization.solve_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve a binary optimization problem using one of the solvers provided by the platform.</p>
 <dl class="simple">
 <dt>This function solves a binary optimization problem that is either:</dt><dd><ul class="simple">
@@ -263,10 +396,7 @@ problem are returned in the JSON object returned by this function.</p>
 <tr class="row-odd"><td><p>11</p></td>
 <td><p>D-Wave hardware solver returned error.</p></td>
 </tr>
-<tr class="row-even"><td><p>12</p></td>
-<td><p>D-Wave software solver returned error.</p></td>
-</tr>
-<tr class="row-odd"><td><p>100</p></td>
+<tr class="row-even"><td><p>100</p></td>
 <td><p>Invalid solver selected.</p></td>
 </tr>
 </tbody>
@@ -281,25 +411,22 @@ platform or the client library to raise an exception.</p>
 <p>Since <span class="math notranslate nohighlight">\(Q\)</span> is usually sparse, <span class="math notranslate nohighlight">\(Q\)</span> should be specified
 as a Python dictionary with integer or string pairs <span class="math notranslate nohighlight">\((i,j)\)</span> as keys (representing the <span class="math notranslate nohighlight">\((i,j)\)</span>) and integer or float values.  In the case of a cubic function, for example, some
 dictionary keys will be 3-tuples of integers, rather than pairs.</p>
-<p>Alternatively, <span class="math notranslate nohighlight">\(Q\)</span> may be specified as a numpy array, in which case <a class="reference internal" href="#qcware.optimization.mat_to_dict" title="qcware.optimization.mat_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mat_to_dict</span></code></a> is called on
+<p>Alternatively, <span class="math notranslate nohighlight">\(Q\)</span> may be specified as a numpy array or list, in which case <a class="reference internal" href="#qcware.optimization.mat_to_dict" title="qcware.optimization.mat_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mat_to_dict</span></code></a> is called on
 <span class="math notranslate nohighlight">\(Q\)</span> before sending it to the platform.  Note that that helper function assumes <span class="math notranslate nohighlight">\(Q\)</span> is symmetric,
-which may not be true in general.  It is strongly encouraged to format <span class="math notranslate nohighlight">\(Q\)</span> is a dictionary.</p>
-</dd>
-<dt>higher_order (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>, optional): Whether the problem being solved has higher order than quadratic.</dt><dd><p>Defaults to <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>.</p>
+which may not be true in general. It is strongly encouraged to format <span class="math notranslate nohighlight">\(Q\)</span> is a dictionary.</p>
 </dd>
 </dl>
 <p>solver (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional): The name of the solver to use for the given problem.  Valid values are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>“dwave_hardware”: Run on a physical D-Wave machine</p></li>
-<li><p>“dwave_software”: Run on D-Wave’s software simulator (requires additional permissions)</p></li>
+<li><p>“dwave_hw”: Run on a physical D-Wave machine</p></li>
 <li><p>“brute_force”: Run using a brute force algorithm</p></li>
 <li><p>“hfs”: Run using the Hamze-de Freitas-Selby algorithm</p></li>
-<li><p>“google_qaoa”: Run using the Google simulator implementation of the QAOA algorithm</p></li>
+<li><p>“google_sw_qaoa”: Run using the Google simulator implementation of the QAOA algorithm</p></li>
 <li><p>“ibm_hw_qaoa”: Run the QAOA algorithm on a physical IBM machine, this may take over 2 hours for even small problems!</p></li>
 <li><p>“ibm_sw_qaoa”: Run the QAOA algorithm on IBM’s software simulator of the QAOA algorithm</p></li>
 </ul>
-<p>Note that only certain solvers may be enabled depending on your account.  Default value “dwave_software”.</p>
+<p>Note that only certain solvers may be enabled depending on your account.  Default value “dwave_hw”.</p>
 </div></blockquote>
 <dl class="simple">
 <dt>constraints_linear_A (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>, optional): The <span class="math notranslate nohighlight">\(A\)</span> matrix for specifying linear constraints.  <span class="math notranslate nohighlight">\(A\)</span></dt><dd><p>should be formatted as a two-dimensional Python list.  Default value <code class="xref py py-obj docutils literal notranslate"><span class="pre">[]</span></code>.</p>
@@ -332,16 +459,12 @@ Default value <code class="xref py py-obj docutils literal notranslate"><span cl
 <dt>num_runs (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional): The number of iterations to run with the selected solver.  Default value</dt><dd><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">50</span></code>.</p>
 </dd>
 </dl>
-<p>dwave_algorithm (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional): D-Wave software system parameter. See <a class="reference external" href="https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample">algorithm</a>.</p>
-<p>dwave_solver_limit (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional): D-Wave software system parameter. See <a class="reference external" href="https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample">solver_limit</a>.</p>
-<p>dwave_target_energy (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional): D-Wave software system parameter. See <a class="reference external" href="https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample">target_energy</a>.</p>
-<p>dwave_find_max (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>, optional): D-Wave software system parameter. See <a class="reference external" href="https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample">D-Wave find_max</a>.</p>
 <p>dwave_reduce_intersample_correlation (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>, optional): D-Wave hardware system parameter. See <a class="reference external" href="https://docs.dwavesys.com/docs/latest/c_solver_1.html#reduce-intersample-correlation">reduce_intersample_correlation</a>.</p>
 <p>dwave_num_spin_reversal_transforms (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional): D-Wave hardware system parameter. See <a class="reference external" href="https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-spin-reversal-transforms">num_spin_reversal_transforms</a>.</p>
 <p>dwave_programming_thermalization (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional): D-Wave hardware system parameter. See <a class="reference external" href="https://docs.dwavesys.com/docs/latest/c_solver_1.html#programming-thermalization">programming_thermalization</a>.</p>
 <p>dwave_reinitialize_state (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>, optional): D-Wave hardware system parameter. See <a class="reference external" href="https://docs.dwavesys.com/docs/latest/c_solver_1.html#reinitialize-state">reinitialize_state</a>.</p>
 <p>dwave_anneal_offsets (<code class="xref py py-obj docutils literal notranslate"><span class="pre">[float]</span></code>, optional): D-Wave hardware system parameter. See <a class="reference external" href="https://docs.dwavesys.com/docs/latest/c_solver_1.html#anneal-offsets">anneal_offsets</a>.</p>
-<p>dwave_anneal_offsets_delta: (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional): Parameter in [0, 1] that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. See <a class="reference external" href="https://arxiv.org/pdf/1806.11091.pdf">https://arxiv.org/pdf/1806.11091.pdf</a>.</p>
+<p>dwave_anneal_offsets_delta: (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional): Parameter greater or equal to 0 that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. We recommend the value to be in [0, 0.05]. See <a class="reference external" href="https://arxiv.org/pdf/1806.11091.pdf">https://arxiv.org/pdf/1806.11091.pdf</a>.</p>
 <p>dwave_num_reads (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional): D-Wave hardware system parameter. See <a class="reference external" href="https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-reads">num_reads</a>.</p>
 <p>dwave_max_answers (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional): D-Wave hardware system parameter. See <a class="reference external" href="https://docs.dwavesys.com/docs/latest/c_solver_1.html#max-answers">max_answers</a>.</p>
 <p>dwave_flux_biases (<code class="xref py py-obj docutils literal notranslate"><span class="pre">[float]</span></code>, optional): D-Wave hardware system parameter. See <a class="reference external" href="https://docs.dwavesys.com/docs/latest/c_solver_1.html#flux-biases">flux_biases</a>.</p>
@@ -390,7 +513,8 @@ Each iterations corresponds to solving all blocks of the decomposition once.
 Default value <code class="xref py py-obj docutils literal notranslate"><span class="pre">50</span></code>.</p>
 </dd>
 <dt>initial_solution (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>, optional): initial solution seed for constructing the</dt><dd><p>blocks using random decomposition. If none is provided, a random solution is
-initialized. Default value :obj: <cite>None</cite>.</p>
+initialized. Default value :obj: <cite>None</cite>. <code class="xref py py-obj docutils literal notranslate"><span class="pre">initial_solution</span></code> should be the same type
+as <code class="xref py py-obj docutils literal notranslate"><span class="pre">Q</span></code>.</p>
 </dd>
 <dt>always_update_with_best (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>, optional):  solutions found using decomposition</dt><dd><p>do not monotonically get better with each iterations. The best solution is always returned,
 but this flag determines whether or not to construct new decomposition using best solution.
@@ -400,12 +524,14 @@ Default value :obj: <cite>True</cite>.</p>
 solved. Default value :obj: <cite>True</cite>.</p>
 </dd>
 </dl>
-<p>host (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional): The AQUA server to which the client library should connect.  Defaults to <a class="reference external" href="https://platform.qcware.com">https://platform.qcware.com</a> .</p>
+<p>host (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional): The AQUA server to which the client library should connect.  Defaults to <a class="reference external" href="https://forge.qcware.com">https://forge.qcware.com</a> .</p>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>JSON object: A JSON object, possibly containing the fields:</dt><dd><ul class="simple">
-<li><p>‘solution’ (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): A Python list representing the solution vector.  If <code class="xref py py-obj docutils literal notranslate"><span class="pre">return_all_solutions</span></code>
-is <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, this is a list of lists.</p></li>
+<li><p>‘solution’ (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): A Python dictionary representing the solution vector.  If <code class="xref py py-obj docutils literal notranslate"><span class="pre">return_all_solutions</span></code>
+is <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, this is a list of dicts. However, if the input <code class="xref py py-obj docutils literal notranslate"><span class="pre">Q</span></code> is a 2D numpy array, then each :obj`solution` will
+be a 1D numpy array; if the input <code class="xref py py-obj docutils literal notranslate"><span class="pre">Q</span></code> is a list of lists, then each :obj`solution` will also be a list. :obj`solution`
+maps variables labels to their binary values, thus :obj`solution[i]` is the value of the :obj`i`th binary variable.</p></li>
 <li><p>‘num_runs’ (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): How many total runs of the chosen solver were performed in order to produce the
 returned solution.</p></li>
 <li><p>‘num_qubits’ (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): How many physical qubits (or simulated qubits, in the case of a software
@@ -432,7 +558,7 @@ attempting to solve the problem.  This key does not exist if no error occurred.<
 <span id="physics"></span><h2>Physics<a class="headerlink" href="#module-qcware.physics" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="qcware.physics.find_ground_state_energy">
-<code class="sig-prename descclassname">qcware.physics.</code><code class="sig-name descname">find_ground_state_energy</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">molecule</em>, <em class="sig-param">minimizer=None</em>, <em class="sig-param">basis='sto-3g'</em>, <em class="sig-param">solver='projectq'</em>, <em class="sig-param">multiplicity=1</em>, <em class="sig-param">charge=0</em>, <em class="sig-param">sampling=False</em>, <em class="sig-param">sampling_trials=1000</em>, <em class="sig-param">guess_amplitudes=[]</em>, <em class="sig-param">initial_state='UCCSD'</em>, <em class="sig-param">host='https://platform.qcware.com'</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.physics.find_ground_state_energy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">qcware.physics.</code><code class="sig-name descname">find_ground_state_energy</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">molecule</em>, <em class="sig-param">minimizer=None</em>, <em class="sig-param">basis='sto-3g'</em>, <em class="sig-param">solver='projectq'</em>, <em class="sig-param">multiplicity=1</em>, <em class="sig-param">charge=0</em>, <em class="sig-param">sampling=False</em>, <em class="sig-param">sampling_trials=1000</em>, <em class="sig-param">guess_amplitudes=[]</em>, <em class="sig-param">initial_state='UCCSD'</em>, <em class="sig-param">host='https://forge.qcware.com'</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.physics.find_ground_state_energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the ground state energy configuration for
 input molecular geometry configuration. Energy output is
 measured in Hartrees and atomic spacing input is assumed
@@ -538,7 +664,7 @@ of the hamiltonian.</p></li>
 <span id="qml"></span><h2>QML<a class="headerlink" href="#module-qcware.qml" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="qcware.qml.fit_and_predict">
-<code class="sig-prename descclassname">qcware.qml.</code><code class="sig-name descname">fit_and_predict</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">X=[]</em>, <em class="sig-param">y=[]</em>, <em class="sig-param">T=[]</em>, <em class="sig-param">backend='simulator'</em>, <em class="sig-param">clf_type='nearest_centroids'</em>, <em class="sig-param">clf_params={}</em>, <em class="sig-param">solver='dwave_hybrid'</em>, <em class="sig-param">host='https://platform.qcware.com'</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.qml.fit_and_predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">qcware.qml.</code><code class="sig-name descname">fit_and_predict</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">X=[]</em>, <em class="sig-param">y=[]</em>, <em class="sig-param">T=[]</em>, <em class="sig-param">backend='simulator'</em>, <em class="sig-param">clf_type='nearest_centroids'</em>, <em class="sig-param">clf_params={}</em>, <em class="sig-param">solver='dwave_hw'</em>, <em class="sig-param">host='https://forge.qcware.com'</em><span class="sig-paren">)</span><a class="headerlink" href="#qcware.qml.fit_and_predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classifies test data according to input training data and a selected backend and classifier type</p>
 <p>It is strongly recommended to wrap a call to <a class="reference internal" href="#qcware.qml.fit_and_predict" title="qcware.qml.fit_and_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_and_predict</span></code></a> in a try/catch block since it is possible for the
 platform or the client library to raise an exception.</p>
@@ -546,9 +672,9 @@ platform or the client library to raise an exception.</p>
 <dt>Args:</dt><dd><dl class="simple">
 <dt>key (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): An API key for the platform.  Keys can be allocated and managed from the Forge web portal</dt><dd><p>website.</p>
 </dd>
-<dt>X (<code class="xref py py-obj docutils literal notranslate"><span class="pre">[[float]]</span></code>): Training data array of dimension m by n, where m equals the number of samples </dt><dd><p>and n the number of features. Both m and n are assumed to be powers of two.</p>
+<dt>X (<code class="xref py py-obj docutils literal notranslate"><span class="pre">[[float]]</span></code>): Training data array of dimension m by n, where m equals the number of samples</dt><dd><p>and n the number of features. Both m and n are assumed to be powers of two.</p>
 </dd>
-<dt>y (<code class="xref py py-obj docutils literal notranslate"><span class="pre">[int]</span></code>): Target values array of dimension 1 by m, where m is the number of rows in X </dt><dd><p>(i.e the number of samples in X). For clf_type = “nearest_clusters”, it is assumed that each target value
+<dt>y (<code class="xref py py-obj docutils literal notranslate"><span class="pre">[int]</span></code>): Target values array of dimension 1 by m, where m is the number of rows in X</dt><dd><p>(i.e the number of samples in X). For clf_type = “nearest_clusters”, it is assumed that each target value
 has at least two occurences in y.</p>
 </dd>
 <dt>T (<code class="xref py py-obj docutils literal notranslate"><span class="pre">[[float]]</span></code>): Test data array of dimension d by n, where d is any positive integer</dt><dd><p>and n equals the number of columns in X  (i.e the number of features in X).</p>
@@ -572,13 +698,13 @@ has at least two occurences in y.</p>
 <div><p>The structure of clf_params depends on clf_type and is the following:</p>
 <blockquote>
 <div><dl class="simple">
-<dt>For clf_type = “nearest_centroids”, clf_params is {“mode”: s} is either the string “exact” or the string “sample”.</dt><dd><p>If mode=”sample”, then the classifier samples a centroid with probability propotional to the closeness to the test point. 
+<dt>For clf_type = “nearest_centroids”, clf_params is {“mode”: s} is either the string “exact” or the string “sample”.</dt><dd><p>If mode=”sample”, then the classifier samples a centroid with probability propotional to the closeness to the test point.
 If mode=”exact”, then multiple samples are taken in order to choose the nearest centroid with high probability.</p>
 </dd>
 </dl>
 <p>For clf_type = “nearest_clusters”, clf_params is the empty dictionary.</p>
 <dl class="simple">
-<dt>For clf_type = “nearest_neighbors”, clf_params is the dictionary {“k”: n_neighbors} </dt><dd><p>where n_neighbors is the (positive integer) number of nearest neighbours to be computed for each point.</p>
+<dt>For clf_type = “nearest_neighbors”, clf_params is the dictionary {“k”: n_neighbors}</dt><dd><p>where n_neighbors is the (positive integer) number of nearest neighbours to be computed for each point.</p>
 </dd>
 </dl>
 </div></blockquote>
