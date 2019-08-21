@@ -136,7 +136,7 @@ def find_ground_state_energy(key,
 
     if minimizer is None:
         if solver == 'projectq':
-            minimizer = 'swarm'
+            minimizer = 'CG'
         else:
             minimizer = 'cobyla'
 
