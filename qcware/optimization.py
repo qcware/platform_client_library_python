@@ -157,7 +157,6 @@ def _recursively_convert_solutions(result, mapping, Q):
 def solve_binary(
         key,
         Q,
-        higher_order=False,
         solver="dwave_hw",
         constraints_linear_A=[],
         constraints_linear_b=[],
@@ -212,7 +211,7 @@ def solve_binary(
         initial_solution=None,
         always_update_with_best=True,
         update_q_each_block_solution=True,
-        host="https://platform.qcware.com",
+        host="https://forge.qcware.com",
         ):
     r"""Solve a binary optimization problem using one of the solvers provided by the platform.
 
@@ -287,9 +286,6 @@ def solve_binary(
             Alternatively, :math:`Q` may be specified as a numpy array or list, in which case :obj:`mat_to_dict` is called on
             :math:`Q` before sending it to the platform.  Note that that helper function assumes :math:`Q` is symmetric,
             which may not be true in general. It is strongly encouraged to format :math:`Q` is a dictionary.
-
-        higher_order (:obj:`bool`, optional): Whether the problem being solved has higher order than quadratic.
-            Defaults to :obj:`False`.
 
         solver (:obj:`str`, optional): The name of the solver to use for the given problem.  Valid values are:
 
@@ -484,7 +480,7 @@ def solve_binary(
     params = {
         "key": key,
         "Q": enumerated_Q,
-        "higher_order": higher_order,
+        "higher_order": False,
         "solver": solver,
         "constraints_linear_A": constraints_linear_A,
         "constraints_linear_b": constraints_linear_b,

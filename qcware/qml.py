@@ -13,8 +13,8 @@ def fit_and_predict(
         backend="simulator",
         clf_type="nearest_centroids",
         clf_params={},
-        solver="dwave_hybrid",
-        host="https://platform.qcware.com"):
+        solver="dwave_hw",
+        host="https://forge.qcware.com"):
     r"""Classifies test data according to input training data and a selected backend and classifier type
 
     It is strongly recommended to wrap a call to :obj:`fit_and_predict` in a try/catch block since it is possible for the

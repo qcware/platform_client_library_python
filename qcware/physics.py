@@ -35,7 +35,7 @@ def find_ground_state_energy(key,
                              guess_amplitudes=[],
                              initial_state='UCCSD',
 
-                             host="https://platform.qcware.com",
+                             host="https://forge.qcware.com",
                              ):
     """
     Finds the ground state energy configuration for
