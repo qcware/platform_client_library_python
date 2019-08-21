@@ -339,7 +339,6 @@ def solve_binary(
         num_runs (:obj:`int`, optional): The number of iterations to run with the selected solver.  Default value
             :obj:`50`.
 
-        dwave_algorithm (:obj:`int`, optional): D-Wave software system parameter. See `algorithm <https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample>`_.
 
         dwave_solver_limit (:obj:`int`, optional): D-Wave software system parameter. See `solver_limit <https://docs.ocean.dwavesys.com/projects/qbsolv/en/latest/source/generated/dwave_qbsolv.QBSolv.sample.html#dwave_qbsolv.QBSolv.sample>`_.
 
@@ -509,8 +508,6 @@ def solve_binary(
         "update_q_each_block_solution": update_q_each_block_solution,
     }
 
-    if dwave_algorithm is not None:
-        params["dwave_algorithm"] = dwave_algorithm
     if dwave_solver_limit is not None:
         params["dwave_solver_limit"] = dwave_solver_limit
     if dwave_target_energy is not None:
