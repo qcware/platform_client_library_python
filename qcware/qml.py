@@ -13,9 +13,48 @@ def fit_and_predict(
         backend="simulator",
         clf_type="nearest_centroids",
         clf_params={},
-        solver="dwave_hw",
-        host="https://forge.qcware.com"):
+        solver="dwave_hybrid",
+        host="https://platform.qcware.com"):
     r"""Classifies test data according to input training data and a selected backend and classifier type
+
+
+    The function supports three different quantum classifiers.
+
+    **Nearest Centroids Classifier** 
+
+    The classical Nearest Centroid classifier uses the training points belonging to each of $k$ classes in order to compute the centroid of each class. Then, the label of a test point is chosen by computing the distance of the point to all centroids and assigning the label of the nearest centroid. One can assign the label deterministically to the nearest centroid (hard assignment) or probabilistically proportional to the closeness (soft assignment).
+
+    In this release, we perform the centroid calculation classically, meaning that we use scikit-learn’s nearest centroids fit() function to find the centroids. We also prepare the quantum circuits necessary for a fast loading of the centroids and the test points. Then, we assign a label to a test point by a quantum classifier that works in two modes.
+
+    If mode=“soft”, then the classifier uses a fast quantum inner product estimation procedure to sample a centroid with probability proportional to the closeness to the test point. More precisely, the label $\ell_j$ of centroid $C_j$ is assigned to a test point $T_i$ with probability
+    
+    
+    $$\Pr[\mbox{ assign label }\ell_j \mbox{ to point } T_i \;] \; \propto \; 1 - d^2(C_j,T_i)$$,
+    
+    
+    where $d^2(\cdot,\cdot)$ is the square Euclidean distance between the two vectors normalized by their norms in order to take values in $[0,1]$. This corresponds to a “soft” assignment.
+
+    If mode=“hard”, the above procedure is repeated a number of times so multiple samples are taken in order to choose the nearest centroid with high probability.
+
+    The solution returned is a numpy array containing the label of the nearest centroid.
+    
+    **Nearest Clusters Classifier**
+
+    This classifier takes advantage of the power of quantum superposition. Here we do not fit the model (by finding the centroids for example), we just do one pass over the training and test points in order to prepare the quantum loaders. When we want to assign a label to a test point we estimate the distance of the point to each cluster by estimating the average square Euclidean distance between the test point and the points of the cluster. We then assign the label that corresponds to the nearest cluster.
+
+    The solution returned is a numpy array containing the label of the nearest cluster.
+
+    **Nearest Neighbors Classifier**
+
+    The classical nearest neighbors method with a user-defined parameter $k$ finds the $k$ training points that are closest in Euclidean distance to the test point. Then it assigns the label that, for example, corresponds to the majority or a weighted majority.
+
+    The quantum nearest neighbor classifier with parameter $k$ uses quantum techniques to sample the $k$ nearest neighbors. More precisely, we estimate the distance between the test point $T_i$ and each training point in superposition and sample a training point $X_j$ with probability
+    
+    $$\Pr[\mbox{ sampling }X_j \mbox{ as a neighbor of } T_i \;] \; \propto \; 1 - d^2(X_j,T_i)$$,
+    
+    where $d^2$ is the square Euclidean distance between the two vectors normalized by their norms in order to take values in $[0,1]$. We take enough samples to estimate the $k$ nearest neighbors.
+
+    The solution returned is a numpy array containing the list of $k$ nearest neighbors. These neighbors can then be used to assign a label classically, for example through a majority or weighted majority vote.
 
     It is strongly recommended to wrap a call to :obj:`fit_and_predict` in a try/catch block since it is possible for the
     platform or the client library to raise an exception.
@@ -24,40 +63,34 @@ def fit_and_predict(
         key (:obj:`str`): An API key for the platform.  Keys can be allocated and managed from the Forge web portal
             website.
 
-        X (:obj:`[[float]]`): Training data array of dimension m by n, where m equals the number of samples
-            and n the number of features. Both m and n are assumed to be powers of two.
+        X (:obj:`[[float]]`): A numpy array holding the training points of size [n_samples, n_features].
 
-        y (:obj:`[int]`): Target values array of dimension 1 by m, where m is the number of rows in X
-            (i.e the number of samples in X). For clf_type = "nearest_clusters", it is assumed that each target value
-            has at least two occurences in y.
+        y (:obj:`[int]`): A numpy array of class labels (strings or integers) of size [n_samples] corresponding to the training points.
 
-        T (:obj:`[[float]]`): Test data array of dimension d by n, where d is any positive integer
-            and n equals the number of columns in X  (i.e the number of features in X).
+        T (:obj:`[[float]]`): A numpy array holding the test points of size [n_tests, n_features]. 
 
         backend (:obj:`string`): Selects the specific backend used to run the computation.
 
+            The currently supported backend is:
+
             * "simulator": Runs the algorithms on a software simulator
-            * "hardware": Runs on physical hardware
 
-            Defaults to "simulator".
 
-        clf_type (:obj:`string`): Selects the classifier used to run the computation. Options include
-            "nearest_centroids", "nearest_clusters", and "nearest_neighbors".
+        clf_type (:obj:`string`): Selects the quantum classifier. The options are
+            "nearest_centroids", "nearest_clusters", and "nearest_neighbors". Defaults to "nearest_centroids".
 
-            Defaults to "nearest_centroids".
+        clf_params (:obj:`dict`): A dictionary of the parameters for each specific classifier (see description of each classifier below for details)
+            
+            The structure of `clf_params` depends on `clf_type` and is the following:
+                
+                1. For `clf_type` = "nearest_centroids", `clf_params` is {"mode": s} where `s` is either the string "hard" or the string "soft".
 
-        clf_params (:obj:`dict`): You can put parameters specific to each classifier here.
+                    - If s = "soft", then the classifier uses a fast quantum inner product estimation procedure to sample a centroid with probability proportional to the closeness to the test point. 
+                    - If s = "hard", the above procedure is repeated a number of times so multiple samples are taken in order to choose the nearest centroid with high probability. 
+                
+                2. For `clf_type` = "nearest_clusters", `clf_params` is the empty dictionary.
 
-            The structure of clf_params depends on clf_type and is the following:
-
-                For clf_type = "nearest_centroids", clf_params is {"mode": s} is either the string "exact" or the string "sample".
-                    If mode="sample", then the classifier samples a centroid with probability propotional to the closeness to the test point.
-                    If mode="exact", then multiple samples are taken in order to choose the nearest centroid with high probability.
-
-                For clf_type = "nearest_clusters", clf_params is the empty dictionary.
-
-                For clf_type = "nearest_neighbors", clf_params is the dictionary {"k": n_neighbors}
-                    where n_neighbors is the (positive integer) number of nearest neighbours to be computed for each point.
+                3. For `clf_type` = "nearest_neighbors", `clf_params` is the dictionary {"k": n_neighbors} where `n_neighbors` is the (positive integer) number of nearest neighbours to be computed for each point.
     Returns:
         JSON object: A JSON object, possibly containing the fields:
             * 'labels' (:obj:`list`): A Python list representing the classification labels.
