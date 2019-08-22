@@ -126,7 +126,7 @@ def fit_and_predict(
     platform or the client library to raise an exception.
 
     Args:
-        key (:obj:`str`): An API key for the platform. 
+        key (:obj:`str`): An API key for the platform.
          Keys can be allocated and managed
          from the Forge web portal website.
 
