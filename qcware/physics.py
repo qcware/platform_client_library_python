@@ -1,9 +1,9 @@
 from . import request
 from .request import post_json
-
-
+                     
+                     
+# MCVQE call
 def solve_mcvqe(key,
-                host,
                 filenames=None,
                 N=2,
                 connectivity='linear',
@@ -11,18 +11,82 @@ def solve_mcvqe(key,
                 nmeasurement=None,
                 nmeasurement_subspace=None,
                 nstate=3,
-                vqe_circuit_type='mark1x'):
+                vqe_circuit_type='mark1x',
+                host="https://platform.qcware.com"):
+    """
+    Multistate Contracted Variational Quantum Eigensolver (MCVQE) computes the
+    ground state energy, excited state energy and oscillator strength of molecular
+    stacks and molecular complexes based on the classical DFT results of the
+    smaller components in the molecular stacks/complexes. For more technical
+    information on MCVQE, use this reference: Phys. Rev. Lett. 122, 230401 (2019).
 
-    endpoint_url = "/".join([host, "api/v2/mcvqe"])
+    Args:
+        key (:obj:`string`) : An API key for the platform. Keys can be allocated
+            and managed from the Forge web portal.
 
-    return post_json(endpoint_url, dict(key=key, filenames=filenames, N=N, connectivity=connectivity,
-                     backend_name=backend_name, nmeasurement=nmeasurement,
-                     nmeasurement_subspace=nmeasurement_subspace, nstate=nstate,
-                     vqe_circuit_type=vqe_circuit_type))
+        filenames (:obj: `list of str`) - list of filenames of TeraChem exciton files
+            (classical electronic structure computation output defining monomer
+            characteristics for ab initio exciton model). If filenames are not
+            provieded, TeraChem exciton files of N=8 linear stack of BChl-a
+            chromophores would be loaded.
 
+        N (:obj: `int`) - number of monomers to include (the first N filenames are
+            used).
+
+        backend_name (:obj: `str`, optional) - 'quasar' or 'qiskit' or 'cirq' for the relevant
+            statevector simulator backend.
+
+        nmeasurement (:obj: `None` or `int`, optional) - Number of measurements per observable for
+            MC-VQE parameter optimization step. None indicates infinite
+            averaging.
+
+        nmeasurement_subspace (:obj: `None` or `int`, optional) - Number of measurements per
+            observable for MC-VQE subspace Hamiltonian step. None indicates
+            infinite averaging.
+
+        nstate (:obj: `int`, optional) - Number of electronic states to determine.
+
+        vqe_circuit_type (:obj: `str`, optional) - 'mark1x' or 'mark1z' or 'mark2x' or 'mark2z'
+            to determine the construction of the MC-VQE entangler circuit.
+
+        host (:obj:`string`, optional): The AQUA server to which the client
+            library should connect.  Defaults to https://platform.qcware.com .
+
+    Returns:
+        JSON object: A JSON object containing:
+            (dict) dictionary of results with the following fields:
+                'fci_E' (np.ndarry of shape (nstate,)) - Electronic state energies
+                    computed with FCI (reference energy subtracted)
+                'fci_O' (np.ndarry of shape (nstate-1,)) - Oscillator strengths
+                    between ground and excited states computed with FCI
+                'cis_E' (np.ndarry of shape (nstate,)) - Electronic state energies
+                    computed with CIS (reference energy subtracted)
+                'cis_O' (np.ndarry of shape (nstate-1,)) - Oscillator strengths
+                    between ground and excited states computed with CIS
+                'vqe_E' (np.ndarry of shape (nstate,)) - Electronic state energies
+                    computed with VQE (reference energy subtracted)
+                'vqe_O' (np.ndarry of shape (nstate-1,)) - Oscillator strengths
+                    between ground and excited states computed with VQE
+                'ref_E' (float) - Self energy of AIEM model
+    """
+
+    endpoint_url = "/".join([host, "api/example/mcvqe_server"])
+
+    return post_json(
+        endpoint_url,
+        dict(key=key,
+             filenames=filenames,
+             N=N,
+             connectivity=connectivity,
+             backend_name=backend_name,
+             nmeasurement=nmeasurement,
+             nmeasurement_subspace=nmeasurement_subspace,
+             nstate=nstate,
+             vqe_circuit_type=vqe_circuit_type))
+                     
+                     
+                     
 # VQE call
-
-
 def find_ground_state_energy(key,
                              molecule,
                              minimizer=None,
