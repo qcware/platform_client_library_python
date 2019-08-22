@@ -1,7 +1,7 @@
 from . import request
 from .request import post_json
-                     
-                     
+
+
 # MCVQE call
 def solve_mcvqe(key,
                 filenames=None,
@@ -83,24 +83,23 @@ def solve_mcvqe(key,
              nmeasurement_subspace=nmeasurement_subspace,
              nstate=nstate,
              vqe_circuit_type=vqe_circuit_type))
-                     
-                     
-                     
-# VQE call
-def find_ground_state_energy(key,
-                             molecule,
-                             minimizer=None,
-                             basis='sto-3g',
-                             solver='projectq',
-                             multiplicity=1,
-                             charge=0,
-                             sampling=False,
-                             sampling_trials=1000,
-                             guess_amplitudes=[],
-                             initial_state='UCCSD',
 
-                             host="https://forge.qcware.com",
-                             ):
+
+# VQE call
+def find_ground_state_energy(
+        key,
+        molecule,
+        minimizer=None,
+        basis='sto-3g',
+        solver='projectq',
+        multiplicity=1,
+        charge=0,
+        sampling=False,
+        sampling_trials=1000,
+        guess_amplitudes=[],
+        initial_state='UCCSD',
+        host="https://forge.qcware.com",
+):
     """
     Finds the ground state energy configuration for
     input molecular geometry configuration. Energy output is
@@ -216,7 +215,7 @@ def find_ground_state_energy(key,
         'guess_amplitudes': guess_amplitudes,
         'initial_state': initial_state,
         'minimizer': minimizer
-        }
+    }
 
-    return request.post(host + "/api/v2/find_ground_state_energy",
-                        params, 'VQE')
+    return request.post(host + "/api/v2/find_ground_state_energy", params,
+                        'VQE')
