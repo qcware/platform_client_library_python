@@ -151,12 +151,9 @@ def find_ground_state_energy(
             'projectq' minimizer default is 'swarm' representing swarming algorithm
             and if solver is set to 'ibm_software' or 'ibm_hardware' default value
             is set to 'cobyla'. More minimizers will be available in the future.
-            * For 'projectq' valid minimizers are:
+            For 'projectq' solver valid minimizers are:
                 * 'CG' for conjugate gradient
                 * 'swarm' for pyswarm implementation of swarming algorithm
-            * For 'ibm_x' valid minimizers are:
-                * 'cobyla' Constrained optimization by linear approximation
-                * 'spsa' simultaneous perturbation stochastic approximation
 
         basis (:obj:`string`, optional):
             Orbital basis set used in classical
@@ -168,8 +165,8 @@ def find_ground_state_energy(
             The name of the solver to use for
             the given problem.  Valid values are:
             * "projectq": Run on a physical D-Wave machine
-            * "ibm_software": Run on D-Wave's software simulator
-            * "ibm_hardware": Run using a brute force algorithm
+            * "ibm_software": Not currently available
+            * "ibm_hardware": Not currently available
 
         multiplicity (:obj:`int`, optional):
             integer setting the spin
