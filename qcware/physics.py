@@ -21,35 +21,44 @@ def solve_mcvqe(key,
     information on MCVQE, use this reference: Phys. Rev. Lett. 122, 230401 (2019).
 
     Args:
-        key (:obj:`string`) : An API key for the platform. Keys can be allocated
+        key (:obj:`string`):
+            An API key for the platform. Keys can be allocated
             and managed from the Forge web portal.
 
-        filenames (:obj: `list of str`) - list of filenames of TeraChem exciton files
+        filenames (:obj: `list of str`):
+            list of filenames of TeraChem exciton files
             (classical electronic structure computation output defining monomer
             characteristics for ab initio exciton model). If filenames are not
             provieded, TeraChem exciton files of N=8 linear stack of BChl-a
             chromophores would be loaded.
 
-        N (:obj: `int`) - number of monomers to include (the first N filenames are
+        N (:obj: `int`):
+            number of monomers to include (the first N filenames are
             used).
 
-        backend_name (:obj: `str`, optional) - 'quasar' or 'qiskit' or 'cirq' for the relevant
+        backend_name (:obj: `str`, optional):
+            'quasar' or 'qiskit' or 'cirq' for the relevant
             statevector simulator backend.
 
-        nmeasurement (:obj: `None` or `int`, optional) - Number of measurements per observable for
+        nmeasurement (:obj: `None` or `int`, optional):
+            Number of measurements per observable for
             MC-VQE parameter optimization step. None indicates infinite
             averaging.
 
-        nmeasurement_subspace (:obj: `None` or `int`, optional) - Number of measurements per
+        nmeasurement_subspace (:obj: `None` or `int`, optional):
+            Number of measurements per
             observable for MC-VQE subspace Hamiltonian step. None indicates
             infinite averaging.
 
-        nstate (:obj: `int`, optional) - Number of electronic states to determine.
+        nstate (:obj: `int`, optional):
+            Number of electronic states to determine.
 
-        vqe_circuit_type (:obj: `str`, optional) - 'mark1x' or 'mark1z' or 'mark2x' or 'mark2z'
+        vqe_circuit_type (:obj: `str`, optional):
+            'mark1x' or 'mark1z' or 'mark2x' or 'mark2z'
             to determine the construction of the MC-VQE entangler circuit.
 
-        host (:obj:`string`, optional): The AQUA server to which the client
+        host (:obj:`string`, optional):
+            The QC Ware Forge server to which the client
             library should connect.  Defaults to https://platform.qcware.com .
 
     Returns:
@@ -123,7 +132,7 @@ def find_ground_state_energy(
     corresponds to the energy and parameters that minimize the energy.
 
     Args:
-        * key (:obj:`string`) :
+        key (:obj:`string`) :
             An API key for the platform.  Keys can be allocated
             and managed from the Forge web portal.
 
@@ -136,12 +145,12 @@ def find_ground_state_energy(
             assuming Bohr-Oppenheimer approximation that the nuclei are at fixed
             coordinates. Distances are assumed to be in angstroms.
 
-        minimizer (:obj:`string`): classical optimizer used to minimize
+        minimizer (:obj:`string`):
+            classical optimizer used to minimize
             parameters in ansatz used for the state preparation. If solver is set to
             'projectq' minimizer default is 'swarm' representing swarming algorithm
             and if solver is set to 'ibm_software' or 'ibm_hardware' default value
             is set to 'cobyla'. More minimizers will be available in the future.
-
             * For 'projectq' valid minimizers are:
                 * 'CG' for conjugate gradient
                 * 'swarm' for pyswarm implementation of swarming algorithm
@@ -149,48 +158,57 @@ def find_ground_state_energy(
                 * 'cobyla' Constrained optimization by linear approximation
                 * 'spsa' simultaneous perturbation stochastic approximation
 
-        basis (:obj:`string`, optional): Orbital basis set used in classical
+        basis (:obj:`string`, optional):
+            Orbital basis set used in classical
             computation of molecular hamiltonian. Accepted values are
             the ones natively used in psi4 chemistry package. Default value
             set to :obj:`sto-3g`
 
-        solver (:obj:`string`, optional): The name of the solver to use for
+        solver (:obj:`string`, optional):
+            The name of the solver to use for
             the given problem.  Valid values are:
-
             * "projectq": Run on a physical D-Wave machine
             * "ibm_software": Run on D-Wave's software simulator
             * "ibm_hardware": Run using a brute force algorithm
 
-        multiplicity (:obj:`int`, optional): integer setting the spin
+        multiplicity (:obj:`int`, optional):
+            integer setting the spin
             multiplicity (:math:`2 M_s+1`). Default set to 1
 
-        charge (:obj:`int`, optional): integer setting the molecular charge.
+        charge (:obj:`int`, optional):
+            integer setting the molecular charge.
             Default set to 0.
 
-        sampling (:obj:`bool`, optional): boolean determining whether
+        sampling (:obj:`bool`, optional):
+            boolean determining whether
             expectation value of energy will be estimated for sampling from the
             prepared state or from directly computing an inner product with the
             wavefunction. Applicable only to the `projectq` solver.
 
-        sampling_trials (:obj:`int`, optional): if 'sampling' is set to
+        sampling_trials (:obj:`int`, optional):
+            if 'sampling' is set to
             :obj:`True`, then this parameter sets the number of samples
             taken to estimate expectation value of each term in the molecular
             hamiltonian. Applicable only to the `projectq` solver.
 
-        guess_amplitudes (:obj:`list`, optional): optional list for
+        guess_amplitudes (:obj:`list`, optional):
+            optional list for
             seeding initialization parameters for the 'UCCSD' parametrized state.
             Only available for 'CG' in 'projectq'
 
-        initial_state (:obj: `string`, optional): Sets the type of parametrized
-            parametrized ansatz used to optimize ground state energy. Default value
+        initial_state (:obj: `string`, optional):
+            Sets the type of parametrized parametrized ansatz used to
+            optimize ground state energy. Default value
             set to 'UCCSD'. Currently only available option, to be expanded in
             the future.
 
-        host (:obj:`string`, optional): The AQUA server to which the client
+        host (:obj:`string`, optional):
+            The QC Ware Forge server to which the client
             library should connect.  Defaults to https://platform.qcware.com .
 
     Returns:
-         JSON object: A JSON object, possibly containing the fields:
+         JSON object:
+            A JSON object, possibly containing the fields:
             * 'solution' (:obj:`list`): A Python list representing the solution
               found for the ground state energy of input molecule.
             * 'params' (:obj:`list`): the optimized parameters for the
