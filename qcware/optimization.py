@@ -273,11 +273,15 @@ def solve_binary(
     platform or the client library to raise an exception.
 
     Args:
-        key (:obj:`str`): An API key for the platform.  Keys can be allocated and managed from the Forge web portal.
+        key (:obj:`str`):
+            An API key for the platform.
+            Keys can be allocated and managed from the Forge web portal.
 
-        Q (:obj:`dict`): The objective function matrix in the optimization problem described above.  In the case of a
-            quadratic problem, this is a 2D matrix; generally, in the case of higher-order problems, this is an
-            :math:`n`-dimensional matrix (a tensor).
+        Q (:obj:`dict`):
+            The objective function matrix in the optimization problem
+            described above.  In the case of a quadratic problem, this is a
+             2D matrix; generally, in the case of higher-order problems,
+             this is an :math:`n`-dimensional matrix (a tensor).
 
             Since :math:`Q` is usually sparse, :math:`Q` should be specified
             as a Python dictionary with integer or string pairs :math:`(i,j)` as keys (representing the :math:`(i,j)`th
@@ -288,7 +292,8 @@ def solve_binary(
             :math:`Q` before sending it to the platform.  Note that that helper function assumes :math:`Q` is symmetric,
             which may not be true in general. It is strongly encouraged to format :math:`Q` is a dictionary.
 
-        solver (:obj:`str`, optional): The name of the solver to use for the given problem.  Valid values are:
+        solver (:obj:`str`, optional):
+            The name of the solver to use for the given problem.  Valid values are:
 
             * "dwave_hw": Run on a physical D-Wave machine
             * "brute_force": Run using a brute force algorithm
@@ -301,86 +306,117 @@ def solve_binary(
 
             Note that only certain solvers may be enabled depending on your account.  Default value "dwave_hw".
 
-        constraints_linear_A (:obj:`list`, optional): The :math:`A` matrix for specifying linear constraints.  :math:`A`
+        constraints_linear_A (:obj:`list`, optional):
+            The :math:`A` matrix for specifying linear constraints.  :math:`A`
             should be formatted as a two-dimensional Python list.  Default value :obj:`[]`.
 
-        constraints_linear_b (:obj:`list`, optional): The :math:`b` vector for specifying linear constraints.  :math:`b`
+        constraints_linear_b (:obj:`list`, optional):
+            The :math:`b` vector for specifying linear constraints.  :math:`b`
             should be formatted as a one-dimensional Python list.  Default value :obj:`[]`.
 
-        constraints_sat_max_runs (:obj:`int`, optional): The maximum number of iterations the platform should run in
+        constraints_sat_max_runs (:obj:`int`, optional):
+            The maximum number of iterations the platform should run in
             order to find a formulation where all constraints are satisfied.  Default value :obj:`3100`.
 
-        constraints_hard (:obj:`bool`, optional): Whether to strictly enforce all constraints; if :obj:`False`,
+        constraints_hard (:obj:`bool`, optional):
+            Whether to strictly enforce all constraints; if :obj:`False`,
             constraint penalties may be low enough such that constraints are violated, with the benefit of an improved
             energy landscape.  Default value :obj:`False`.
 
-        constraints_penalty_scaling_factor (:obj:`int`, optional): An extra constant scaling factor for the Lagrange
+        constraints_penalty_scaling_factor (:obj:`int`, optional):
+            An extra constant scaling factor for the Lagrange
             multipliers associated with the penalty terms for the constraints.  This may be helpful if constraints are
             being violated too much or too often.  Default value 1.
 
-        constraints_equality_R (:obj:`list`, optional): The :math:`R` matrices for specifying quadratic equality
+        constraints_equality_R (:obj:`list`, optional):
+            The :math:`R` matrices for specifying quadratic equality
             constraints.  :math:`R` should be formatted as a list of two-dimensional lists (i.e., a list of matrices).
             Default value :obj:`[]`.
 
-        constraints_equality_c (:obj:`list`, optional): The :math:`c` vectors for specifying quadratic equality
+        constraints_equality_c (:obj:`list`, optional):
+            The :math:`c` vectors for specifying quadratic equality
             constraints.  :math:`c` should be formatted as a list of one-dimensional Python lists (i.e., a list of
             vectors).  Default value :obj:`[]`.
 
-        constraints_inequality_S (:obj:`list`, optional): The :math:`S` matrices for specifying quadratic inequality
+        constraints_inequality_S (:obj:`list`, optional):
+            The :math:`S` matrices for specifying quadratic inequality
             constraints.  :math:`S` should be formatted as a list of two-dimensional lists (i.e., a list of matrices).
             Default value :obj:`[]`.
 
-        constraints_inequality_d (:obj:`list`, optional): The :math:`d` vectors for specifying quadratic inequality
+        constraints_inequality_d (:obj:`list`, optional):
+            The :math:`d` vectors for specifying quadratic inequality
             constraints.  :math:`d` should be formatted as a list of one-dimensional Python lists (i.e., a list of
             vectors).  Default value :obj:`[]`.
 
-        return_all_solutions (:obj:`bool`, optional): Whether to return all the candidate solutions found for a problem;
+        return_all_solutions (:obj:`bool`, optional):
+            Whether to return all the candidate solutions found for a problem;
             if :obj:`False`, the platform will only return the solution corresponding to the lowest energy found.
             Default value :obj:`False`.
 
-        num_runs (:obj:`int`, optional): The number of iterations to run with the selected solver.  Default value
+        num_runs (:obj:`int`, optional):
+            The number of iterations to run with the selected solver.  Default value
             :obj:`50`.
 
 
-        dwave_reduce_intersample_correlation (:obj:`bool`, optional): D-Wave hardware system parameter. See `reduce_intersample_correlation <https://docs.dwavesys.com/docs/latest/c_solver_1.html#reduce-intersample-correlation>`_.
+        dwave_reduce_intersample_correlation (:obj:`bool`, optional):
+            D-Wave hardware system parameter. See `reduce_intersample_correlation <https://docs.dwavesys.com/docs/latest/c_solver_1.html#reduce-intersample-correlation>`_.
 
-        dwave_num_spin_reversal_transforms (:obj:`int`, optional): D-Wave hardware system parameter. See `num_spin_reversal_transforms <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-spin-reversal-transforms>`_.
+        dwave_num_spin_reversal_transforms (:obj:`int`, optional):
+            D-Wave hardware system parameter. See `num_spin_reversal_transforms <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-spin-reversal-transforms>`_.
 
-        dwave_programming_thermalization (:obj:`int`, optional): D-Wave hardware system parameter. See `programming_thermalization <https://docs.dwavesys.com/docs/latest/c_solver_1.html#programming-thermalization>`_.
+        dwave_programming_thermalization (:obj:`int`, optional):
+            D-Wave hardware system parameter. See `programming_thermalization <https://docs.dwavesys.com/docs/latest/c_solver_1.html#programming-thermalization>`_.
 
-        dwave_reinitialize_state (:obj:`bool`, optional): D-Wave hardware system parameter. See `reinitialize_state <https://docs.dwavesys.com/docs/latest/c_solver_1.html#reinitialize-state>`_.
+        dwave_reinitialize_state (:obj:`bool`, optional):
+            D-Wave hardware system parameter. See `reinitialize_state <https://docs.dwavesys.com/docs/latest/c_solver_1.html#reinitialize-state>`_.
 
-        dwave_anneal_offsets (:obj:`[float]`, optional): D-Wave hardware system parameter. See `anneal_offsets <https://docs.dwavesys.com/docs/latest/c_solver_1.html#anneal-offsets>`_.
+        dwave_anneal_offsets (:obj:`[float]`, optional):
+            D-Wave hardware system parameter. See `anneal_offsets <https://docs.dwavesys.com/docs/latest/c_solver_1.html#anneal-offsets>`_.
 
-        dwave_anneal_offsets_delta: (:obj:`float`, optional): Parameter greater or equal to 0 that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. We recommend the value to be in [0, 0.05]. See `<https://arxiv.org/pdf/1806.11091.pdf>`_.
+        dwave_anneal_offsets_delta: (:obj:`float`, optional):
+            Parameter greater or equal to 0 that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. We recommend the value to be in [0, 0.05]. See `<https://arxiv.org/pdf/1806.11091.pdf>`_.
 
-        dwave_num_reads (:obj:`int`, optional): D-Wave hardware system parameter. See `num_reads <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-reads>`_.
+        dwave_num_reads (:obj:`int`, optional):
+            D-Wave hardware system parameter. See `num_reads <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-reads>`_.
 
-        dwave_max_answers (:obj:`int`, optional): D-Wave hardware system parameter. See `max_answers <https://docs.dwavesys.com/docs/latest/c_solver_1.html#max-answers>`_.
+        dwave_max_answers (:obj:`int`, optional):
+            D-Wave hardware system parameter. See `max_answers <https://docs.dwavesys.com/docs/latest/c_solver_1.html#max-answers>`_.
 
-        dwave_flux_biases (:obj:`[float]`, optional): D-Wave hardware system parameter. See `flux_biases <https://docs.dwavesys.com/docs/latest/c_solver_1.html#flux-biases>`_.
+        dwave_flux_biases (:obj:`[float]`, optional):
+            D-Wave hardware system parameter. See `flux_biases <https://docs.dwavesys.com/docs/latest/c_solver_1.html#flux-biases>`_.
 
-        dwave_beta (:obj:`float`, optional): D-Wave hardware system parameter. See `beta <https://docs.dwavesys.com/docs/latest/c_solver_1.html#beta>`_.
+        dwave_beta (:obj:`float`, optional):
+            D-Wave hardware system parameter. See `beta <https://docs.dwavesys.com/docs/latest/c_solver_1.html#beta>`_.
 
-        dwave_answer_mode (:obj:`string`, optional): D-Wave hardware system parameter. See `answer_mode <https://docs.dwavesys.com/docs/latest/c_solver_1.html#answer-mode>`_.
+        dwave_answer_mode (:obj:`string`, optional):
+            D-Wave hardware system parameter. See `answer_mode <https://docs.dwavesys.com/docs/latest/c_solver_1.html#answer-mode>`_.
 
-        dwave_auto_scale (:obj:`bool`, optional): D-Wave hardware system parameter. See `auto_scale <https://docs.dwavesys.com/docs/latest/c_solver_1.html#auto-scale>`_.
+        dwave_auto_scale (:obj:`bool`, optional):
+            D-Wave hardware system parameter. See `auto_scale <https://docs.dwavesys.com/docs/latest/c_solver_1.html#auto-scale>`_.
 
-        dwave_postprocess (:obj:`string`, optional): D-Wave hardware system parameter. See `postprocess <https://docs.dwavesys.com/docs/latest/c_solver_1.html#postprocess>`_.
+        dwave_postprocess (:obj:`string`, optional):
+            D-Wave hardware system parameter. See `postprocess <https://docs.dwavesys.com/docs/latest/c_solver_1.html#postprocess>`_.
 
-        dwave_annealing_time (:obj:`int`, optional): D-Wave hardware system parameter. See `annealing_time <https://docs.dwavesys.com/docs/latest/c_solver_1.html#annealing-time>`_.
+        dwave_annealing_time (:obj:`int`, optional):
+            D-Wave hardware system parameter. See `annealing_time <https://docs.dwavesys.com/docs/latest/c_solver_1.html#annealing-time>`_.
 
-        dwave_anneal_schedule (:obj:`[(int, float)]`, optional): D-Wave hardware system parameter. See `anneal_schedule <https://docs.dwavesys.com/docs/latest/c_solver_1.html#anneal-schedule>`_.
+        dwave_anneal_schedule (:obj:`[(int, float)]`, optional):
+            D-Wave hardware system parameter. See `anneal_schedule <https://docs.dwavesys.com/docs/latest/c_solver_1.html#anneal-schedule>`_.
 
-        dwave_initial_state (:obj:`[(int, int)]`, optional): D-Wave hardware system parameter. See `initial_state <https://docs.dwavesys.com/docs/latest/c_solver_1.html#initial-state>`_.
+        dwave_initial_state (:obj:`[(int, int)]`, optional):
+            D-Wave hardware system parameter. See `initial_state <https://docs.dwavesys.com/docs/latest/c_solver_1.html#initial-state>`_.
 
-        dwave_chains (:obj:`[[int]]`, optional): D-Wave hardware system parameter. See `chains <https://docs.dwavesys.com/docs/latest/c_solver_1.html#chains>`_.
+        dwave_chains (:obj:`[[int]]`, optional):
+            D-Wave hardware system parameter. See `chains <https://docs.dwavesys.com/docs/latest/c_solver_1.html#chains>`_.
 
-        dwave_flux_drift_compensation (:obj:`bool`, optional): D-Wave hardware system parameter. See `flux_drift_compensation <https://docs.dwavesys.com/docs/latest/c_solver_1.html#flux-drift-compensation>`_.
+        dwave_flux_drift_compensation (:obj:`bool`, optional):
+            D-Wave hardware system parameter. See `flux_drift_compensation <https://docs.dwavesys.com/docs/latest/c_solver_1.html#flux-drift-compensation>`_.
 
-        dwave_beta_range (:obj:`[int]`, optional): D-Wave software system parameter. See `beta_range <https://docs.ocean.dwavesys.com/projects/dimod/en/latest/reference/generated/dimod.reference.samplers.SimulatedAnnealingSampler.sample.html>`_.
+        dwave_beta_range (:obj:`[int]`, optional):
+            D-Wave software system parameter. See `beta_range <https://docs.ocean.dwavesys.com/projects/dimod/en/latest/reference/generated/dimod.reference.samplers.SimulatedAnnealingSampler.sample.html>`_.
 
-        dwave_num_sweeps (:obj:`int`, optional): D-Wave software system parameter. See `num_sweeps <https://docs.ocean.dwavesys.com/projects/dimod/en/latest/reference/generated/dimod.reference.samplers.SimulatedAnnealingSampler.sample.html>`_.
+        dwave_num_sweeps (:obj:`int`, optional):
+            D-Wave software system parameter. See `num_sweeps <https://docs.ocean.dwavesys.com/projects/dimod/en/latest/reference/generated/dimod.reference.samplers.SimulatedAnnealingSampler.sample.html>`_.
 
         dwave_precision_ancillas (:obj:`bool`, optional):
 
@@ -388,62 +424,79 @@ def solve_binary(
 
         constraints_hard_num (:obj:`[[int]]`, optional):
 
-        sa_num_sweeps (:obj:`int`, optional): If using a simulated annealing solver, how many sweeps to perform per
+        sa_num_sweeps (:obj:`int`, optional):
+            If using a simulated annealing solver, how many sweeps to perform per
             run of the algorithm.  Default value :obj:`200`.
 
-        use_sample_persistence (:obj:`bool`, optional): Whether to use the sample persistence method of
+        use_sample_persistence (:obj:`bool`, optional):
+            Whether to use the sample persistence method of
             https://arxiv.org/abs/1606.07797 , which aims to improve the probability of a quantum annealer to obtain
             an optimal solution.
 
-        sample_persistence_solution_threshold (:obj:`float`, optional): A threshold that is used to filter out
+        sample_persistence_solution_threshold (:obj:`float`, optional):
+            A threshold that is used to filter out
             higher-energy candidate solutions from the sample persistence method.  A percentage that ranges from 0 to 1.
 
-        sample_persistence_persistence_threshold (:obj:`float`, optional): A threshold between 0 and 1 such that a
+        sample_persistence_persistence_threshold (:obj:`float`, optional):
+            A threshold between 0 and 1 such that a
             variable is fixed if its mean absolute value across the filtered sample is larger than the value of the
             threshold.  Called fixing_threshold in the original paper.
 
-        sample_persistence_persistence_iterations (:obj:`int`, optional): The number of iterations to run the sample
+        sample_persistence_persistence_iterations (:obj:`int`, optional):
+            The number of iterations to run the sample
             persistence algorithm.  Generally speaking, more iterations will make the algorithm more successful, at
             the cost of increased computation time.
 
-        google_num_steps (:obj:`int`, optional): The number of QAOA steps implemented
+        google_num_steps (:obj:`int`, optional):
+            The number of QAOA steps implemented
             by the algorithm.  Default value :obj:`1`.
 
-        google_n_samples (:obj:`int`, optional): The number of runs corresponding to
+        google_n_samples (:obj:`int`, optional):
+            The number of runs corresponding to
             the final sampling step.  Default value :obj:`1000`.
 
-        google_arguments_optimizer (:obj:`dict`, optional): The dictionary that contains the parameters
+        google_arguments_optimizer (:obj:`dict`, optional):
+            The dictionary that contains the parameters
             of the bayesain-optimization optimizer.  Default value :obj:`{'init_point': 10, 'number_iter': 20, 'kappa': 2}`.
 
-        google_step_sampling (:obj:`bool`, optional): Wheter to sample the circuit with the current parameters
+        google_step_sampling (:obj:`bool`, optional):
+            Wheter to sample the circuit with the current parameters
             at every step of the optimization (True) or just at the final one.  Default value :obj:`True`.
 
-        google_n_samples_step_sampling (:obj:`int`, optional): The number of runs corresponding to
+        google_n_samples_step_sampling (:obj:`int`, optional):
+            The number of runs corresponding to
             sampling at every step of the optimization.  Default value :obj:`1000`.
 
-        number_of_blocks (:obj:`int`, optional): number of blocks to decompose problem into using
+        number_of_blocks (:obj:`int`, optional):
+            number of blocks to decompose problem into using
             random decomposition. Default value :obj: `1` meaning no decomposition.
 
-        iterations (:obj:`int`, optional): number of iterations to cycle through when using
+        iterations (:obj:`int`, optional):
+            number of iterations to cycle through when using
             random decomposition. Only valid if :obj: `number_of_blocks` is greater than 1.
             Each iterations corresponds to solving all blocks of the decomposition once.
             Default value :obj:`50`.
 
-        initial_solution (:obj:`dict`, optional): initial solution seed for constructing the
+        initial_solution (:obj:`dict`, optional):
+            initial solution seed for constructing the
             blocks using random decomposition. If none is provided, a random solution is
             initialized. Default value :obj: `None`. :obj:`initial_solution` should be the same type
             as :obj:`Q`.
 
-        always_update_with_best (:obj:`bool`, optional):  solutions found using decomposition
+        always_update_with_best (:obj:`bool`, optional):
+            solutions found using decomposition
             do not monotonically get better with each iterations. The best solution is always returned,
             but this flag determines whether or not to construct new decomposition using best solution.
             Default value :obj: `True`.
 
-        update_q_each_block_solution (:obj:`bool`, optional): each blocks decomposed Q matrix
+        update_q_each_block_solution (:obj:`bool`, optional):
+            each blocks decomposed Q matrix
             can be constructed at the onset of block composition, or updated every time a block is
             solved. Default value :obj: `True`.
 
-        host (:obj:`str`, optional): The AQUA server to which the client library should connect.  Defaults to https://forge.qcware.com .
+        host (:obj:`str`, optional):
+            The Forge QC Ware server to which the client library should connect.
+              Defaults to https://api.forge.qcware.com .
 
 
     Returns:
@@ -641,10 +694,12 @@ def ising_to_qubo(h, J, offset=0):
     Note that Ising {-1, 1} values go to QUBO {0, 1} values in that order!
 
     Args:
-        h (:obj:`dict`): Field values.
+        h (:obj:`dict`):
+            Field values.
             The field of each spin in the Ising formulation.
             `h[i]` is the field value for the ith spin.
-        J (:obj:`dict`): Coupling values.
+        J (:obj:`dict`):
+            Coupling values.
             `J[(i, j)]` is the coupling between the ith and jth spin. Note
             that `J` cannot have a key that has a repeated index, ie `(1, 1)` is an
             invalid key.
