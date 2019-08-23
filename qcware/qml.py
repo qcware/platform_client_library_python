@@ -14,7 +14,7 @@ def fit_and_predict(
         clf_type="nearest_centroids",
         clf_params={},
         solver="ibm_sw",
-        host="https://platform.qcware.com"):
+        host="https://api.forge.qcware.com"):
     r"""Classifies test data according to input
      training data and a selected backend and classifier type
 
