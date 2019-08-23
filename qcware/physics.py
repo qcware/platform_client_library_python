@@ -127,7 +127,8 @@ def find_ground_state_energy(
             An API key for the platform.  Keys can be allocated
             and managed from the Forge web portal.
 
-        molecule (:obj:`list`): List of tuples/lists the form
+        molecule (:obj:`list`):
+            List of tuples/lists the form
             [[Element,Position], [Element,Position]]
             where Element is the periodic table symbol for atom
             and Position is a list [x,y,z] with cartesian coordinates
