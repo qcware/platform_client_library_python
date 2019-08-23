@@ -13,7 +13,7 @@ def fit_and_predict(
         backend="simulator",
         clf_type="nearest_centroids",
         clf_params={},
-        solver="dwave_hybrid",
+        solver="ibm_sw",
         host="https://platform.qcware.com"):
     r"""Classifies test data according to input
      training data and a selected backend and classifier type
