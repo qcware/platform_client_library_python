@@ -12,7 +12,7 @@ def solve_mcvqe(key,
                 nmeasurement_subspace=None,
                 nstate=3,
                 vqe_circuit_type='mark1x',
-                host="https://platform.qcware.com"):
+                host="https://api.forge.qcware.com"):
     """
     Multistate Contracted Variational Quantum Eigensolver (MCVQE) computes the
     ground state energy, excited state energy and oscillator strength of molecular
@@ -70,7 +70,7 @@ def solve_mcvqe(key,
                 'ref_E' (float) - Self energy of AIEM model
     """
 
-    endpoint_url = "/".join([host, "api/example/mcvqe_server"])
+    endpoint_url = "/".join([host, "api/v2/mcvqe"])
 
     return post_json(
         endpoint_url,
@@ -98,7 +98,7 @@ def find_ground_state_energy(
         sampling_trials=1000,
         guess_amplitudes=[],
         initial_state='UCCSD',
-        host="https://forge.qcware.com",
+        host="https://api.forge.qcware.com",
 ):
     """
     Finds the ground state energy configuration for

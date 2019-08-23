@@ -38,8 +38,9 @@ def _warnings(params):
 
     # Warn about long computation times
     if params["solver"] == "ibm_hw_qaoa":
-        SolverWarning.warn("Running QAOA on IBM hardware will be a very long "
-                           "computation! Be prepared to wait hours for an output.")
+        SolverWarning.warn("IBM hardware solver is currently disabled due to"
+                           "queue waiting times. Defaulting to ibm_sw_qaoa "
+                           "for this run.")
 
     # Warn about parameters not being used
     if "dwave_anneal_offsets" in params and "dwave_anneal_offsets_delta" in params:
@@ -211,7 +212,7 @@ def solve_binary(
         initial_solution=None,
         always_update_with_best=True,
         update_q_each_block_solution=True,
-        host="https://forge.qcware.com",
+        host="https://api.forge.qcware.com",
         ):
     r"""Solve a binary optimization problem using one of the solvers provided by the platform.
 
@@ -293,7 +294,8 @@ def solve_binary(
             * "brute_force": Run using a brute force algorithm
             * "hfs": Run using the Hamze-de Freitas-Selby algorithm
             * "google_sw_qaoa": Run using the Google simulator implementation of the QAOA algorithm
-            * "ibm_hw_qaoa": Run the QAOA algorithm on a physical IBM machine, this may take over 2 hours for even small problems!
+            * "ibm_hw_qaoa": This solver is currently disabled due to queue issues.
+                Run the QAOA algorithm on a physical IBM machine, this may take over 2 hours for even small problems!
             * "ibm_sw_qaoa": Run the QAOA algorithm on IBM's software simulator of the QAOA algorithm
 
 
@@ -564,6 +566,10 @@ def solve_binary(
 
     # warn user about their inputs
     _warnings(params)
+
+    # switch from ibm_hw
+    if solver == 'ibm_hw_qaoa':
+        params['solver'] = 'ibm_sw_qaoa'
 
     result = request.post(host + "/api/v2/solve_binary", params, "solve_binary")
 
