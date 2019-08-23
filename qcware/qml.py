@@ -15,11 +15,12 @@ def fit_and_predict(
         clf_params={},
         solver="ibm_sw",
         host="https://api.forge.qcware.com"):
-    r"""Classifies test data according to input
-     training data and a selected backend and classifier type
+    """
+    Classifies test data according to input training data and a selected
+    backend and classifier type.
 
     Args:
-        key (:obj:`str`): An API key for the platform.
+        key (:obj:`str`) : An API key for the platform.
          Keys can be allocated and managed
          from the Forge web portal website.
 

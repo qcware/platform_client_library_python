@@ -123,8 +123,9 @@ def find_ground_state_energy(
     corresponds to the energy and parameters that minimize the energy.
 
     Args:
-        key (:obj:`string`) : An API key for the platform.  Keys can be allocated
-            and managed from the Forge web portal.
+        key (:obj:`string`) :
+        An API key for the platform.  Keys can be allocated
+        and managed from the Forge web portal.
 
         molecule (:obj:`list`): List of tuples/lists the form
             [[Element,Position], [Element,Position]]
