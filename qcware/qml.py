@@ -45,7 +45,7 @@ def fit_and_predict(
         clf_type (:obj:`string`):
          Selects the quantum classifier. The options are
             "nearest_centroids", "nearest_clusters",
-             and "nearest_neighbors". Defaults to "nearest_centroids".
+             and "nearest_neighbours". Defaults to "nearest_centroids".
 
         clf_params (:obj:`dict`): A dictionary of the parameters for
          each specific classifier (see description of
@@ -57,15 +57,17 @@ def fit_and_predict(
                 1. For `clf_type` = "nearest_centroids", `
                 clf_params` is {"mode": s}
                  where `s` is either the string
-                 "hard" or the string "soft".
+                 "exact" or the string "sample".
 
-                    - If s = "soft", then the classifier
+                    - If s = "sample", then the classifier
                      uses a fast quantum
                      inner product estimation procedure
                      to sample a centroid
                      with probability proportional to the
                      closeness to the test point.
-                     - If s = "hard", the above procedure
+
+
+                     - If s = "exact", the above procedure
                      is repeated a number of times
                      so multiple samples are taken
                      in order to choose the nearest
@@ -74,7 +76,7 @@ def fit_and_predict(
                 2. For `clf_type` = "nearest_clusters",
                  `clf_params` is the empty dictionary.
 
-                3. For `clf_type` = "nearest_neighbors",
+                3. For `clf_type` = "nearest_neighbours",
                  `clf_params` is the dictionary
                  {"k": n_neighbors} where `n_neighbors`
                  is the (positive integer)
@@ -101,9 +103,9 @@ def fit_and_predict(
      point to all centroids
      and assigning the label of the nearest centroid.
      One can assign the label deterministically
-     to the nearest centroid (hard assignment) or
+     to the nearest centroid (exact assignment) or
      probabilistically proportional to the
-     closeness (soft assignment).
+     closeness (sample assignment).
 
     In this release, we perform the centroid
      calculation classically,
@@ -115,7 +117,7 @@ def fit_and_predict(
      Then, we assign a label to a test point by a
      quantum classifier that works in two modes.
 
-    If mode=“soft”, then the classifier uses a fast quantum
+    If mode=“sample”, then the classifier uses a fast quantum
      inner product estimation procedure
      to sample a centroid with probability proportional
      to the closeness to the test point.
@@ -130,9 +132,9 @@ def fit_and_predict(
     where $d^2(\\cdot,\\cdot)$ is the square Euclidean distance
      between the two vectors normalized
      by their norms in order to take values in $[0,1]$.
-     This corresponds to a “soft” assignment.
+     This corresponds to a “sample” assignment.
 
-    If mode=“hard”, the above procedure is repeated a
+    If mode=“exact”, the above procedure is repeated a
      number of times so multiple samples are
      taken in order to choose the nearest
      centroid with high probability.
