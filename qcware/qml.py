@@ -24,7 +24,7 @@ def fit_and_predict(
 
         X (:obj:`[[float]]`):
          A numpy array holding the training points. d is the number dimensionality
-         (number of feature) of the data.
+         (number of features) of a training example.
          of size [n_train, d].
 
         y (:obj:`[int]`): A numpy array of class
