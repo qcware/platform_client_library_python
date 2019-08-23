@@ -2,6 +2,7 @@ import numpy
 from . import request
 from qcware.wrappers import print_errors, print_api_mismatch
 
+
 @print_api_mismatch
 @print_errors
 def fit_and_predict(
