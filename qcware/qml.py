@@ -2,7 +2,6 @@ import numpy
 from . import request
 from qcware.wrappers import print_errors, print_api_mismatch
 
-
 @print_api_mismatch
 @print_errors
 def fit_and_predict(
@@ -17,6 +16,74 @@ def fit_and_predict(
         host="https://platform.qcware.com"):
     r"""Classifies test data according to input
      training data and a selected backend and classifier type
+
+    Args:
+        key (:obj:`str`): An API key for the platform.
+         Keys can be allocated and managed
+         from the Forge web portal website.
+
+        X (:obj:`[[float]]`):
+         A numpy array holding the training points. d is the number dimensionality
+         (number of feature) of the data.
+         of size [n_train, d].
+
+        y (:obj:`[int]`): A numpy array of class
+         labels (strings or integers) of size [n_samples]
+         corresponding to the training points.
+
+        T (:obj:`[[float]]`): A numpy array of the test data [n_tests, d].
+
+        backend (:obj:`string`): Selects
+         the specific backend used to run the computation.
+
+            The currently supported backend is:
+
+            * "simulator": Runs the algorithms on a software simulator
+
+
+        clf_type (:obj:`string`):
+         Selects the quantum classifier. The options are
+            "nearest_centroids", "nearest_clusters",
+             and "nearest_neighbors". Defaults to "nearest_centroids".
+
+        clf_params (:obj:`dict`): A dictionary of the parameters for
+         each specific classifier (see description of
+         each classifier below for details)
+
+            The structure of `clf_params` depends on
+             `clf_type` and is the following:
+
+                1. For `clf_type` = "nearest_centroids", `
+                clf_params` is {"mode": s}
+                 where `s` is either the string
+                 "hard" or the string "soft".
+
+                    - If s = "soft", then the classifier
+                     uses a fast quantum
+                     inner product estimation procedure
+                     to sample a centroid
+                     with probability proportional to the
+                     closeness to the test point.
+                     - If s = "hard", the above procedure
+                     is repeated a number of times
+                     so multiple samples are taken
+                     in order to choose the nearest
+                     centroid with high probability.
+
+                2. For `clf_type` = "nearest_clusters",
+                 `clf_params` is the empty dictionary.
+
+                3. For `clf_type` = "nearest_neighbors",
+                 `clf_params` is the dictionary
+                 {"k": n_neighbors} where `n_neighbors`
+                 is the (positive integer)
+                 number of nearest neighbours to
+                 be computed for each point.
+    Returns:
+        JSON object: A JSON object, possibly containing the fields:
+            * 'labels' (:obj:`list`): A Python
+             list representing the classification labels.
+
 
 
     The function supports three different quantum classifiers.
@@ -124,74 +191,6 @@ def fit_and_predict(
      :obj:`fit_and_predict`
      in a try/catch block since it is possible for the
     platform or the client library to raise an exception.
-
-    Args:
-        key (:obj:`str`): An API key for the platform.
-         Keys can be allocated and managed
-         from the Forge web portal website.
-
-        X (:obj:`[[float]]`):
-         A numpy array holding the training points
-         of size [n_samples, n_features].
-
-        y (:obj:`[int]`): A numpy array of class
-         labels (strings or integers) of size [n_samples]
-         corresponding to the training points.
-
-        T (:obj:`[[float]]`): A numpy array
-         holding the test points of size [n_tests, n_features].
-
-        backend (:obj:`string`): Selects
-         the specific backend used to run the computation.
-
-            The currently supported backend is:
-
-            * "simulator": Runs the algorithms on a software simulator
-
-
-        clf_type (:obj:`string`):
-         Selects the quantum classifier. The options are
-            "nearest_centroids", "nearest_clusters",
-             and "nearest_neighbors". Defaults to "nearest_centroids".
-
-        clf_params (:obj:`dict`): A dictionary of the parameters for
-         each specific classifier (see description of
-         each classifier below for details)
-
-            The structure of `clf_params` depends on
-             `clf_type` and is the following:
-
-                1. For `clf_type` = "nearest_centroids", `
-                clf_params` is {"mode": s}
-                 where `s` is either the string
-                 "hard" or the string "soft".
-
-                    - If s = "soft", then the classifier
-                     uses a fast quantum
-                     inner product estimation procedure
-                     to sample a centroid
-                     with probability proportional to the
-                     closeness to the test point.
-                     - If s = "hard", the above procedure
-                     is repeated a number of times
-                     so multiple samples are taken
-                     in order to choose the nearest
-                     centroid with high probability.
-
-                2. For `clf_type` = "nearest_clusters",
-                 `clf_params` is the empty dictionary.
-
-                3. For `clf_type` = "nearest_neighbors",
-                 `clf_params` is the dictionary
-                 {"k": n_neighbors} where `n_neighbors`
-                 is the (positive integer)
-                 number of nearest neighbours to
-                 be computed for each point.
-    Returns:
-        JSON object: A JSON object, possibly containing the fields:
-            * 'labels' (:obj:`list`): A Python
-             list representing the classification labels.
-
     """
 
     params = {
