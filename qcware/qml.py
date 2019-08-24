@@ -60,7 +60,7 @@ def fit_and_predict(
                  where `s` is either the string
                  "exact" or the string "sample".
 
-                    - If s = "sample", then the classifier
+                    - If s = "exact", then the classifier
                      uses a fast quantum
                      inner product estimation procedure
                      to sample a centroid
@@ -68,7 +68,7 @@ def fit_and_predict(
                      closeness to the test point.
 
 
-                     - If s = "exact", the above procedure
+                     - If s = "sample", the above procedure
                      is repeated a number of times
                      so multiple samples are taken
                      in order to choose the nearest
@@ -118,7 +118,7 @@ def fit_and_predict(
      Then, we assign a label to a test point by a
      quantum classifier that works in two modes.
 
-    If mode=“sample”, then the classifier uses a fast quantum
+    If mode=“exact”, then the classifier uses a fast quantum
      inner product estimation procedure
      to sample a centroid with probability proportional
      to the closeness to the test point.
@@ -135,7 +135,7 @@ def fit_and_predict(
      by their norms in order to take values in $[0,1]$.
      This corresponds to a “sample” assignment.
 
-    If mode=“exact”, the above procedure is repeated a
+    If mode=“sample”, the above procedure is repeated a
      number of times so multiple samples are
      taken in order to choose the nearest
      centroid with high probability.
