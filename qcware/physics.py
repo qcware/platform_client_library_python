@@ -7,7 +7,7 @@ def solve_mcvqe(key,
                 filenames=None,
                 N=2,
                 connectivity='linear',
-                backend_name='quasar',
+                solver='quasar',
                 nmeasurement=None,
                 nmeasurement_subspace=None,
                 nstate=3,
@@ -36,7 +36,7 @@ def solve_mcvqe(key,
             number of monomers to include (the first N filenames are
             used).
 
-        backend_name (:obj: `str`, optional):
+        solver (:obj: `str`, optional):
             'quasar' or 'qiskit' or 'cirq' for the relevant
             statevector simulator backend.
 
@@ -87,7 +87,7 @@ def solve_mcvqe(key,
              filenames=filenames,
              N=N,
              connectivity=connectivity,
-             backend_name=backend_name,
+             solver=solver,
              nmeasurement=nmeasurement,
              nmeasurement_subspace=nmeasurement_subspace,
              nstate=nstate,
