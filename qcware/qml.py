@@ -25,20 +25,20 @@ def fit_and_predict(
         from the Forge web portal website.
 
        X (:obj:`[[float]]`):
-        A numpy array holding the training points. 
+        A numpy array holding the training points.
         d is the number dimensionality
         (number of features) of a training example.
         of size [n_train, d].
 
-       y (:obj:`[int]`): 
+       y (:obj:`[int]`):
         A numpy array of class
         labels (strings or integers) of size [n_samples]
         corresponding to the training points.
 
-       T (:obj:`[[float]]`): 
+       T (:obj:`[[float]]`):
         A numpy array of the test data [n_tests, d].
 
-       backend (:obj:`string`): 
+       backend (:obj:`string`):
         Selects the specific backend used to run the computation.
 
            The currently supported backend is:
@@ -46,12 +46,12 @@ def fit_and_predict(
            * "simulator": Runs the algorithms on a software simulator
 
 
-       clf_type (:obj:`string`): 
+       clf_type (:obj:`string`):
         Selects the quantum classifier. The options are
         "nearest_centroids", "nearest_clusters",
         and "nearest_neighbours". Defaults to "nearest_centroids".
 
-       clf_params (:obj:`dict`): 
+       clf_params (:obj:`dict`):
         A dictionary of the parameters for
         each specific classifier (see description of
         each classifier below for details).The structure of `clf_params` depends on
@@ -82,7 +82,7 @@ def fit_and_predict(
 
     The classical Nearest Centroid classifier
     uses the training
-    points belonging to each of $k$ classes
+    points belonging to each of :math:`k` classes
     in order to compute
     the centroid of each class.
     Then, the label of a test point is
@@ -101,26 +101,26 @@ def fit_and_predict(
     to find the centroids. We also prepare the
     quantum circuits necessary for a fast loading of
     the centroids and the test points.
-    Then, we assign a label 
+    Then, we assign a label
     to a test point by a quantum classifier that works as follows.
 
-    The classifier uses a fast quantum inner product estimation 
-    procedure to estimate the distance between the test point 
-    and each centroid in superposition. In high level, when 
-    testing the point $T_i$, the quantum procedure performs 
-    at the end a measurement that gives outcome $j$ with probability
+    The classifier uses a fast quantum inner product estimation
+    procedure to estimate the distance between the test point
+    and each centroid in superposition. In high level, when
+    testing the point :math:`T_i`, the quantum procedure performs
+    at the end a measurement that gives outcome :math:`j` with probability
 
-    $$\Pr[\mbox{ outcome } j \;] \; \propto \; d^2(C_j,T_i),$$
+    .. math:: \Pr[\mbox{ outcome } j \;] \; \propto \; d^2(C_j,T_i)
 
-    where $d^2(\cdot,\cdot)$ is the square Euclidean distance between 
-    the two vectors. The procedure is run enough times to acquire 
-    statistics for finding the nearest centroid with high probability. 
-    Note that if the norms of the centroids are very different then 
-    more samples are needed for accurately estimating the 
-    nearest centroid. 
-    The running time of this procedure is $O(\log(kd))$.
+    where :math:`d^2(\cdot,\cdot)` is the square Euclidean distance between
+    the two vectors. The procedure is run enough times to acquire
+    statistics for finding the nearest centroid with high probability.
+    Note that if the norms of the centroids are very different then
+    more samples are needed for accurately estimating the
+    nearest centroid.
+    The running time of this procedure is :math:`O(\log(kd))`.
 
-    The solution returned is a dictionary containing the 
+    The solution returned is a dictionary containing the
     labels for each test point.
 
     **Nearest Clusters Classifier**
@@ -138,38 +138,36 @@ def fit_and_predict(
     test point and the points of the cluster.
     We then assign the label that corresponds to the nearest cluster.
 
-    The solution returned is a dictionary 
+    The solution returned is a dictionary
     containing the labels for each test point.
 
     **Nearest Neighbors Classifier**
 
     The classical nearest neighbors method with a
-    user-defined parameter $k$ finds the $k$ training points
+    user-defined parameter :math:`k` finds the :math:`k` training points
     that are closest in Euclidean distance to the test point.
     Then it assigns the label that, for example, corresponds
     to the majority or a weighted majority.
 
-    The quantum nearest neighbor classifier with parameter 
-    $k$ uses quantum techniques to find the $k$ nearest neighbors. 
-    The classifier uses a fast quantum inner product estimation 
-    procedure to estimate the distance between the test point 
-    and all training points in superposition. In high level, 
-    when testing the point $T_i$, the quantum procedure 
-    performs at the end a measurement that 
-    gives outcome $j$ with probability.
+    The quantum nearest neighbor classifier with parameter
+    :math:`k` uses quantum techniques to find the :math:`k` nearest neighbors.
+    The classifier uses a fast quantum inner product estimation
+    procedure to estimate the distance between the test point
+    and all training points in superposition. In high level,
+    when testing the point :math:`T_i`, the quantum procedure
+    performs at the end a measurement that
+    gives outcome :math:`j` with probability.
 
-    $$
-    \Pr[\mbox{ outcome } j \;] \; \propto \; d^2(X_j,T_i),
-    $$
+    .. math:: \Pr[\mbox{ outcome } j \;] \; \propto \; d^2(X_j,T_i),
 
-    where $d^2(\cdot,\cdot)$ is the square Euclidean 
-    distance between the two vectors. The procedure is 
-    run enough times to acquire statistics for finding 
-    the $k$ nearest neighbors with high probability. 
-    Then, a majority vote is performed among the $k$ 
+    where :math:`d^2(\cdot,\cdot)` is the square Euclidean
+    distance between the two vectors. The procedure is
+    run enough times to acquire statistics for finding
+    the :math:`k` nearest neighbors with high probability.
+    Then, a majority vote is performed among the :math:`k`
     neighbors for assigning the label.
 
-    The solution returned is a dictionary containing 
+    The solution returned is a dictionary containing
     the labels for each test point.
 
     It is strongly recommended to wrap a call to
