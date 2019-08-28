@@ -25,35 +25,35 @@ def solve_mcvqe(key,
             An API key for the platform. Keys can be allocated
             and managed from the Forge web portal.
 
-        filenames (:obj: `list of str`):
+        filenames (:obj:`list` of string):
             list of filenames of TeraChem exciton files
             (classical electronic structure computation output defining monomer
             characteristics for ab initio exciton model). If filenames are not
             provieded, TeraChem exciton files of N=8 linear stack of BChl-a
             chromophores would be loaded.
 
-        N (:obj: `int`):
+        N (:obj:`int`):
             number of monomers to include (the first N filenames are
             used).
 
-        solver (:obj: `str`, optional):
+        solver (:obj:`string`, optional):
             'quasar' or 'qiskit' or 'cirq' for the relevant
             statevector simulator backend.
 
-        nmeasurement (:obj: `None` or `int`, optional):
+        nmeasurement (:obj:`int`, optional):
             Number of measurements per observable for
             MC-VQE parameter optimization step. None indicates infinite
             averaging.
 
-        nmeasurement_subspace (:obj: `None` or `int`, optional):
+        nmeasurement_subspace (:obj:`int`, optional):
             Number of measurements per
             observable for MC-VQE subspace Hamiltonian step. None indicates
             infinite averaging.
 
-        nstate (:obj: `int`, optional):
+        nstate (:obj:`int`, optional):
             Number of electronic states to determine.
 
-        vqe_circuit_type (:obj: `str`, optional):
+        vqe_circuit_type (:obj:`str`, optional):
             'mark1x' or 'mark1z' or 'mark2x' or 'mark2z'
             to determine the construction of the MC-VQE entangler circuit.
 
@@ -193,7 +193,7 @@ def find_ground_state_energy(
             seeding initialization parameters for the 'UCCSD' parametrized state.
             Only available for 'CG' in 'projectq'
 
-        initial_state (:obj: `string`, optional):
+        initial_state (:obj:`string`, optional):
             Sets the type of parametrized parametrized ansatz used to
             optimize ground state energy. Default value
             set to 'UCCSD'. Currently only available option, to be expanded in
