@@ -7,7 +7,6 @@ with open('README.md') as f:
 
 with open("requirements.txt") as f:
     REQUIREMENTS = [line.strip() for line in f if line.strip()]
-    
 
 setup(
   name='qcware',
