@@ -4,8 +4,15 @@ import setuptools
 with open('README.md') as f:
     README = f.read()
 
-with open("requirements.txt") as f:
-    REQUIREMENTS = [line.strip() for line in f if line.strip()]
+# doesn't work with circleci for some reason?
+# with open("requirements.txt") as f:
+#     REQUIREMENTS = [line.strip() for line in f if line.strip()]
+
+REQUIREMENTS = [
+    "numpy",
+    "requests",
+    "protobuf==3.3.0"
+]
 
 
 setuptools.setup(
