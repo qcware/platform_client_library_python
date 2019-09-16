@@ -1,4 +1,3 @@
-from distutils.core import setup
 import setuptools
 
 
@@ -8,9 +7,10 @@ with open('README.md') as f:
 with open("requirements.txt") as f:
     REQUIREMENTS = [line.strip() for line in f if line.strip()]
 
-setup(
+
+setuptools.setup(
   name='qcware',
-  packages=['qcware'],
+  packages=setuptools.find_packages(exclude=("tests", "docs")),
   version='0.2.19',
   description='Functions for easily interfacing with the QC Ware Platform from Python',
   long_description=README,
@@ -18,7 +18,6 @@ setup(
   author='QC Ware Corp.',
   author_email='info@qcware.com',
   url='https://github.com/qcware/platform_client_library_python',
-  download_url='https://github.com/qcware/platform_client_library_python/tarball/0.2.19',
   keywords=['quantum', 'computing', 'cloud', 'API'],
   test_suite="tests",
   install_requires=REQUIREMENTS,
