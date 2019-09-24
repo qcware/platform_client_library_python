@@ -79,7 +79,9 @@ T = np.array([[1, -2, 2,1]])
 We use a quantum machine learning algorithm to classify the data point in `T` based on the `X, y` training data.
 
 ```python
-result = qcware.qml.fit_and_predict(key=key, X=X, y=y, T=T)
+API_KEY = 'enter api key'
+
+result = qcware.qml.fit_and_predict(key=API_KEY, X=X, y=y, T=T)
 print(result)
 ```
 
