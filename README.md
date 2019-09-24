@@ -1,4 +1,4 @@
-![logo](https://qcware.com/img/qc-ware-logo.png)
+![logo](http://qcwareco.wpengine.com/wp-content/uploads/2019/08/qc-ware-logo-11.png)
 
 # QC Ware Platform Client Library (Python)
 
