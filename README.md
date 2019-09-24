@@ -19,7 +19,7 @@ cd platform_client_library_python
 pip install -e .
 ```
 
-Sign up for an API key at [https://forge.qcware.com](https://forge.qcware.com) to access *Forge*. 
+Sign up for an API key at [https://forge.qcware.com](https://forge.qcware.com) to access *Forge*. Please see our [documentation](https://qcware.readthedocs.io).
 
 ## Using QC Ware Forge
 From your Forge dashboard, you will have access to many notebooks with detailed tutorials and examples. Below we will show a few Hello World examples.
@@ -48,7 +48,7 @@ print(result)
 Your account dashboard has information on all the available solvers that can be used.
 
 ### Chemistry
-Consider trying to find the ground state energy of the H2 molecule with a given bond distance `d`. This can be done with the `qcware.physics` library.
+Consider trying to find the ground state energy of the H2 molecule with a given bond distance `d`. This can be done with the [Variational Quantum Eigensolver](https://arxiv.org/abs/1304.3061) with the `qcware.physics` library.
 
 ```python
 import qcware 
@@ -64,3 +64,23 @@ h2_energy_1 = qcware.physics.find_ground_state_energy(
 )
 print(h2_energy_1) 
 ```
+
+### Quantum Machine learning
+The `qcware.qml` library contains `fit_and_predict` functionality. Consider the training data `X`, the training labels `y`, and the test data `T`.
+
+```python
+import numpy as np
+
+X = np.array([[-1,-2, 2, -1], [-1, -1, 2,0], [2,1, -2, -1], [1,2, 0, -1]])
+y = np.array([0, 0, 1, 1])
+T = np.array([[1, -2, 2,1]])
+```
+
+We use a quantum machine learning algorithm to classify the data point in `T` based on the `X, y` training data.
+
+```python
+result = qcware.qml.fit_and_predict(key=key, X=X, y=y, T=T)
+print(result)
+```
+
+Please see the [documentation](https://qcware.readthedocs.io) and [notebooks](https://forge.qcware.com) for more details.
