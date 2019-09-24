@@ -25,9 +25,8 @@ Sign up for an API key at [https://forge.qcware.com](https://forge.qcware.com) t
 From your Forge dashboard, you will have access to many notebooks with detailed tutorials and examples. Below we will show a few Hello World examples.
 
 ### Optimization
-Consider the following optimization problem:
-
-$$x^* = \min_{x\in \{0, 1 \}^3} \left(x_0 x_1 + 2x_0x_2 - x_1x_2  + x_0 - 3x_1\right)$$
+Consider the following optimization problem: 
+![img](http://www.sciweavers.org/tex2img.php?eq=%24%24x%5E%2A%20%3D%20%5Cmin_%7Bx%5Cin%20%5C%7B0%2C%201%20%5C%7D%5E3%7D%20%5Cleft%28x_0%20x_1%20%2B%202x_0x_2%20-%20x_1x_2%20%20%2B%20x_0%20-%203x_1%5Cright%29%24%24&bc=White&fc=Black&im=png&fs=12&ff=arev&edit=0)
 We can solve this with the `qcware` software package. First, create a QUBO representation (see the [notebooks](https://forge.qcware.com) for details).
 ```python
 Q = {(0, 1): 1, (0, 2): 2, (1, 2): -1, (0, 0): 1, (1, 1): -3}
