@@ -46,3 +46,19 @@ result = qcware.optimization.solve_binary(key=API_KEY, Q=Q, solver=solver)
 print(result)
 ```
 Your account dashboard has information on all the available solvers that can be used.
+
+### Chemistry
+Consider trying to find the ground state energy of the H2 molecule with a given bond distance `d`. This can be done with the `qcware.physics` library.
+
+```python
+import qcware 
+
+API_KEY = 'enter api key'
+
+geometry_data = [['H',[0,0,0]],['H',[0,0,d]]]
+
+# find ground state energy for the configuration of the hydrogen molecule provided
+h2_energy_1 = find_ground_state_energy(molecule=geometry_data,
+                                       key=QCWARE_API_KEY)
+print(h2_energy_1) 
+```
