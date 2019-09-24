@@ -1,3 +1,4 @@
+
 ![logo](http://qcwareco.wpengine.com/wp-content/uploads/2019/08/qc-ware-logo-11.png)
 
 # QC Ware Platform Client Library (Python)
@@ -5,12 +6,42 @@
 This package contains functions for easily interfacing with the QC Ware
 Platform from Python.
 
-[![PyPI version](https://badge.fury.io/py/qcware.svg)](https://badge.fury.io/py/qcware)
+[![PyPI version](https://badge.fury.io/py/qcware.svg)](https://badge.fury.io/py/qcware) [![Downloads](https://pepy.tech/badge/qcware)](https://pepy.tech/project/qcware) [![Downloads](https://pepy.tech/badge/qcware/month)](https://pepy.tech/project/qcware/month) [![CircleCI](https://circleci.com/gh/qcware/platform_client_library_python.svg?style=svg)](https://circleci.com/gh/qcware/platform_client_library_python)
 
-[![Downloads](https://pepy.tech/badge/qcware)](https://pepy.tech/project/qcware)
+To install with pip:
+```shell
+pip install qcware
+```
+Or, to install from source:
+```shell
+git clone https://github.com/qcware/platform_client_library_python.git
+cd platform_client_library_python
+pip install -e .
+```
 
-[![Downloads](https://pepy.tech/badge/qcware/month)](https://pepy.tech/project/qcware/month)
+Sign up for an API key at [https://forge.qcware.com](https://forge.qcware.com) to access *Forge*. 
 
-[![Downloads](https://pepy.tech/badge/qcware/week)](https://pepy.tech/project/qcware/week)
+## Using QC Ware Forge
+From your Forge dashboard, you will have access to many notebooks with detailed tutorials and examples. Below we will show a few Hello World examples.
 
-[![CircleCI](https://circleci.com/gh/qcware/platform_client_library_python.svg?style=svg)](https://circleci.com/gh/qcware/platform_client_library_python)
+### Optimization
+Consider the following optimization problem:
+
+$$x^* = \min_{x\in \{0, 1 \}^3} \left(x_0 x_1 + 2x_0x_2 - x_1x_2  + x_0 - 3x_1\right)$$
+We can solve this with the `qcware` software package. First, create a QUBO representation (see the [notebooks](https://forge.qcware.com) for details).
+```python
+Q = {(0, 1): 1, (0, 2): 2, (1, 2): -1, (0, 0): 1, (1, 1): -3}
+``` 
+Next, choose a solver. For example, to solve the problem with D'Wave's quantum annealer, set the solver argument to `'dwave_hw'`.
+```python
+solver = 'dwave_hw'
+```
+Finally, call the solver.
+```python
+import qcware
+
+API_KEY = 'enter api key'
+result = qcware.optimization.solve_binary(key=API_KEY, Q=Q, solver=solver)
+print(result)
+```
+Your account dashboard has information on all the available solvers that can be used.
