@@ -39,3 +39,9 @@ Table of contents
    :caption: Quantum Machine Learning
 
    qml/fit_and_predict
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Copyright
+
+   copyright
