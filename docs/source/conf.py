@@ -14,6 +14,7 @@ import os
 import sys
 print(os.path.abspath('../..'))
 sys.path.insert(0, os.path.abspath('../..'))
+import qcware
 
 
 # -- Project information -----------------------------------------------------
@@ -22,6 +23,7 @@ project = 'qcware'
 copyright = '2019, QC Ware Corp.'
 author = 'Bryan E. Burr (bryan@qcware.com)'
 master_doc = 'index'
+version = qcware.version.parameter_api_version()
 
 
 # -- General configuration ---------------------------------------------------
@@ -30,7 +32,10 @@ master_doc = 'index'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.coverage',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.napoleon',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

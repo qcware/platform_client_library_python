@@ -3,36 +3,39 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to qcware's documentation!
-==================================
-
-Optimization
-############
-
-.. automodule:: qcware.optimization
-   :members:
-
-Physics
-#######
-
-.. automodule:: qcware.physics
-   :members:
-
-QML
-###
-
-.. automodule:: qcware.qml
-   :members:
-
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+.. include:: ../../README.rst
 
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+Table of contents
+-----------------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Optimization
+
+   optimization/solve_binary
+   optimization/utilities
+   optimization/warnings
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Physics
+
+   physics/vqe
+   physics/mcvqe
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Quantum Machine Learning
+
+   qml/fit_and_predict

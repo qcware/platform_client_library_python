@@ -1,7 +1,7 @@
 import setuptools
 
 
-with open('README.md') as f:
+with open('README.rst') as f:
     README = f.read()
 
 # doesn't work with circleci for some reason?
@@ -21,7 +21,7 @@ setuptools.setup(
   version='0.2.19',
   description='Functions for easily interfacing with the QC Ware Platform from Python',
   long_description=README,
-  long_description_content_type='text/markdown',
+  long_description_content_type='text/x-rst',
   author='QC Ware Corp.',
   author_email='info@qcware.com',
   url='https://github.com/qcware/platform_client_library_python',
