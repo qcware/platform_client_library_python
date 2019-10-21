@@ -28,6 +28,10 @@ Platform from Python.
    :target: https://circleci.com/gh/qcware/platform_client_library_python
    :alt: CircleCI
 
+.. image:: https://readthedocs.org/projects/qcware/badge/?version=latest
+   :target: https://qcware.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
 
 To install with pip:
 

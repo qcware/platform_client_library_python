@@ -1,5 +1,5 @@
-Optization Warnings and Exceptions
-==================================
+Optimization Warnings and Exceptions
+====================================
 
 .. autoclass:: qcware.optimization.SolveBinaryWarning
     :members:
