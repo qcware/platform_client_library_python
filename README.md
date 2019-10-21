@@ -60,7 +60,7 @@ geometry_data = [['H',[0,0,0]],['H',[0,0,d]]]
 # find ground state energy for the configuration of the hydrogen molecule provided
 h2_energy_1 = qcware.physics.find_ground_state_energy(
     molecule=geometry_data,
-    key=QCWARE_API_KEY
+    key=API_KEY
 )
 print(h2_energy_1) 
 ```
