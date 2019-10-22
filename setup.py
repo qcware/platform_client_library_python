@@ -5,14 +5,14 @@ with open('README.rst') as f:
     README = f.read()
 
 # doesn't work with circleci for some reason?
-with open("requirements.txt") as f:
-    REQUIREMENTS = [line.strip() for line in f if line.strip()]
+# with open("requirements.txt") as f:
+    # REQUIREMENTS = [line.strip() for line in f if line.strip()]
 
-# REQUIREMENTS = [
-#     "numpy",
-#     "requests",
-#     "protobuf==3.3.0"
-# ]
+REQUIREMENTS = [
+    "numpy",
+    "requests",
+    "protobuf==3.3.0"
+]
 
 
 setuptools.setup(
