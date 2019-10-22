@@ -18,12 +18,19 @@ Table of contents
 -----------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Optimization
 
    optimization/solve_binary
-   optimization/utilities
-   optimization/warnings
+   optimization/HOBO
+   optimization/HOIO
+   optimization/PUBO
+   optimization/HIsing
+   optimization/QUBO
+   optimization/Ising
+   optimization/sat
+   optimization/utils/index
+   optimization/problems/index
 
 
 .. toctree::
