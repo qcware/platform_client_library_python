@@ -6,7 +6,7 @@ from qcware.optimization import HOBO, binary_var
 from qcware.optimization.utils import (
     solve_qubo_bruteforce, solve_ising_bruteforce,
     solve_pubo_bruteforce, solve_hising_bruteforce,
-    pubo_value, decimal_to_binary, qcware.optimizationWarning
+    pubo_value, decimal_to_binary, QCWareWarning
 )
 from sympy import Symbol
 from numpy import allclose
@@ -794,43 +794,43 @@ def test_hobo_ge_constraint():
 
 def test_hobo_constraints_warnings():
 
-    with assert_warns(qcware.optimizationWarning):  # qlwayss satisfied
+    with assert_warns(QCWareWarning):  # qlwayss satisfied
         HOBO().add_constraint_eq_zero({(): 0})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOBO().add_constraint_eq_zero({(): 1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOBO().add_constraint_eq_zero({(): -1, (0,): .5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOBO().add_constraint_lt_zero({(): 1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOBO().add_constraint_lt_zero({(): 1, (0,): -1})
 
-    with assert_warns(qcware.optimizationWarning):  # always satisfied
+    with assert_warns(QCWareWarning):  # always satisfied
         HOBO().add_constraint_lt_zero({(): -1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOBO().add_constraint_le_zero({(): 1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # always satisfied
+    with assert_warns(QCWareWarning):  # always satisfied
         HOBO().add_constraint_le_zero({(): -1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOBO().add_constraint_gt_zero({(): -1, (0,): .5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOBO().add_constraint_gt_zero({(): -1, (0,): 1})
 
-    with assert_warns(qcware.optimizationWarning):  # always satisfied
+    with assert_warns(QCWareWarning):  # always satisfied
         HOBO().add_constraint_gt_zero({(): 1, (0,): .5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOBO().add_constraint_ge_zero({(): -1, (0,): .5})
 
-    with assert_warns(qcware.optimizationWarning):  # always satisfied
+    with assert_warns(QCWareWarning):  # always satisfied
         HOBO().add_constraint_ge_zero({(): 1, (0,): .5})
 
 

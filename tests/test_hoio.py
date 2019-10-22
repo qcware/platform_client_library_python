@@ -7,7 +7,7 @@ from qcware.optimization.utils import (
     solve_qubo_bruteforce, solve_ising_bruteforce,
     solve_pubo_bruteforce, solve_hising_bruteforce,
     hising_value, pubo_to_hising, binary_to_spin,
-    qcware.optimizationWarning
+    QCWareWarning
 )
 from sympy import Symbol
 from numpy import allclose
@@ -807,41 +807,41 @@ def test_hoio_ge_constraint():
 
 def test_hoio_constraints_warnings():
 
-    with assert_warns(qcware.optimizationWarning):  # qlwayss satisfied
+    with assert_warns(QCWareWarning):  # qlwayss satisfied
         HOIO().add_constraint_eq_zero({(): 0})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOIO().add_constraint_eq_zero({(): 1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOIO().add_constraint_eq_zero({(): -1, (0,): .5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOIO().add_constraint_lt_zero({(): 1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOIO().add_constraint_lt_zero({(): 1, (0,): -1})
 
-    with assert_warns(qcware.optimizationWarning):  # always satisfied
+    with assert_warns(QCWareWarning):  # always satisfied
         HOIO().add_constraint_lt_zero({(): -1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOIO().add_constraint_le_zero({(): 1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # always satisfied
+    with assert_warns(QCWareWarning):  # always satisfied
         HOIO().add_constraint_le_zero({(): -1, (0,): -.5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOIO().add_constraint_gt_zero({(): -1, (0,): .5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOIO().add_constraint_gt_zero({(): -1, (0,): 1})
 
-    with assert_warns(qcware.optimizationWarning):  # always satisfied
+    with assert_warns(QCWareWarning):  # always satisfied
         HOIO().add_constraint_gt_zero({(): 1, (0,): .5})
 
-    with assert_warns(qcware.optimizationWarning):  # not satisfiable
+    with assert_warns(QCWareWarning):  # not satisfiable
         HOIO().add_constraint_ge_zero({(): -1, (0,): .5})
 
-    with assert_warns(qcware.optimizationWarning):  # always satisfied
+    with assert_warns(QCWareWarning):  # always satisfied
         HOIO().add_constraint_ge_zero({(): 1, (0,): .5})
