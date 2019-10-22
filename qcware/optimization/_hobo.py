@@ -603,14 +603,14 @@ class HOBO(PUBO):
 
         if min_val == max_val == 0:
             if not suppress_warnings:
-                qcware.optimizationWarning.warn("Constraint is always satisfied")
+                QCWareWarning.warn("Constraint is always satisfied")
         elif min_val > 0:
             if not suppress_warnings:
-                qcware.optimizationWarning.warn("Constraint cannot be satisfied")
+                QCWareWarning.warn("Constraint cannot be satisfied")
             self += lam * P
         elif max_val < 0:
             if not suppress_warnings:
-                qcware.optimizationWarning.warn("Constraint cannot be satisfied")
+                QCWareWarning.warn("Constraint cannot be satisfied")
             self -= lam * P
         elif min_val == 0:
             self += lam * P
@@ -714,11 +714,11 @@ class HOBO(PUBO):
 
         if min_val >= 0:
             if not suppress_warnings:
-                qcware.optimizationWarning.warn("Constraint cannot be satisfied")
+                QCWareWarning.warn("Constraint cannot be satisfied")
             self += lam * P
         elif max_val < 0:
             if not suppress_warnings:
-                qcware.optimizationWarning.warn("Constraint is always satisfied")
+                QCWareWarning.warn("Constraint is always satisfied")
         else:
             if int(min_val) == min_val:
                 # copy P, don't do +=
@@ -834,11 +834,11 @@ class HOBO(PUBO):
 
         if min_val > 0:
             if not suppress_warnings:
-                qcware.optimizationWarning.warn("Constraint cannot be satisfied")
+                QCWareWarning.warn("Constraint cannot be satisfied")
             self += lam * P
         elif max_val <= 0:
             if not suppress_warnings:
-                qcware.optimizationWarning.warn("Constraint is always satisfied")
+                QCWareWarning.warn("Constraint is always satisfied")
         else:
             # don't mutate the P that we put in self._constraints
             P = P.copy()
