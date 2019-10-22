@@ -458,7 +458,7 @@ def solve_binary(
 
 
     Returns:
-        JSON object: A JSON object, possibly containing the fields:
+        qcware.optimization.SolveBinaryResult: A dict, possibly containing the fields:
             * 'solution' (:obj:`dict`): A Python dictionary representing the solution vector.  If :obj:`return_all_solutions`
               is :obj:`True`, this is a list of dicts. However, if the input :obj:`Q` is a 2D numpy array, then each :obj`solution` will
               be a 1D numpy array; if the input :obj:`Q` is a list of lists, then each :obj`solution` will also be a list. :obj`solution`
