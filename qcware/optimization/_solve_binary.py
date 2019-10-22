@@ -15,12 +15,37 @@ __all__ = "solve_binary", "SolveBinaryResult"
 
 
 class SolveBinaryResult(dict):
-    """
+    """SolveBinaryResult.
+
+    A dictionary but with keys that can be accessed as attributes.
+    In addition, every value in the dictionary that is also a
+    dictionary will be recursively converted to a SolveBinaryResult
+    object.
+
+    Examples
+    --------
+    >>> from qcware.optimization import SolveBinaryResult
+    >>>
+    >>> d = {"hello": [0, 1], "world": {"inside": 5}}
+    >>> d = SolveBinaryResult(d)
+    >>> d.hello
+    [0, 1]
+    >>> d.world
+    {"inside": 5}
+    >>> d.world.inside
+    5
 
     """
 
     def __init__(self, *args, **kwargs):
-        """
+        """__init__.
+
+        Initialize the SolveBinaryResult instance.
+
+        Parameters
+        ----------
+        *args and **kwargs : arguments and keyword arguments.
+            Define a dictinary with ``dict(*args, **kwargs)``.
 
         """
         super().__init__(*args, **kwargs)
@@ -29,7 +54,23 @@ class SolveBinaryResult(dict):
                 self[key] = SolveBinaryResult(self[key])
 
     def __getattr__(self, name):
-        """
+        """__getattr__.
+
+        Access the dictionary key as an attribute.
+
+        Parameters
+        ----------
+        name : str.
+
+        Returns
+        -------
+        res : object.
+            Same as ``self[name]``.
+
+        Raises
+        ------
+        If ``self['name']`` raises a KeyError, then 
+        ``self.name`` will raise an AttributeError.
 
         """
         try:
@@ -38,7 +79,14 @@ class SolveBinaryResult(dict):
             raise AttributeError("No attribute %s" % name)
 
     def __setattr__(self, name, value):
-        """
+        """__setattr__.
+
+        Set the dictionary key as an attribute.
+
+        Parameters
+        ----------
+        name : str.
+        value : object.
 
         """
         self[name] = value
