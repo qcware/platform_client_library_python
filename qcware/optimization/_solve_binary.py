@@ -69,7 +69,7 @@ class SolveBinaryResult(dict):
 
         Raises
         ------
-        If ``self['name']`` raises a KeyError, then 
+        If ``self['name']`` raises a KeyError, then
         ``self.name`` will raise an AttributeError.
 
         """
