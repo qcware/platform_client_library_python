@@ -6,7 +6,7 @@ with open('README.rst') as f:
 
 # doesn't work with circleci for some reason?
 # with open("requirements.txt") as f:
-    # REQUIREMENTS = [line.strip() for line in f if line.strip()]
+#     REQUIREMENTS = [line.strip() for line in f if line.strip()]
 
 REQUIREMENTS = [
     "numpy",
