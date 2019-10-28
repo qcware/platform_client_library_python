@@ -1,6 +1,0 @@
-numpy
-pytest
-pycodestyle
-sympy
-requests
-protobuf==3.3.0
