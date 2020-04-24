@@ -2,3 +2,4 @@ backoff
 requests
 python-decouple
 networkx
+numpy>=1.18.0
