@@ -1,3 +1,5 @@
-numpy
+backoff
 requests
-protobuf==3.3.0
+python-decouple
+networkx
+git+ssh://git@github.com:/qcware/quasar.git@dcb69d29702dc55ac08c349b972468625b0b697d

@@ -22,23 +22,18 @@ Table of contents
    :caption: Optimization
 
    optimization/solve_binary
-   optimization/utilities
-   optimization/warnings
-
 
 .. toctree::
    :maxdepth: 2
-   :caption: Physics
+   :caption: Circuits
 
-   physics/vqe
-   physics/mcvqe
-
-
+   circuits/circuits
+   
 .. toctree::
    :maxdepth: 2
-   :caption: Quantum Machine Learning
+   :caption: Quantum Input/Output
 
-   qml/fit_and_predict
+   qio/qio
 
 .. toctree::
    :maxdepth: 2

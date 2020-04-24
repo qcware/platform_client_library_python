@@ -33,6 +33,15 @@ Platform from Python.
    :alt: Documentation Status
 
 
+Installation
+____________
+
+This documentation is for the latest (prerelease) version of QCWare's Forge client, which
+at present relies on some internal packages.  It is "baked into" QCWare's Jupyterhub
+notebooks, but local installation will have to wait until Quasar, our circuit-model
+library, is publicly available.
+
+Ordinarily, you would install as follows:
 
 To install with pip:
 
@@ -69,64 +78,19 @@ We can solve this with the ``qcware`` software package. First, create a QUBO rep
 
    Q = {(0, 1): 1, (0, 2): 2, (1, 2): -1, (0, 0): 1, (1, 1): -3}
 
-Next, choose a solver. For example, to solve the problem with D'Wave's quantum annealer, set the solver argument to ``'dwave_hw'``.
+Next, choose a backend (formerly _solver_). For example, to solve the problem with D'Wave's quantum annealer, set the `backend` argument to ``'dwave'``.
 
 .. code:: python
 
-   solver = 'dwave_hw'
+   backend = 'dwave'
 
-Finally, call the solver.
+Finally, configure the QCWare library and call the solver (note! configuration has changed; see below.  You no longer need to supply your api key with every call)
 
 .. code:: python
 
    import qcware
-
-   API_KEY = 'enter api key'
-   result = qcware.optimization.solve_binary(key=API_KEY, Q=Q, solver=solver)
-   print(result)
-
-Your account dashboard has information on all the available solvers that can be used.
-
-Chemistry
-^^^^^^^^^
-
-Consider trying to find the ground state energy of the H2 molecule with a given bond distance ``d``. This can be done with the `Variational Quantum Eigensolver <https://arxiv.org/abs/1304.3061>`_ with the ``qcware.physics`` library.
-
-.. code:: python
-
-   import qcware 
-
-   API_KEY = 'enter api key'
-
-   geometry_data = [['H',[0,0,0]],['H',[0,0,d]]]
-
-   # find ground state energy for the configuration of the hydrogen molecule provided
-   h2_energy_1 = qcware.physics.find_ground_state_energy(
-       molecule=geometry_data,
-       key=API_KEY
-   )
-   print(h2_energy_1)
-
-Quantum Machine learning
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-The ``qcware.qml`` library contains ``fit_and_predict`` functionality. Consider the training data ``X``\ , the training labels ``y``\ , and the test data ``T``.
-
-.. code:: python
-
-   import numpy as np
-
-   X = np.array([[-1,-2, 2, -1], [-1, -1, 2,0], [2,1, -2, -1], [1,2, 0, -1]])
-   y = np.array([0, 0, 1, 1])
-   T = np.array([[1, -2, 2,1]])
-
-We use a quantum machine learning algorithm to classify the data point in ``T`` based on the ``X, y`` training data.
-
-.. code:: python
-
-   API_KEY = 'enter api key'
-
-   result = qcware.qml.fit_and_predict(key=API_KEY, X=X, y=y, T=T)
+   qcware.config.set_api_key('your_api_key_here')
+   result = qcware.optimization.solve_binary(Q=Q, backend=backend)
    print(result)
 
 Please see the `documentation <https://qcware.readthedocs.io>`_ and `notebooks <https://forge.qcware.com>`_ for more details.

@@ -1,41 +1,23 @@
-import ast
-import json
-import pickle
+import backoff
 import requests
-from . import param_utils
+
+from .exceptions import ApiCallFailedError
 
 
-def pickle_json(json_object):
-    if isinstance(json_object, dict):
-        r = {}
-        for k, v in json_object.items():
-            if k != 'Q':
-                r[k] = pickle_json(v)
-            else:
-                r['Q'] = pickle.dumps(v, protocol=0)
-        return r
-    elif isinstance(json_object, list):
-        return [pickle_json(elem) for elem in json_object]
-    else:
-        return pickle.dumps(json_object, protocol=0)
+def _fatal_code(e):
+    return 400 <= e.response.status_code < 500
 
 
-def post(api_endpoint_url, param_dictionary, endpoint_type):
-    pbuffed_params = param_utils.convert(param_dictionary, endpoint_type)
-    r = requests.post(api_endpoint_url,
-                      data=pbuffed_params.SerializeToString())
-
-    r = json.loads(r.text)
-    if r.get('solution') and endpoint_type == 'solve_binary':
-        r['solution'] = ast.literal_eval(r['solution'])
-
-    return r
+@backoff.on_exception(backoff.expo,
+                      requests.exceptions.RequestException,
+                      max_tries=3,
+                      giveup=_fatal_code)
+def post_request(url, data):
+    return requests.post(url, json=data)
 
 
-def post_json(endpoint_url, param_dictionary):
-    # just a straightforward no-frills JSON call to an endpoint without
-    # any checking, for illustrative purposes
-    data = json.dumps(param_dictionary)
-    response = requests.post(endpoint_url, data=data)
-    result = json.loads(response.text)
-    return result
+def post(url, data):
+    response = post_request(url, data)
+    if response.status_code >= 400:
+        raise ApiCallFailedError(response.json()['message'])
+    return response.json()
