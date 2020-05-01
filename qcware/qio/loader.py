@@ -12,7 +12,7 @@ from ..util.transforms import client_args_to_wire
   
 
 
-def loader(data:numpy.ndarray=None, mode:str='optimized', at_beginning_of_circuit:bool=True, api_key:str=None, host:str=None):
+def loader(data:numpy.ndarray, mode:str='optimized', at_beginning_of_circuit:bool=True, api_key:str=None, host:str=None):
     r"""Creates a circuit which loads an array of classical data into the state space of a quantum computer or simulator.  This is useful in order to act on known data or to simulator quantum RAM.
 
 Arguments:
@@ -20,10 +20,10 @@ Arguments:
 :param data: A 1-d array representing the classical data to be represented in the circuit
 :type data: numpy.ndarray
 
-:param mode: Whether to used the "optimized" loader (using approximately ~:math:`sqrt(d)` depth and ~:math:`sqrt(d)` qubits) or the "parallel" loader (using approximately :math:`log(d)` depth and `d` qubits.
+:param mode: Whether to used the "optimized" loader (using approximately ~:math:`sqrt(d)` depth and ~:math:`sqrt(d)` qubits) or the "parallel" loader (using approximately :math:`log(d)` depth and `d` qubits., defaults to optimized
 :type mode: str
 
-:param at_beginning_of_circuit: Whether the loader is at the beginning of the circuit (in which it performs an initial X gate on the first qubit)
+:param at_beginning_of_circuit: Whether the loader is at the beginning of the circuit (in which it performs an initial X gate on the first qubit), defaults to True
 :type at_beginning_of_circuit: bool
 
 

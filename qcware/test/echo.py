@@ -15,7 +15,7 @@ def echo(text:str='hello world.', api_key:str=None, host:str=None):
 
 Arguments:
 
-:param text: 
+:param text: , defaults to hello world.
 :type text: str
 
 

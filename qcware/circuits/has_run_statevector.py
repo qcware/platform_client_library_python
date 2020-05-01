@@ -10,7 +10,7 @@ from ..util.transforms import client_args_to_wire
   
 
 
-def has_run_statevector(backend:str=None, backend_args:object={}, api_key:str=None, host:str=None):
+def has_run_statevector(backend:str, backend_args:object={}, api_key:str=None, host:str=None):
     r"""Whether or not this backend supports the run_statevector method.  This can be called more elegantly by the use of the QuasarBackend class.
 
 Arguments:
@@ -18,7 +18,7 @@ Arguments:
 :param backend: string representing the backend (such as classical/simulator or vulcan/simulator)
 :type backend: str
 
-:param backend_args: Dict representing any additional backend args (not implemented currently)
+:param backend_args: Dict representing any additional backend args (not implemented currently), defaults to {}
 :type backend_args: object
 
 

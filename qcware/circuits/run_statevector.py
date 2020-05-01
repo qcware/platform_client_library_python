@@ -14,7 +14,7 @@ from ..util.transforms import client_args_to_wire
   
 
 
-def run_statevector(backend:str=None, circuit:Circuit=None, statevector:numpy.ndarray=None, min_qubit:int=None, nqubit:int=None, dtype:type=numpy.complex128, backend_args:object={}, api_key:str=None, host:str=None):
+def run_statevector(backend:str, circuit:Circuit, statevector:numpy.ndarray=None, min_qubit:int=None, nqubit:int=None, dtype:type=numpy.complex128, backend_args:object={}, api_key:str=None, host:str=None):
     r"""Exceutes the circuit, returning a full statevector.  Only supported on some backends (for which `has_run_statevector` is true).  This is best used via the QuasarBackend class, which then allows a number of extensions.
 
 Arguments:
@@ -25,19 +25,19 @@ Arguments:
 :param circuit: The circuit to execute
 :type circuit: Circuit
 
-:param statevector: If the  backend supports statevector input, this provides an initial state.
+:param statevector: If the  backend supports statevector input, this provides an initial state., defaults to None
 :type statevector: numpy.ndarray
 
-:param min_qubit: The minimum occupied qubit index
+:param min_qubit: The minimum occupied qubit index, defaults to None
 :type min_qubit: int
 
-:param nqubit: The total number of qubit indices in the circuit
+:param nqubit: The total number of qubit indices in the circuit, defaults to None
 :type nqubit: int
 
-:param dtype: For some backends, particularly simulators, the type used to represent the statevector
+:param dtype: For some backends, particularly simulators, the type used to represent the statevector, defaults to numpy.complex128
 :type dtype: type
 
-:param backend_args: Any extra parameters to pass to the backend
+:param backend_args: Any extra parameters to pass to the backend, defaults to {}
 :type backend_args: object
 
 

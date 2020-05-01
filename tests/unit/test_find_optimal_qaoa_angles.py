@@ -1,5 +1,6 @@
 import qcware
 import networkx as nx
+import numpy
 
 
 def generate_rand_reg_p5(d, n):
@@ -17,8 +18,10 @@ def generate_rand_reg_p5(d, n):
 def test_analytical_angle_determination():
     cost_dictionary, graph = generate_rand_reg_p5(2, 5)
     n_linear = 100
+    Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -5}
     sol = qcware.optimization.find_optimal_qaoa_angles(cost_dictionary,
-                                                       n_linear)
+                                                       n_linear, num_min_vals=10,
+                                                       fastmath_flag_in=True)
     assert sol[0].sort() == [
         -2.7542642560338755, -2.754264256033875, -2.7495290205139753,
         -2.7495290205139744, -0.7480763200529221, -0.47430595681568066,
@@ -28,3 +31,8 @@ def test_analytical_angle_determination():
                           [0.4125323686532052, 2.8559933214452666],
                           [2.729060284936588, 1.3010636242139548],
                           [0.4125323686532052, 1.8405290293758385]]
+    assert numpy.isclose(sol[2][0:6], [
+                         0., 0.03173326, 0.06346652, 0.09519978, 0.12693304, 0.1586663]).all()
+    assert numpy.isclose(sol[3][0:6], [
+                         0., 0.03173326, 0.06346652, 0.09519978, 0.12693304, 0.1586663]).all()
+    assert sol[4].shape == (n_linear, n_linear)

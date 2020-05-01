@@ -10,7 +10,7 @@ from ..util.transforms import client_args_to_wire
   
 
 
-def has_statevector_input(backend:str=None, backend_args:object={}, api_key:str=None, host:str=None):
+def has_statevector_input(backend:str, backend_args:object={}, api_key:str=None, host:str=None):
     r"""Whether or not this backend supports statevector input for various run methods. This can be called more elegantly by the use of the QuasarBackend class.
 
 Arguments:
@@ -18,7 +18,7 @@ Arguments:
 :param backend: string representing the backend
 :type backend: str
 
-:param backend_args: Dict representing any additional backend args (not implemented currently)
+:param backend_args: Dict representing any additional backend args (not implemented currently), defaults to {}
 :type backend_args: object
 
 

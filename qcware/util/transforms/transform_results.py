@@ -26,6 +26,26 @@ def register_result_transform(method_name: str,
         _from_wire_result_replacers[method_name] = from_wire
 
 
+def transform_optimization_find_optimal_qaoa_angles_to_wire(t):
+    # this function requires a little special-casing since it
+    # returns a number of arrays
+    return (
+        t[0],
+        t[1],
+        ndarray_to_dict(t[2]),
+        ndarray_to_dict(t[3]),
+        ndarray_to_dict(t[4]))
+
+
+def transform_optimization_find_optimal_qaoa_angles_from_wire(t):
+    return (
+        t[0],
+        t[1],
+        dict_to_ndarray(t[2]),
+        dict_to_ndarray(t[3]),
+        dict_to_ndarray(t[4]))
+
+
 register_result_transform('qio.loader',
                           to_wire=lambda x: list(quasar_to_sequence(x)),
                           from_wire=sequence_to_quasar)
@@ -34,3 +54,6 @@ register_result_transform('circuits.run_measurement',
 register_result_transform('circuits.run_statevector',
                           to_wire=ndarray_to_dict,
                           from_wire=dict_to_ndarray)
+register_result_transform('optimization.find_optimal_qaoa_angles',
+                          to_wire=transform_optimization_find_optimal_qaoa_angles_to_wire,
+                          from_wire=transform_optimization_find_optimal_qaoa_angles_from_wire)
