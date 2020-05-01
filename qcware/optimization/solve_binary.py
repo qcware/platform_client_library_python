@@ -10,7 +10,7 @@ from ..util.transforms import client_args_to_wire
   
 
 
-def solve_binary(Q:dict, backend:str, constraints_linear_A:list=[], constraints_linear_b:list=[], constraints_sat_max_runs:int=3100, constraints_hard:bool=False, constraints_penalty_scaling_factor:int=1, constraints_equality_R:list=[], constraints_equality_c:list=[], constraints_inequality_S:list=[], constraints_inequality_d:list=[], return_all_solutions:bool=False, num_runs:int=50, dwave_algorithm:str=None, dwave_solver_limit:str=None, dwave_target_energy:str=None, dwave_find_max:str=None, dwave_reduce_intersample_correlation:str=None, dwave_num_spin_reversal_transforms:str=None, dwave_programming_thermalization:str=None, dwave_reinitialize_state:str=None, dwave_anneal_offsets:str=None, dwave_anneal_offsets_delta:str=None, dwave_num_reads:str=None, dwave_max_answers:str=None, dwave_flux_biases:str=None, dwave_beta:str=None, dwave_answer_mode:str=None, dwave_auto_scale:str=None, dwave_postprocess:str=None, dwave_annealing_time:str=None, dwave_anneal_schedule:str=None, dwave_initial_state:str=None, dwave_chains:str=None, dwave_flux_drift_compensation:bool=None, dwave_beta_range:str=None, dwave_num_sweeps:str=None, dwave_precision_ancillas:str=None, dwave_precision_ancillas_tuples:str=None, constraints_hard_num:int=4, sa_num_sweeps:int=200, use_sample_persistence:bool=False, sample_persistence_solution_threshold:float=0.5, sample_persistence_persistence_threshold:float=0.5, sample_persistence_persistence_iterations:int=0, google_num_steps:int=1, google_n_samples:int=1000, google_arguments_optimizer:dict={}, google_step_sampling:bool=True, google_n_samples_step_sampling:int=1000, number_of_blocks:int=1, iterations:int=50, initial_solution:list=None, always_update_with_best:bool=True, update_q_each_block_solution:bool=True, qaoa_optimizer:str='COBYLA', qaoa_beta:float=None, qaoa_gamma:float=None, qaoa_p_val:int=1, api_key:str=None, host:str=None):
+def solve_binary(Q:dict, backend:str, constraints_linear_A:list=[], constraints_linear_b:list=[], constraints_sat_max_runs:int=3100, constraints_hard:bool=False, constraints_penalty_scaling_factor:int=1, constraints_equality_R:list=[], constraints_equality_c:list=[], constraints_inequality_S:list=[], constraints_inequality_d:list=[], return_all_solutions:bool=False, num_runs:int=50, dwave_algorithm:str=None, dwave_solver_limit:str=None, dwave_target_energy:str=None, dwave_find_max:str=None, dwave_reduce_intersample_correlation:str=None, dwave_num_spin_reversal_transforms:str=None, dwave_programming_thermalization:str=None, dwave_reinitialize_state:str=None, dwave_anneal_offsets:str=None, dwave_anneal_offsets_delta:str=None, dwave_num_reads:str=None, dwave_max_answers:str=None, dwave_flux_biases:str=None, dwave_beta:str=None, dwave_answer_mode:str=None, dwave_auto_scale:str=None, dwave_postprocess:str=None, dwave_annealing_time:str=None, dwave_anneal_schedule:str=None, dwave_initial_state:str=None, dwave_chains:str=None, dwave_flux_drift_compensation:bool=None, dwave_beta_range:str=None, dwave_num_sweeps:str=None, dwave_precision_ancillas:str=None, dwave_precision_ancillas_tuples:str=None, constraints_hard_num:int=4, sa_num_sweeps:int=200, use_sample_persistence:bool=False, sample_persistence_solution_threshold:float=0.5, sample_persistence_persistence_threshold:float=0.5, sample_persistence_persistence_iterations:int=0, google_num_steps:int=1, google_n_samples:int=1000, google_arguments_optimizer:dict={}, google_step_sampling:bool=True, google_n_samples_step_sampling:int=1000, number_of_blocks:int=1, iterations:int=50, initial_solution:list=None, always_update_with_best:bool=True, update_q_each_block_solution:bool=True, qaoa_nmeasurement:int=100, qaoa_optimizer:str='COBYLA', qaoa_beta:float=None, qaoa_gamma:float=None, qaoa_p_val:int=1, api_key:str=None, host:str=None):
     r"""Solve a binary optimization problem using one of the solvers provided by the platform.
 This function solves a binary optimization problem that is either
   * Unconstrained (quadratic or higher order)
@@ -237,16 +237,19 @@ Arguments:
 :param update_q_each_block_solution: each blocks decomposed Q matrix can be constructed at the onset of block composition, or updated every time a block is solved. Default value :obj: `True`., defaults to True
 :type update_q_each_block_solution: bool
 
+:param qaoa_nmeasurement: The number of measurements to use for the QAOA algorithm if a simulator is chosen., defaults to 100
+:type qaoa_nmeasurement: int
+
 :param qaoa_optimizer: The optimizer to use for the QAOA algorithm if a simulator backend is chosen.  Valid options are `COBYLA`, `bounded_Powell`, and `analytical`, or `None` if qaoa_beta and qaoa_gamma are provided, defaults to COBYLA
 :type qaoa_optimizer: str
 
-:param qaoa_beta: A :math:`\beta` angle to provide to the QAOA algorithm if a simulator backend is chosen.  Invalid unless qaoa_gamma is also provided and qaoa_p_val == 1, defaults to None
+:param qaoa_beta: A :math:`\beta` angle(s) to provide to the QAOA algorithm if a simulator backend is chosen.  This can either be a float or a list of floats of length `qaoa_p_val`.  Invalid unless qaoa_gamma is also provided and has the same length., defaults to None
 :type qaoa_beta: float
 
-:param qaoa_gamma: A :math:`\gamma` angle to provide to the QAOA algorithm if a simulator backend is chosen.  Invalid unless qaoa_beta is also provided and qaoa_p_val == 1, defaults to None
+:param qaoa_gamma: A :math:`\gamma` angle(s) to provide to the QAOA algorithm if a simulator backend is chosen.  This can either be a float or a list of floats of length `qaoa_p_val`.  Invalid unless qaoa_beta is also provided and has the same length., defaults to None
 :type qaoa_gamma: float
 
-:param qaoa_p_val: A p_val to provide the qaoa algorithm if a simulator backend is chosen., defaults to 1
+:param qaoa_p_val: A p_val to provide the qaoa algorithm if a simulator backend is chosen.  Must be equal to the number of :math:`\beta` and :math:`\gamma` angles provided in `qaoa_beta` and `qaoa_gamma`., defaults to 1
 :type qaoa_p_val: int
 
 
