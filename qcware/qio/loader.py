@@ -20,7 +20,7 @@ Arguments:
 :param data: A 1-d array representing the classical data to be represented in the circuit
 :type data: numpy.ndarray
 
-:param mode: Whether to used the "optimized" loader (using approximately ~:math:`sqrt(d)` depth and ~:math:`sqrt(d)` qubits) or the "parallel" loader (using approximately :math:`log(d)` depth and `d` qubits., defaults to optimized
+:param mode: Whether to used the "optimized" loader (using approximately :math:`~sqrt(d)` depth and :math:`~sqrt(d)` qubits) or the "parallel" loader (using approximately :math:`log(d)` depth and `d` qubits., defaults to optimized
 :type mode: str
 
 :param at_beginning_of_circuit: Whether the loader is at the beginning of the circuit (in which it performs an initial X gate on the first qubit), defaults to True

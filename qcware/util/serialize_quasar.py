@@ -172,3 +172,10 @@ def probability_histogram_to_dict(hist: ProbabilityHistogram):
     return dict(nqubit=hist.nqubit,
                 histogram=hist.histogram,
                 nmeasurement=hist.nmeasurement)
+
+
+def dict_to_probability_histogram(d: dict):
+    d2 = d.copy()
+    if 'histogram' in d2:
+        d2['histogram'] = {int(k): v for k, v in d2['histogram'].items()}
+    return ProbabilityHistogram(d2['nqubit'], d2['histogram'], d2['nmeasurement'])

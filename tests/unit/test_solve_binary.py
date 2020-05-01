@@ -7,7 +7,7 @@ import pytest
     'dwave',
 ))
 def test_solve_binary(backend):
-    Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -5}
+    Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
 
     result = qcware.optimization.solve_binary(Q=Q, backend=backend)
     assert (result['solution'] == [0, 0, 1, 1]
@@ -16,7 +16,7 @@ def test_solve_binary(backend):
 
 @pytest.mark.parametrize("backend", ('classical/simulator', ))
 def test_solve_binary_qaoa(backend):
-    Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -5}
+    Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
 
     result = qcware.optimization.solve_binary(Q=Q, backend=backend)
     assert (result['solution'] == [0, 0, 1, 1]
@@ -24,9 +24,9 @@ def test_solve_binary_qaoa(backend):
 
 
 @pytest.mark.parametrize('optimizer',
-                         ('COBYLA', 'bounded_Powell'))# , 'analytical'))
+                         ('COBYLA', 'bounded_Powell', 'analytical'))
 def test_various_qaoa_optimizers(optimizer):
-    Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -5}
+    Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
     result = qcware.optimization.solve_binary(Q=Q,
                                               backend='classical/simulator',
                                               qaoa_optimizer=optimizer)

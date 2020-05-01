@@ -4,6 +4,8 @@ import base64
 
 def ndarray_to_dict(x: np.ndarray):
     # from https://stackoverflow.com/questions/30698004/how-can-i-serialize-a-numpy-array-while-preserving-matrix-dimensions
+    if isinstance(x, list) or isinstance(x, tuple):
+        x = np.array(x)
     return None if x is None else dict(ndarray=base64.b64encode(
         x.tobytes()).decode('utf-8'),
                                        dtype=x.dtype.str,

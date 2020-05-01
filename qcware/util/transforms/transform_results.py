@@ -1,20 +1,43 @@
+import os
 from typing import Optional, Callable
-from ..serialize_quasar import quasar_to_sequence, sequence_to_quasar, probability_histogram_to_dict
+from ..serialize_quasar import (quasar_to_sequence, sequence_to_quasar,
+                                probability_histogram_to_dict, dict_to_probability_histogram)
 from .helpers import ndarray_to_dict, dict_to_ndarray
 _to_wire_result_replacers = {}
 
 
+def debug_is_set() -> bool:
+    return os.environ.get("QCWARE_CLIENT_DEBUG", False)
+
+
+def result_represents_error(worker_result: object):
+    return isinstance(worker_result, dict) and 'error' in worker_result
+
+
+def strip_traceback_if_debug_set(error_result: dict) -> dict:
+    result = error_result.copy()
+    if not debug_is_set() and 'traceback' in result:
+        result.pop('traceback')
+    return result
+
+
 def server_result_to_wire(method_name: str, worker_result: object):
-    f = _to_wire_result_replacers.get(method_name, lambda x: x)
-    return f(worker_result)
+    if result_represents_error(worker_result):
+        return strip_traceback_if_debug_set(worker_result)
+    else:
+        f = _to_wire_result_replacers.get(method_name, lambda x: x)
+        return f(worker_result)
 
 
 _from_wire_result_replacers = {}
 
 
 def client_result_from_wire(method_name: str, worker_result: object):
-    f = _from_wire_result_replacers.get(method_name, lambda x: x)
-    return f(worker_result)
+    if result_represents_error(worker_result):
+        return strip_traceback_if_debug_set(worker_result)
+    else:
+        f = _from_wire_result_replacers.get(method_name, lambda x: x)
+        return f(worker_result)
 
 
 def register_result_transform(method_name: str,
@@ -50,7 +73,8 @@ register_result_transform('qio.loader',
                           to_wire=lambda x: list(quasar_to_sequence(x)),
                           from_wire=sequence_to_quasar)
 register_result_transform('circuits.run_measurement',
-                          to_wire=probability_histogram_to_dict)
+                          to_wire=probability_histogram_to_dict,
+                          from_wire=dict_to_probability_histogram)
 register_result_transform('circuits.run_statevector',
                           to_wire=ndarray_to_dict,
                           from_wire=dict_to_ndarray)
