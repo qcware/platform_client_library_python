@@ -4,11 +4,11 @@
 
 
 
-from .has_run_statevector import has_run_statevector
+from .has_run_statevector import has_run_statevector, async_has_run_statevector
 
-from .has_statevector_input import has_statevector_input
+from .has_statevector_input import has_statevector_input, async_has_statevector_input
 
-from .run_measurement import run_measurement
+from .run_measurement import run_measurement, async_run_measurement
 
-from .run_statevector import run_statevector
+from .run_statevector import run_statevector, async_run_statevector
 

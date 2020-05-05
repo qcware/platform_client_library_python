@@ -77,3 +77,22 @@ def set_host(host_url: str):
             " seem to be a valid URL.  Please select a host url"
             "with scheme (http or https) and no path, e.g."
             "'http://api.forge.qcware.com'")
+
+
+def max_wait_in_seconds(override: Optional[int] = None):
+    """
+    Returns the maximum time the api should wait in seconds when running
+    in synchronous mode before returning the error state that the call
+    is not complete and allowing the user to poll.
+
+    This is configurable by the environment variable QCWARE_MAX_WAIT_IN_SECONDS
+
+    The default value is 20 seconds
+    """
+    result = override if override is not None \
+        else config('QCWARE_MAX_WAIT_IN_SECONDS', default=20, cast=int)
+    return result
+
+
+def set_max_wait_in_seconds(new_wait: int):
+    os.environ['QCWARE_MAX_WAIT_IN_SECONDS'] = str(new_wait)

@@ -12,3 +12,10 @@ class ApiCallFailedError(ApiException):
 
 class ApiCallExecutionError(ApiException):
     pass
+
+
+class ApiTimeoutError(ApiException):
+
+    def __init__(self, message, api_call_info):
+        super().__init__(message)
+        self.api_call_info = api_call_info

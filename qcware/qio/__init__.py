@@ -4,5 +4,5 @@
 
 
 
-from .loader import loader
+from .loader import loader, async_loader
 

@@ -4,5 +4,5 @@
 
 
 
-from .echo import echo
+from .echo import echo, async_echo
 
