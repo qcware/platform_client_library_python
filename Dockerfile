@@ -17,7 +17,7 @@ RUN mkdir /setup && mkdir /setup/python_client
 COPY ./python_client /setup/python_client
 RUN pip install -e /setup/python_client
 RUN pip install -r /setup/python_client/requirements.txt
-RUN pip install pytest
+RUN pip install pytest pytest-asyncio
 
 #COPY ./deploy_keys /root/.ssh
 #RUN chmod 600 /root/.ssh/quasar_deploy_rsa
