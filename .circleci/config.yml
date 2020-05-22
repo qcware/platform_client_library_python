@@ -1,6 +1,13 @@
 version: 2
 
 jobs:
+
+  just_checkout:
+    docker:
+      - image: circleci/python:3.6.1
+    steps:
+      - checkout
+  
   toxify:
     docker:
       - image: themattrix/tox
@@ -9,18 +16,11 @@ jobs:
       - checkout
       - run: tox
 
-  pep8:
-    docker:
-      - image: circleci/python:3.6.1
-    steps:
-      - checkout
-      - run: pip install --user pycodestyle
-      - run: ~/.local/bin/pycodestyle --config=pycodestyle.cfg . --exclude=platform_client_server_utils,qcware/params_pb2.py,./build/lib/qcware/params_pb2.py
-
 workflows:
   version: 2
-#  run-tests:
-#    jobs:
+  run-tests:
+    jobs:
+      - just_checkout
 #      - toxify:
 #          context: aqua_client
 #      - pep8
