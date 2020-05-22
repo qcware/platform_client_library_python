@@ -3,4 +3,5 @@ requests==2.23.0
 python-decouple==3.3
 networkx==2.4
 numpy>=1.18.0
-git+ssh://git@github.com:/qcware/quasar-dev.git@4c2ec37a0515fed2b8e1bf93a4f534d852890683
+git+ssh://git@github.com:/qcware/quasar.git@3a65844904956c56987afd86a95149e8e49c86ed
+
