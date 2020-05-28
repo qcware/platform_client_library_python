@@ -55,18 +55,14 @@ def transform_optimization_find_optimal_qaoa_angles_to_wire(t):
     return (
         t[0],
         t[1],
-        ndarray_to_dict(t[2]),
-        ndarray_to_dict(t[3]),
-        ndarray_to_dict(t[4]))
+        ndarray_to_dict(t[2]))
 
 
 def transform_optimization_find_optimal_qaoa_angles_from_wire(t):
     return (
         t[0],
         t[1],
-        dict_to_ndarray(t[2]),
-        dict_to_ndarray(t[3]),
-        dict_to_ndarray(t[4]))
+        dict_to_ndarray(t[2]))
 
 
 register_result_transform('qio.loader',

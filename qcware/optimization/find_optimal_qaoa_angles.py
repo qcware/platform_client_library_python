@@ -32,11 +32,12 @@ Arguments:
 :type precision: int
 
 
-:return: A tuple of five values min_val, min_beta_gamma, Z where:
+:return: A tuple of three values min_val, min_beta_gamma, Z where:
   
 * min_val is a list of the best `num_min_vals` expectation values found, sorted from minimum to maximum.
 * min_beta_gamma is a list of [:math:`\beta`, :math:`\gamma`] pairs representing the best
   `num_min_vals` expectation values found, in the same order as the expectation values
+
 
 * Z is a numpy.ndarray of shape (num_evals, num_evals) representing the expectation value for
   the beta/gamma pair.  Each row represents a choice of :math:`\gamma` and each column represents
@@ -76,11 +77,12 @@ Arguments:
 :type precision: int
 
 
-:return: A tuple of five values min_val, min_beta_gamma, Z where:
+:return: A tuple of three values min_val, min_beta_gamma, Z where:
   
 * min_val is a list of the best `num_min_vals` expectation values found, sorted from minimum to maximum.
 * min_beta_gamma is a list of [:math:`\beta`, :math:`\gamma`] pairs representing the best
   `num_min_vals` expectation values found, in the same order as the expectation values
+
 
 * Z is a numpy.ndarray of shape (num_evals, num_evals) representing the expectation value for
   the beta/gamma pair.  Each row represents a choice of :math:`\gamma` and each column represents
