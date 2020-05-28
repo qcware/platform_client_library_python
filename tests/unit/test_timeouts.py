@@ -12,7 +12,7 @@ def test_timeout_with_solve_binary():
     with pytest.raises(qcware.exceptions.ApiTimeoutError):
         sol = qcware.optimization.find_optimal_qaoa_angles(Q,
                                                            num_evals=100, num_min_vals=10,
-                                                           fastmath_flag_in=True)
+                                                           fastmath_flag_in=True, precision=30)
 
     qcware.config.set_max_wait_in_seconds(old_timeout)
 

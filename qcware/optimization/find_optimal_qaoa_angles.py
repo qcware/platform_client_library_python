@@ -11,7 +11,7 @@ from ..util.transforms import client_args_to_wire
 from ..exceptions import ApiTimeoutError  
 
 
-def find_optimal_qaoa_angles(Q:dict={}, num_evals:int=100, num_min_vals:int=10, fastmath_flag_in:bool=True, api_key:str=None, host:str=None):
+def find_optimal_qaoa_angles(Q:dict={}, num_evals:int=100, num_min_vals:int=10, fastmath_flag_in:bool=True, precision:int=30, api_key:str=None, host:str=None):
     r"""Finds the optimal expectation values for a given cost function, to be used in QAOA.
 
 Arguments:
@@ -28,15 +28,16 @@ Arguments:
 :param fastmath_flag_in: The "fastmath" flag in Numba, defaults to True
 :type fastmath_flag_in: bool
 
+:param precision: Inverse proportional to the minimum distance between peaks (nx/precision), defaults to 30
+:type precision: int
 
-:return: A tuple of five values min_val, min_beta_gamma, X, Y, Z where:
+
+:return: A tuple of five values min_val, min_beta_gamma, Z where:
   
 * min_val is a list of the best `num_min_vals` expectation values found, sorted from minimum to maximum.
 * min_beta_gamma is a list of [:math:`\beta`, :math:`\gamma`] pairs representing the best
   `num_min_vals` expectation values found, in the same order as the expectation values
-  
-* X is a numpy.ndarray of shape (num_evals) representing the :math:`beta` values evaluated
-* Y is a numpy.ndarray of shape (num_evals) representing the :math:`gamma` values evaluated
+
 * Z is a numpy.ndarray of shape (num_evals, num_evals) representing the expectation value for
   the beta/gamma pair.  Each row represents a choice of :math:`\gamma` and each column represents
   a choice of :math:`\beta`, so `Z[1,2]` represents the expectation value from the :math:`\gamma` value `Y[1]`
@@ -52,7 +53,7 @@ Arguments:
                                        call_token=api_call['uid']))
 
 
-async def async_find_optimal_qaoa_angles(Q:dict={}, num_evals:int=100, num_min_vals:int=10, fastmath_flag_in:bool=True, api_key:str=None, host:str=None):
+async def async_find_optimal_qaoa_angles(Q:dict={}, num_evals:int=100, num_min_vals:int=10, fastmath_flag_in:bool=True, precision:int=30, api_key:str=None, host:str=None):
     r"""Async version of find_optimal_qaoa_angles
 Finds the optimal expectation values for a given cost function, to be used in QAOA.
 
@@ -71,15 +72,16 @@ Arguments:
 :param fastmath_flag_in: The "fastmath" flag in Numba, defaults to True
 :type fastmath_flag_in: bool
 
+:param precision: Inverse proportional to the minimum distance between peaks (nx/precision), defaults to 30
+:type precision: int
 
-:return: A tuple of five values min_val, min_beta_gamma, X, Y, Z where:
+
+:return: A tuple of five values min_val, min_beta_gamma, Z where:
   
 * min_val is a list of the best `num_min_vals` expectation values found, sorted from minimum to maximum.
 * min_beta_gamma is a list of [:math:`\beta`, :math:`\gamma`] pairs representing the best
   `num_min_vals` expectation values found, in the same order as the expectation values
-  
-* X is a numpy.ndarray of shape (num_evals) representing the :math:`beta` values evaluated
-* Y is a numpy.ndarray of shape (num_evals) representing the :math:`gamma` values evaluated
+
 * Z is a numpy.ndarray of shape (num_evals, num_evals) representing the expectation value for
   the beta/gamma pair.  Each row represents a choice of :math:`\gamma` and each column represents
   a choice of :math:`\beta`, so `Z[1,2]` represents the expectation value from the :math:`\gamma` value `Y[1]`

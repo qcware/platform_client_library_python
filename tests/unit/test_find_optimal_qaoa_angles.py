@@ -21,7 +21,8 @@ def test_analytical_angle_determination():
     Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -5}
     sol = qcware.optimization.find_optimal_qaoa_angles(cost_dictionary,
                                                        n_linear, num_min_vals=10,
-                                                       fastmath_flag_in=True)
+                                                       fastmath_flag_in=True,
+                                                       precision=30)
     assert sol[0].sort() == [
         -2.7542642560338755, -2.754264256033875, -2.7495290205139753,
         -2.7495290205139744, -0.7480763200529221, -0.47430595681568066,
