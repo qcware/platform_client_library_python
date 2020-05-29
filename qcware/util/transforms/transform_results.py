@@ -77,3 +77,6 @@ register_result_transform('circuits.run_statevector',
 register_result_transform('optimization.find_optimal_qaoa_angles',
                           to_wire=transform_optimization_find_optimal_qaoa_angles_to_wire,
                           from_wire=transform_optimization_find_optimal_qaoa_angles_from_wire)
+register_result_transform('qml.fit_and_predict',
+                          to_wire=ndarray_to_dict,
+                          from_wire=dict_to_ndarray)

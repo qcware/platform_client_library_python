@@ -84,3 +84,11 @@ register_argument_transform('optimization.find_optimal_qaoa_angles',
 register_argument_transform('qio.loader',
                             to_wire={'data': ndarray_to_dict},
                             from_wire={'data': dict_to_ndarray})
+
+register_argument_transform('qml.fit_and_predict',
+                            to_wire={'X': ndarray_to_dict,
+                                     'y': ndarray_to_dict,
+                                     'T': ndarray_to_dict},
+                            from_wire={'X': dict_to_ndarray,
+                                       'y': dict_to_ndarray,
+                                       'T': dict_to_ndarray})

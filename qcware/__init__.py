@@ -9,5 +9,6 @@ logger = logging.getLogger('qcware')
 
 from . import qio
 from . import circuits
+from . import qml
 from . import test
 from . import optimization

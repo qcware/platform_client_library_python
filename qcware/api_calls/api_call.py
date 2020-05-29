@@ -45,7 +45,7 @@ def wait_for_call(api_key=None, host=None, call_token=None):
 
 def handle_result(api_call):
     if api_call['state'] == 'error':
-        raise ApiCallExecutionError(api_call['result']['error'])
+        raise ApiCallExecutionError(api_call['result']['error'], traceback=api_call.get('additional_data',{}).get('stack_trace',''))
     api_call_info = {
         k: api_call[k]
         for k in ['method', 'time_created', 'state', 'uid']

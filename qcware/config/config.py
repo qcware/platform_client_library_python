@@ -87,10 +87,10 @@ def max_wait_in_seconds(override: Optional[int] = None):
 
     This is configurable by the environment variable QCWARE_MAX_WAIT_IN_SECONDS
 
-    The default value is 20 seconds
+    The default value is 60 seconds
     """
     result = override if override is not None \
-        else config('QCWARE_MAX_WAIT_IN_SECONDS', default=20, cast=int)
+        else config('QCWARE_MAX_WAIT_IN_SECONDS', default=60, cast=int)
     return result
 
 
