@@ -1,9 +1,11 @@
 # helper routines to serialize to/from quasar circuits
 import re
 from quasar.circuit import Circuit, CompositeGate, ControlledGate, Gate
+from quasar.pauli import PauliString, Pauli
 from quasar.measurement import ProbabilityHistogram
-from .transforms.helpers import ndarray_to_dict, dict_to_ndarray
-from typing import Sequence
+from .transforms.helpers import ndarray_to_dict, dict_to_ndarray, scalar_to_dict, dict_to_scalar
+import numpy as np
+from typing import Sequence, List, Tuple, Dict
 
 
 def q_instruction_to_s(k, v):
@@ -33,10 +35,7 @@ def q_instruction_to_s(k, v):
     # so we must call the operator function to extract it
     elif v.name in ['U1', 'U2']:
         newparms = dict(U=ndarray_to_dict(v.operator_function(None)))
-        return dict(gate=v.name,
-                    parameters=newparms,
-                    bits=k[1],
-                    times=k[0])
+        return dict(gate=v.name, parameters=newparms, bits=k[1], times=k[0])
     else:
         return dict(gate=v.name,
                     parameters=dict(v.parameters),
@@ -140,6 +139,10 @@ def quasar_to_sequence(q: Circuit) -> Sequence:
     return (q_instruction_to_s(k, v) for k, v in q.gates.items())
 
 
+def quasar_to_list(q: Circuit) -> List:
+    return list(quasar_to_sequence(q))
+
+
 def make_gate(gate_name: str, original_parameters: dict):
     # U1 and U2 have translated ndarrays, so we must convert them
     parameters = original_parameters.copy()
@@ -178,4 +181,31 @@ def dict_to_probability_histogram(d: dict):
     d2 = d.copy()
     if 'histogram' in d2:
         d2['histogram'] = {int(k): v for k, v in d2['histogram'].items()}
-    return ProbabilityHistogram(d2['nqubit'], d2['histogram'], d2['nmeasurement'])
+    return ProbabilityHistogram(d2['nqubit'], d2['histogram'],
+                                d2['nmeasurement'])
+
+
+def pauli_item_to_tuple(k: PauliString, v: object) -> Tuple[str, Dict]:
+    return tuple((str(k), scalar_to_dict(v)))
+
+
+def tuple_to_pauli_item(t: Tuple[str, Dict]) -> Tuple:
+    return tuple((PauliString.from_string(t[0]), dict_to_scalar(t[1])))
+
+
+def pauli_to_list(p: Pauli) -> List[Tuple[str, Dict]]:
+    """
+    Transforms a pauli object into a list of tuples
+    of the form str, float float, representing 
+    (PauliString, Dict) where the Dict is an encoded
+    numpy array
+    """
+    return [pauli_item_to_tuple(k, v) for k, v in p.items()]
+
+
+def list_to_pauli(pl: List) -> Pauli:
+    """
+    Transforms a list of pauli tuples (see above) to
+    a pauli object
+    """
+    return Pauli([tuple_to_pauli_item(t) for t in pl])

@@ -34,7 +34,7 @@ def _print_waiting_handler(details: Dict):
 
 
 @backoff.on_predicate(backoff.constant,
-                      interval=2,
+                      interval=1,
                       predicate=lambda a: a.get('state') == 'open',
                       max_time=max_wait_in_seconds,
                       on_backoff=_print_waiting_handler)

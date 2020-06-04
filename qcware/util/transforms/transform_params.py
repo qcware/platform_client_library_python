@@ -2,10 +2,12 @@
 Methods to transform FROM native types used by the backends
 TO serializable types for the api to send to the client
 """
-from ..serialize_quasar import quasar_to_sequence, sequence_to_quasar, probability_histogram_to_dict
-from .helpers import (ndarray_to_dict, dict_to_ndarray,
-                      remap_q_indices_from_strings, remap_q_indices_to_strings,
-                      complex_dtype_to_string, string_to_complex_dtype)
+from ..serialize_quasar import (quasar_to_list, sequence_to_quasar,
+                                pauli_to_list, list_to_pauli)
+from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
+                      dict_to_scalar, remap_q_indices_from_strings,
+                      remap_q_indices_to_strings, complex_dtype_to_string,
+                      string_to_complex_dtype)
 from typing import Optional, Mapping, Callable
 
 
@@ -26,8 +28,14 @@ _to_wire_arg_replacers = {}
 def client_args_to_wire(method_name: str, **kwargs):
     # grab the dict of
     # key replacers and apply them
-    return update_with_replacers(kwargs,
-                                 _to_wire_arg_replacers.get(method_name, {}))
+    if method_name == 'circuits.run_backend_method':
+        method_name = '_shadowed.' + kwargs.get('method', '')
+        inner_kwargs = client_args_to_wire(method_name,
+                                           **kwargs.get('kwargs', {}))
+        return {**kwargs, **{'kwargs': inner_kwargs}}
+    else:
+        return update_with_replacers(
+            kwargs, _to_wire_arg_replacers.get(method_name, {}))
 
 
 _from_wire_arg_replacers = {}
@@ -36,8 +44,14 @@ _from_wire_arg_replacers = {}
 def server_args_from_wire(method_name: str, **kwargs):
     # grab the dict of
     # key replacers and apply them
-    return update_with_replacers(kwargs,
-                                 _from_wire_arg_replacers.get(method_name))
+    if method_name == 'circuits.run_backend_method':
+        method_name = '_shadowed.' + kwargs.get('method', '')
+        inner_kwargs = server_args_from_wire(method_name,
+                                             **kwargs.get('kwargs', {}))
+        return {**kwargs, **{'kwargs': inner_kwargs}}
+    else:
+        return update_with_replacers(
+            kwargs, _from_wire_arg_replacers.get(method_name, {}))
 
 
 def register_argument_transform(method_name: str,
@@ -53,8 +67,7 @@ register_argument_transform('optimization.solve_binary',
 
 register_argument_transform('circuits.run_measurement',
                             to_wire={
-                                'circuit':
-                                lambda x: list(quasar_to_sequence(x)),
+                                'circuit': quasar_to_list,
                                 'statevector': ndarray_to_dict,
                                 'dtype': complex_dtype_to_string
                             },
@@ -66,8 +79,7 @@ register_argument_transform('circuits.run_measurement',
 
 register_argument_transform('circuits.run_statevector',
                             to_wire={
-                                'circuit':
-                                lambda x: list(quasar_to_sequence(x)),
+                                'circuit': quasar_to_list,
                                 'statevector': ndarray_to_dict,
                                 'dtype': complex_dtype_to_string
                             },
@@ -86,9 +98,103 @@ register_argument_transform('qio.loader',
                             from_wire={'data': dict_to_ndarray})
 
 register_argument_transform('qml.fit_and_predict',
-                            to_wire={'X': ndarray_to_dict,
-                                     'y': ndarray_to_dict,
-                                     'T': ndarray_to_dict},
-                            from_wire={'X': dict_to_ndarray,
-                                       'y': dict_to_ndarray,
-                                       'T': dict_to_ndarray})
+                            to_wire={
+                                'X': ndarray_to_dict,
+                                'y': ndarray_to_dict,
+                                'T': ndarray_to_dict
+                            },
+                            from_wire={
+                                'X': dict_to_ndarray,
+                                'y': dict_to_ndarray,
+                                'T': dict_to_ndarray
+                            })
+
+register_argument_transform('_shadowed.run_measurement',
+                            to_wire={
+                                'circuit': quasar_to_list,
+                                'statevector': ndarray_to_dict,
+                                'dtype': complex_dtype_to_string
+                            },
+                            from_wire={
+                                'circuit': sequence_to_quasar,
+                                'statevector': dict_to_ndarray,
+                                'dtype': string_to_complex_dtype
+                            })
+
+register_argument_transform('_shadowed.run_statevector',
+                            to_wire={
+                                'circuit': quasar_to_list,
+                                'statevector': ndarray_to_dict,
+                                'dtype': complex_dtype_to_string
+                            },
+                            from_wire={
+                                'circuit': sequence_to_quasar,
+                                'statevector': dict_to_ndarray,
+                                'dtype': string_to_complex_dtype
+                            })
+
+register_argument_transform('_shadowed.circuit_in_basis',
+                            to_wire={
+                                'circuit': quasar_to_list,
+                            },
+                            from_wire={
+                                'circuit': sequence_to_quasar,
+                            })
+register_argument_transform('_shadowed.run_density_matrix',
+                            to_wire=dict(circuit=quasar_to_list,
+                                         statevector=ndarray_to_dict),
+                            from_wire=dict(circuit=sequence_to_quasar,
+                                           statevector=dict_to_ndarray))
+register_argument_transform('_shadowed.run_pauli_diagonal',
+                            to_wire=dict(pauli=pauli_to_list),
+                            from_wire=dict(pauli=list_to_pauli))
+register_argument_transform('_shadowed.run_pauli_expectation',
+                            to_wire=dict(circuit=quasar_to_list,
+                                         pauli=pauli_to_list,
+                                         statevector=ndarray_to_dict),
+                            from_wire=dict(circuit=sequence_to_quasar,
+                                           pauli=list_to_pauli,
+                                           statevector=dict_to_ndarray))
+register_argument_transform('_shadowed.run_pauli_expectation_ideal',
+                            to_wire=dict(circuit=quasar_to_list,
+                                         pauli=pauli_to_list,
+                                         statevector=ndarray_to_dict),
+                            from_wire=dict(circuit=sequence_to_quasar,
+                                           pauli=list_to_pauli,
+                                           statevector=dict_to_ndarray))
+register_argument_transform('_shadowed.run_pauli_expectation_measurement',
+                            to_wire=dict(circuit=quasar_to_list,
+                                         pauli=pauli_to_list,
+                                         statevector=ndarray_to_dict),
+                            from_wire=dict(circuit=sequence_to_quasar,
+                                           pauli=list_to_pauli,
+                                           statevector=dict_to_ndarray))
+register_argument_transform('_shadowed.run_pauli_expectation_value',
+                            to_wire=dict(circuit=quasar_to_list,
+                                         pauli=pauli_to_list,
+                                         statevector=ndarray_to_dict),
+                            from_wire=dict(circuit=sequence_to_quasar,
+                                           pauli=list_to_pauli,
+                                           statevector=dict_to_ndarray))
+register_argument_transform('_shadowed.run_pauli_expectation_value_gradient',
+                            to_wire=dict(circuit=quasar_to_list,
+                                         pauli=pauli_to_list,
+                                         statevector=ndarray_to_dict),
+                            from_wire=dict(circuit=sequence_to_quasar,
+                                           pauli=list_to_pauli,
+                                           statevector=dict_to_ndarray))
+register_argument_transform('_shadowed.run_pauli_expectation_value_ideal',
+                            to_wire=dict(circuit=quasar_to_list,
+                                         pauli=pauli_to_list,
+                                         statevector=ndarray_to_dict),
+                            from_wire=dict(circuit=sequence_to_quasar,
+                                           pauli=list_to_pauli,
+                                           statevector=dict_to_ndarray))
+register_argument_transform('_shadowed.run_pauli_sigma',
+                            to_wire=dict(pauli=pauli_to_list,
+                                         statevector=ndarray_to_dict),
+                            from_wire=dict(pauli=list_to_pauli,
+                                           statevector=dict_to_ndarray))
+register_argument_transform('_shadowed.run_unitary',
+                            to_wire=dict(circuit=quasar_to_list),
+                            from_wire=dict(circuit=sequence_to_quasar))

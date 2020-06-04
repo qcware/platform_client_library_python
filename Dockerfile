@@ -8,16 +8,16 @@ RUN pip install --upgrade pip
 
 FROM base AS python-deps
 RUN apt-get update && apt-get -y install git
-
-RUN apt-get update && apt-get -y install git
 COPY ./deploy_keys /root/.ssh
 RUN chmod 600 /root/.ssh/quasar_deploy_rsa
 
 RUN mkdir /setup && mkdir /setup/python_client
-COPY ./python_client /setup/python_client
-RUN pip install -e /setup/python_client
+COPY ./python_client/requirements.txt /setup/python_client/requirements.txt
 RUN pip install -r /setup/python_client/requirements.txt
 RUN pip install pytest pytest-asyncio
+
+COPY ./python_client /setup/python_client
+RUN pip install -e /setup/python_client
 
 #COPY ./deploy_keys /root/.ssh
 #RUN chmod 600 /root/.ssh/quasar_deploy_rsa
