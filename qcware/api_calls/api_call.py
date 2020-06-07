@@ -1,10 +1,10 @@
-from typing import Optional, Dict, List
+from typing import Optional, Dict
 from urllib.parse import urljoin
 import backoff
 from ..request import post
 from ..exceptions import ApiCallExecutionError, ApiTimeoutError
 from ..util.transforms import client_result_from_wire
-from ..config import qcware_api_key, qcware_host, max_wait_in_seconds
+from ..config import qcware_api_key, qcware_host, max_wait_in_seconds, do_client_api_compatibility_check_once
 
 
 def post_call(endpoint: str, data: dict, host: Optional[str] = None):
@@ -26,6 +26,7 @@ def api_call(api_key: Optional[str] = None,
              call_token=None):
     api_key = qcware_api_key(api_key)
     host = qcware_host(host)
+    do_client_api_compatibility_check_once()
     return post(f'{host}/api_calls', locals())
 
 
@@ -45,7 +46,10 @@ def wait_for_call(api_key=None, host=None, call_token=None):
 
 def handle_result(api_call):
     if api_call['state'] == 'error':
-        raise ApiCallExecutionError(api_call['result']['error'], traceback=api_call.get('additional_data',{}).get('stack_trace',''))
+        raise ApiCallExecutionError(api_call['result']['error'],
+                                    traceback=api_call.get(
+                                        'additional_data',
+                                        {}).get('stack_trace', ''))
     api_call_info = {
         k: api_call[k]
         for k in ['method', 'time_created', 'state', 'uid']
@@ -55,7 +59,8 @@ def handle_result(api_call):
     # timed out
     if api_call['state'] in ['error', 'open', 'new']:
         raise ApiTimeoutError(
-            f"Api call timed out; can retrieve with qcware.api_call.retrieve_result(call_token=\"{api_call_info['uid']}\")", api_call_info)
+            f"Api call timed out; can retrieve with qcware.api_call.retrieve_result(call_token=\"{api_call_info['uid']}\")",
+            api_call_info)
     else:
         return client_result_from_wire(api_call['method'], api_call['result'])
 

@@ -15,7 +15,7 @@ setup(
     keywords=['quantum', 'computing', 'cloud', 'API'],
     classifiers=[],
     install_requires=[
-        'backoff', 'requests', 'python-decouple', 'networkx'
+        'backoff', 'requests', 'python-decouple', 'networkx', 'numpy', 'packaging', 'quasar'
         #    'numpy',
         #    'protobuf',
     ],
