@@ -5,4 +5,6 @@ python-decouple==3.3
 networkx==2.4
 numpy==1.18.4
 packaging==20.4
-git+ssh://git@github.com:/qcware/quasar-dev.git@0db2575e86ee4aa63462cefd87b5300084acc4b1
+--extra-index-url https://test.pypi.org/simple
+qcware-quasar==1.0.0a2
+

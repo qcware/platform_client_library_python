@@ -4,6 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [tool.flit.metadata]
 module = "qcware"
+dist-name = "qcwaretest"
 author = "Vic Putz"
 author-email = "vic.putz@qcware.com"
 home-page = "http://github.com/qcware/platform_client_library_python"
@@ -21,7 +22,7 @@ requires = [
 	 "networkx >= 2.4",
 	 "numpy >= 1.18.4",
 	 "packaging >= 20.4",
-	 "quasar >= 1.0.0a1"
+#	 "quasar >= 1.0.0a1"
 ]
 
 
