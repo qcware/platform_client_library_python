@@ -7,7 +7,7 @@ module = "qcware"
 author = "Vic Putz"
 author-email = "vic.putz@qcware.com"
 home-page = "http://github.com/qcware/platform_client_library_python"
-keywords = ['quantum', 'computing', 'cloud', 'API']
+keywords = "quantum,computing,cloud,API"
 description-file="README.rst"
 classifiers = [
 	    "License :: OSI Approved :: Apache Software License",
