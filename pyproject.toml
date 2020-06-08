@@ -21,7 +21,7 @@ requires = [
 	 "networkx >= 2.4",
 	 "numpy >= 1.18.4",
 	 "packaging >= 20.4",
-	 "quasar >= 1.0.0a1"
+#	 "quasar >= 1.0.0a1"
 ]
 
 
