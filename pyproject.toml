@@ -1,0 +1,27 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "qcware"
+author = "Vic Putz"
+author-email = "vic.putz@qcware.com"
+home-page = "http://github.com/qcware/platform_client_library_python"
+keywords = ['quantum', 'computing', 'cloud', 'API']
+description-file="README.rst"
+classifiers = [
+	    "License :: OSI Approved :: Apache Software License",
+	    "Programming Language :: Python :: 3",
+	    "Operating System :: OS Independent",
+	    ]
+requires = [
+	 "backoff >= 1.10.0",
+	 "requests >= 2.23.0",
+	 "python-decouple >= 3.3",
+	 "networkx >= 2.4",
+	 "numpy >= 1.18.4",
+	 "packaging >= 20.4",
+	 "quasar >= 1.0.0a1"
+]
+
+
