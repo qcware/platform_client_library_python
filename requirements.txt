@@ -8,4 +8,3 @@ packaging==20.4
 colorama==0.4.3
 --extra-index-url https://test.pypi.org/simple
 qcware-quasar==1.0.0a2
-

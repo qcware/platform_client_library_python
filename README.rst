@@ -69,8 +69,7 @@ Optimization
 
 Consider the following optimization problem: 
 
-.. image:: https://latex.codecogs.com/png.latex?$$x^*&space;=&space;\min_{x&space;\in&space;\{0,&space;1&space;\}^3}(x_0&space;x_1&space;&plus;&space;2&space;x_0&space;x_2&space;-&space;x_1&space;x_2&space;&plus;&space;x_0&space;-&space;3&space;x_1&space;)$$
-   :alt: qubo_example
+.. math:: x=\min^{x \in {0, 1}^3}(x_0x_1+2x_0x_2-x_1x_2+x_0-3x_1)
 
 We can solve this with the ``qcware`` software package. First, create a QUBO representation (see the `notebooks <https://forge.qcware.com>`_ for details).
 
