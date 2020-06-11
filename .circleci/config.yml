@@ -15,8 +15,8 @@ jobs:
       - run:
           name: "switch keys and check out client repo"
           command: |
-            pip3 install flit
-            pip3 install pygments
+            pip3 install --user flit
+            pip3 install --user pygments
             flit install --deps none
             flit build
             flit publish
