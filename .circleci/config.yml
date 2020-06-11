@@ -25,10 +25,10 @@ workflows:
 
   on_commit:
     jobs:
-      - publish_to_pypi:
-          context: python_client_publish
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
+      publish_to_pypi:
+        context: python_client_publish
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /^v.*/
