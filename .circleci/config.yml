@@ -3,7 +3,7 @@ version: 2.1
 executors:
   default:
     docker:
-      - image: circleci/python:3.6.1
+      - image: circleci/python@0.2.1
   
 jobs:    
 
@@ -15,8 +15,9 @@ jobs:
       - run:
           name: "switch keys and check out client repo"
           command: |
-            pip3 install flit
-            pip3 install pygments
+            sudo pip3 install --upgrade pip
+            sudo pip3 install flit
+            sudo pip3 install pygments
             flit install --deps none
             flit build
             flit publish
