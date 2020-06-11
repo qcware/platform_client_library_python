@@ -1,14 +1,12 @@
 version: 2.1
 
-executors:
-  default:
-    docker:
-      - image: circleci/python@0.2.1
-  
+orbs:
+  python: circleci/python@0.2.1
+    
 jobs:    
 
   publish_to_pypi:
-    executor: default
+    executor: python/default
 
     steps:
       - checkout
