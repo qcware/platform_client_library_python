@@ -59,37 +59,4 @@ Or, to install from source:
 
 Sign up for an API key at `https://forge.qcware.com <https://forge.qcware.com>`_ to access *Forge*. Please see our `documentation <https://qcware.readthedocs.io>`_.
 
-Using QC Ware Forge
--------------------
-
-From your Forge dashboard, you will have access to many notebooks with detailed tutorials and examples. Below we will show a few Hello World examples.
-
-Optimization
-^^^^^^^^^^^^
-
-Consider the following optimization problem: 
-
-.. math:: x=\min^{x \in {0, 1}^3}(x_0x_1+2x_0x_2-x_1x_2+x_0-3x_1)
-
-We can solve this with the ``qcware`` software package. First, create a QUBO representation (see the `notebooks <https://forge.qcware.com>`_ for details).
-
-.. code:: python
-
-   Q = {(0, 1): 1, (0, 2): 2, (1, 2): -1, (0, 0): 1, (1, 1): -3}
-
-Next, choose a backend (formerly _solver_). For example, to solve the problem with D'Wave's quantum annealer, set the `backend` argument to ``'dwave'``.
-
-.. code:: python
-
-   backend = 'dwave'
-
-Finally, configure the QCWare library and call the solver (note! configuration has changed; see below.  You no longer need to supply your api key with every call)
-
-.. code:: python
-
-   import qcware
-   qcware.config.set_api_key('your_api_key_here')
-   result = qcware.optimization.solve_binary(Q=Q, backend=backend)
-   print(result)
-
-Please see the `documentation <https://qcware.readthedocs.io>`_ and `notebooks <https://forge.qcware.com>`_ for more details.
+Please see the `documentation <https://qcware.readthedocs.io>`_ 

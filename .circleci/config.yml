@@ -1,26 +1,34 @@
-version: 2
+version: 2.1
 
-jobs:
-
-  just_checkout:
+executors:
+  default:
     docker:
       - image: circleci/python:3.6.1
-    steps:
-      - checkout
   
-  toxify:
-    docker:
-      - image: themattrix/tox
-        
+jobs:    
+
+  publish_to_pypi:
+    executor: default
+
     steps:
       - checkout
-      - run: tox
+      - run:
+          name: "switch keys and check out client repo"
+          command: |
+            pip3 install flit
+            pip3 install pygments
+            flit install --deps none
+            flit build
+            flit publish
 
 workflows:
-  version: 2
-  run-tests:
+
+  on_commit:
     jobs:
-      - just_checkout
-#      - toxify:
-#          context: aqua_client
-#      - pep8
+      publish_to_pypi:
+        context: python_client_publish
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /^v.*/
