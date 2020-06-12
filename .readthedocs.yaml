@@ -5,7 +5,7 @@ python:
   install:
     - requirements: doc_requirements.txt
     - requirements: docs/source/requirements.txt
-    - method: setuptools
+    - method: pip
       path: .
 
 sphinx:
