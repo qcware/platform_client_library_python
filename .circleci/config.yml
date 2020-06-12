@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "switch keys and check out client repo"
+          name: "publish to pypi"
           command: |
             sudo pip3 install --upgrade pip
             sudo pip3 install flit

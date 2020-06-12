@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [tool.flit.metadata]
 module = "qcware"
-dist-name = "qcwaretest"
+dist-name = "qcware"
 author = "Vic Putz"
 author-email = "vic.putz@qcware.com"
 home-page = "http://github.com/qcware/platform_client_library_python"
