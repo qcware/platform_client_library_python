@@ -10,9 +10,12 @@ def test_timeout_with_solve_binary():
     qcware.config.set_max_wait_in_seconds(0)
 
     with pytest.raises(qcware.exceptions.ApiTimeoutError):
-        sol = qcware.optimization.find_optimal_qaoa_angles(Q,
-                                                           num_evals=100, num_min_vals=10,
-                                                           fastmath_flag_in=True, precision=30)
+        sol = qcware.optimization.find_optimal_qaoa_angles(
+            Q,
+            num_evals=100,
+            num_min_vals=10,
+            fastmath_flag_in=True,
+            precision=30)
 
     qcware.config.set_max_wait_in_seconds(old_timeout)
 
@@ -36,8 +39,9 @@ async def test_async():
     old_timeout = qcware.config.max_wait_in_seconds()
     qcware.config.set_max_wait_in_seconds(0)
 
-    result = await qcware.optimization.async_solve_binary(Q=Q, backend='classical')
+    result = await qcware.optimization.async_solve_binary(Q=Q,
+                                                          backend='classical')
     assert (result['solution'] == [0, 0, 1, 1]
             or result['solution'] == [1, 1, 1, 1])
-    
+
     qcware.config.set_max_wait_in_seconds(old_timeout)

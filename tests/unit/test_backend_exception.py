@@ -9,5 +9,4 @@ def test_solve_binary_with_brute_force():
     Q = {(0, 0): "POTATO"}
 
     with pytest.raises(qcware.exceptions.ApiCallExecutionError):
-        result = qcware.optimization.solve_binary(Q=Q,
-                                                  backend="classical")
+        result = qcware.optimization.solve_binary(Q=Q, backend="classical")

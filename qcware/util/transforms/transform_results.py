@@ -2,7 +2,8 @@ import os
 from typing import Optional, Callable
 from ..serialize_quasar import (quasar_to_list, sequence_to_quasar,
                                 probability_histogram_to_dict,
-                                dict_to_probability_histogram, pauli_to_list, list_to_pauli)
+                                dict_to_probability_histogram, pauli_to_list,
+                                list_to_pauli)
 from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
                       dict_to_scalar)
 _to_wire_result_replacers = {}

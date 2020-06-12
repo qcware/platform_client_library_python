@@ -20,7 +20,7 @@ def dict_to_ndarray(d: dict):
     ).reshape(d['shape'])
 
 
-def scalar_to_dict(v)->Dict:
+def scalar_to_dict(v) -> Dict:
     """
     Hack for individual numerical scalars to serializable form.
     This is done by casting them to complex128, which is byte-wasteful

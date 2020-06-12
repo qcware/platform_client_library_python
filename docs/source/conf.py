@@ -24,7 +24,6 @@ author = 'Bryan E. Burr (bryan@qcware.com)'
 master_doc = 'index'
 version = parameter_api_version()
 
-
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -45,7 +44,6 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -58,15 +56,12 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
 
-html_theme_options = {
-    'collapse_navigation': False
-}
+html_theme_options = {'collapse_navigation': False}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'qcwaredoc'
-
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -92,20 +87,15 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'qcware.tex', 'qcware Documentation',
-     'QC Ware, Corp.', 'manual'),
+    (master_doc, 'qcware.tex', 'qcware Documentation', 'QC Ware, Corp.',
+     'manual'),
 ]
-
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'qcware', 'qcware Documentation',
-     [author], 1)
-]
-
+man_pages = [(master_doc, 'qcware', 'qcware Documentation', [author], 1)]
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -113,11 +103,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'qcware', 'qcware Documentation',
-     author, 'qcware', 'The Python client library for the QC Ware Platform.',
-     'Miscellaneous'),
+    (master_doc, 'qcware', 'qcware Documentation', author, 'qcware',
+     'The Python client library for the QC Ware Platform.', 'Miscellaneous'),
 ]
-
 
 # -- Options for Epub output -------------------------------------------------
 
@@ -135,6 +123,5 @@ epub_title = project
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['search.html']
-
 
 # -- Extension configuration -------------------------------------------------

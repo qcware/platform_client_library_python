@@ -2,7 +2,6 @@ import qcware
 import pytest
 
 
-
 @pytest.mark.parametrize("backend", ('vulcan/simulator', ))
 def test_solve_binary_qaoa(backend):
     Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
@@ -29,8 +28,8 @@ def test_analytical_angles_with_qaoa():
     exvals, angles, Z = qcware.optimization.find_optimal_qaoa_angles(
         Q, num_evals=100, num_min_vals=10)
     print("EXVALS: ", exvals)
-    print("ANGLES: ",angles)
-    
+    print("ANGLES: ", angles)
+
     result = qcware.optimization.solve_binary(Q=Q,
                                               backend='vulcan/simulator',
                                               qaoa_beta=angles[1][0],
