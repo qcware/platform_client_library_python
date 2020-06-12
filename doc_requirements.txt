@@ -1,0 +1,7 @@
+backoff==1.10.0
+requests==2.23.0
+python-decouple==3.3
+networkx==2.4
+numpy>=1.18.0
+git+git://github.com/qcware/quasar@3a65844904956c56987afd86a95149e8e49c86ed
+
