@@ -3,5 +3,5 @@ requests==2.23.0
 python-decouple==3.3
 networkx==2.4
 numpy>=1.18.0
-quasar==1.0.0
+qcware-quasar==1.0.0
 
