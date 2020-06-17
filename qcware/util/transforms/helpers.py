@@ -1,23 +1,40 @@
 import numpy as np
 import base64
 from typing import Dict
+import lz4.frame
 
 
 def ndarray_to_dict(x: np.ndarray):
     # from https://stackoverflow.com/questions/30698004/how-can-i-serialize-a-numpy-array-while-preserving-matrix-dimensions
-    if isinstance(x, list) or isinstance(x, tuple):
-        x = np.array(x)
-    return None if x is None else dict(ndarray=base64.b64encode(
-        x.tobytes()).decode('utf-8'),
-                                       dtype=x.dtype.str,
-                                       shape=x.shape)
+    if x is None:
+        return None
+    else:
+        if isinstance(x, list) or isinstance(x, tuple):
+            x = np.array(x)
+        b = x.tobytes()
+        Compression_threshold = 1024
+        if len(b) > Compression_threshold:
+            b = lz4.frame.compress(b)
+            compression = 'lz4'
+        else:
+            compression = 'none'
+        return dict(ndarray=base64.b64encode(b).decode('utf-8'),
+                    compression=compression,
+                    dtype=x.dtype.str,
+                    shape=x.shape)
 
 
 def dict_to_ndarray(d: dict):
-    return None if d is None else np.frombuffer(
-        base64.b64decode(d['ndarray']),
-        dtype=np.dtype(d['dtype']),
-    ).reshape(d['shape'])
+    if d is None:
+        return None
+    else:
+        b = base64.b64decode(d['ndarray'])
+        if d['compression'] == 'lz4':
+            b = lz4.frame.decompress(b)
+        return np.frombuffer(
+            b,
+            dtype=np.dtype(d['dtype']),
+        ).reshape(d['shape'])
 
 
 def scalar_to_dict(v) -> Dict:

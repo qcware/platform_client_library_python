@@ -31,9 +31,9 @@ Table of contents
    
 .. toctree::
    :maxdepth: 2
-   :caption: Quantum Input/Output
+   :caption: Quantum classification
 
-   qio/qio
+   qml/fit_and_predict
 
 .. toctree::
    :maxdepth: 2
