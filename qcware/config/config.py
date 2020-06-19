@@ -161,12 +161,12 @@ def do_client_api_compatibility_check_once(client_version_string: str = None,
     If an API compatibility check has not been done between client and the
     selected host, do it now and disable further checks.
     """
-    client_version_string = client_api_semver(
-    ) if client_version_string is None else client_version_string
-    host_version_string = host_api_semver(
-    ) if host_version_string is None else host_version_string
     global Client_api_compatibility_check_has_been_done
     if not Client_api_compatibility_check_has_been_done:
+        client_version_string = client_api_semver(
+        ) if client_version_string is None else client_version_string
+        host_version_string = host_api_semver(
+        ) if host_version_string is None else host_version_string
         do_client_api_compatibility_check(client_version_string,
                                           host_version_string)
 

@@ -62,6 +62,7 @@ def handle_result(api_call):
             f"Api call timed out; can retrieve with qcware.api_call.retrieve_result(call_token=\"{api_call_info['uid']}\")",
             api_call_info)
     else:
+        print(f"API CALL: {api_call}")
         return client_result_from_wire(api_call['method'], api_call['result'])
 
 
