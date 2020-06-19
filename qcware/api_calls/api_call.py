@@ -4,7 +4,8 @@ import backoff
 from ..request import post
 from ..exceptions import ApiCallExecutionError, ApiTimeoutError
 from ..util.transforms import client_result_from_wire
-from ..config import qcware_api_key, qcware_host, max_wait_in_seconds, do_client_api_compatibility_check_once
+from ..config import qcware_api_key, qcware_host, max_poll_period, do_client_api_compatibility_check_once, max_long_poll
+import logging
 
 
 def post_call(endpoint: str, data: dict, host: Optional[str] = None):
@@ -26,6 +27,7 @@ def api_call(api_key: Optional[str] = None,
              call_token=None):
     api_key = qcware_api_key(api_key)
     host = qcware_host(host)
+    max_wait_for_closure_in_sec = max_long_poll()
     do_client_api_compatibility_check_once()
     return post(f'{host}/api_calls', locals())
 
@@ -34,13 +36,16 @@ def _print_waiting_handler(details: Dict):
     pass
 
 
+# we pass the function max_poll_period for max_time rather than
+# evaluating it; see backoff docs
 @backoff.on_predicate(backoff.constant,
                       interval=1,
                       predicate=lambda a: a.get('state') == 'open',
-                      max_time=max_wait_in_seconds,
+                      max_time=max_poll_period,
                       on_backoff=_print_waiting_handler)
 def wait_for_call(api_key=None, host=None, call_token=None):
     # backoff.on_predicate is mildly problematic.
+    logging.error(f'max_time {max_poll_period()}')
     return api_call(api_key=api_key, host=host, call_token=call_token)
 
 

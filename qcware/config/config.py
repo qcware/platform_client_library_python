@@ -192,20 +192,38 @@ def set_host(host_url: str):
             "'http://api.forge.qcware.com'")
 
 
-def max_wait_in_seconds(override: Optional[int] = None):
+def max_poll_period(override: Optional[int] = None):
     """
-    Returns the maximum time the api should wait in seconds when running
+    Returns the maximum time the api should retry polling when running
     in synchronous mode before returning the error state that the call
-    is not complete and allowing the user to poll.
+    is not complete and allowing the user to poll manually.
 
-    This is configurable by the environment variable QCWARE_MAX_WAIT_IN_SECONDS
+    This is configurable by the environment variable QCWARE_MAX_POLL_PERIOD
 
     The default value is 60 seconds
     """
     result = override if override is not None \
-        else config('QCWARE_MAX_WAIT_IN_SECONDS', default=60, cast=int)
+        else config('QCWARE_MAX_POLL_PERIOD', default=60, cast=int)
     return result
 
 
-def set_max_wait_in_seconds(new_wait: int):
-    os.environ['QCWARE_MAX_WAIT_IN_SECONDS'] = str(new_wait)
+def set_max_poll_period(new_wait: int):
+    os.environ['QCWARE_MAX_POLL_PERIOD'] = str(new_wait)
+
+
+def max_long_poll(override: Optional[int] = None):
+    """
+    Returns the maximum time the server should sit pinging the database for 
+    a result before giving up.
+
+    This is configurable by the environment variable QCWARE_MAX_LONG_POLL
+
+    The default value is 60 seconds
+    """
+    result = override if override is not None \
+        else config('QCWARE_MAX_LONG_POLL', default=60, cast=int)
+    return result
+
+
+def set_max_long_poll(new_wait: int):
+    os.environ['QCWARE_MAX_LONG_POLL'] = str(new_wait)
