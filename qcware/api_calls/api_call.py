@@ -45,7 +45,6 @@ def _print_waiting_handler(details: Dict):
                       on_backoff=_print_waiting_handler)
 def wait_for_call(api_key=None, host=None, call_token=None):
     # backoff.on_predicate is mildly problematic.
-    logging.error(f'max_time {max_poll_period()}')
     return api_call(api_key=api_key, host=host, call_token=call_token)
 
 
@@ -67,7 +66,6 @@ def handle_result(api_call):
             f"Api call timed out; can retrieve with qcware.api_call.retrieve_result(call_token=\"{api_call_info['uid']}\")",
             api_call_info)
     else:
-        print(f"API CALL: {api_call}")
         return client_result_from_wire(api_call['method'], api_call['result'])
 
 
