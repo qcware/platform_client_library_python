@@ -39,8 +39,8 @@ def test_analytical_angles_with_qaoa():
 
     exvals, angles, Z = qcware.optimization.find_optimal_qaoa_angles(
         Q, num_evals=100, num_min_vals=10)
-    print("EXVALS: ", exvals)
-    print("ANGLES: ", angles)
+    # print("EXVALS: ", exvals)
+    # print("ANGLES: ", angles)
 
     result = qcware.optimization.solve_binary(Q=Q,
                                               backend='classical/simulator',

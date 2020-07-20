@@ -4,6 +4,8 @@ from quasar import Circuit, CompositeGate, ControlledGate, Gate
 from qcware.util.serialize_quasar import (quasar_to_sequence,
                                           sequence_to_quasar, base_gate_name,
                                           num_adjoints, make_gate,
+                                          quasar_to_string,
+                                          string_to_quasar,
                                           Canonical_gate_names)
 from scipy.stats import unitary_group
 
@@ -113,3 +115,8 @@ def test_all_canonical_gates():
     s2 = list(quasar_to_sequence(q2))
     assert Circuit.test_equivalence(q, q2)
     assert (s == s2)
+
+    s2 = quasar_to_string(q)
+    # print(s2)
+    q3 = string_to_quasar(s2)
+    assert Circuit.test_equivalence(q, q3)

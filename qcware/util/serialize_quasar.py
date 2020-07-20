@@ -5,7 +5,11 @@ from quasar.pauli import PauliString, Pauli
 from quasar.measurement import ProbabilityHistogram
 from .transforms.helpers import ndarray_to_dict, dict_to_ndarray, scalar_to_dict, dict_to_scalar
 import numpy as np
-from typing import Sequence, List, Tuple, Dict
+from typing import Sequence, List, Tuple, Dict, Mapping
+import json
+import lz4
+import base64
+from sortedcontainers import SortedSet, SortedDict
 
 
 def q_instruction_to_s(k, v):
@@ -14,7 +18,11 @@ def q_instruction_to_s(k, v):
     circuit, gets the name, a dict of the parameters for
     instantiating the gate, and the list of bits
     to apply the gate
-    (gatename, parameters, bits)
+    (gatename, parameters, bits); returns a dict
+    of the form { "gate": str, 
+                  "parameters": (dict(parmname: parmval)),
+                  "bits": tuple(int),
+                  "times": tuple(int) }
     """
     if isinstance(v, CompositeGate):
         return dict(gate="CompositeGate",
@@ -70,16 +78,20 @@ def wrap_controlled_gate(parms):
 
 adjoint_re = re.compile(r"\^\+")
 gate_re = re.compile(r"([\w]*)(\^\+)*")
+adjoint_str = "^+"
 
 
 def base_gate_name(gate_name: str) -> str:
     "Return the base gate name (without adjoint markers)"
-    return gate_re.search(gate_name).group(1)
+    # return gate_re.search(gate_name).group(1)
+    adjoint_index = gate_name.find(adjoint_str)
+    return gate_name if adjoint_index == -1 else gate_name[0:adjoint_index]
 
 
 def num_adjoints(gate_name: str) -> str:
     "the number of adjoint markers in this gate name"
-    return len(adjoint_re.findall(gate_name))
+    # return len(adjoint_re.findall(gate_name))
+    return gate_name.count(adjoint_str)
 
 
 # more gates are added to the base Gate class and there's not a way
@@ -135,12 +147,58 @@ class GateSerializationNotImplementedError(NotImplementedError):
     pass
 
 
+def quasar_to_dict(q: Circuit) -> Dict:
+    """
+    Returns a serializable dict object suitable for conversion to JSON
+    or other simple format, with format
+      { "instructions": sequence of dicts in form q_instruction_to_s,
+        "qubits": sequence of ints from circuit.qubits,
+        "times": sequence of ints from circuit.times }
+    This is for the intent of faster serialization by constructing the 
+    base objects of Circuit (SortedDict, SortedSet) more directly, 
+    providing them sorted sequences which should be quickly iterable
+    by timsort on construction
+    """
+    return dict(instructions=quasar_to_list(q),
+                qubits=list(q.qubits),
+                times=list(q.times),
+                times_and_qubits=list(q.times_and_qubits))
+
+
+def dict_to_quasar(d: Mapping) -> Circuit:
+    """
+    Takes a serialized mapping dict as in quasar_to_dict and returns
+    a rebuilt circuit from the elements therein
+    """
+    gate_generator = (((tuple(instruction['times']),
+                        tuple(instruction['bits'])),
+                       make_gate(instruction['gate'],
+                                 instruction['parameters']))
+                      for instruction in d['instructions'])
+    gates = SortedDict(gate_generator)
+    qubits = SortedSet(d['qubits'])
+    times = SortedSet(d['times'])
+    times_and_qubits = SortedSet([tuple(x) for x in d['times_and_qubits']])
+    result = Circuit.__new__(Circuit)
+    result.gates = gates
+    result.qubits = qubits
+    result.times = times
+    result.times_and_qubits = times_and_qubits
+    return result
+
+
 def quasar_to_sequence(q: Circuit) -> Sequence:
     return (q_instruction_to_s(k, v) for k, v in q.gates.items())
 
 
 def quasar_to_list(q: Circuit) -> List:
     return list(quasar_to_sequence(q))
+
+
+def quasar_to_string(q: Circuit) -> str:
+    b = json.dumps(quasar_to_dict(q)).encode('utf-8')
+    cb = lz4.frame.compress(b)
+    return base64.b64encode(cb).decode('utf-8')
 
 
 def make_gate(gate_name: str, original_parameters: dict):
@@ -161,6 +219,13 @@ def make_gate(gate_name: str, original_parameters: dict):
 
 
 def sequence_to_quasar(s: Sequence) -> Circuit:
+    # make a sequence of tuples (gate, qubits, times) and manually
+    # add to circuit, no need for copy
+    instructions = [(make_gate(instruction['gate'], instruction['parameters']),
+                     tuple(instruction['bits']), tuple(instruction['times']))
+                    for instruction in s]
+    gate_dict = SortedDict({(x[2], x[1]): x[0] for x in instructions}.items())
+    qubit_set = SortedSet
     result = Circuit()
     for instruction in s:
         gate = make_gate(instruction['gate'], instruction['parameters'])
@@ -169,6 +234,13 @@ def sequence_to_quasar(s: Sequence) -> Circuit:
                         tuple(instruction['bits']),
                         times=tuple(instruction['times']))
     return result
+
+
+def string_to_quasar(s: str) -> Circuit:
+    cb = base64.b64decode(s)
+    b = lz4.frame.decompress(cb)
+    qdict = json.loads(b.decode('utf-8'))
+    return dict_to_quasar(qdict)
 
 
 def probability_histogram_to_dict(hist: ProbabilityHistogram):
