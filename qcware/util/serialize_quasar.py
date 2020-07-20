@@ -44,6 +44,8 @@ def q_instruction_to_s(k, v):
     elif v.name in ['U1', 'U2']:
         newparms = dict(U=ndarray_to_dict(v.operator_function(None)))
         return dict(gate=v.name, parameters=newparms, bits=k[1], times=k[0])
+    elif base_gate_name(v.name) not in Canonical_gate_names:
+        raise GateSerializationNotImplementedError(v.name)
     else:
         return dict(gate=v.name,
                     parameters=dict(v.parameters),
