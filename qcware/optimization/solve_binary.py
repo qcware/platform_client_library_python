@@ -2,16 +2,75 @@
 #  Project: qcware
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
-
-  
 import asyncio
 from .. import logger
 from ..api_calls import post_call, wait_for_call, handle_result
 from ..util.transforms import client_args_to_wire
-from ..exceptions import ApiTimeoutError  
+from ..exceptions import ApiTimeoutError
 
 
-def solve_binary(Q:dict, backend:str, constraints_linear_A:list=[], constraints_linear_b:list=[], constraints_sat_max_runs:int=3100, constraints_hard:bool=False, constraints_penalty_scaling_factor:int=1, constraints_equality_R:list=[], constraints_equality_c:list=[], constraints_inequality_S:list=[], constraints_inequality_d:list=[], return_all_solutions:bool=False, num_runs:int=50, dwave_algorithm:str=None, dwave_solver_limit:str=None, dwave_target_energy:str=None, dwave_find_max:str=None, dwave_reduce_intersample_correlation:str=None, dwave_num_spin_reversal_transforms:str=None, dwave_programming_thermalization:str=None, dwave_reinitialize_state:str=None, dwave_anneal_offsets:str=None, dwave_anneal_offsets_delta:str=None, dwave_num_reads:str=None, dwave_max_answers:str=None, dwave_flux_biases:str=None, dwave_beta:str=None, dwave_answer_mode:str=None, dwave_auto_scale:str=None, dwave_postprocess:str=None, dwave_annealing_time:str=None, dwave_anneal_schedule:str=None, dwave_initial_state:str=None, dwave_chains:str=None, dwave_flux_drift_compensation:bool=None, dwave_beta_range:str=None, dwave_num_sweeps:str=None, dwave_precision_ancillas:str=None, dwave_precision_ancillas_tuples:str=None, constraints_hard_num:int=4, sa_num_sweeps:int=200, use_sample_persistence:bool=False, sample_persistence_solution_threshold:float=0.5, sample_persistence_persistence_threshold:float=0.5, sample_persistence_persistence_iterations:int=0, google_num_steps:int=1, google_n_samples:int=1000, google_arguments_optimizer:dict={}, google_step_sampling:bool=True, google_n_samples_step_sampling:int=1000, number_of_blocks:int=1, iterations:int=50, initial_solution:list=None, always_update_with_best:bool=True, update_q_each_block_solution:bool=True, qaoa_nmeasurement:int=None, qaoa_optimizer:str='COBYLA', qaoa_beta:float=None, qaoa_gamma:float=None, qaoa_p_val:int=1, api_key:str=None, host:str=None):
+def solve_binary(Q: dict,
+                 backend: str,
+                 constraints_linear_A: list = [],
+                 constraints_linear_b: list = [],
+                 constraints_sat_max_runs: int = 3100,
+                 constraints_hard: bool = False,
+                 constraints_penalty_scaling_factor: int = 1,
+                 constraints_equality_R: list = [],
+                 constraints_equality_c: list = [],
+                 constraints_inequality_S: list = [],
+                 constraints_inequality_d: list = [],
+                 return_all_solutions: bool = False,
+                 num_runs: int = 50,
+                 dwave_algorithm: str = None,
+                 dwave_solver_limit: str = None,
+                 dwave_target_energy: str = None,
+                 dwave_find_max: str = None,
+                 dwave_reduce_intersample_correlation: str = None,
+                 dwave_num_spin_reversal_transforms: str = None,
+                 dwave_programming_thermalization: str = None,
+                 dwave_reinitialize_state: str = None,
+                 dwave_anneal_offsets: str = None,
+                 dwave_anneal_offsets_delta: str = None,
+                 dwave_num_reads: str = None,
+                 dwave_max_answers: str = None,
+                 dwave_flux_biases: str = None,
+                 dwave_beta: str = None,
+                 dwave_answer_mode: str = None,
+                 dwave_auto_scale: str = None,
+                 dwave_postprocess: str = None,
+                 dwave_annealing_time: str = None,
+                 dwave_anneal_schedule: str = None,
+                 dwave_initial_state: str = None,
+                 dwave_chains: str = None,
+                 dwave_flux_drift_compensation: bool = None,
+                 dwave_beta_range: str = None,
+                 dwave_num_sweeps: str = None,
+                 dwave_precision_ancillas: str = None,
+                 dwave_precision_ancillas_tuples: str = None,
+                 constraints_hard_num: int = 4,
+                 sa_num_sweeps: int = 200,
+                 use_sample_persistence: bool = False,
+                 sample_persistence_solution_threshold: float = 0.5,
+                 sample_persistence_persistence_threshold: float = 0.5,
+                 sample_persistence_persistence_iterations: int = 0,
+                 google_num_steps: int = 1,
+                 google_n_samples: int = 1000,
+                 google_arguments_optimizer: dict = {},
+                 google_step_sampling: bool = True,
+                 google_n_samples_step_sampling: int = 1000,
+                 number_of_blocks: int = 1,
+                 iterations: int = 50,
+                 initial_solution: list = None,
+                 always_update_with_best: bool = True,
+                 update_q_each_block_solution: bool = True,
+                 qaoa_nmeasurement: int = None,
+                 qaoa_optimizer: str = 'COBYLA',
+                 qaoa_beta: float = None,
+                 qaoa_gamma: float = None,
+                 qaoa_p_val: int = 1,
+                 api_key: str = None,
+                 host: str = None):
     r"""Solve a binary optimization problem using one of the solvers provided by the platform.
 This function solves a binary optimization problem that is either
   * Unconstrained (quadratic or higher order)
@@ -279,14 +338,77 @@ Arguments:
 :rtype: dict
     """
     data = client_args_to_wire('optimization.solve_binary', **locals())
-    api_call = post_call('optimization/solve_binary', data, host=host )
-    logger.info(f'API call to optimization.solve_binary successful. Your API token is {api_call["uid"]}')
-    return handle_result(wait_for_call(api_key=api_key,
-                                       host=host,
-                                       call_token=api_call['uid']))
+    api_call = post_call('optimization/solve_binary', data, host=host)
+    logger.info(
+        f'API call to optimization.solve_binary successful. Your API token is {api_call["uid"]}'
+    )
+    return handle_result(
+        wait_for_call(api_key=api_key, host=host, call_token=api_call['uid']))
 
 
-async def async_solve_binary(Q:dict, backend:str, constraints_linear_A:list=[], constraints_linear_b:list=[], constraints_sat_max_runs:int=3100, constraints_hard:bool=False, constraints_penalty_scaling_factor:int=1, constraints_equality_R:list=[], constraints_equality_c:list=[], constraints_inequality_S:list=[], constraints_inequality_d:list=[], return_all_solutions:bool=False, num_runs:int=50, dwave_algorithm:str=None, dwave_solver_limit:str=None, dwave_target_energy:str=None, dwave_find_max:str=None, dwave_reduce_intersample_correlation:str=None, dwave_num_spin_reversal_transforms:str=None, dwave_programming_thermalization:str=None, dwave_reinitialize_state:str=None, dwave_anneal_offsets:str=None, dwave_anneal_offsets_delta:str=None, dwave_num_reads:str=None, dwave_max_answers:str=None, dwave_flux_biases:str=None, dwave_beta:str=None, dwave_answer_mode:str=None, dwave_auto_scale:str=None, dwave_postprocess:str=None, dwave_annealing_time:str=None, dwave_anneal_schedule:str=None, dwave_initial_state:str=None, dwave_chains:str=None, dwave_flux_drift_compensation:bool=None, dwave_beta_range:str=None, dwave_num_sweeps:str=None, dwave_precision_ancillas:str=None, dwave_precision_ancillas_tuples:str=None, constraints_hard_num:int=4, sa_num_sweeps:int=200, use_sample_persistence:bool=False, sample_persistence_solution_threshold:float=0.5, sample_persistence_persistence_threshold:float=0.5, sample_persistence_persistence_iterations:int=0, google_num_steps:int=1, google_n_samples:int=1000, google_arguments_optimizer:dict={}, google_step_sampling:bool=True, google_n_samples_step_sampling:int=1000, number_of_blocks:int=1, iterations:int=50, initial_solution:list=None, always_update_with_best:bool=True, update_q_each_block_solution:bool=True, qaoa_nmeasurement:int=None, qaoa_optimizer:str='COBYLA', qaoa_beta:float=None, qaoa_gamma:float=None, qaoa_p_val:int=1, api_key:str=None, host:str=None):
+async def async_solve_binary(
+        Q: dict,
+        backend: str,
+        constraints_linear_A: list = [],
+        constraints_linear_b: list = [],
+        constraints_sat_max_runs: int = 3100,
+        constraints_hard: bool = False,
+        constraints_penalty_scaling_factor: int = 1,
+        constraints_equality_R: list = [],
+        constraints_equality_c: list = [],
+        constraints_inequality_S: list = [],
+        constraints_inequality_d: list = [],
+        return_all_solutions: bool = False,
+        num_runs: int = 50,
+        dwave_algorithm: str = None,
+        dwave_solver_limit: str = None,
+        dwave_target_energy: str = None,
+        dwave_find_max: str = None,
+        dwave_reduce_intersample_correlation: str = None,
+        dwave_num_spin_reversal_transforms: str = None,
+        dwave_programming_thermalization: str = None,
+        dwave_reinitialize_state: str = None,
+        dwave_anneal_offsets: str = None,
+        dwave_anneal_offsets_delta: str = None,
+        dwave_num_reads: str = None,
+        dwave_max_answers: str = None,
+        dwave_flux_biases: str = None,
+        dwave_beta: str = None,
+        dwave_answer_mode: str = None,
+        dwave_auto_scale: str = None,
+        dwave_postprocess: str = None,
+        dwave_annealing_time: str = None,
+        dwave_anneal_schedule: str = None,
+        dwave_initial_state: str = None,
+        dwave_chains: str = None,
+        dwave_flux_drift_compensation: bool = None,
+        dwave_beta_range: str = None,
+        dwave_num_sweeps: str = None,
+        dwave_precision_ancillas: str = None,
+        dwave_precision_ancillas_tuples: str = None,
+        constraints_hard_num: int = 4,
+        sa_num_sweeps: int = 200,
+        use_sample_persistence: bool = False,
+        sample_persistence_solution_threshold: float = 0.5,
+        sample_persistence_persistence_threshold: float = 0.5,
+        sample_persistence_persistence_iterations: int = 0,
+        google_num_steps: int = 1,
+        google_n_samples: int = 1000,
+        google_arguments_optimizer: dict = {},
+        google_step_sampling: bool = True,
+        google_n_samples_step_sampling: int = 1000,
+        number_of_blocks: int = 1,
+        iterations: int = 50,
+        initial_solution: list = None,
+        always_update_with_best: bool = True,
+        update_q_each_block_solution: bool = True,
+        qaoa_nmeasurement: int = None,
+        qaoa_optimizer: str = 'COBYLA',
+        qaoa_beta: float = None,
+        qaoa_gamma: float = None,
+        qaoa_p_val: int = 1,
+        api_key: str = None,
+        host: str = None):
     r"""Async version of solve_binary
 Solve a binary optimization problem using one of the solvers provided by the platform.
 This function solves a binary optimization problem that is either
@@ -556,15 +678,16 @@ Arguments:
 :rtype: dict
     """
     data = client_args_to_wire('optimization.solve_binary', **locals())
-    api_call = post_call('optimization/solve_binary', data, host=host )
-    logger.info(f'API call to optimization.solve_binary successful. Your API token is {api_call["uid"]}')
+    api_call = post_call('optimization/solve_binary', data, host=host)
+    logger.info(
+        f'API call to optimization.solve_binary successful. Your API token is {api_call["uid"]}'
+    )
 
     while True:
         try:
-            return handle_result(wait_for_call(api_key=api_key,
-                                               host=host,
-                                               call_token=api_call['uid']))
+            return handle_result(
+                wait_for_call(api_key=api_key,
+                              host=host,
+                              call_token=api_call['uid']))
         except ApiTimeoutError as e:
             await asyncio.sleep(5)
-
-
