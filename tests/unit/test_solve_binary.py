@@ -48,4 +48,5 @@ def test_analytical_angles_with_qaoa():
                                               qaoa_gamma=angles[1][1],
                                               qaoa_p_val=1)
     assert (result['solution'] == [0, 0, 1, 1]
+            or result['solution'] == [1, 0, 1, 0]
             or result['solution'] == [1, 1, 1, 1])
