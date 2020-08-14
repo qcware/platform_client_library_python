@@ -9,7 +9,7 @@ from qcware.circuits.quasar_backend import QuasarBackend
     "backend,expected",
     [
         ("classical/simulator", True),
-        ("awsbraket/qs1", False)
+        ("awsbraket/sv1", False)
     ])
 def test_has_run_statevector(backend: str, expected: bool):
     b = QuasarBackend(backend)
@@ -20,7 +20,7 @@ def test_has_run_statevector(backend: str, expected: bool):
     "backend,expected",
     [
         ("classical/simulator", True),
-        ("awsbraket/qs1", False)
+        ("awsbraket/sv1", False)
     ])
 def test_has_statevector_input(backend: str, expected: bool):
     b = QuasarBackend(backend)
@@ -31,7 +31,7 @@ def test_has_statevector_input(backend: str, expected: bool):
     "backend",
     [
         ("classical/simulator"),
-        ("awsbraket/qs1")
+        ("awsbraket/sv1")
     ])
 def test_run_measurement(backend):
     q = quasar.Circuit()
