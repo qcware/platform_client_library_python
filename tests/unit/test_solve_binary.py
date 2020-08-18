@@ -14,11 +14,18 @@ def test_solve_binary(backend):
             or result['solution'] == [1, 1, 1, 1])
 
 
-@pytest.mark.parametrize("backend", ('classical/simulator', ))
-def test_solve_binary_qaoa(backend):
+@pytest.mark.parametrize(
+    "backend,nmeasurement",
+    [
+        ('classical/simulator', None),
+        #    ('awsbraket/sv1', 1000)
+    ])
+def test_solve_binary_qaoa(backend: str, nmeasurement: int):
     Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
 
-    result = qcware.optimization.solve_binary(Q=Q, backend=backend)
+    result = qcware.optimization.solve_binary(Q=Q,
+                                              backend=backend,
+                                              qaoa_nmeasurement=nmeasurement)
     assert (result['solution'] == [0, 0, 1, 1]
             or result['solution'] == [1, 1, 1, 1])
 
