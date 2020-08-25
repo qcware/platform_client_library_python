@@ -54,14 +54,15 @@ def handle_result(api_call):
                                     traceback=api_call.get(
                                         'additional_data',
                                         {}).get('stack_trace', ''))
-    api_call_info = {
-        k: api_call[k]
-        for k in ['method', 'time_created', 'state', 'uid']
-    }
     # if we've got to this point, we either have a result (state == 'success') or we have
     # some other result (state == error, open, new).  If that's the case, we've likely
     # timed out
     if api_call['state'] in ['error', 'open', 'new']:
+
+        api_call_info = {
+            k: api_call.get(k, None)
+            for k in ['method', 'time_created', 'state', 'uid']
+        }
         raise ApiTimeoutError(
             f"Api call timed out; can retrieve with qcware.api_call.retrieve_result(call_token=\"{api_call_info['uid']}\")",
             api_call_info)
