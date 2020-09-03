@@ -51,8 +51,12 @@ def dict_to_scalar(d: Dict):
     return dict_to_ndarray(d)[0]
 
 
+def string_to_int_tuple(s: str):
+    return tuple(map(int, s.split(',')))
+
+
 def remap_q_indices_from_strings(q_old: dict) -> dict:
-    q_new = {eval(k): v for k, v in q_old.items()}
+    q_new = {string_to_int_tuple(k[1:-1].strip(", ")): v for k, v in q_old.items()}
     return q_new
 
 
