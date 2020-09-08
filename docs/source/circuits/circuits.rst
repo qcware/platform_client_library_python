@@ -19,35 +19,8 @@ To use quasar to build a circuit, you can do something like the following::
   T  : |0|1|
 
 
-You can then run the circuit one of two ways: using the API or by using
+You can then run the circuit by using
 the quasar forge backend.
-
-Using the API
-`````````````
-
-Given a circuit, you can execute it on a given backend one of two ways:
-by producing a statevector (supported on simulators which can exactly
-calculate a statevector) or by a traditional measurement-based method
-(which should work on any quantum processor or simulator).  Using our
-circuit from above, we'll show execution on the `classical/simulator` backend::
-
-  >>> has_run_statevector(backend='classical/simulator')
-  True
-  >>> run_statevector(circuit=bell_pair, backend='classical/simulator')
-  array([0.70710678+0.j, 0.        +0.j, 0.        +0.j, 0.70710678+0.j])
-
-
-Since any supported backend should support `run_measurement` we don't need to
-check for that::
-
-  >>> run_measurement(circuit=bell_pair, backend='classical/simulator', nmeasurement=1000)
-  {'histogram': {'0': 0.511, '3': 0.489}, 'nmeasurement': 1000, 'nqubit': 2}
-
-.. autofunction:: qcware.circuits.has_run_statevector
-.. autofunction:: qcware.circuits.has_statevector_input
-.. autofunction:: qcware.circuits.run_statevector
-.. autofunction:: qcware.circuits.run_measurement
-
 
 Using the quasar Forge backend:
 ```````````````````````````````
@@ -72,5 +45,5 @@ and use it as shown below::
   |11> : 0.500000
 
 
-.. autoclass:: qcware.circuits.quasar_backend.QuasarBackend
-   :members:
+The `QuasarBackend` class supports all the features of the Quasar backends
+(please see the Quasar documentation `here <https://qcware-quasar.readthedocs.io>`_ )
