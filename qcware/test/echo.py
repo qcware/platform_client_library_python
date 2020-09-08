@@ -14,7 +14,7 @@ def echo(text: str = 'hello world.', api_key: str = None, host: str = None):
 
 Arguments:
 
-:param text: , defaults to hello world.
+:param text: The text to return, defaults to hello world.
 :type text: str
 
 
@@ -39,7 +39,7 @@ async def async_echo(text: str = 'hello world.',
 
 Arguments:
 
-:param text: , defaults to hello world.
+:param text: The text to return, defaults to hello world.
 :type text: str
 
 

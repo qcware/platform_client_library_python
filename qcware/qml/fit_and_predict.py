@@ -25,26 +25,26 @@ Four clustering models are implemented at this time (see parameter `model`)
 
 Arguments:
 
-:param X: 
+:param X: Training data: :math:`N	imes d` array containing training data
 :type X: numpy.array
 
-:param model: 
+:param model: String for the clustering model; one of ['QNearestCentroid', 'QNeighborsClassifier', 'QNeighborsRegressor', 'QMeans']
 :type model: str
 
-:param y: , defaults to None
+:param y: Label vector: length :math:`d` array containing respective labels of each data, defaults to None
 :type y: numpy.array
 
-:param T: , defaults to None
+:param T: Test data: :math:`M	imes d` array containing test data`, defaults to None
 :type T: numpy.array
 
-:param parameters: , defaults to {}
+:param parameters: Dictionary containing parameters for the model, defaults to {}
 :type parameters: dict
 
-:param backend: , defaults to classical/simulator
+:param backend: String describing the backend to use; currently one of [classical/simulator, vulcan/simulator], defaults to classical/simulator
 :type backend: str
 
 
-:return: 
+:return: A numpy array the length of the test data `T` containing fit labels
 :rtype: 
     """
     data = client_args_to_wire('qml.fit_and_predict', **locals())
@@ -72,26 +72,26 @@ Four clustering models are implemented at this time (see parameter `model`)
 
 Arguments:
 
-:param X: 
+:param X: Training data: :math:`N	imes d` array containing training data
 :type X: numpy.array
 
-:param model: 
+:param model: String for the clustering model; one of ['QNearestCentroid', 'QNeighborsClassifier', 'QNeighborsRegressor', 'QMeans']
 :type model: str
 
-:param y: , defaults to None
+:param y: Label vector: length :math:`d` array containing respective labels of each data, defaults to None
 :type y: numpy.array
 
-:param T: , defaults to None
+:param T: Test data: :math:`M	imes d` array containing test data`, defaults to None
 :type T: numpy.array
 
-:param parameters: , defaults to {}
+:param parameters: Dictionary containing parameters for the model, defaults to {}
 :type parameters: dict
 
-:param backend: , defaults to classical/simulator
+:param backend: String describing the backend to use; currently one of [classical/simulator, vulcan/simulator], defaults to classical/simulator
 :type backend: str
 
 
-:return: 
+:return: A numpy array the length of the test data `T` containing fit labels
 :rtype: 
     """
     data = client_args_to_wire('qml.fit_and_predict', **locals())
