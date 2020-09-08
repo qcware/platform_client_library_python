@@ -33,7 +33,7 @@ Table of contents
    :maxdepth: 2
    :caption: Quantum classification
 
-   qml/fit_and_predict
+   qml/classification
 
 .. toctree::
    :maxdepth: 2
