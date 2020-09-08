@@ -19,7 +19,9 @@ def fit_and_predict(X: numpy.array,
                     backend: str = 'classical/simulator',
                     api_key: str = None,
                     host: str = None):
-    r"""
+    r"""This function combines both the fitting of data to a quantum model for the purposes of classification and also the use of that trained model for classifying new data.
+The interface and use are similar to scikit-learn's fit and predict functions.  At the present time, since the fit data comprises (in many cases) both classical and quantum data difficult to serialize, the fitting and prediction are done in a single step.  We are looking to separate them into separate fit and predict steps in the future.
+Four clustering models are implemented at this time (see parameter `model`)
 
 Arguments:
 
@@ -63,7 +65,9 @@ async def async_fit_and_predict(X: numpy.array,
                                 api_key: str = None,
                                 host: str = None):
     r"""Async version of fit_and_predict
-
+This function combines both the fitting of data to a quantum model for the purposes of classification and also the use of that trained model for classifying new data.
+The interface and use are similar to scikit-learn's fit and predict functions.  At the present time, since the fit data comprises (in many cases) both classical and quantum data difficult to serialize, the fitting and prediction are done in a single step.  We are looking to separate them into separate fit and predict steps in the future.
+Four clustering models are implemented at this time (see parameter `model`)
 
 
 Arguments:
