@@ -25,7 +25,7 @@ Four clustering models are implemented at this time (see parameter `model`)
 
 Arguments:
 
-:param X: Training data: :math:`N\times d` array containing training data
+:param X: Training data: :math:`(N\times d)` array containing training data
 :type X: numpy.array
 
 :param model: String for the clustering model; one of ['QNearestCentroid', 'QNeighborsClassifier', 'QNeighborsRegressor', 'QMeans']
@@ -34,7 +34,7 @@ Arguments:
 :param y: Label vector: length :math:`d` array containing respective labels of each data, defaults to None
 :type y: numpy.array
 
-:param T: Test data: :math:`M\times d` array containing test data`, defaults to None
+:param T: Test data: :math:`(M\times d)` array containing test data, defaults to None
 :type T: numpy.array
 
 :param parameters: Dictionary containing parameters for the model, defaults to {}
@@ -72,7 +72,7 @@ Four clustering models are implemented at this time (see parameter `model`)
 
 Arguments:
 
-:param X: Training data: :math:`N\times d` array containing training data
+:param X: Training data: :math:`(N\times d)` array containing training data
 :type X: numpy.array
 
 :param model: String for the clustering model; one of ['QNearestCentroid', 'QNeighborsClassifier', 'QNeighborsRegressor', 'QMeans']
@@ -81,7 +81,7 @@ Arguments:
 :param y: Label vector: length :math:`d` array containing respective labels of each data, defaults to None
 :type y: numpy.array
 
-:param T: Test data: :math:`M\times d` array containing test data`, defaults to None
+:param T: Test data: :math:`(M\times d)` array containing test data, defaults to None
 :type T: numpy.array
 
 :param parameters: Dictionary containing parameters for the model, defaults to {}

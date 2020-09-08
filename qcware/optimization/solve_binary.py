@@ -285,7 +285,7 @@ Arguments:
 :param number_of_blocks: number of blocks to decompose problem into using random decomposition. Default value :obj: `1` meaning no decomposition., defaults to 1
 :type number_of_blocks: int
 
-:param iterations: number of iterations to cycle through when using random decomposition. Only valid if :obj: `number_of_blocks` is greater than 1. Each iterations corresponds to solving all blocks of the decomposition once. Default value :obj:`50`., defaults to 50
+:param iterations: number of iterations to cycle through when using random decomposition. Only valid if :obj:`number_of_blocks` is greater than 1. Each iterations corresponds to solving all blocks of the decomposition once. Default value :obj:`50`., defaults to 50
 :type iterations: int
 
 :param initial_solution: initial solution seed for constructing the blocks using random decomposition. If none is provided, a random solution is initialized. Default value :obj: `None`. :obj:`initial_solution` should be the same type as :obj:`Q`../, defaults to None
@@ -625,7 +625,7 @@ Arguments:
 :param number_of_blocks: number of blocks to decompose problem into using random decomposition. Default value :obj: `1` meaning no decomposition., defaults to 1
 :type number_of_blocks: int
 
-:param iterations: number of iterations to cycle through when using random decomposition. Only valid if :obj: `number_of_blocks` is greater than 1. Each iterations corresponds to solving all blocks of the decomposition once. Default value :obj:`50`., defaults to 50
+:param iterations: number of iterations to cycle through when using random decomposition. Only valid if :obj:`number_of_blocks` is greater than 1. Each iterations corresponds to solving all blocks of the decomposition once. Default value :obj:`50`., defaults to 50
 :type iterations: int
 
 :param initial_solution: initial solution seed for constructing the blocks using random decomposition. If none is provided, a random solution is initialized. Default value :obj: `None`. :obj:`initial_solution` should be the same type as :obj:`Q`../, defaults to None
