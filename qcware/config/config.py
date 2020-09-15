@@ -192,38 +192,61 @@ def set_host(host_url: str):
             "'http://api.forge.qcware.com'")
 
 
-def max_poll_period(override: Optional[int] = None):
+def max_client_timeout(override: Optional[int] = None):
     """
     Returns the maximum time the api should retry polling when running
     in synchronous mode before returning the error state that the call
     is not complete and allowing the user to poll manually.
 
-    This is configurable by the environment variable QCWARE_MAX_POLL_PERIOD
+    This is configurable by the environment variable QCWARE_MAX_CLIENT_TIMEOUT
 
     The default value is 60 seconds
     """
     result = override if override is not None \
-        else config('QCWARE_MAX_POLL_PERIOD', default=60, cast=int)
+        else config('QCWARE_MAX_CLIENT_TIMEOUT', default=60, cast=int)
     return result
 
 
-def set_max_poll_period(new_wait: int):
-    os.environ['QCWARE_MAX_POLL_PERIOD'] = str(new_wait)
+def set_max_client_timeout(new_wait: int):
+    """
+    Sets the maximum time the API should retry polling the server before
+    returning the error state that the call is not complete.
+
+    This may be set to any value greater than or equal to 0 seconds.
+    """
+    if new_wait < 0:
+        print(colorama.Fore.YELLOW +
+              "Client timeout must be >= 0 seconds; no action taken" +
+              colorama.Style.RESET_ALL)
+    else:
+        os.environ['QCWARE_MAX_CLIENT_TIMEOUT'] = str(new_wait)
 
 
-def max_long_poll(override: Optional[int] = None):
+def max_server_timeout(override: Optional[int] = None):
     """
     Returns the maximum time the server should sit pinging the database for 
     a result before giving up.
 
-    This is configurable by the environment variable QCWARE_MAX_LONG_POLL
+    This is configurable by the environment variable QCWARE_MAX_SERVER_TIMEOUT
 
-    The default value is 60 seconds
+    The default value is 10 seconds; the maximum is 50
     """
     result = override if override is not None \
-        else config('QCWARE_MAX_LONG_POLL', default=60, cast=int)
+        else config('QCWARE_MAX_SERVER_TIMEOUT', default=10, cast=int)
     return result
 
 
-def set_max_long_poll(new_wait: int):
-    os.environ['QCWARE_MAX_LONG_POLL'] = str(new_wait)
+def set_max_server_timeout(new_wait: int):
+    """
+    Sets the maximum server timeout (how long the server will poll for a result
+    before returning to the client with a result or 'still waiting' message.  
+
+    Normally the user should not change this from the default value of 10s.
+    """
+    if new_wait < 0 or new_wait > 50:
+        print(
+            colorama.Fore.YELLOW +
+            "Server timeout must be between 0 and 50 seconds; no action taken"
+            + colorama.Style.RESET_ALL)
+    else:
+        os.environ['QCWARE_MAX_SERVER_TIMEOUT'] = str(new_wait)

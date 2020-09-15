@@ -4,7 +4,9 @@ import backoff
 from ..request import post
 from ..exceptions import ApiCallExecutionError, ApiTimeoutError
 from ..util.transforms import client_result_from_wire
-from ..config import qcware_api_key, qcware_host, max_poll_period, do_client_api_compatibility_check_once, max_long_poll
+from ..config import (qcware_api_key, qcware_host, max_client_timeout,
+                      max_server_timeout,
+                      do_client_api_compatibility_check_once)
 import logging
 
 
@@ -27,7 +29,7 @@ def api_call(api_key: Optional[str] = None,
              call_token=None):
     api_key = qcware_api_key(api_key)
     host = qcware_host(host)
-    max_wait_for_closure_in_sec = max_long_poll()
+    max_wait_for_closure_in_sec = max_server_timeout()
     do_client_api_compatibility_check_once()
     return post(f'{host}/api_calls', locals())
 
@@ -41,7 +43,7 @@ def _print_waiting_handler(details: Dict):
 @backoff.on_predicate(backoff.constant,
                       interval=1,
                       predicate=lambda a: a.get('state') == 'open',
-                      max_time=max_poll_period,
+                      max_time=max_client_timeout,
                       on_backoff=_print_waiting_handler)
 def wait_for_call(api_key=None, host=None, call_token=None):
     # backoff.on_predicate is mildly problematic.
