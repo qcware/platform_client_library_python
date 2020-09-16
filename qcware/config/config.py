@@ -192,22 +192,22 @@ def set_host(host_url: str):
             "'http://api.forge.qcware.com'")
 
 
-def max_client_timeout(override: Optional[int] = None):
+def client_timeout(override: Optional[int] = None):
     """
     Returns the maximum time the api should retry polling when running
     in synchronous mode before returning the error state that the call
     is not complete and allowing the user to poll manually.
 
-    This is configurable by the environment variable QCWARE_MAX_CLIENT_TIMEOUT
+    This is configurable by the environment variable QCWARE_CLIENT_TIMEOUT
 
     The default value is 60 seconds
     """
     result = override if override is not None \
-        else config('QCWARE_MAX_CLIENT_TIMEOUT', default=60, cast=int)
+        else config('QCWARE_CLIENT_TIMEOUT', default=60, cast=int)
     return result
 
 
-def set_max_client_timeout(new_wait: int):
+def set_client_timeout(new_wait: int):
     """
     Sets the maximum time the API should retry polling the server before
     returning the error state that the call is not complete.
@@ -219,24 +219,24 @@ def set_max_client_timeout(new_wait: int):
               "Client timeout must be >= 0 seconds; no action taken" +
               colorama.Style.RESET_ALL)
     else:
-        os.environ['QCWARE_MAX_CLIENT_TIMEOUT'] = str(new_wait)
+        os.environ['QCWARE_CLIENT_TIMEOUT'] = str(new_wait)
 
 
-def max_server_timeout(override: Optional[int] = None):
+def server_timeout(override: Optional[int] = None):
     """
     Returns the maximum time the server should sit pinging the database for 
     a result before giving up.
 
-    This is configurable by the environment variable QCWARE_MAX_SERVER_TIMEOUT
+    This is configurable by the environment variable QCWARE_SERVER_TIMEOUT
 
     The default value is 10 seconds; the maximum is 50
     """
     result = override if override is not None \
-        else config('QCWARE_MAX_SERVER_TIMEOUT', default=10, cast=int)
+        else config('QCWARE_SERVER_TIMEOUT', default=10, cast=int)
     return result
 
 
-def set_max_server_timeout(new_wait: int):
+def set_server_timeout(new_wait: int):
     """
     Sets the maximum server timeout (how long the server will poll for a result
     before returning to the client with a result or 'still waiting' message.  
@@ -249,4 +249,4 @@ def set_max_server_timeout(new_wait: int):
             "Server timeout must be between 0 and 50 seconds; no action taken"
             + colorama.Style.RESET_ALL)
     else:
-        os.environ['QCWARE_MAX_SERVER_TIMEOUT'] = str(new_wait)
+        os.environ['QCWARE_SERVER_TIMEOUT'] = str(new_wait)
