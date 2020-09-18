@@ -5,23 +5,15 @@ import pytest
 from qcware.circuits.quasar_backend import QuasarBackend
 
 
-@pytest.mark.parametrize(
-    "backend,expected",
-    [
-        ("classical/simulator", True),
-        ("awsbraket/sv1", False)
-    ])
+@pytest.mark.parametrize("backend,expected", [("classical/simulator", True),
+                                              ("awsbraket/sv1", False)])
 def test_has_run_statevector(backend: str, expected: bool):
     b = QuasarBackend(backend)
     assert b.has_run_statevector() is expected
 
 
-@pytest.mark.parametrize(
-    "backend,expected",
-    [
-        ("classical/simulator", True),
-        ("awsbraket/sv1", False)
-    ])
+@pytest.mark.parametrize("backend,expected", [("classical/simulator", True),
+                                              ("awsbraket/sv1", False)])
 def test_has_statevector_input(backend: str, expected: bool):
     b = QuasarBackend(backend)
     assert b.has_statevector_input() is expected
@@ -31,7 +23,8 @@ def test_has_statevector_input(backend: str, expected: bool):
     "backend",
     [
         ("classical/simulator"),
-        ("awsbraket/sv1")
+        ("awsbraket/sv1"),
+        #        ("awsbraket/rigetti")
     ])
 def test_run_measurement(backend):
     q = quasar.Circuit()
