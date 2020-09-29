@@ -65,7 +65,7 @@ def handle_result(api_call):
             for k in ['method', 'time_created', 'state', 'uid']
         }
         raise ApiTimeoutError(
-            f"Api call timed out; can retrieve with qcware.api_call.retrieve_result(call_token=\"{api_call_info['uid']}\")",
+            f"Api call timed out; can retrieve with qcware.api_calls.retrieve_result(call_token=\"{api_call_info['uid']}\")",
             api_call_info)
     else:
         return client_result_from_wire(api_call['method'], api_call['result'])
