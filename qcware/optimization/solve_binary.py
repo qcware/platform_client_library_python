@@ -7,6 +7,7 @@ from .. import logger
 from ..api_calls import post_call, wait_for_call, handle_result
 from ..util.transforms import client_args_to_wire
 from ..exceptions import ApiTimeoutError
+from ..config import ApiCallContext
 
 
 def solve_binary(Q: dict,
@@ -68,9 +69,7 @@ def solve_binary(Q: dict,
                  qaoa_optimizer: str = 'COBYLA',
                  qaoa_beta: float = None,
                  qaoa_gamma: float = None,
-                 qaoa_p_val: int = 1,
-                 api_key: str = None,
-                 host: str = None):
+                 qaoa_p_val: int = 1):
     r"""Solve a binary optimization problem using one of the solvers provided by the platform.
 This function solves a binary optimization problem that is either
   * Unconstrained (quadratic or higher order)
@@ -338,12 +337,11 @@ Arguments:
 :rtype: dict
     """
     data = client_args_to_wire('optimization.solve_binary', **locals())
-    api_call = post_call('optimization/solve_binary', data, host=host)
+    api_call = post_call('optimization/solve_binary', data)
     logger.info(
         f'API call to optimization.solve_binary successful. Your API token is {api_call["uid"]}'
     )
-    return handle_result(
-        wait_for_call(api_key=api_key, host=host, call_token=api_call['uid']))
+    return handle_result(wait_for_call(call_token=api_call['uid']))
 
 
 async def async_solve_binary(
@@ -406,9 +404,7 @@ async def async_solve_binary(
         qaoa_optimizer: str = 'COBYLA',
         qaoa_beta: float = None,
         qaoa_gamma: float = None,
-        qaoa_p_val: int = 1,
-        api_key: str = None,
-        host: str = None):
+        qaoa_p_val: int = 1):
     r"""Async version of solve_binary
 Solve a binary optimization problem using one of the solvers provided by the platform.
 This function solves a binary optimization problem that is either
@@ -678,16 +674,13 @@ Arguments:
 :rtype: dict
     """
     data = client_args_to_wire('optimization.solve_binary', **locals())
-    api_call = post_call('optimization/solve_binary', data, host=host)
+    api_call = post_call('optimization/solve_binary', data)
     logger.info(
         f'API call to optimization.solve_binary successful. Your API token is {api_call["uid"]}'
     )
 
     while True:
         try:
-            return handle_result(
-                wait_for_call(api_key=api_key,
-                              host=host,
-                              call_token=api_call['uid']))
+            return handle_result(wait_for_call(call_token=api_call['uid']))
         except ApiTimeoutError as e:
             await asyncio.sleep(5)

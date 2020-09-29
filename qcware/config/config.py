@@ -1,12 +1,15 @@
 from decouple import config, UndefinedValueError
 from urllib.parse import urlparse, urljoin
-from typing import Optional
+from typing import Optional, Dict
+from functools import reduce
 from packaging import version
 import requests
 import colorama
 from .api_semver import api_semver
 import os
-import warnings
+from pydantic import BaseModel
+from contextlib import contextmanager
+import contextvars
 
 
 class ConfigurationError(Exception):
@@ -250,3 +253,58 @@ def set_server_timeout(new_wait: int):
             + colorama.Style.RESET_ALL)
     else:
         os.environ['QCWARE_SERVER_TIMEOUT'] = str(new_wait)
+
+
+class ApiCredentials(BaseModel):
+    qcware_api_key: Optional[str] = None
+
+
+class ApiCallContext(BaseModel):
+    qcware_host: Optional[str] = None
+    credentials: Optional[ApiCredentials] = None
+    server_timeout: Optional[int] = None
+    client_timeout: Optional[int] = None
+
+    class Config:
+        extra = 'forbid'
+
+
+def root_context() -> ApiCallContext:
+    """
+    Returns a dictionary containing relevant information for API calls; used internally
+    """
+    return ApiCallContext(
+        qcware_host=qcware_host(),
+        credentials=ApiCredentials(qcware_api_key=qcware_api_key()),
+        server_timeout=server_timeout(),
+        client_timeout=client_timeout())
+
+
+_contexts = contextvars.ContextVar('contexts', default=[])
+
+
+def push_context(**kwargs):
+    next_context = ApiCallContext(**kwargs)
+    _contexts.set(_contexts.get() + [next_context])
+
+
+def pop_context():
+    _contexts.set(_contexts.get()[:-1])
+
+
+def current_context() -> ApiCallContext:
+    def merge_contexts(c1, c2):
+        return c1.copy(
+            update={k: v
+                    for k, v in c2.dict().items() if v is not None})
+
+    return reduce(merge_contexts, _contexts.get(), root_context())
+
+
+@contextmanager
+def additional_config(**kwargs):
+    push_context(**kwargs)
+    try:
+        yield
+    finally:
+        pop_context()

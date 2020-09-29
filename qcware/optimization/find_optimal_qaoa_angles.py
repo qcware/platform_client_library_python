@@ -7,15 +7,14 @@ from .. import logger
 from ..api_calls import post_call, wait_for_call, handle_result
 from ..util.transforms import client_args_to_wire
 from ..exceptions import ApiTimeoutError
+from ..config import ApiCallContext
 
 
 def find_optimal_qaoa_angles(Q: dict = {},
                              num_evals: int = 100,
                              num_min_vals: int = 10,
                              fastmath_flag_in: bool = True,
-                             precision: int = 30,
-                             api_key: str = None,
-                             host: str = None):
+                             precision: int = 30):
     r"""Finds the optimal expectation values for a given cost function, to be used in QAOA.
 
 Arguments:
@@ -52,23 +51,18 @@ Arguments:
     """
     data = client_args_to_wire('optimization.find_optimal_qaoa_angles',
                                **locals())
-    api_call = post_call('optimization/find_optimal_qaoa_angles',
-                         data,
-                         host=host)
+    api_call = post_call('optimization/find_optimal_qaoa_angles', data)
     logger.info(
         f'API call to optimization.find_optimal_qaoa_angles successful. Your API token is {api_call["uid"]}'
     )
-    return handle_result(
-        wait_for_call(api_key=api_key, host=host, call_token=api_call['uid']))
+    return handle_result(wait_for_call(call_token=api_call['uid']))
 
 
 async def async_find_optimal_qaoa_angles(Q: dict = {},
                                          num_evals: int = 100,
                                          num_min_vals: int = 10,
                                          fastmath_flag_in: bool = True,
-                                         precision: int = 30,
-                                         api_key: str = None,
-                                         host: str = None):
+                                         precision: int = 30):
     r"""Async version of find_optimal_qaoa_angles
 Finds the optimal expectation values for a given cost function, to be used in QAOA.
 
@@ -107,18 +101,13 @@ Arguments:
     """
     data = client_args_to_wire('optimization.find_optimal_qaoa_angles',
                                **locals())
-    api_call = post_call('optimization/find_optimal_qaoa_angles',
-                         data,
-                         host=host)
+    api_call = post_call('optimization/find_optimal_qaoa_angles', data)
     logger.info(
         f'API call to optimization.find_optimal_qaoa_angles successful. Your API token is {api_call["uid"]}'
     )
 
     while True:
         try:
-            return handle_result(
-                wait_for_call(api_key=api_key,
-                              host=host,
-                              call_token=api_call['uid']))
+            return handle_result(wait_for_call(call_token=api_call['uid']))
         except ApiTimeoutError as e:
             await asyncio.sleep(5)

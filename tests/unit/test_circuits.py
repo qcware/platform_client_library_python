@@ -3,6 +3,7 @@ import quasar
 import os
 import pytest
 from qcware.circuits.quasar_backend import QuasarBackend
+from pprint import pprint
 
 
 @pytest.mark.parametrize("backend,expected", [("classical/simulator", True),

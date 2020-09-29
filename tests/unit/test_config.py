@@ -1,9 +1,13 @@
-from qcware.config import qcware_api_key, qcware_host, set_api_key, set_host, is_valid_host_url, ConfigurationError
+from qcware.config import (qcware_api_key, qcware_host, set_api_key, set_host,
+                           set_server_timeout, ConfigurationError,
+                           current_context, push_context, pop_context,
+                           additional_config)
 from decouple import config, UndefinedValueError
 import pytest
 import os
 
-@pytest.fixture(autouse = True)
+
+@pytest.fixture(autouse=True)
 def wrap_tests():
     old_key = os.environ.pop('QCWARE_API_KEY', None)
     old_host = os.environ.pop('QCWARE_HOST', None)
@@ -15,17 +19,19 @@ def wrap_tests():
     if old_host is not None:
         os.environ['QCWARE_HOST'] = old_host
 
+
 # these tests should be run with no configuration; this doesn't check
 # for a config file at the moment
 def test_undefined_config():
     with pytest.raises(UndefinedValueError):
         config('QCWARE_API_KEY')
         config('QCWARE_HOST')
-        
+
 
 def test_qcware_host():
     assert qcware_host() == "https://api.forge.qcware.com"
-    assert qcware_host('https://api.hammer.qcware.com') == "https://api.hammer.qcware.com"
+    assert qcware_host(
+        'https://api.hammer.qcware.com') == "https://api.hammer.qcware.com"
 
     # test setting host via environment variable
     os.environ['QCWARE_HOST'] = 'https://api.anvil.qcware.com'
@@ -56,4 +62,27 @@ def test_qcware_api_key():
     with pytest.raises(ConfigurationError):
         assert qcware_api_key() == "bob"
 
-    
+
+def test_contexts():
+    set_api_key('key')
+    set_server_timeout(42)
+
+    assert current_context().server_timeout == 42
+
+    push_context(server_timeout=120)
+    assert current_context().server_timeout == 120
+
+    pop_context()
+    assert current_context().server_timeout == 42
+
+
+def test_additional_config():
+    set_api_key('key')
+    set_server_timeout(42)
+
+    assert current_context().server_timeout == 42
+
+    with additional_config(server_timeout=120):
+        assert current_context().server_timeout == 120
+
+    assert current_context().server_timeout == 42
