@@ -1,6 +1,6 @@
 from decouple import config, UndefinedValueError
 from urllib.parse import urlparse, urljoin
-from typing import Optional, Dict
+from typing import Optional
 from functools import reduce
 from packaging import version
 import requests
@@ -284,15 +284,30 @@ _contexts = contextvars.ContextVar('contexts', default=[])
 
 
 def push_context(**kwargs):
+    """
+    Manually pushes a configuration context onto the stack; normally 
+    this is done with the `additional_config` context rather than called
+    directly by the user
+    """
     next_context = ApiCallContext(**kwargs)
     _contexts.set(_contexts.get() + [next_context])
 
 
 def pop_context():
+    """
+    Manually pops a configuration context from the stack; normally
+    this is done with the `additional_config` context rather than called
+    directly by the user
+    """
     _contexts.set(_contexts.get()[:-1])
 
 
 def current_context() -> ApiCallContext:
+    """
+    Returns the "current context" for an API call, which is the calculated
+    root context plus any additional changes through the stack.  Normally
+    not called by the user.
+    """
     def merge_contexts(c1, c2):
         return c1.copy(
             update={k: v
@@ -303,6 +318,18 @@ def current_context() -> ApiCallContext:
 
 @contextmanager
 def additional_config(**kwargs):
+    """
+    This provides a context manager through which the qcware python client library
+    can be temporarily reconfigured, for example to allow a longer client timeout for a
+    call, or to make a call with different credentials.  To use it, one must provide
+    a set of keywords which map to the arguments of an `ApiCallContext`, for example, to
+    make a single call with a client timout of five minutes:
+
+    ```
+    with additional_config(client_tiemout=5*60):
+        result = solve_binary(...)
+    ```
+    """
     push_context(**kwargs)
     try:
         yield

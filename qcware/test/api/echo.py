@@ -3,11 +3,11 @@
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
 import asyncio
-from .. import logger
-from ..api_calls import post_call, wait_for_call, handle_result
-from ..util.transforms import client_args_to_wire
-from ..exceptions import ApiTimeoutError
-from ..config import ApiCallContext
+from ... import logger
+from ...api_calls import post_call, wait_for_call, handle_result
+from ...util.transforms import client_args_to_wire
+from ...exceptions import ApiTimeoutError
+from ...config import ApiCallContext
 
 
 def echo(text: str = 'hello world.'):
