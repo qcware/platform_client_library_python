@@ -1,6 +1,6 @@
 backoff==1.10.0
 requests==2.24.0
 python-decouple==3.3
-networkx==2.4
-numpy==1.19.1
+networkx==2.5
+numpy==1.19.2
 qcware-quasar==1.0.0
