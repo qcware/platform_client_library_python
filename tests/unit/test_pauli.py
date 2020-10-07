@@ -32,7 +32,7 @@ def generate_pauli(N: int) -> quasar.Pauli:
 @pytest.mark.parametrize(
     "backend",
     (
-        'classical/simulator',
+        'qcware/cpu_simulator',
         #    'awsbraket/qs1')
     ))
 def test_pauli(backend):

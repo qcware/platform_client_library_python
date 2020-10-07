@@ -30,7 +30,7 @@ def test_retrieve_result_with_timeout():
     qcware.config.set_server_timeout(0)
 
     try:
-        result = qcware.optimization.solve_binary(Q=Q, backend='classical')
+        result = qcware.optimization.solve_binary(Q=Q, backend='qcware/cpu')
     except qcware.exceptions.ApiTimeoutError as e:
         time.sleep(5)
         result = qcware.api_calls.retrieve_result(e.api_call_info['uid'])
@@ -48,7 +48,7 @@ async def test_async():
     qcware.config.set_server_timeout(0)
 
     result = await qcware.optimization.async_solve_binary(Q=Q,
-                                                          backend='classical')
+                                                          backend='qcware/cpu')
     assert (result['solution'] == [0, 0, 1, 1]
             or result['solution'] == [1, 1, 1, 1])
 

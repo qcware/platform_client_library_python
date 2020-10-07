@@ -131,10 +131,10 @@ Arguments:
 
 :param backend: The name of the backend to use for the given problem.  Currently valid values are:
 
-  * "dwave": Run on a physical d-wave machine using quantum annealing
-  * "classical": Run on a classical computing backend using a brute-force solver
-  * "classical/simulator": Run on a classical computing simulation of a quantum computer, using QAOA
-  * "vulcan/simulator": Run on a gpu-accelerated simulation of a quantum computer, using QAOA
+  * "dwave/2000q", "dwave/advantage": Run on a physical d-wave machine using quantum annealing
+  * "qcware/cpu": Run on a classical computing backend using a brute-force solver
+  * "qcware/cpu_simulator": Run on a classical computing simulation of a quantum computer, using QAOA
+  * "qcware/gpu_simulator": Run on a gpu-accelerated simulation of a quantum computer, using QAOA
 :type backend: str
 
 :param constraints_linear_A: The :math:`A` matrix for specifying linear constraints.  :math:`A` should be formatted as a two-dimensional Python list.  Default value :obj:`[]`., defaults to []
@@ -468,10 +468,10 @@ Arguments:
 
 :param backend: The name of the backend to use for the given problem.  Currently valid values are:
 
-  * "dwave": Run on a physical d-wave machine using quantum annealing
-  * "classical": Run on a classical computing backend using a brute-force solver
-  * "classical/simulator": Run on a classical computing simulation of a quantum computer, using QAOA
-  * "vulcan/simulator": Run on a gpu-accelerated simulation of a quantum computer, using QAOA
+  * "dwave/2000q", "dwave/advantage": Run on a physical d-wave machine using quantum annealing
+  * "qcware/cpu": Run on a classical computing backend using a brute-force solver
+  * "qcware/cpu_simulator": Run on a classical computing simulation of a quantum computer, using QAOA
+  * "qcware/gpu_simulator": Run on a gpu-accelerated simulation of a quantum computer, using QAOA
 :type backend: str
 
 :param constraints_linear_A: The :math:`A` matrix for specifying linear constraints.  :math:`A` should be formatted as a two-dimensional Python list.  Default value :obj:`[]`., defaults to []

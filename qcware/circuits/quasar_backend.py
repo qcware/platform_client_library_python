@@ -14,7 +14,7 @@ class QuasarBackend(object):
         Creates the QuasarBackend.  You must provide a Forge backend, and
         provide Forge backend arguments if necessary.
 
-        :param forge_backend: A backend string such as `classical/simulator`
+        :param forge_backend: A backend string such as `qcware/cpu_simulator`
         :type forge_backend: str
 
         :param backend_args: A dict of arguments for the Forge backend.  Typically not necessary; defaults to `{}`

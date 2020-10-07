@@ -30,7 +30,7 @@ as a platform.  You can import the class from `qcware.circuits.quasar_backend`
 and use it as shown below::
 
   >>> from qcware.circuits.quasar_backend import QuasarBackend
-  >>> backend = QuasarBackend("classical/simulator")
+  >>> backend = QuasarBackend("qcware/cpu_simulator")
   >>> backend.has_run_statevector
   True
   >>> backend.run_statevector(circuit=bell_pair)
