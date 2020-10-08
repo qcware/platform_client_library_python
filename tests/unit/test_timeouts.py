@@ -18,6 +18,7 @@ def test_timeout_with_solve_binary():
             num_min_vals=10,
             fastmath_flag_in=True,
             precision=30)
+        print(sol)
 
     qcware.config.set_client_timeout(old_timeout)
     qcware.config.set_server_timeout(old_server_timeout)
