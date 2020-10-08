@@ -2,7 +2,7 @@ import qcware
 import pytest
 
 
-@pytest.mark.parametrize("backend", ('vulcan/simulator', ))
+@pytest.mark.parametrize("backend", ('qcware/gpu_simulator', ))
 def test_solve_binary_qaoa(backend):
     Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
 
@@ -16,7 +16,7 @@ def test_solve_binary_qaoa(backend):
 def test_various_qaoa_optimizers(optimizer):
     Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
     result = qcware.optimization.solve_binary(Q=Q,
-                                              backend='vulcan/simulator',
+                                              backend='qcware/gpu_simulator',
                                               qaoa_optimizer=optimizer)
     assert (result['solution'] == [0, 0, 1, 1]
             or result['solution'] == [1, 1, 1, 1])
@@ -31,7 +31,7 @@ def test_analytical_angles_with_qaoa():
     print("ANGLES: ", angles)
 
     result = qcware.optimization.solve_binary(Q=Q,
-                                              backend='vulcan/simulator',
+                                              backend='qcware/gpu_simulator',
                                               qaoa_beta=angles[1][0],
                                               qaoa_gamma=angles[1][1],
                                               qaoa_p_val=1)

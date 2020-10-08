@@ -9,5 +9,5 @@ def test_fit_and_predict():
     result = qcware.qml.fit_and_predict(X=X,
                                         y=y,
                                         model="QNearestCentroid",
-                                        backend="vulcan/simulator")
+                                        backend="qcware/gpu_simulator")
     assert (result == [0, 0, 1, 1]).all()

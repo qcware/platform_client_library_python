@@ -8,7 +8,7 @@ from qcware.circuits.quasar_backend import QuasarBackend
 @pytest.mark.parametrize(
     "backend,expected",
     [
-        ("vulcan/simulator", True),
+        ("qcware/gpu_simulator", True),
         #("awsbraket/qs1", False)
     ])
 def test_has_run_statevector(backend: str, expected: bool):
@@ -19,7 +19,7 @@ def test_has_run_statevector(backend: str, expected: bool):
 @pytest.mark.parametrize(
     "backend,expected",
     [
-        ("vulcan/simulator", True),
+        ("qcware/gpu_simulator", True),
         #                                              ("awsbraket/qs1", False)
     ])
 def test_has_statevector_input(backend: str, expected: bool):
@@ -30,7 +30,7 @@ def test_has_statevector_input(backend: str, expected: bool):
 @pytest.mark.parametrize(
     "backend",
     [
-        ("vulcan/simulator"),
+        ("qcware/gpu_simulator"),
         #                                     ("awsbraket/qs1")
     ])
 def test_run_measurement(backend):

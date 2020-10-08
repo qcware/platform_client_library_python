@@ -32,7 +32,7 @@ def test_pauli():
     N = 5
     circuit = generate_circuit(N)
     pauli = generate_pauli(N)
-    vulcan_backend = QuasarBackend('vulcan/simulator')
+    vulcan_backend = QuasarBackend('qcware/gpu_simulator')
     result = vulcan_backend.run_pauli_expectation_value_gradient(
         circuit=circuit, pauli=pauli, parameter_indices=[0, 1, 2, 3])
     assert np.isclose(
