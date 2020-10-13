@@ -6,8 +6,10 @@ from ..exceptions import ApiCallExecutionError, ApiTimeoutError
 from ..util.transforms import client_result_from_wire
 from ..config import (qcware_api_key, qcware_host, client_timeout,
                       server_timeout, do_client_api_compatibility_check_once,
-                      current_context, ApiCallContext)
+                      async_interval_between_tries, current_context,
+                      ApiCallContext)
 import logging
+import asyncio
 
 
 def post_call(endpoint: str, data: dict):
@@ -82,11 +84,8 @@ def retrieve_result(call_token: str, api_call_context: ApiCallContext = None):
     retrieved from last_x_calls or the web interface
     :type call_token: str
 
-    :param api_key: API key; by default taken from config
-    :type api_key: str
-
-    :param host: Forge host to use; by default taken from config
-    :type host: str
+    :param api_call_context: API Call context; default context used if none provided
+    :type api_call_context: ApiCallContext
 
     :return Either the processed result in the type expected, or an error object
     showing the state of the call
@@ -95,3 +94,25 @@ def retrieve_result(call_token: str, api_call_context: ApiCallContext = None):
     ) if api_call_context is None else api_call_context
     call = api_call(api_call_context, call_token=call_token)
     return handle_result(call)
+
+
+async def async_retrieve_result(call_token: str,
+                                api_call_context: ApiCallContext = None):
+    """
+    Retrieves the result of a call; if the call is incomplete, waits for it to be complete.
+    :param call_token: The token of the API call; can be 
+    retrieved from last_x_calls or the web interface
+    :type call_token: str
+
+    :param api_call_context: API Call context; default context used if none provided
+    :type api_call_context: ApiCallContext
+
+
+    :return Either the processed result in the type expected, or an error object
+    showing the state of the call
+    """
+    while True:
+        try:
+            return handle_result(wait_for_call(call_token))
+        except ApiTimeoutError as e:
+            await asyncio.sleep(async_interval_between_tries())

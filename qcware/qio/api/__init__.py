@@ -2,4 +2,4 @@
 #  Project: qcware
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
-from .loader import loader, async_loader
+from .loader import loader, submit_loader, async_loader

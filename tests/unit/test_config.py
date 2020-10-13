@@ -50,7 +50,7 @@ def test_qcware_host():
 
 def test_qcware_api_key():
     with pytest.raises(ConfigurationError):
-        assert qcware_api_key() == "bob"
+        assert qcware_api_key() == None
     assert qcware_api_key("test") == "test"
 
     # test setting host via environment variable

@@ -42,9 +42,9 @@ def qcware_api_key(override: Optional[str] = None) -> str:
     or the provided override (if the override is provided, this function simply
     returns the provided override)
     """
-    try:
-        result = override if override is not None else config('QCWARE_API_KEY')
-    except UndefinedValueError:
+    result = override if override is not None else current_context(
+    ).credentials.qcware_api_key
+    if result is None:
         raise ConfigurationError("You have not provided a QCWare API key.  "
                                  "Please set one with the argument api_key, "
                                  "by calling qcware.set_api_key, or via "
@@ -75,7 +75,7 @@ def qcware_host(override: Optional[str] = None) -> str:
     # get the host; default is https://api.forge.qcware.com; this should
     # always work
     result = override if override is not None \
-        else config('QCWARE_HOST', 'https://api.forge.qcware.com')
+        else current_context().qcware_host
     # check to make sure the host is a valid url
 
     if is_valid_host_url(result):
@@ -206,7 +206,7 @@ def client_timeout(override: Optional[int] = None):
     The default value is 60 seconds
     """
     result = override if override is not None \
-        else config('QCWARE_CLIENT_TIMEOUT', default=60, cast=int)
+        else current_context().client_timeout
     return result
 
 
@@ -227,24 +227,25 @@ def set_client_timeout(new_wait: int):
 
 def server_timeout(override: Optional[int] = None):
     """
-    Returns the maximum time the server should sit pinging the database for 
-    a result before giving up.
+    Returns the maximum time the api should retry polling when running
+    in synchronous mode before returning the error state that the call
+    is not complete and allowing the user to poll manually.
 
-    This is configurable by the environment variable QCWARE_SERVER_TIMEOUT
+    This is configurable by the environment variable QCWARE_CLIENT_TIMEOUT
 
-    The default value is 10 seconds; the maximum is 50
+    The default value is 60 seconds
     """
     result = override if override is not None \
-        else config('QCWARE_SERVER_TIMEOUT', default=10, cast=int)
+        else current_context().server_timeout
     return result
 
 
 def set_server_timeout(new_wait: int):
     """
-    Sets the maximum server timeout (how long the server will poll for a result
-    before returning to the client with a result or 'still waiting' message.  
+    Sets the maximum time the API should retry polling the server before
+    returning the error state that the call is not complete.
 
-    Normally the user should not change this from the default value of 10s.
+    This may be set to any value greater than or equal to 0 seconds.
     """
     if new_wait < 0 or new_wait > 50:
         print(
@@ -253,6 +254,36 @@ def set_server_timeout(new_wait: int):
             + colorama.Style.RESET_ALL)
     else:
         os.environ['QCWARE_SERVER_TIMEOUT'] = str(new_wait)
+
+
+def async_interval_between_tries(override: Optional[float] = None):
+    """
+    Returns the maximum time the server should sit pinging the database for 
+    a result before giving up.
+
+    This is configurable by the environment variable QCWARE_SERVER_TIMEOUT
+
+    The default value is 10 seconds; the maximum is 50
+    """
+    result = override if override is not None \
+        else current_context().async_interval_between_tries
+    return result
+
+
+def set_async_interval_between_tries(new_interval: float):
+    """
+    Sets the maximum server timeout (how long the server will poll for a result
+    before returning to the client with a result or 'still waiting' message.  
+
+    Normally the user should not change this from the default value of 10s.
+    """
+    if new_interval < 0 or new_interval > 50:
+        print(
+            colorama.Fore.YELLOW +
+            "Time between async tries must be between 0 and 50 seconds; no action taken"
+            + colorama.Style.RESET_ALL)
+    else:
+        os.environ['QCWARE_ASYNC_INTERVAL_BETWEEN_TRIES'] = str(new_interval)
 
 
 class ApiCredentials(BaseModel):
@@ -264,6 +295,7 @@ class ApiCallContext(BaseModel):
     credentials: Optional[ApiCredentials] = None
     server_timeout: Optional[int] = None
     client_timeout: Optional[int] = None
+    async_interval_between_tries: Optional[float] = None
 
     class Config:
         extra = 'forbid'
@@ -273,11 +305,20 @@ def root_context() -> ApiCallContext:
     """
     Returns a dictionary containing relevant information for API calls; used internally
     """
-    return ApiCallContext(
-        qcware_host=qcware_host(),
-        credentials=ApiCredentials(qcware_api_key=qcware_api_key()),
-        server_timeout=server_timeout(),
-        client_timeout=client_timeout())
+    return ApiCallContext(qcware_host=config('QCWARE_HOST',
+                                             'https://api.forge.qcware.com'),
+                          credentials=ApiCredentials(
+                              qcware_api_key=config('QCWARE_API_KEY', None)),
+                          server_timeout=config('QCWARE_SERVER_TIMEOUT',
+                                                default=10,
+                                                cast=int),
+                          client_timeout=config('QCWARE_CLIENT_TIMEOUT',
+                                                default=60,
+                                                cast=int),
+                          async_interval_between_tries=config(
+                              'QCWARE_ASYNC_INTERVAL_BETWEEN_TRIES',
+                              0.5,
+                              cast=float))
 
 
 _contexts = contextvars.ContextVar('contexts', default=[])
