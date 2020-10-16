@@ -1,7 +1,8 @@
 from qcware.config import (qcware_api_key, qcware_host, set_api_key, set_host,
+                           set_scheduling_mode, scheduling_mode,
                            set_server_timeout, ConfigurationError,
                            current_context, push_context, pop_context,
-                           additional_config)
+                           additional_config, SchedulingMode)
 from decouple import config, UndefinedValueError
 import pytest
 import os
@@ -50,7 +51,7 @@ def test_qcware_host():
 
 def test_qcware_api_key():
     with pytest.raises(ConfigurationError):
-        assert qcware_api_key() == None
+        assert qcware_api_key() is None
     assert qcware_api_key("test") == "test"
 
     # test setting host via environment variable
@@ -61,6 +62,16 @@ def test_qcware_api_key():
     del os.environ['QCWARE_API_KEY']
     with pytest.raises(ConfigurationError):
         assert qcware_api_key() == "bob"
+
+
+def test_scheduling():
+    with pytest.raises(ValueError):
+        assert set_scheduling_mode('potato')
+
+    assert scheduling_mode() == SchedulingMode.immediate
+
+    with additional_config(scheduling_mode='next_available'):
+        assert scheduling_mode() == SchedulingMode.next_available
 
 
 def test_contexts():

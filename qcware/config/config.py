@@ -10,6 +10,7 @@ import os
 from pydantic import BaseModel
 from contextlib import contextmanager
 import contextvars
+from enum import Enum
 
 
 class ConfigurationError(Exception):
@@ -286,6 +287,40 @@ def set_async_interval_between_tries(new_interval: float):
         os.environ['QCWARE_ASYNC_INTERVAL_BETWEEN_TRIES'] = str(new_interval)
 
 
+class SchedulingMode(str, Enum):
+    immediate = 'immediate'
+    next_available = 'next_available'
+
+
+def scheduling_mode(override: Optional[SchedulingMode] = None):
+    """
+    Returns the scheduling mode, only relevant for backends that have availability
+    windows.  "immediate" means a call should fail if called for outside its
+    availability window, while "next_available" means such calls should be automaticall
+    scheduled for the next availability window.
+
+    A reschedule is not a guarantee that the job will be run within that window!  If not,
+    it will stay in the queue until the next availability window.
+    """
+    result = override if override is not None \
+        else current_context().scheduling_mode
+    return result
+
+
+def set_scheduling_mode(new_mode: SchedulingMode):
+    """
+    Sets the scheduling mode, only relevant for backends that have availability
+    windows.  "immediate" means a call should fail if called for outside its
+    availability window, while "next_available" means such calls should be automaticall
+    scheduled for the next availability window.
+
+    A reschedule is not a guarantee that the job will be run within that window!  If not,
+    it will stay in the queue until the next availability window.
+    """
+    new_value = SchedulingMode(new_mode)
+    os.environ['QCWARE_SCHEDULING_MODE'] = new_value.value
+
+
 class ApiCredentials(BaseModel):
     qcware_api_key: Optional[str] = None
 
@@ -296,6 +331,7 @@ class ApiCallContext(BaseModel):
     server_timeout: Optional[int] = None
     client_timeout: Optional[int] = None
     async_interval_between_tries: Optional[float] = None
+    scheduling_mode: Optional[SchedulingMode] = None
 
     class Config:
         extra = 'forbid'
@@ -305,20 +341,16 @@ def root_context() -> ApiCallContext:
     """
     Returns a dictionary containing relevant information for API calls; used internally
     """
-    return ApiCallContext(qcware_host=config('QCWARE_HOST',
-                                             'https://api.forge.qcware.com'),
-                          credentials=ApiCredentials(
-                              qcware_api_key=config('QCWARE_API_KEY', None)),
-                          server_timeout=config('QCWARE_SERVER_TIMEOUT',
-                                                default=10,
-                                                cast=int),
-                          client_timeout=config('QCWARE_CLIENT_TIMEOUT',
-                                                default=60,
-                                                cast=int),
-                          async_interval_between_tries=config(
-                              'QCWARE_ASYNC_INTERVAL_BETWEEN_TRIES',
-                              0.5,
-                              cast=float))
+    return ApiCallContext(
+        qcware_host=config('QCWARE_HOST', 'https://api.forge.qcware.com'),
+        credentials=ApiCredentials(
+            qcware_api_key=config('QCWARE_API_KEY', None)),
+        server_timeout=config('QCWARE_SERVER_TIMEOUT', default=10, cast=int),
+        client_timeout=config('QCWARE_CLIENT_TIMEOUT', default=60, cast=int),
+        async_interval_between_tries=config(
+            'QCWARE_ASYNC_INTERVAL_BETWEEN_TRIES', 0.5, cast=float),
+        scheduling_mode=config('QCWARE_SCHEDULING_MODE',
+                               default=SchedulingMode.immediate))
 
 
 _contexts = contextvars.ContextVar('contexts', default=[])
