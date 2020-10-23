@@ -1,7 +1,7 @@
 version: 2
 
 python:
-  version: 3.6
+  version: 3.7
   install:
     - requirements: doc_requirements.txt
     - requirements: docs/source/requirements.txt
