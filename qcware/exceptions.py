@@ -10,6 +10,10 @@ class ApiCallFailedError(ApiException):
     pass
 
 
+class ApiCallResultUnavailableError(ApiException):
+    pass
+
+
 class ApiCallExecutionError(ApiException):
     def __init__(self, message, traceback):
         super().__init__(message)

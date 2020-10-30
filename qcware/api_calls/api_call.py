@@ -1,14 +1,13 @@
-from typing import Optional, Dict
+import json
+from typing import Dict
 from urllib.parse import urljoin
 import backoff
-from ..request import post
+from ..request import post, get
 from ..exceptions import ApiCallExecutionError, ApiTimeoutError
 from ..util.transforms import client_result_from_wire
-from ..config import (qcware_api_key, qcware_host, client_timeout,
-                      server_timeout, do_client_api_compatibility_check_once,
+from ..config import (client_timeout, do_client_api_compatibility_check_once,
                       async_interval_between_tries, current_context,
                       ApiCallContext)
-import logging
 import asyncio
 
 
@@ -57,7 +56,11 @@ def wait_for_call(call_token: str, api_call_context=None):
 
 def handle_result(api_call):
     if api_call['state'] == 'error':
-        raise ApiCallExecutionError(api_call['result']['error'],
+        if 'result_url' in api_call:
+            result = json.loads(get(api_call['result_url']))
+        else:
+            result = api_call['result']
+        raise ApiCallExecutionError(result['error'],
                                     traceback=api_call.get('data', {}).get(
                                         'stack_trace', 'no traceback'))
     # if we've got to this point, we either have a result (state == 'success') or we have
@@ -73,7 +76,11 @@ def handle_result(api_call):
             f"Api call timed out; can retrieve with qcware.api_calls.retrieve_result(call_token=\"{api_call_info['uid']}\")",
             api_call_info)
     else:
-        return client_result_from_wire(api_call['method'], api_call['result'])
+        if 'result_url' in api_call:
+            result = json.loads(get(api_call['result_url']))
+        else:
+            result = api_call['result']
+        return client_result_from_wire(api_call['method'], result)
 
 
 def retrieve_result(call_token: str, api_call_context: ApiCallContext = None):

@@ -1,7 +1,7 @@
 import backoff
 import requests
 
-from .exceptions import ApiCallFailedError
+from .exceptions import ApiCallFailedError, ApiCallResultUnavailableError
 
 
 def _fatal_code(e):
@@ -16,8 +16,25 @@ def post_request(url, data):
     return requests.post(url, json=data)
 
 
+@backoff.on_exception(backoff.expo,
+                      requests.exceptions.RequestException,
+                      max_tries=3,
+                      giveup=_fatal_code)
+def get_request(url):
+    return requests.get(url)
+
+
 def post(url, data):
     response = post_request(url, data)
     if response.status_code >= 400:
         raise ApiCallFailedError(response.json()['message'])
     return response.json()
+
+
+def get(url):
+    response = get_request(url)
+    if response.status_code >= 400:
+        raise ApiCallResultUnavailableError(
+            'Unable to retrieve result, please try again later or contact support'
+        )
+    return response.text
