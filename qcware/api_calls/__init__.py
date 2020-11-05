@@ -1,1 +1,2 @@
-from .api_call import api_call, post_call, wait_for_call, handle_result, retrieve_result, async_retrieve_result
+from .api_call import (api_call, post_call, wait_for_call, handle_result,
+                       retrieve_result, async_retrieve_result, status, cancel)

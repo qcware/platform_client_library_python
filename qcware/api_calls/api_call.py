@@ -36,6 +36,22 @@ def api_call(api_call_context: ApiCallContext, call_token: str):
     return post(f'{api_call_context["qcware_host"]}/api_calls', locals())
 
 
+def status(call_token: str):
+    api_call_context = current_context()
+    api_call_context = api_call_context.dict()
+    do_client_api_compatibility_check_once()
+    return post(f'{api_call_context["qcware_host"]}/api_calls/status',
+                locals())
+
+
+def cancel(call_token: str):
+    api_call_context = current_context()
+    api_call_context = api_call_context.dict()
+    do_client_api_compatibility_check_once()
+    return post(f'{api_call_context["qcware_host"]}/api_calls/cancel',
+                locals())
+
+
 def _print_waiting_handler(details: Dict):
     pass
 
@@ -63,10 +79,15 @@ def handle_result(api_call):
         raise ApiCallExecutionError(result['error'],
                                     traceback=api_call.get('data', {}).get(
                                         'stack_trace', 'no traceback'))
+    elif api_call['state'] == 'scheduled':
+        # if it's scheduled, try to raise a nice rescheduled ApiCallExecutionError
+        schedule_at_str = api_call.get('schedule_at_str', "unscheduled")
+        raise ApiCallExecutionError(f"Rescheduled for {schedule_at_str}",
+                                    traceback="")
     # if we've got to this point, we either have a result (state == 'success') or we have
     # some other result (state == error, open, new).  If that's the case, we've likely
     # timed out
-    if api_call['state'] in ['error', 'open', 'new']:
+    if api_call['state'] in ['open', 'new']:
 
         api_call_info = {
             k: api_call.get(k, None)
