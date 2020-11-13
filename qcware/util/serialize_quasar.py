@@ -102,7 +102,7 @@ Canonical_gate_names = [
     'CCX', 'CF', 'CS', 'CST', 'CSWAP', 'CX', 'CY', 'CZ', 'H', 'I', 'R_ion',
     'Rx', 'Rx2', 'Rx2T', 'Rx_ion', 'Ry', 'Ry_ion', 'Rz', 'Rz_ion', 'S', 'SO4',
     'SO42', 'ST', 'SWAP', 'T', 'TT', 'U1', 'U2', 'X', 'XX_ion', 'Y', 'Z', 'u1',
-    'u2', 'u3'
+    'u2', 'u3', 'RBS'
 ]
 
 Name_to_gatefn = {
@@ -125,6 +125,7 @@ Name_to_gatefn = {
     'Ry_ion': wrap_gate(Gate.Ry_ion),
     'Rz': wrap_gate(Gate.Rz),
     'Rz_ion': wrap_gate(Gate.Rz_ion),
+    'RBS': wrap_gate(Gate.RBS),
     'S': wrap_gate(Gate.S),
     'SO4': wrap_gate(Gate.SO4),
     'SO42': wrap_gate(Gate.SO42),
