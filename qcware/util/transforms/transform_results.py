@@ -6,6 +6,7 @@ from ..serialize_quasar import (quasar_to_list, sequence_to_quasar,
                                 list_to_pauli)
 from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
                       dict_to_scalar)
+from ...types.optimization import BruteOptimizeResult
 _to_wire_result_replacers = {}
 
 
@@ -96,6 +97,9 @@ def run_backend_method_from_wire(backend_method_result: dict):
 register_result_transform('circuits.run_backend_method',
                           to_wire=run_backend_method_to_wire,
                           from_wire=run_backend_method_from_wire)
+register_result_transform('optimization.brute_force_minimize',
+                          to_wire=lambda x: x.dict(),
+                          from_wire=lambda x: BruteOptimizeResult(**x))
 register_result_transform('_shadowed.run_measurement',
                           to_wire=probability_histogram_to_dict,
                           from_wire=dict_to_probability_histogram)

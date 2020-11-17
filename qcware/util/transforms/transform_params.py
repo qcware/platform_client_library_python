@@ -8,6 +8,7 @@ from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
                       dict_to_scalar, remap_q_indices_from_strings,
                       remap_q_indices_to_strings, complex_dtype_to_string,
                       string_to_complex_dtype)
+from ...types.optimization import PolynomialObjective, Constraints
 from typing import Optional, Mapping, Callable
 
 
@@ -55,8 +56,13 @@ def server_args_from_wire(method_name: str, **kwargs):
 
 
 def register_argument_transform(method_name: str,
-                                to_wire: Optional[dict] = {},
-                                from_wire: Optional[dict] = {}):
+                                to_wire: Optional[dict] = None,
+                                from_wire: Optional[dict] = None):
+    if to_wire is None:
+        to_wire = dict()
+    if from_wire is None:
+        from_wire = dict()
+
     _to_wire_arg_replacers[method_name] = to_wire
     _from_wire_arg_replacers[method_name] = from_wire
 
@@ -68,6 +74,22 @@ register_argument_transform('optimization.solve_binary',
 register_argument_transform('optimization.find_optimal_qaoa_angles',
                             to_wire={'Q': remap_q_indices_to_strings},
                             from_wire={'Q': remap_q_indices_from_strings})
+
+register_argument_transform('optimization.brute_force_minimize',
+                            to_wire={
+                                'objective':
+                                lambda x: x.to_wire(),
+                                'constraints':
+                                lambda x: x.to_wire()
+                                if x is not None else None
+                            },
+                            from_wire={
+                                'objective':
+                                PolynomialObjective.from_wire,
+                                'constraints':
+                                lambda x: Constraints.from_wire(x)
+                                if x is not None else None
+                            })
 
 register_argument_transform('qio.loader',
                             to_wire={'data': ndarray_to_dict},
