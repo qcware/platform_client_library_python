@@ -23,7 +23,7 @@ def submit_brute_force_minimize(objective: types.PolynomialObjective,
 
 Arguments:
 
-:param objective: The integer-coefficient polynomial to be evaluated should be specified by an PolynomialObjective. See documentation for PolynomialObjective for more information. Note that variables are boolean in the sense that their values are 0 and 1.
+:param objective: The integer-coefficient polynomial to be evaluated should be specified by a PolynomialObjective. See documentation for PolynomialObjective for more information. Note that variables are boolean in the sense that their values are 0 and 1.
 :type objective: types.PolynomialObjective
 
 :param constraints: Optional constraints are specified with an object of class Constraints. See its documentation for further information., defaults to None
@@ -48,7 +48,7 @@ def brute_force_minimize(objective: types.PolynomialObjective,
 
 Arguments:
 
-:param objective: The integer-coefficient polynomial to be evaluated should be specified by an PolynomialObjective. See documentation for PolynomialObjective for more information. Note that variables are boolean in the sense that their values are 0 and 1.
+:param objective: The integer-coefficient polynomial to be evaluated should be specified by a PolynomialObjective. See documentation for PolynomialObjective for more information. Note that variables are boolean in the sense that their values are 0 and 1.
 :type objective: types.PolynomialObjective
 
 :param constraints: Optional constraints are specified with an object of class Constraints. See its documentation for further information., defaults to None
@@ -85,7 +85,7 @@ Minimize given objective polynomial subject to constraints.
 
 Arguments:
 
-:param objective: The integer-coefficient polynomial to be evaluated should be specified by an PolynomialObjective. See documentation for PolynomialObjective for more information. Note that variables are boolean in the sense that their values are 0 and 1.
+:param objective: The integer-coefficient polynomial to be evaluated should be specified by a PolynomialObjective. See documentation for PolynomialObjective for more information. Note that variables are boolean in the sense that their values are 0 and 1.
 :type objective: types.PolynomialObjective
 
 :param constraints: Optional constraints are specified with an object of class Constraints. See its documentation for further information., defaults to None
