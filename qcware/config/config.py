@@ -323,6 +323,7 @@ def set_scheduling_mode(new_mode: SchedulingMode):
 
 class ApiCredentials(BaseModel):
     qcware_api_key: Optional[str] = None
+    qcware_cred_ibmq_token: Optional[str] = None
 
 
 class ApiCallContext(BaseModel):
@@ -344,7 +345,8 @@ def root_context() -> ApiCallContext:
     return ApiCallContext(
         qcware_host=config('QCWARE_HOST', 'https://api.forge.qcware.com'),
         credentials=ApiCredentials(
-            qcware_api_key=config('QCWARE_API_KEY', None)),
+            qcware_api_key=config('QCWARE_API_KEY', None),
+            qcware_cred_ibmq_token=config('QCWARE_CRED_IBMQ_TOKEN', None)),
         server_timeout=config('QCWARE_SERVER_TIMEOUT', default=10, cast=int),
         client_timeout=config('QCWARE_CLIENT_TIMEOUT', default=60, cast=int),
         async_interval_between_tries=config(

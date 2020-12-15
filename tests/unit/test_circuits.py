@@ -28,6 +28,7 @@ def test_has_statevector_input(backend: str, expected: bool):
     [
         ("qcware/cpu_simulator"),
         ("ibm/simulator"),
+        ("ibm/ibmq_qasm_simulator"),
         ("awsbraket/sv1"),
         #        ("awsbraket/rigetti")
     ])
