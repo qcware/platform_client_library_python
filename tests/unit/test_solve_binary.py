@@ -3,8 +3,8 @@ import pytest
 
 
 @pytest.mark.parametrize("backend",
-                         ('qcware/cpu', 'dwave/2000q', 'dwave/advantage',
-                          'awsbraket/dwave/2000q', 'awsbraket/dwave/advantage')
+                         ('qcware/cpu', 'dwave/2000q', 'dwave/advantage')  # ,
+#                           'awsbraket/dwave/2000q', 'awsbraket/dwave/advantage')
                          )
 def test_solve_binary(backend):
     Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
