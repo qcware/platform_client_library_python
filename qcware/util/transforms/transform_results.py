@@ -15,7 +15,14 @@ def debug_is_set() -> bool:
 
 
 def result_represents_error(worker_result: object):
-    return isinstance(worker_result, dict) and 'error' in worker_result
+    """
+    Defines whether the result object returned by a backend function represents an
+    error.  This was done by backend functions returning a dict with "error" as a key
+    which conflicted with some results which inherited from dict but magically parsed
+    key requests and would throw exceptions.
+    """
+    result = worker_result.__class__ == 'dict' and 'error' in worker_result
+    return result
 
 
 def strip_traceback_if_debug_set(error_result: dict) -> dict:

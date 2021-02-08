@@ -297,10 +297,10 @@ Arguments:
 :param update_q_each_block_solution: each blocks decomposed Q matrix can be constructed at the onset of block composition, or updated every time a block is solved. Default value :obj: `True`., defaults to True
 :type update_q_each_block_solution: bool
 
-:param qaoa_nmeasurement: The number of measurements to use for the QAOA algorithm if a simulator is chosen.  Leave at null to attempt an ideal Pauli measurement, defaults to None
+:param qaoa_nmeasurement: The number of measurements to use for the QAOA algorithm if a simulator is chosen.  Leave at null to attempt an ideal Pauli measurement.  Ideal Pauli measurements can only be used on backends which support statevectors and will raise an exception otherwise., defaults to None
 :type qaoa_nmeasurement: int
 
-:param qaoa_optimizer: The optimizer to use for the QAOA algorithm if a simulator backend is chosen.  Valid options are `COBYLA`, `bounded_Powell`, and `analytical`, or `None` if qaoa_beta and qaoa_gamma are provided, defaults to COBYLA
+:param qaoa_optimizer: The optimizer to use for the QAOA algorithm if a simulator backend is chosen.  Valid options are `COBYLA`, `bounded_Powell`, and `analytical`, or `None` if qaoa_beta and qaoa_gamma are provided., defaults to COBYLA
 :type qaoa_optimizer: str
 
 :param qaoa_beta: A :math:`\beta` angle(s) to provide to the QAOA algorithm if a simulator backend is chosen.  This can either be a float or a list of floats of length `qaoa_p_val`.  Invalid unless qaoa_gamma is also provided and has the same length., defaults to None
@@ -607,10 +607,10 @@ Arguments:
 :param update_q_each_block_solution: each blocks decomposed Q matrix can be constructed at the onset of block composition, or updated every time a block is solved. Default value :obj: `True`., defaults to True
 :type update_q_each_block_solution: bool
 
-:param qaoa_nmeasurement: The number of measurements to use for the QAOA algorithm if a simulator is chosen.  Leave at null to attempt an ideal Pauli measurement, defaults to None
+:param qaoa_nmeasurement: The number of measurements to use for the QAOA algorithm if a simulator is chosen.  Leave at null to attempt an ideal Pauli measurement.  Ideal Pauli measurements can only be used on backends which support statevectors and will raise an exception otherwise., defaults to None
 :type qaoa_nmeasurement: int
 
-:param qaoa_optimizer: The optimizer to use for the QAOA algorithm if a simulator backend is chosen.  Valid options are `COBYLA`, `bounded_Powell`, and `analytical`, or `None` if qaoa_beta and qaoa_gamma are provided, defaults to COBYLA
+:param qaoa_optimizer: The optimizer to use for the QAOA algorithm if a simulator backend is chosen.  Valid options are `COBYLA`, `bounded_Powell`, and `analytical`, or `None` if qaoa_beta and qaoa_gamma are provided., defaults to COBYLA
 :type qaoa_optimizer: str
 
 :param qaoa_beta: A :math:`\beta` angle(s) to provide to the QAOA algorithm if a simulator backend is chosen.  This can either be a float or a list of floats of length `qaoa_p_val`.  Invalid unless qaoa_gamma is also provided and has the same length., defaults to None
@@ -950,10 +950,10 @@ Arguments:
 :param update_q_each_block_solution: each blocks decomposed Q matrix can be constructed at the onset of block composition, or updated every time a block is solved. Default value :obj: `True`., defaults to True
 :type update_q_each_block_solution: bool
 
-:param qaoa_nmeasurement: The number of measurements to use for the QAOA algorithm if a simulator is chosen.  Leave at null to attempt an ideal Pauli measurement, defaults to None
+:param qaoa_nmeasurement: The number of measurements to use for the QAOA algorithm if a simulator is chosen.  Leave at null to attempt an ideal Pauli measurement.  Ideal Pauli measurements can only be used on backends which support statevectors and will raise an exception otherwise., defaults to None
 :type qaoa_nmeasurement: int
 
-:param qaoa_optimizer: The optimizer to use for the QAOA algorithm if a simulator backend is chosen.  Valid options are `COBYLA`, `bounded_Powell`, and `analytical`, or `None` if qaoa_beta and qaoa_gamma are provided, defaults to COBYLA
+:param qaoa_optimizer: The optimizer to use for the QAOA algorithm if a simulator backend is chosen.  Valid options are `COBYLA`, `bounded_Powell`, and `analytical`, or `None` if qaoa_beta and qaoa_gamma are provided., defaults to COBYLA
 :type qaoa_optimizer: str
 
 :param qaoa_beta: A :math:`\beta` angle(s) to provide to the QAOA algorithm if a simulator backend is chosen.  This can either be a float or a list of floats of length `qaoa_p_val`.  Invalid unless qaoa_gamma is also provided and has the same length., defaults to None
