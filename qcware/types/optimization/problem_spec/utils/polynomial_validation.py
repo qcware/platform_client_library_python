@@ -1,20 +1,22 @@
 import dataclasses
 import pydantic
 
-from typing import Dict, Tuple, Set
+from typing import Dict, Tuple, Set, Union
 
 
 def compute_degree(polynomial: dict):
     """Compute the largest length of a term in given polynomial dict.
 
-    If there are no terms, return -inf.
+    If there are no terms, return -1. This choice of -1 is corrected to
+    -inf after validation is complete.
 
-    The degree here is not always the mathematically correct degree. For
+    The degree here is not always the mathematically correct degree, even
+    for nontrivial polynomials. For
     example, the polynomial specified by {(1,): 12, (0, 1): 0} has
     mathematical degree 1 but this function will return 2.
     """
     if polynomial == {}:
-        return float('-inf')
+        return -1
     return max(len(term) for term in polynomial)
 
 

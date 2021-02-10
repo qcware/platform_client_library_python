@@ -2,15 +2,17 @@ from typing import Dict, Tuple, Set, Union, Optional
 import qubovert as qv
 from qcware.types.optimization.problem_spec.utils import \
     polynomial_validation as validator
+from qcware.types.optimization.variable_types import Domain
 
 
 class PolynomialObjective:
-    """Integer-valued polynomial of boolean variables with int coefficients.
+    """Integer-valued polynomial of binary variables with int coefficients.
 
     Objects of this class specify polynomials of some number of
-    boolean variables with integer coefficients. When we use the term
-    "boolean", we mean that variables take on the values 0 and 1. These
-    are pseudo-boolean functions.
+    binary variables with integer coefficients. "Binary variables" can either
+    mean variables taking on the values 0 and 1 or variables taking on the
+    values 1 and -1. The former a referred to as boolean variables and the
+    latter are referred to as spin variables
 
     Objects of this class are meant to be treated as objective functions
     for optimization. They do not know about constraints. Constraints
@@ -29,12 +31,12 @@ class PolynomialObjective:
     term by matching the tuple (1, 2), which represents yz, with the
     coefficient -2. This can be encoded with an entry in a dict (1, 2): -2.
     Overall, p can be defined by
-        {
+    {
         (): -50,
         (0,): 12,
         (1, 2): -2,
         (0, 1, 2): -50
-        }
+    }
     .
 
     Note that this object does not automatically simplify a given
@@ -49,49 +51,66 @@ class PolynomialObjective:
     mistaken for q(b) = 12 b.
 
     Attributes:
-        polynomial: The polynomial is specified by a dict in the standard way.
+        polynomial: The polynomial is specified by a dict as described above.
             We only use tuples of int as keys and the range of ints must
-            be from 0 to `num_boolean_variables - 1`. Values for the dict must be
+            be from 0 to `num_variables - 1`. Values for the dict must be
             type int. This is because we are only treating integer-coefficient
             polynomials.
 
-        variables: Set of ints representing variables.
+        variables: Set of ints representing the variables.
 
-        num_boolean_variables: The number of variables for the polynomial. This number
+        num_variables: The number of variables for the polynomial. This number
             can be larger than the actual number of variables that appear
-            in pubo.
+            in `polynomial` but it cannot be smaller.
 
         degree: The degree of the polynomial. This is not the mathematically
             correct degree. It is instead the length of the longest key in
-            the pubo dict or -inf in the case when the pubo dict is {}.
-            For example, the PolynomialObjective {(1,): 12, (0, 1): 0} has
-            mathematical degree 1 but the attribute `degree` is 2.
+            the polynomial dict or -inf in the case when the dict is {}.
+            For example, the boolean PolynomialObjective {(1,): 12, (0, 1): 0}
+            has mathematical degree 1 but the attribute `degree` is 2.
+
+        domain: Specifies if variables take on boolean (0, 1) or spin (1, -1)
+            values.
     """
     polynomial: Dict[Tuple[int, ...], int]
     variables: Set[int]
-    num_boolean_variables: int
+    num_variables: int
     degree: Union[int, float]
+    domain: Domain
 
     def __init__(self,
                  polynomial: Dict[Tuple[int, ...], int],
-                 num_boolean_variables: int,
+                 num_variables: int,
+                 domain: Union[Domain, str] = Domain.BOOLEAN,
                  variable_name_mapping: Optional[Dict[int, str]] = None,
                  validate_types: bool = True):
-        self.num_boolean_variables = num_boolean_variables
+        self.num_variables = num_variables
+        self.domain = Domain(domain.lower())
 
         parsed_polynomial = validator.polynomial_validation(
             polynomial=polynomial,
-            num_variables=num_boolean_variables,
+            num_variables=num_variables,
             validate_types=validate_types)
+
         self.polynomial = parsed_polynomial.poly
         self.variables = parsed_polynomial.variables
         self.degree = parsed_polynomial.deg
+        if self.degree < 0:
+            self.degree = float('-inf')
 
         self.variable_name_mapping = variable_name_mapping
+
+        def default_symbol(variable_type: Domain):
+            if variable_type is Domain.BOOLEAN:
+                return 'x'
+            elif variable_type is Domain.SPIN:
+                return 'z'
+
         if variable_name_mapping is None:
+            symbol = default_symbol(self.domain)
             self.variable_name_mapping = {
-                i: f'x_{i}'
-                for i in range(num_boolean_variables)
+                i: f'{symbol}_{i}'
+                for i in range(num_variables)
             }
 
     def to_wire(self) -> Dict:
@@ -141,7 +160,8 @@ class PolynomialObjective:
     def __repr__(self):
         out = 'PolynomialObjective(\n'
         out += '    polynomial=' + self.polynomial.__repr__() + '\n'
-        out += '    num_boolean_variables=' + str(self.num_boolean_variables)
+        out += '    num_variables=' + str(self.num_variables) + '\n'
+        out += '    domain=' + repr(self.domain)
         out += '\n)'
         return out
 
@@ -155,8 +175,37 @@ class PolynomialObjective:
         """Make a copy of this PolynomialObjective."""
         return PolynomialObjective(
             polynomial=self.polynomial,
-            num_boolean_variables=self.num_boolean_variables,
+            num_variables=self.num_variables,
             validate_types=False)
+
+    def qubovert(self, use_variable_names: bool = False):
+        """Get a qubovert model describing this polynomial.
+
+        This method will return a qubovert PUBO or PUSO depending on
+        the domain of the variables.
+
+        Args:
+            use_variable_names: When True, the variables in the qubovert
+                object will use the same string names as appear in
+                the attribute variable_name_mapping.
+        """
+        if use_variable_names:
+            polynomial = dict()
+            for k, v in self.polynomial.items():
+                new_key = tuple(self.variable_name_mapping[i] for i in k)
+                polynomial[new_key] = v
+        else:
+            polynomial = self.polynomial
+
+        if self.domain is Domain.BOOLEAN:
+            model = qv.PUBO(polynomial)
+        elif self.domain is Domain.SPIN:
+            model = qv.PUSO(polynomial)
+        else:
+            raise RuntimeError('Domain is not valid.')
+        if use_variable_names:
+            model.set_reverse_mapping(self.variable_name_mapping)
+        return model
 
     def simplified(self, preserve_num_variables=True) -> 'PolynomialObjective':
         """Get a simplified copy of the PolynomialObjective.
@@ -164,16 +213,23 @@ class PolynomialObjective:
         Args:
             preserve_num_variables: If True, the resulting PolynomialObjective will
             have the same number of variables stored as the original PolynomialObjective.
-            Otherwise, num_boolean_variables will match the actual number of variables
+            Otherwise, num_variables will match the actual number of variables
             that appear in the polynomial with nonzero coefficients.
         """
-        simplified_qv = qv.utils.PUBOMatrix(self.polynomial)
+        if self.domain is Domain.BOOLEAN:
+            simplified_qv = qv.utils.PUBOMatrix(self.polynomial)
+        elif self.domain is Domain.SPIN:
+            simplified_qv = qv.utils.PUSOMatrix(self.polynomial)
+        else:
+            raise RuntimeError(f"Domain {self.domain} seems invalid.")
+
         num_vars = simplified_qv.num_binary_variables
         if preserve_num_variables:
-            num_vars = self.num_boolean_variables
+            num_vars = self.num_variables
 
         return PolynomialObjective(polynomial=simplified_qv,
-                                   num_boolean_variables=num_vars,
+                                   num_variables=num_vars,
+                                   domain=self.domain,
                                    validate_types=False)
 
     @classmethod
@@ -206,7 +262,13 @@ class PolynomialObjective:
         if self.polynomial == {}:
             return ''
 
-        res = f"Boolean Variables: "
+        if self.domain is Domain.BOOLEAN:
+            res = f"Boolean Variables: "
+        elif self.domain is Domain.SPIN:
+            res = f"Spin Variables: "
+        else:
+            raise RuntimeError("Variable domain type seems to be invalid.")
+
         res += f"{list(self.variable_name_mapping.values())}\n"
         first = True
         for term, coef in self.items():
@@ -234,7 +296,8 @@ class PolynomialObjective:
     def dict(self):
         return {
             'polynomial': self.polynomial,
-            'num_boolean_variables': self.num_boolean_variables,
+            'num_variables': self.num_variables,
+            'domain': self.domain.lower()
         }
 
 

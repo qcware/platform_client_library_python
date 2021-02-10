@@ -39,8 +39,7 @@ def pubo_example_1(constrained: bool):
             },
             num_boolean_variables=4)
         constraints = {Predicate.NONPOSITIVE: [nonpositive_constraint_1]}
-        constraints = Constraints(num_boolean_variables=4,
-                                  constraints=constraints)
+        constraints = Constraints(constraints=constraints, num_variables=4)
         out.update({'constraints': constraints})
         expected_minima = {'1000', '0100', '0010'}
         expected_value = 4
@@ -106,7 +105,7 @@ def pubo_example_2(constrained: bool):
                                   num_boolean_variables=3)
             ]
         }
-        constraints = Constraints(constraints, num_boolean_variables=3)
+        constraints = Constraints(constraints, num_variables=3)
 
         out.update({'constraints': constraints})
         expected_minima = {'100'}
@@ -159,7 +158,7 @@ def impossible_example():
         Predicate.ZERO:
         [PolynomialObjective({(1,): 1}, num_boolean_variables=3)]
     }
-    constraints = Constraints(constraints=constraints, num_boolean_variables=3)
+    constraints = Constraints(constraints=constraints, num_variables=3)
     out.update({
         'pubo': p,
         'expected_value': None,

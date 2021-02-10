@@ -3,6 +3,7 @@ from typing import Dict, List, Union, Iterable, Optional
 
 import tabulate
 from qcware.types.optimization.predicate import Predicate
+from qcware.types.optimization.variable_types import Domain
 from qcware.types.optimization import utils
 from qcware.types.optimization.problem_spec import PolynomialObjective
 from qcware.types.optimization.problem_spec.utils import \
@@ -10,7 +11,7 @@ from qcware.types.optimization.problem_spec.utils import \
 
 
 class Constraints:
-    """Specification of constraints on boolean variables.
+    """Specification of constraints on binary variables.
 
     An object of class Constraints does not have information about the
     objective function on which the constraints are applied. It is simply a
@@ -55,7 +56,7 @@ class Constraints:
 
     def __init__(self,
                  constraints: Dict[Predicate, List[PolynomialObjective]],
-                 num_boolean_variables: int,
+                 num_variables: int,
                  validate_types: bool = True):
         """
         Args:
@@ -84,31 +85,42 @@ class Constraints:
                     ZERO          --   polynomial = 0
                     NONZERO       --   polynomial != 0
 
-            num_boolean_variables: The number of binary variables that the
+            num_variables: The number of binary variables that the
                 constraints constrain.
         """
         parsed_constraints = validator.constraint_validation(
-            constraints, num_boolean_variables, validate_types)
+            constraints, num_variables, validate_types)
         del constraints
         self.constraint_dict = parsed_constraints.constraint_dict
-        self.num_variables = num_boolean_variables
+        self.num_variables = num_variables
         self.predicates = set(self.constraint_dict)
         self.degree_dict = {rel: [] for rel in self.predicates}
         self.degree_set = set()
         self._total_num_constraints = 0
         self._num_constraints_dict = {rel: 0 for rel in self.predicates}
+
+        selected_domain = None
         for predicate in self.predicates:
             for c in self.constraint_dict[predicate]:
                 self.degree_dict[predicate].append(c.degree)
                 self.degree_set.add(c.degree)
                 self._total_num_constraints += 1
                 self._num_constraints_dict[predicate] += 1
+                if selected_domain is None:
+                    selected_domain = c.domain
+                elif selected_domain is not c.domain:
+                    raise ValueError(
+                        'Encountered constraints with both boolean and spin '
+                        'variable domains.')
 
         self.max_degree_dict = {
             predicate: max(degs)
             for predicate, degs in self.degree_dict.items()
         }
-        self.max_degree = max(self.max_degree_dict.values())
+        if self.constraint_dict == {}:
+            self.max_degree = None
+        else:
+            self.max_degree = max(self.max_degree_dict.values())
 
     def to_wire(self) -> Dict:
         result = self.dict().copy()
@@ -213,7 +225,7 @@ class Constraints:
         return self.constraint_dict.__getitem__(item)
 
     def __repr__(self):
-        out = f'Number of boolean variables: {self.num_variables}\n'
+        out = f'Number of variables: {self.num_variables}\n'
         out += f'Total number of constraints: {self.num_constraints()}\n\n'
         header = ['Predicate', 'Number of Constraints', 'Highest Degree']
         data = [[
@@ -230,7 +242,7 @@ class Constraints:
     def dict(self):
         return {
             'constraints': self.constraint_dict,
-            'num_boolean_variables': self.num_variables
+            'num_variables': self.num_variables
         }
 
 

@@ -31,13 +31,19 @@ def constraint_validation(constraints: dict,
                 fixed_key_dict.update({Predicate(k.lower()): v})
             self.constraint_dict = fixed_key_dict
 
-            for pubo_list in self.constraint_dict.values():
+            removals = set()
+            for predicate, pubo_list in self.constraint_dict.items():
+                if len(pubo_list) == 0:
+                    removals.add(predicate)
                 for p in pubo_list:
-                    if p.num_boolean_variables != self.num_vars:
+                    if p.num_variables != self.num_vars:
                         raise RuntimeError(
-                            f'Found a constraint for {p.num_boolean_variables} '
+                            f'Found a constraint for {p.num_variables} '
                             f'variables, but expected {self.num_vars} '
                             f'variables.')
+
+            for pred in removals:
+                self.constraint_dict.pop(pred)
 
     return _ConstraintValidation(constraint_dict=constraints,
                                  num_vars=num_variables)
