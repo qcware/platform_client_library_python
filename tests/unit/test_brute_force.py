@@ -23,7 +23,7 @@ def pubo_example_1(constrained: bool):
     }
     p = PolynomialObjective(
         polynomial=p,
-        num_boolean_variables=4,
+        num_variables=4,
     )
     if not constrained:
         expected_minima = {'0110', '1010', '1100', '1101'}
@@ -37,7 +37,7 @@ def pubo_example_1(constrained: bool):
                 (2, ): 1,
                 (3, ): 1
             },
-            num_boolean_variables=4)
+            num_variables=4)
         constraints = {Predicate.NONPOSITIVE: [nonpositive_constraint_1]}
         constraints = Constraints(constraints=constraints, num_variables=4)
         out.update({'constraints': constraints})
@@ -64,7 +64,7 @@ def pubo_example_2(constrained: bool):
         (0, 2): 99,
         (1, 2): -397,
     }
-    p = PolynomialObjective(polynomial=p, num_boolean_variables=3)
+    p = PolynomialObjective(polynomial=p, num_variables=3)
 
     if not constrained:
         expected_minima = {'110'}
@@ -79,9 +79,9 @@ def pubo_example_2(constrained: bool):
                     (1, ): 1,
                     (2, ): 1
                 },
-                                  num_boolean_variables=3),
+                                  num_variables=3),
                 # Always true
-                PolynomialObjective({(): -1}, num_boolean_variables=3)
+                PolynomialObjective({(): -1}, num_variables=3)
             ],
             Predicate.ZERO: [
                 # (a+b+c-1)^2 == 0 (true iff exactly one variable is 1.)
@@ -95,14 +95,14 @@ def pubo_example_2(constrained: bool):
                         (2, ): -1,
                         (): 1
                     },
-                    num_boolean_variables=3),
+                    num_variables=3),
                 # a + c = 1 (true iff a XOR c)
                 PolynomialObjective({
                     (0, ): 1,
                     (2, ): 1,
                     (): -1
                 },
-                                  num_boolean_variables=3)
+                                  num_variables=3)
             ]
         }
         constraints = Constraints(constraints, num_variables=3)
@@ -131,7 +131,7 @@ def pubo_example_3():
         2,
         3,
     ): 3},
-                            num_boolean_variables=4)
+                            num_variables=4)
     out.update({
         'pubo': p,
         'expected_value': 0,
@@ -149,14 +149,14 @@ def impossible_example():
     p = {(0, ): -3, (0, 1): 2, (0, 2): 2, (): -3}
     p = PolynomialObjective(
         polynomial=p,
-        num_boolean_variables=3,
+        num_variables=3,
     )
 
     constraints = {
         Predicate.NONZERO:
-        [PolynomialObjective({(0, 1): -3}, num_boolean_variables=3)],
+        [PolynomialObjective({(0, 1): -3}, num_variables=3)],
         Predicate.ZERO:
-        [PolynomialObjective({(1,): 1}, num_boolean_variables=3)]
+        [PolynomialObjective({(1,): 1}, num_variables=3)]
     }
     constraints = Constraints(constraints=constraints, num_variables=3)
     out.update({
