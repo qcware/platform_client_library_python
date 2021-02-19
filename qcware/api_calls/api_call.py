@@ -82,8 +82,12 @@ def handle_result(api_call):
     elif api_call['state'] == 'scheduled':
         # if it's scheduled, try to raise a nice rescheduled ApiCallExecutionError
         schedule_at_str = api_call.get('schedule_at_str', "unscheduled")
-        raise ApiCallExecutionError(f"Rescheduled for {schedule_at_str}",
-                                    traceback="")
+        api_call_info = {
+            k: api_call.get(k, None)
+            for k in ['method', 'time_created', 'state', 'uid']
+        }
+        raise ApiCallExecutionError(f"API Call {api_call.get('uid', 'ERROR')} rescheduled for {schedule_at_str}",
+                                    traceback="", api_call_info = api_call_info)
     # if we've got to this point, we either have a result (state == 'success') or we have
     # some other result (state == error, open, new).  If that's the case, we've likely
     # timed out
