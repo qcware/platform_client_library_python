@@ -4,7 +4,7 @@
 
 import asyncio
 from ... import logger
-from ...api_calls import post_call, wait_for_call, handle_result, async_retrieve_result
+from ...api_calls import post_call, async_post_call, wait_for_call, handle_result, async_retrieve_result
 from ...util.transforms import client_args_to_wire
 from ...exceptions import ApiTimeoutError
 from ...config import (ApiCallContext, client_timeout,
@@ -991,7 +991,7 @@ Arguments:
 :rtype: dict
     """
     data = client_args_to_wire('optimization.solve_binary', **locals())
-    api_call = post_call('optimization/solve_binary', data)
+    api_call = await async_post_call('optimization/solve_binary', data)
     logger.info(
         f'API call to optimization.solve_binary successful. Your API token is {api_call["uid"]}'
     )

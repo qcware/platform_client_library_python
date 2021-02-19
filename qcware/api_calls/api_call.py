@@ -3,6 +3,7 @@ from typing import Dict
 from urllib.parse import urljoin
 import backoff
 from ..request import post, get
+from ..async_request import post as async_post, get as async_get
 from ..exceptions import ApiCallExecutionError, ApiTimeoutError
 from ..util.transforms import client_result_from_wire
 from ..config import (client_timeout, do_client_api_compatibility_check_once,
@@ -12,6 +13,17 @@ import asyncio
 
 
 def post_call(endpoint: str, data: dict):
+    api_call_context = data.get('api_call_context', None)
+    if api_call_context is None:
+        api_call_context = current_context()
+    host = api_call_context.qcware_host
+    # replace the ApiCallContext class with a jsonable dict
+    data['api_call_context'] = api_call_context.dict()
+    url = urljoin(host, endpoint)
+    return post(url, data)
+
+
+async def async_post_call(endpoint: str, data: dict):
     """
     Centralizes the post for the API call.  Assumes the data dict
     contains an entry with key 'api_key'; if this is missing or set to
@@ -25,31 +37,37 @@ def post_call(endpoint: str, data: dict):
     # replace the ApiCallContext class with a jsonable dict
     data['api_call_context'] = api_call_context.dict()
     url = urljoin(host, endpoint)
-    return post(url, data)
+    return await async_post(url, data)
 
 
 def api_call(api_call_context: ApiCallContext, call_token: str):
     api_call_context = current_context(
     ) if api_call_context is None else api_call_context
-    api_call_context = api_call_context.dict()
     do_client_api_compatibility_check_once()
-    return post(f'{api_call_context["qcware_host"]}/api_calls', locals())
+    return post(
+        f'{api_call_context.qcware_host}/api_calls',
+        dict(api_call_context=api_call_context.dict(), call_token=call_token))
+
+
+async def async_api_call(api_call_context: ApiCallContext, call_token: str):
+    api_call_context = current_context(
+    ) if api_call_context is None else api_call_context
+    do_client_api_compatibility_check_once()
+    return await async_post(
+        f'{api_call_context.qcware_host}/api_calls',
+        dict(api_call_context=api_call_context.dict(), call_token=call_token))
 
 
 def status(call_token: str):
     api_call_context = current_context()
-    api_call_context = api_call_context.dict()
     do_client_api_compatibility_check_once()
-    return post(f'{api_call_context["qcware_host"]}/api_calls/status',
-                locals())
+    return post(f'{api_call_context.qcware_host}/api_calls/status', locals())
 
 
 def cancel(call_token: str):
     api_call_context = current_context()
-    api_call_context = api_call_context.dict()
     do_client_api_compatibility_check_once()
-    return post(f'{api_call_context["qcware_host"]}/api_calls/cancel',
-                locals())
+    return post(f'{api_call_context.qcware_host}/api_calls/cancel', locals())
 
 
 def _print_waiting_handler(details: Dict):
@@ -68,6 +86,18 @@ def wait_for_call(call_token: str, api_call_context=None):
     ) if api_call_context is None else api_call_context
     # backoff.on_predicate is mildly problematic.
     return api_call(api_call_context, call_token)
+
+
+@backoff.on_predicate(backoff.constant,
+                      interval=1,
+                      predicate=lambda a: a.get('state') == 'open',
+                      max_time=client_timeout,
+                      on_backoff=_print_waiting_handler)
+async def async_wait_for_call(call_token: str, api_call_context=None):
+    api_call_context = current_context(
+    ) if api_call_context is None else api_call_context
+    # backoff.on_predicate is mildly problematic.
+    return await async_api_call(api_call_context, call_token)
 
 
 def handle_result(api_call):
@@ -145,6 +175,6 @@ async def async_retrieve_result(call_token: str,
     """
     while True:
         try:
-            return handle_result(wait_for_call(call_token))
+            return handle_result(await async_wait_for_call(call_token))
         except ApiTimeoutError as e:
             await asyncio.sleep(async_interval_between_tries())

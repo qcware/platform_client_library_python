@@ -16,6 +16,7 @@ classifiers = [
 	    "Operating System :: OS Independent",
 	    ]
 requires = [
+	 "aiohttp >= 3.7.3",
 	 "backoff >= 1.10.0",
 	 "requests >= 2.24.0",
 	 "python-decouple >= 3.3",

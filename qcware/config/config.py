@@ -1,10 +1,10 @@
-from decouple import config, UndefinedValueError
+from decouple import config, UndefinedValueError  # type: ignore
 from urllib.parse import urlparse, urljoin
 from typing import Optional
 from functools import reduce
 from packaging import version
 import requests
-import colorama
+import colorama  # type: ignore
 from .api_semver import api_semver
 import os
 from pydantic import BaseModel
@@ -53,13 +53,17 @@ def qcware_api_key(override: Optional[str] = None) -> str:
     return result
 
 
-def is_valid_host_url(url: str) -> bool:
+def is_valid_host_url(url: Optional[str]) -> bool:
     """
     Checks if a host url is valid.  A valid host url is just a scheme
     (http/https), a net location, and no path.
     """
-    result = urlparse(url)
-    return all([result.scheme, result.netloc]) and not result.path
+    if url is None:
+        result = False
+    else:
+        parse_result = urlparse(url)
+        result = all([parse_result.scheme, parse_result.netloc]) and not parse_result.path
+    return result
 
 
 def qcware_host(override: Optional[str] = None) -> str:
@@ -80,7 +84,8 @@ def qcware_host(override: Optional[str] = None) -> str:
     # check to make sure the host is a valid url
 
     if is_valid_host_url(result):
-        return result
+        # type ignored below because if we get here, it's a valid string
+        return result  # type:ignore
     else:
         raise ConfigurationError(
             f"Configured QCWARE_HOST ({result}): does not seem to be"
@@ -328,7 +333,7 @@ class ApiCredentials(BaseModel):
 
 class ApiCallContext(BaseModel):
     qcware_host: Optional[str] = None
-    credentials: Optional[ApiCredentials] = None
+    credentials = ApiCredentials()
     server_timeout: Optional[int] = None
     client_timeout: Optional[int] = None
     async_interval_between_tries: Optional[float] = None
@@ -355,7 +360,7 @@ def root_context() -> ApiCallContext:
                                default=SchedulingMode.immediate))
 
 
-_contexts = contextvars.ContextVar('contexts', default=[])
+_contexts: contextvars.ContextVar = contextvars.ContextVar('contexts', default=[])
 
 
 def push_context(**kwargs):

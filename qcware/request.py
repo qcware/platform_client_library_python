@@ -3,6 +3,19 @@ import requests
 
 from .exceptions import ApiCallFailedError, ApiCallResultUnavailableError
 
+_client_session = None
+
+
+def client_session() -> requests.Session:
+    """
+    Singleton guardian for client session
+    """
+    global _client_session
+    if _client_session is None:
+        _client_session = requests.Session()
+    return _client_session
+    
+
 
 def _fatal_code(e):
     return 400 <= e.response.status_code < 500
@@ -13,7 +26,7 @@ def _fatal_code(e):
                       max_tries=3,
                       giveup=_fatal_code)
 def post_request(url, data):
-    return requests.post(url, json=data)
+    return client_session().post(url, json=data)
 
 
 @backoff.on_exception(backoff.expo,
@@ -21,7 +34,7 @@ def post_request(url, data):
                       max_tries=3,
                       giveup=_fatal_code)
 def get_request(url):
-    return requests.get(url)
+    return client_session().get(url)
 
 
 def post(url, data):
