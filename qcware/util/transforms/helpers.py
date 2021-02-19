@@ -37,14 +37,14 @@ def dict_to_ndarray(d: dict):
         ).reshape(d['shape'])
 
 
-def scalar_to_dict(v) -> Dict:
+def scalar_to_dict(v, dtype=np.complex128) -> Dict:
     """
     Hack for individual numerical scalars to serializable form.
     This is done by casting them to complex128, which is byte-wasteful
     in some ways, and into an array, which is byte-wasteful in other
     ways, but at least preserves accuracy to a degree
     """
-    return ndarray_to_dict(np.array([v], dtype=np.complex128))
+    return ndarray_to_dict(np.array([v], dtype=dtype))
 
 
 def dict_to_scalar(d: Dict):

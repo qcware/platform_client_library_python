@@ -107,6 +107,47 @@ register_argument_transform('qml.fit_and_predict',
                                 'T': dict_to_ndarray
                             })
 
+register_argument_transform('qio.qdot',
+                            to_wire={
+                                'x':
+                                ndarray_to_dict,
+                                'y':
+                                ndarray_to_dict,
+                                'circuit':
+                                lambda x: quasar_to_string(x)
+                                if x is not None else None,
+                            },
+                            from_wire={
+                                'x':
+                                dict_to_ndarray,
+                                'y':
+                                dict_to_ndarray,
+                                'circuit':
+                                lambda x: string_to_quasar(x)
+                                if x is not None else None
+                            })
+
+register_argument_transform('qio.distance_estimation',
+                            to_wire={
+                                'x':
+                                ndarray_to_dict,
+                                'y':
+                                ndarray_to_dict,
+                                'circuit':
+                                lambda x: quasar_to_string(x)
+                                if x is not None else None,
+                            },
+                            from_wire={
+                                'x':
+                                dict_to_ndarray,
+                                'y':
+                                dict_to_ndarray,
+                                'circuit':
+                                lambda x: string_to_quasar(x)
+                                if x is not None else None
+                            })
+
+
 register_argument_transform('_shadowed.run_measurement',
                             to_wire={
                                 'circuit': quasar_to_string,
