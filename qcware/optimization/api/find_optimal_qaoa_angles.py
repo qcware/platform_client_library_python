@@ -4,7 +4,7 @@
 
 import asyncio
 from ... import logger
-from ...api_calls import post_call, wait_for_call, handle_result, async_retrieve_result
+from ...api_calls import post_call, wait_for_call, handle_result, async_post_call, async_retrieve_result
 from ...util.transforms import client_args_to_wire
 from ...exceptions import ApiTimeoutError
 from ...config import (ApiCallContext, client_timeout,
@@ -142,7 +142,8 @@ Arguments:
     """
     data = client_args_to_wire('optimization.find_optimal_qaoa_angles',
                                **locals())
-    api_call = post_call('optimization/find_optimal_qaoa_angles', data)
+    api_call = await async_post_call('optimization/find_optimal_qaoa_angles',
+                                     data)
     logger.info(
         f'API call to optimization.find_optimal_qaoa_angles successful. Your API token is {api_call["uid"]}'
     )

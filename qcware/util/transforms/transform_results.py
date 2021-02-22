@@ -5,7 +5,7 @@ from ..serialize_quasar import (quasar_to_list, sequence_to_quasar,
                                 dict_to_probability_histogram, pauli_to_list,
                                 list_to_pauli)
 from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
-                      dict_to_scalar)
+                      dict_to_scalar, dict_to_numeric, numeric_to_dict)
 from ...types.optimization import BruteOptimizeResult
 import numpy
 _to_wire_result_replacers = {}
@@ -74,22 +74,14 @@ def transform_optimization_find_optimal_qaoa_angles_from_wire(t):
 register_result_transform('qio.loader',
                           to_wire=quasar_to_list,
                           from_wire=sequence_to_quasar)
-register_result_transform(
-    'qio.qdot',
-    to_wire=lambda x: ndarray_to_dict(x) if isinstance(
-        x, numpy.ndarray) else scalar_to_dict(x, dtype=numpy.float64),
-    # the opaque "<f8" represents numpy.float64
-    from_wire=lambda x: dict_to_scalar(x)
-    if (x['shape'] ==
-        (1, ) and x['dtype'] == '<f8') else dict_to_ndarray(x))
-register_result_transform(
-    'qio.distance_estimation',
-    to_wire=lambda x: ndarray_to_dict(x) if isinstance(
-        x, numpy.ndarray) else scalar_to_dict(x, dtype=numpy.float64),
-    # the opaque "<f8" represents numpy.float64
-    from_wire=lambda x: dict_to_scalar(x)
-    if (x['shape'] ==
-        (1, ) and x['dtype'] == '<f8') else dict_to_ndarray(x))
+register_result_transform('qutils.qdot',
+                          to_wire=numeric_to_dict,
+                          from_wire=dict_to_numeric)
+
+register_result_transform('qutils.distance_estimation',
+                          to_wire=numeric_to_dict,
+                          from_wire=dict_to_numeric)
+
 register_result_transform('circuits.run_measurement',
                           to_wire=probability_histogram_to_dict,
                           from_wire=dict_to_probability_histogram)
@@ -148,15 +140,17 @@ register_result_transform('_shadowed.run_pauli_expectation_ideal',
 register_result_transform('_shadowed.run_pauli_expectation_measurement',
                           to_wire=pauli_to_list,
                           from_wire=list_to_pauli)
-register_result_transform('_shadowed.run_pauli_expectation_value',
-                          to_wire=lambda x: scalar_to_dict(x, dtype=numpy.float64),
-                          from_wire=dict_to_scalar)
+register_result_transform(
+    '_shadowed.run_pauli_expectation_value',
+    to_wire=lambda x: scalar_to_dict(x, dtype=numpy.float64),
+    from_wire=dict_to_scalar)
 register_result_transform('_shadowed.run_pauli_expectation_value_gradient',
                           to_wire=ndarray_to_dict,
                           from_wire=dict_to_ndarray)
-register_result_transform('_shadowed.run_pauli_expectation_value_ideal',
-                          to_wire=lambda x: scalar_to_dict(x, dtype=numpy.float64),
-                          from_wire=dict_to_scalar)
+register_result_transform(
+    '_shadowed.run_pauli_expectation_value_ideal',
+    to_wire=lambda x: scalar_to_dict(x, dtype=numpy.float64),
+    from_wire=dict_to_scalar)
 register_result_transform('_shadowed.run_pauli_sigma',
                           to_wire=ndarray_to_dict,
                           from_wire=dict_to_ndarray)

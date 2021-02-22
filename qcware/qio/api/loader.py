@@ -6,7 +6,7 @@ import numpy
 
 import asyncio
 from ... import logger
-from ...api_calls import post_call, wait_for_call, handle_result, async_retrieve_result
+from ...api_calls import post_call, wait_for_call, handle_result, async_post_call, async_retrieve_result
 from ...util.transforms import client_args_to_wire
 from ...exceptions import ApiTimeoutError
 from ...config import (ApiCallContext, client_timeout,
@@ -94,7 +94,7 @@ Arguments:
 :rtype: quasar.Circuit
     """
     data = client_args_to_wire('qio.loader', **locals())
-    api_call = post_call('qio/loader', data)
+    api_call = await async_post_call('qio/loader', data)
     logger.info(
         f'API call to qio.loader successful. Your API token is {api_call["uid"]}'
     )

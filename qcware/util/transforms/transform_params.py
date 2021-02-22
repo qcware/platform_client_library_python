@@ -5,9 +5,9 @@ TO serializable types for the api to send to the client
 from ..serialize_quasar import (quasar_to_string, string_to_quasar,
                                 pauli_to_list, list_to_pauli)
 from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
-                      dict_to_scalar, remap_q_indices_from_strings,
-                      remap_q_indices_to_strings, complex_dtype_to_string,
-                      string_to_complex_dtype)
+                      dict_to_scalar, numeric_to_dict, dict_to_numeric,
+                      remap_q_indices_from_strings, remap_q_indices_to_strings,
+                      complex_dtype_to_string, string_to_complex_dtype)
 from ...types.optimization import PolynomialObjective, Constraints
 from typing import Optional, Mapping, Callable
 
@@ -107,46 +107,45 @@ register_argument_transform('qml.fit_and_predict',
                                 'T': dict_to_ndarray
                             })
 
-register_argument_transform('qio.qdot',
+register_argument_transform('qutils.qdot',
                             to_wire={
                                 'x':
-                                ndarray_to_dict,
+                                numeric_to_dict,
                                 'y':
-                                ndarray_to_dict,
+                                numeric_to_dict,
                                 'circuit':
                                 lambda x: quasar_to_string(x)
                                 if x is not None else None,
                             },
                             from_wire={
                                 'x':
-                                dict_to_ndarray,
+                                dict_to_numeric,
                                 'y':
-                                dict_to_ndarray,
+                                dict_to_numeric,
                                 'circuit':
                                 lambda x: string_to_quasar(x)
                                 if x is not None else None
                             })
 
-register_argument_transform('qio.distance_estimation',
+register_argument_transform('qutils.distance_estimation',
                             to_wire={
                                 'x':
-                                ndarray_to_dict,
+                                numeric_to_dict,
                                 'y':
-                                ndarray_to_dict,
+                                numeric_to_dict,
                                 'circuit':
                                 lambda x: quasar_to_string(x)
                                 if x is not None else None,
                             },
                             from_wire={
                                 'x':
-                                dict_to_ndarray,
+                                dict_to_numeric,
                                 'y':
-                                dict_to_ndarray,
+                                dict_to_numeric,
                                 'circuit':
                                 lambda x: string_to_quasar(x)
                                 if x is not None else None
                             })
-
 
 register_argument_transform('_shadowed.run_measurement',
                             to_wire={

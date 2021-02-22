@@ -10,7 +10,7 @@ from typing import Union
 
 import asyncio
 from ... import logger
-from ...api_calls import post_call, wait_for_call, handle_result, async_retrieve_result
+from ...api_calls import post_call, wait_for_call, handle_result, async_post_call, async_retrieve_result
 from ...util.transforms import client_args_to_wire
 from ...exceptions import ApiTimeoutError
 from ...config import (ApiCallContext, client_timeout,
@@ -24,7 +24,10 @@ def submit_qdot(x: Union[float, numpy.ndarray],
                 circuit_mode: str = 'sequential',
                 backend: str = 'qcware/cpu_simulator',
                 num_measurements: int = None) -> str:
-    r"""Outputs the multiplication between two arrays.  Cases (following numpy.dot):
+    r"""Outputs the dot product of two arrays; quantum analogue of::
+  numpy.dot
+  
+Cases (following numpy.dot):
   x is 1d, y is 1d; performs vector - vector multiplication. Returns float.
   x is 2d, y is 1d; performs matrix - vector multiplication. Returns 1d array.
   x is 1d, y is 2d; performs vector - matrix multiplication. Returns 1d array.
@@ -58,8 +61,8 @@ Arguments:
 :return: An API call UID string
 :rtype: str
     """
-    data = client_args_to_wire('qio.qdot', **locals())
-    api_call = post_call('qio/qdot', data)
+    data = client_args_to_wire('qutils.qdot', **locals())
+    api_call = post_call('qutils/qdot', data)
     return api_call['uid']
 
 
@@ -70,7 +73,10 @@ def qdot(x: Union[float, numpy.ndarray],
          circuit_mode: str = 'sequential',
          backend: str = 'qcware/cpu_simulator',
          num_measurements: int = None):
-    r"""Outputs the multiplication between two arrays.  Cases (following numpy.dot):
+    r"""Outputs the dot product of two arrays; quantum analogue of::
+  numpy.dot
+  
+Cases (following numpy.dot):
   x is 1d, y is 1d; performs vector - vector multiplication. Returns float.
   x is 2d, y is 1d; performs matrix - vector multiplication. Returns 1d array.
   x is 1d, y is 2d; performs vector - matrix multiplication. Returns 1d array.
@@ -101,14 +107,14 @@ Arguments:
 :type num_measurements: int
 
 
-:return: float, 1d array, or 2d array: distance estimation
+:return: float, 1d array, or 2d array: dot product
 :rtype: Union[float, numpy.ndarray]
     """
-    data = client_args_to_wire('qio.qdot', **locals())
-    api_call = post_call('qio/qdot', data)
+    data = client_args_to_wire('qutils.qdot', **locals())
+    api_call = post_call('qutils/qdot', data)
     api_call_id = api_call['uid']
     logger.info(
-        f'API call to qio.qdot successful. Your API token is {api_call_id}')
+        f'API call to qutils.qdot successful. Your API token is {api_call_id}')
     if client_timeout() == 0:
         raise ApiTimeoutError(
             f"Api call timed out; can retrieve with qcware.api_calls.retrieve_result(call_token=\"{api_call_id}\")",
@@ -125,7 +131,10 @@ async def async_qdot(x: Union[float, numpy.ndarray],
                      backend: str = 'qcware/cpu_simulator',
                      num_measurements: int = None):
     r"""Async version of qdot
-Outputs the multiplication between two arrays.  Cases (following numpy.dot):
+Outputs the dot product of two arrays; quantum analogue of::
+  numpy.dot
+  
+Cases (following numpy.dot):
   x is 1d, y is 1d; performs vector - vector multiplication. Returns float.
   x is 2d, y is 1d; performs matrix - vector multiplication. Returns 1d array.
   x is 1d, y is 2d; performs vector - matrix multiplication. Returns 1d array.
@@ -157,13 +166,13 @@ Arguments:
 :type num_measurements: int
 
 
-:return: float, 1d array, or 2d array: distance estimation
+:return: float, 1d array, or 2d array: dot product
 :rtype: Union[float, numpy.ndarray]
     """
-    data = client_args_to_wire('qio.qdot', **locals())
-    api_call = post_call('qio/qdot', data)
+    data = client_args_to_wire('qutils.qdot', **locals())
+    api_call = await async_post_call('qutils/qdot', data)
     logger.info(
-        f'API call to qio.qdot successful. Your API token is {api_call["uid"]}'
+        f'API call to qutils.qdot successful. Your API token is {api_call["uid"]}'
     )
 
     return await async_retrieve_result(api_call["uid"])

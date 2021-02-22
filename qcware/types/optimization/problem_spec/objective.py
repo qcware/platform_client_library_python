@@ -20,9 +20,9 @@ class PolynomialObjective:
 
     Polynomials are specified with a dict that specifies the coefficients
     for the polynomial. For example, suppose that we are interested
-    in the polynomial of three boolean variables defined by
+    in the polynomial of three boolean variables defined by::
 
-    p(x, y, z) = 12 x - 2 y z + x y z - 50
+        p(x, y, z) = 12 x - 2 y z + x y z - 50
 
     The three variables should be associated with the integers 0, 1, and 2.
     We choose the association x ~ 0, y ~ 1, and z ~ 2.
@@ -30,14 +30,14 @@ class PolynomialObjective:
     There are four terms in p. Consider the term -2yz. We can specify this
     term by matching the tuple (1, 2), which represents yz, with the
     coefficient -2. This can be encoded with an entry in a dict (1, 2): -2.
-    Overall, p can be defined by
-    {
-        (): -50,
-        (0,): 12,
-        (1, 2): -2,
-        (0, 1, 2): -50
-    }
-    .
+    Overall, p can be defined by::
+
+        {
+            (): -50,
+            (0,): 12,
+            (1, 2): -2,
+            (0, 1, 2): -50
+        }
 
     Note that this object does not automatically simplify a given
     PolynomialObjective. For example, {(0, 1): 2, (1, 0): 3} is the same

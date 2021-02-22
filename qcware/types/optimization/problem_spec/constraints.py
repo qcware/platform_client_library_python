@@ -18,36 +18,36 @@ class Constraints:
     collection of constraints which can then be imposed on something.
 
     To specify constraints, we use a "constraint dict". The format
-    of this dict is
-
-    {type of constraint: list of constraints of that type}.
+    of this dict is::
+      
+        {type of constraint: list of constraints of that type}.
 
     The "type of constraint" means a `Predicate` object. The list of
-    constraints of a given `Predicate` are a list of `PolynomialObjective`s.
+    constraints of a given `Predicate` are a list of `PolynomialObjective` s.
 
     This can be understood fairly easily by example. Suppose that f is an
-    PolynomialObjective with 3 boolean variables. We take
+    PolynomialObjective with 3 boolean variables. We take::
 
-      f(x, y, z) = (x + y + z - 1)^2
+        f(x, y, z) = (x + y + z - 1)^2
 
     which is minimized when exactly one of the three variables is 1.
 
     If we want to impose the condition that either x or z is zero,
-    we can roughly use the constraint dict
+    we can roughly use the constraint dict::
 
-    {Predicate.ZERO: [p]}
+        {Predicate.ZERO: [p]}
 
-    where p is the PolynomialObjective representing the function
+    where p is the PolynomialObjective representing the function::
 
-      p(x, y, z) = OR(x, z) = x + z - x z
+        p(x, y, z) = OR(x, z) = x + z - x z
 
     (To build this, see the documentation for PolynomialObjective.) If we
     additionally want to add the constraint that the sum of the three variables
-    is at least 2, we can make our dict
+    is at least 2, we can make our dict::
 
-    {Predicate.ZERO: [p], Predicate.POSITIVE: [q]}
+        {Predicate.ZERO: [p], Predicate.POSITIVE: [q]}
 
-    where q is a PolynomialObjective representing q(x, y, z) = x + y + z - 1. The
+    where q is a PolynomialObjective representing `q(x, y, z) = x + y + z - 1`. The
     reason that we are using [p] and [q] instead of just p and q is that we can
     add additional constraints of those types in this fashion by adding
     more entries to the lists.

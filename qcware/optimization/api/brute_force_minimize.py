@@ -8,7 +8,7 @@ from typing import Optional
 
 import asyncio
 from ... import logger
-from ...api_calls import post_call, wait_for_call, handle_result, async_retrieve_result
+from ...api_calls import post_call, wait_for_call, handle_result, async_post_call, async_retrieve_result
 from ...util.transforms import client_args_to_wire
 from ...exceptions import ApiTimeoutError
 from ...config import (ApiCallContext, client_timeout,
@@ -99,7 +99,7 @@ Arguments:
 :rtype: types.BruteOptimizeResult
     """
     data = client_args_to_wire('optimization.brute_force_minimize', **locals())
-    api_call = post_call('optimization/brute_force_minimize', data)
+    api_call = await async_post_call('optimization/brute_force_minimize', data)
     logger.info(
         f'API call to optimization.brute_force_minimize successful. Your API token is {api_call["uid"]}'
     )

@@ -38,6 +38,19 @@ Table of contents
 
 .. toctree::
    :maxdepth: 2
+   :caption: Quantum I/O
+
+   qio/qio
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Utilities (qdot, distance_estimation)
+
+   qutils/qutils
+
+
+.. toctree::
+   :maxdepth: 2
    :caption: Copyright
 
    copyright

@@ -1,5 +1,6 @@
-from qcware.qio import distance_estimation
+from qcware.qutils import distance_estimation
 import numpy as np
+from hypothesis.extra.numpy import arrays
 
 
 def test_distance_estimation():
