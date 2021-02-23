@@ -33,6 +33,7 @@ def generate_pauli(N: int) -> quasar.Pauli:
     "backend",
     (
         'qcware/cpu_simulator',
+        'qcware/gpu_simulator'
         #    'awsbraket/qs1')
     ))
 def test_pauli(backend):

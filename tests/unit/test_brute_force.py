@@ -2,6 +2,7 @@ from qcware.types.optimization.predicate import Predicate
 from qcware.types.optimization.problem_spec import PolynomialObjective
 from qcware.types.optimization.problem_spec import Constraints
 from qcware.optimization import brute_force_minimize
+import itertools
 import pytest
 
 
@@ -36,8 +37,7 @@ def pubo_example_1(constrained: bool):
                 (1, ): 1,
                 (2, ): 1,
                 (3, ): 1
-            },
-            num_variables=4)
+            }, num_variables=4)
         constraints = {Predicate.NONPOSITIVE: [nonpositive_constraint_1]}
         constraints = Constraints(constraints=constraints, num_variables=4)
         out.update({'constraints': constraints})
@@ -79,7 +79,7 @@ def pubo_example_2(constrained: bool):
                     (1, ): 1,
                     (2, ): 1
                 },
-                                  num_variables=3),
+                                    num_variables=3),
                 # Always true
                 PolynomialObjective({(): -1}, num_variables=3)
             ],
@@ -102,7 +102,7 @@ def pubo_example_2(constrained: bool):
                     (2, ): 1,
                     (): -1
                 },
-                                  num_variables=3)
+                                    num_variables=3)
             ]
         }
         constraints = Constraints(constraints, num_variables=3)
@@ -130,8 +130,7 @@ def pubo_example_3():
         1,
         2,
         3,
-    ): 3},
-                            num_variables=4)
+    ): 3}, num_variables=4)
     out.update({
         'pubo': p,
         'expected_value': 0,
@@ -155,8 +154,7 @@ def impossible_example():
     constraints = {
         Predicate.NONZERO:
         [PolynomialObjective({(0, 1): -3}, num_variables=3)],
-        Predicate.ZERO:
-        [PolynomialObjective({(1,): 1}, num_variables=3)]
+        Predicate.ZERO: [PolynomialObjective({(1, ): 1}, num_variables=3)]
     }
     constraints = Constraints(constraints=constraints, num_variables=3)
     out.update({
@@ -188,14 +186,17 @@ def test_serialize_constraints():
     assert c.to_wire() == c2.to_wire()
 
 
-@pytest.mark.parametrize("example", unconstrained_examples)
-def test_brute_force_minimize_unconstrained(example):
+@pytest.mark.parametrize("example,backend",
+                         itertools.product(unconstrained_examples,
+                                           ('qcware/cpu', 'qcware/gpu')))
+def test_brute_force_minimize_unconstrained(example, backend):
+    print("EXAMPLE: ", example)
     p = example['pubo']
     expected_value = example['expected_value']
     expected_minima = example['expected_minima']
     expected_solution_exists = example['solution_exists']
 
-    out = brute_force_minimize(p)
+    out = brute_force_minimize(p, backend=backend)
     actual_minima = set(out.arguments)
     actual_value = out.value
 
@@ -204,8 +205,10 @@ def test_brute_force_minimize_unconstrained(example):
     assert out.solution_exists == expected_solution_exists
 
 
-@pytest.mark.parametrize("example", constrained_examples)
-def test_brute_force_minimize_constrained(example):
+@pytest.mark.parametrize("example,backend",
+                         itertools.product(constrained_examples,
+                                           ('qcware/cpu', 'qcware/gpu')))
+def test_brute_force_minimize_constrained(example, backend):
     p = example['pubo']
     expected_value = example['expected_value']
     expected_minima = example['expected_minima']
