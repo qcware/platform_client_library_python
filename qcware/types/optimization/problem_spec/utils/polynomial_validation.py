@@ -1,5 +1,6 @@
 import dataclasses
 import pydantic
+from qcware.types.utils import pydantic_model_abridge_validation_errors
 
 from typing import Dict, Tuple, Set, Union
 
@@ -46,7 +47,8 @@ def polynomial_validation(
     # This is admittedly somewhat hacky.
     if validate_types:
         dataclass_selection = pydantic.dataclasses.dataclass
-        int_type = pydantic.StrictInt
+        # int_type = pydantic.StrictInt
+        int_type = int  # I disabled strict validation due to numpy issues.
     else:
         dataclass_selection = dataclasses.dataclass
         int_type = int
@@ -75,4 +77,9 @@ def polynomial_validation(
                     f'{max(self.variables)} inclusive.'
                 )
 
-    return _PolynomialValidation(poly=polynomial, num_vars=num_variables)
+    return pydantic_model_abridge_validation_errors(
+        model=_PolynomialValidation,
+        max_num_errors=10,
+        poly=polynomial,
+        num_vars=num_variables
+    )

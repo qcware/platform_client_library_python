@@ -1,6 +1,9 @@
 import pydantic
 import dataclasses
 from typing import Dict, List
+
+from qcware.types.utils import pydantic_model_abridge_validation_errors
+
 from qcware.types.optimization.predicate import Predicate
 
 from qcware.types.optimization.problem_spec import PolynomialObjective
@@ -45,10 +48,9 @@ def constraint_validation(constraints: dict,
             for pred in removals:
                 self.constraint_dict.pop(pred)
 
-    return _ConstraintValidation(constraint_dict=constraints,
-                                 num_vars=num_variables)
-
-
-if __name__ == '__main__':
-    p = PUBO({}, 2)
-    constraint_validation({Predicate.ZERO: [p]}, 2)
+    return pydantic_model_abridge_validation_errors(
+        model=_ConstraintValidation,
+        max_num_errors=10,
+        constraint_dict=constraints,
+        num_vars=num_variables
+    )

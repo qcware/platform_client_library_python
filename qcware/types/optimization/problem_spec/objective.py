@@ -207,7 +207,8 @@ class PolynomialObjective:
             model.set_reverse_mapping(self.variable_name_mapping)
         return model
 
-    def simplified(self, preserve_num_variables=True) -> 'PolynomialObjective':
+    def simplified(self, preserve_num_variables=True
+                   ) -> Tuple['PolynomialObjective', dict]:
         """Get a simplified copy of the PolynomialObjective.
 
         Args:
@@ -215,22 +216,46 @@ class PolynomialObjective:
             have the same number of variables stored as the original PolynomialObjective.
             Otherwise, num_variables will match the actual number of variables
             that appear in the polynomial with nonzero coefficients.
+
         """
+        if preserve_num_variables:
+            num_vars = self.num_variables
+            mapping = {i: i for i in range(num_vars)}
+            if self.domain is Domain.BOOLEAN:
+                simplified_qv = qv.utils.PUBOMatrix(self.polynomial)
+            elif self.domain is Domain.SPIN:
+                simplified_qv = qv.utils.QUBOMatrix(self.polynomial)
+            else:
+                raise RuntimeError(f"Domain {self.domain} seems invalid.")
+
+            return (
+                PolynomialObjective(polynomial=simplified_qv,
+                                    num_variables=num_vars,
+                                    domain=self.domain,
+                                    validate_types=False,
+                                    variable_name_mapping=self.variable_name_mapping
+                                    ),
+                mapping
+            )
+
         if self.domain is Domain.BOOLEAN:
-            simplified_qv = qv.utils.PUBOMatrix(self.polynomial)
+            qv_form = qv.PUBO(self.polynomial)
         elif self.domain is Domain.SPIN:
-            simplified_qv = qv.utils.PUSOMatrix(self.polynomial)
+            qv_form = qv.PUSO(self.polynomial)
         else:
             raise RuntimeError(f"Domain {self.domain} seems invalid.")
 
+        simplified_qv = qv_form.to_enumerated()
+        mapping = qv_form.mapping
         num_vars = simplified_qv.num_binary_variables
-        if preserve_num_variables:
-            num_vars = self.num_variables
 
-        return PolynomialObjective(polynomial=simplified_qv,
-                                   num_variables=num_vars,
-                                   domain=self.domain,
-                                   validate_types=False)
+        return (
+            PolynomialObjective(polynomial=simplified_qv,
+                                num_variables=num_vars,
+                                domain=self.domain,
+                                validate_types=False),
+            mapping
+        )
 
     @classmethod
     def __get_validators__(cls):
