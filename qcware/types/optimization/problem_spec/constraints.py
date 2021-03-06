@@ -53,6 +53,7 @@ class Constraints:
     more entries to the lists.
     """
     constraint_dict: Dict[Predicate, List[PolynomialObjective]]
+    domain: Domain
 
     def __init__(self,
                  constraints: Dict[Predicate, List[PolynomialObjective]],
@@ -113,6 +114,7 @@ class Constraints:
                         'Encountered constraints with both boolean and spin '
                         'variable domains.')
 
+        self.domain = selected_domain
         self.max_degree_dict = {
             predicate: max(degs)
             for predicate, degs in self.degree_dict.items()

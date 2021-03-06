@@ -176,6 +176,7 @@ class PolynomialObjective:
         return PolynomialObjective(
             polynomial=self.polynomial,
             num_variables=self.num_variables,
+            domain=self.domain,
             validate_types=False)
 
     def qubovert(self, use_variable_names: bool = False):

@@ -1,6 +1,10 @@
 import pydantic
-from typing import Optional, List
+from typing import Optional, List, Union
+
+from qcware.types.optimization.utils import intlist_to_binlist
+
 from . import utils
+from qcware.types.optimization import Domain
 
 
 class BruteOptimizeResult(pydantic.BaseModel):
@@ -8,7 +12,12 @@ class BruteOptimizeResult(pydantic.BaseModel):
 
     When solution_exists == False, we must have value is None and
     arguments == [].
+
+    Arguments are specified with a list of strings that describe solutions.
+    For the boolean case, this means something like ['00101', '11100'] and
+    for the spin case, this means something like ['++-+-', '---++'].
     """
+    domain: Domain
     value: Optional[int] = None
     arguments: List[str] = []
     solution_exists: bool = True
@@ -30,7 +39,18 @@ class BruteOptimizeResult(pydantic.BaseModel):
 
     def int_argument(self) -> List[List[int]]:
         """Convert arguments to a list of list of ints."""
-        return [[int(x) for x in s] for s in self.arguments]
+        def to_int(x: str):
+            if self.domain is Domain.BOOLEAN:
+                return int(x)
+            else:
+                if x == '+':
+                    return 1
+                elif x == '-':
+                    return -1
+                else:
+                    raise ValueError(
+                        f'Unrecognized symbol {x}. Expected \'+\' or \'-\'.')
+        return [[to_int(x) for x in s] for s in self.arguments]
 
     @property
     def num_variables(self):
