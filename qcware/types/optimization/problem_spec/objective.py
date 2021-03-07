@@ -225,7 +225,7 @@ class PolynomialObjective:
             if self.domain is Domain.BOOLEAN:
                 simplified_qv = qv.utils.PUBOMatrix(self.polynomial)
             elif self.domain is Domain.SPIN:
-                simplified_qv = qv.utils.QUBOMatrix(self.polynomial)
+                simplified_qv = qv.utils.PUSOMatrix(self.polynomial)
             else:
                 raise RuntimeError(f"Domain {self.domain} seems invalid.")
 
@@ -239,10 +239,18 @@ class PolynomialObjective:
                 mapping
             )
 
+        # This annoying block fixes a bug that arises when there are trivial
+        # zero terms in the polynomial... we may end up deleting zero terms
+        # upon initialization because of this.
+        raw_polynomial = self.polynomial.copy()
+        for term, coef in self.polynomial.items():
+            if coef == 0:
+                del raw_polynomial[term]
+
         if self.domain is Domain.BOOLEAN:
-            qv_form = qv.PUBO(self.polynomial)
+            qv_form = qv.PUBO(raw_polynomial)
         elif self.domain is Domain.SPIN:
-            qv_form = qv.PUSO(self.polynomial)
+            qv_form = qv.PUSO(raw_polynomial)
         else:
             raise RuntimeError(f"Domain {self.domain} seems invalid.")
 
