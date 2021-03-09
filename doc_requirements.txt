@@ -4,4 +4,4 @@ python-decouple==3.4
 networkx==2.5
 numpy==1.20.1
 qcware-quasar==1.0.2
-icontract==2.4.1
+icontract==2.5.0
