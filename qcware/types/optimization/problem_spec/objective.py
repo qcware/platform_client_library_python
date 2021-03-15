@@ -39,11 +39,6 @@ class PolynomialObjective:
             (0, 1, 2): -50
         }
 
-    Note that this object does not automatically simplify a given
-    PolynomialObjective. For example, {(0, 1): 2, (1, 0): 3} is the same
-    thing as {(0, 1): 5}. However, we do provide a `simplified` method
-    returns a version of the same polynomial with simplifications performed.
-
     The number of variables must be specified explicitly, even if it seems
     obvious how many variables there are. The reason for this is to allow
     for the possibility that there are more variables than appear explicitly
@@ -86,6 +81,7 @@ class PolynomialObjective:
                  validate_types: bool = True):
         self.num_variables = num_variables
         self.domain = Domain(domain.lower())
+        polynomial = simplify_polynomial(polynomial, self.domain)
 
         parsed_polynomial = validator.polynomial_validation(
             polynomial=polynomial,
@@ -177,6 +173,7 @@ class PolynomialObjective:
             polynomial=self.polynomial,
             num_variables=self.num_variables,
             domain=self.domain,
+            variable_name_mapping=self.variable_name_mapping.copy(),
             validate_types=False)
 
     def qubovert(self, use_variable_names: bool = False):
@@ -208,63 +205,71 @@ class PolynomialObjective:
             model.set_reverse_mapping(self.variable_name_mapping)
         return model
 
-    def simplified(self, preserve_num_variables=True
-                   ) -> Tuple['PolynomialObjective', dict]:
-        """Get a simplified copy of the PolynomialObjective.
+    def qubovert_boolean(self):
+        """Get a boolean qubovert model equivalent to this polynomial.
 
-        Args:
-            preserve_num_variables: If True, the resulting PolynomialObjective will
-            have the same number of variables stored as the original PolynomialObjective.
-            Otherwise, num_variables will match the actual number of variables
-            that appear in the polynomial with nonzero coefficients.
-
+        This produces a PUBOMatrix which is qubovert's enumerated form of a
+        PUBO (polynomial unconstrained boolean optimization). This
+        transformation may change the variable ordering and for that
+        reason we also return a mapping that can be used to recover
+        the original variable identifiers.
         """
-        if preserve_num_variables:
-            num_vars = self.num_variables
-            mapping = {i: i for i in range(num_vars)}
-            if self.domain is Domain.BOOLEAN:
-                simplified_qv = qv.utils.PUBOMatrix(self.polynomial)
-            elif self.domain is Domain.SPIN:
-                simplified_qv = qv.utils.PUSOMatrix(self.polynomial)
-            else:
-                raise RuntimeError(f"Domain {self.domain} seems invalid.")
+        qv_model = self.qubovert(use_variable_names=False)
+        return {
+            'polynomial': qv_model.to_pubo(),
+            'mapping': qv_model.mapping
+        }
 
-            return (
-                PolynomialObjective(polynomial=simplified_qv,
-                                    num_variables=num_vars,
-                                    domain=self.domain,
-                                    validate_types=False,
-                                    variable_name_mapping=self.variable_name_mapping
-                                    ),
-                mapping
-            )
+    def qubovert_spin(self):
+        """Get a spin qubovert model equivalent to this polynomial.
 
-        # This annoying block fixes a bug that arises when there are trivial
-        # zero terms in the polynomial... we may end up deleting zero terms
-        # upon initialization because of this.
-        raw_polynomial = self.polynomial.copy()
-        for term, coef in self.polynomial.items():
-            if coef == 0:
-                del raw_polynomial[term]
+        This produces a PUSOMatrix which is qubovert's enumerated form of a
+        PUSO (polynomial unconstrained spin optimization). This transformation
+        may change the variable ordering and for that
+        reason we also return a mapping that can be used to recover
+        the original variable identifiers.
+        """
+        qv_model = self.qubovert(use_variable_names=False)
+        return {
+            'polynomial': qv_model.to_puso(),
+            'mapping': qv_model.mapping
+        }
 
-        if self.domain is Domain.BOOLEAN:
-            qv_form = qv.PUBO(raw_polynomial)
-        elif self.domain is Domain.SPIN:
-            qv_form = qv.PUSO(raw_polynomial)
-        else:
-            raise RuntimeError(f"Domain {self.domain} seems invalid.")
+    def reduce_variables(self):
+        """Return a PolynomialObjective with trivial variables removed.
 
-        simplified_qv = qv_form.to_enumerated()
-        mapping = qv_form.mapping
-        num_vars = simplified_qv.num_binary_variables
+        As an example, suppose that we have a PolynomialObjective defined by
 
-        return (
-            PolynomialObjective(polynomial=simplified_qv,
-                                num_variables=num_vars,
-                                domain=self.domain,
-                                validate_types=False),
-            mapping
+        PolynomialObjective(
+            polynomial={(1,): 1},
+            num_variables=3
         )
+
+        which essentially means p(x, y, z) = y. This has two variables that
+        the polynomial doesn't actually depend on. In this case, this function
+        will return a polynomial of one variable along with a mapping to
+        identify variables appropriately. Specifically, the return would be
+
+        {
+            'polynomial': PolynomialObjective(polynomial={(0,): 1},
+                                              num_variables=1
+                                              )
+            'mapping': {1: 0}
+        }.
+        """
+        qv_form = self.qubovert(use_variable_names=False)
+        reduced_qv = qv_form.to_enumerated()
+        mapping = qv_form.mapping
+        num_vars = reduced_qv.num_binary_variables
+
+        return {
+            'polynomial': PolynomialObjective(polynomial=reduced_qv,
+                                              num_variables=num_vars,
+                                              domain=self.domain,
+                                              variable_name_mapping=None,
+                                              validate_types=False),
+            'mapping': mapping
+        }
 
     @classmethod
     def __get_validators__(cls):
@@ -335,5 +340,16 @@ class PolynomialObjective:
         }
 
 
-if __name__ == '__main__':
-    pass
+def simplify_polynomial(
+        polynomial: dict, domain: Domain
+) -> dict:
+    """Simplify given polynomial dict."""
+    domain = Domain(domain.lower())
+    if domain is Domain.BOOLEAN:
+        simplified_qv = qv.utils.PUBOMatrix(polynomial)
+    elif domain is Domain.SPIN:
+        simplified_qv = qv.utils.PUSOMatrix(polynomial)
+    else:
+        raise TypeError(f"Expected a Domain but found {type(domain)}.")
+
+    return dict(simplified_qv)
