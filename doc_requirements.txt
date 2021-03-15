@@ -3,5 +3,5 @@ requests==2.25.1
 python-decouple==3.4
 networkx==2.5
 numpy==1.20.1
-qcware-quasar==1.0.2
+qcware-quasar==1.0.3
 icontract==2.5.0
