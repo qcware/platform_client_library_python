@@ -71,5 +71,5 @@ def test_run_statevector(backend):
     q.H(0).CX(0, 1)
     b = QuasarBackend(backend)
     result = b.run_statevector(circuit=q)
-    val = np.complex(np.sqrt(2) / 2, 0)
+    val = complex(np.sqrt(2) / 2, 0)
     assert np.allclose(result, [val, 0, 0, val])

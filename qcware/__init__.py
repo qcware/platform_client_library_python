@@ -8,6 +8,7 @@ Please see the documentation at http://qcware.readthedocs.io
 """
 __version__ = '4.0.0'
 import logging
+
 logger = logging.getLogger('qcware')
 
 from . import qio
