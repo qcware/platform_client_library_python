@@ -9,10 +9,11 @@ def test_fit_and_predict(backend: str):
                   [1, 2, 0, -1]])
     y = np.array([0, 0, 1, 1])
     try:
-        result = qcware.qml.fit_and_predict(X=X,
-                                            y=y,
-                                            model="QNearestCentroid",
-                                            backend=backend)
+        with qcware.config.additional_config(client_timeout = 5*60):
+            result = qcware.qml.fit_and_predict(X=X,
+                                                y=y,
+                                                model="QNearestCentroid",
+                                                backend=backend)
     except Exception as e:
         print(e)
         print(type(e.traceback))

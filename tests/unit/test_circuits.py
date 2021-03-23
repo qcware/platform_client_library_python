@@ -3,6 +3,7 @@ import quasar
 import os
 import pytest
 from qcware.circuits.quasar_backend import QuasarBackend
+from qcware.exceptions import ApiCallExecutionError
 from pprint import pprint
 import numpy as np
 
@@ -57,6 +58,36 @@ def test_run_measurement(backend):
     assert 0 in result.histogram
     # yeah, pretty fuzzy but I'll take it
     assert abs(result.histogram[0] - 0.5) < 0.05
+
+
+@pytest.mark.parametrize("backend",
+                         (("awsbraket/ionq"), ("awsbraket/rigetti")))
+def test_smoke_backend_exception(backend):
+    """This is a 'smoke test' for having a NotImplementedError from a
+    backend. Accuracy doesn't matter here so long as the call gives a
+    NotImplementedError (since we call run_statevector on a backend without it)
+    """
+    q = quasar.Circuit()
+    q.H(0).CX(0, 1)
+    b = QuasarBackend(backend)
+    try:
+        result = b.run_statevector(circuit=q)
+    except ApiCallExecutionError as e:
+        assert str(e) == 'NotImplementedError: '
+        return
+    assert False
+
+
+@pytest.mark.parametrize("backend",
+                         (("awsbraket/ionq"), ("awsbraket/rigetti")))
+def test_smoke_rescheduled_backends(backend):
+    """This is another 'smoke test' for the backends that can be rescheduled; they
+    need to either raise a rescheduled exception or run
+    """
+    q = quasar.Circuit()
+    q.H(0).CX(0, 1)
+    b = QuasarBackend(backend)
+    result = b.run_measurement(circuit=q, nmeasurement=1)
 
 
 @pytest.mark.parametrize(

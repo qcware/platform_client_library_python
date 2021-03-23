@@ -14,6 +14,10 @@ def pytest_addoption(parser):
     parser.addoption("--ibmq",
                      action="store_true",
                      help="run test for ibmq backends")
+    parser.addoption(
+        "--awswindows",
+        action="store_true",
+        help="run tests for braket schedule-window backends (ionq, rigetti)")
 
 
 # from some ideas in https://superorbit.al/journal/focusing-on-pytest/
@@ -25,6 +29,9 @@ def pytest_collection_modifyitems(session, config, items):
                 in item.nodeid) and not config.getoption("vulcan"):
             deselected_items.append(item)
         elif "ibmq" in item.nodeid and not config.getoption("ibmq"):
+            deselected_items.append(item)
+        elif ("awsbraket/ionq" in item.nodeid or "awsbraket/rigetti"
+              in item.nodeid) and not config.getoption("awswindows"):
             deselected_items.append(item)
         else:
             selected_items.append(item)

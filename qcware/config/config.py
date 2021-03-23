@@ -333,7 +333,7 @@ class ApiCredentials(BaseModel):
 
 class ApiCallContext(BaseModel):
     qcware_host: Optional[str] = None
-    credentials = ApiCredentials()
+    credentials: Optional[ApiCredentials] = None
     server_timeout: Optional[int] = None
     client_timeout: Optional[int] = None
     async_interval_between_tries: Optional[float] = None
