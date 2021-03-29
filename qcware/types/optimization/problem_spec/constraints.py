@@ -288,7 +288,7 @@ if __name__ == '__main__':
                 (1, ): 1,
                 (2, ): 1
             },
-                              num_variables=3),
+                                num_variables=3),
             # Always true
             PolynomialObjective(polynomial={(): -1}, num_variables=3),
         ]
@@ -303,14 +303,14 @@ if __name__ == '__main__':
                 (2, ): -1,
                 (): 1
             },
-                              num_variables=3),
+                                num_variables=3),
             # a + c = 1 (true iff a XOR c)
             PolynomialObjective(polynomial={
                 (0, ): 1,
                 (2, ): 1,
                 (): -1
             },
-                              num_variables=3),
+                                num_variables=3),
         ]
         pos_constraints = [
             # Always true

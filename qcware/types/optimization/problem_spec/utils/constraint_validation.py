@@ -52,5 +52,4 @@ def constraint_validation(constraints: dict,
         model=_ConstraintValidation,
         max_num_errors=10,
         constraint_dict=constraints,
-        num_vars=num_variables
-    )
+        num_vars=num_variables)

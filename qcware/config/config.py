@@ -62,7 +62,8 @@ def is_valid_host_url(url: Optional[str]) -> bool:
         result = False
     else:
         parse_result = urlparse(url)
-        result = all([parse_result.scheme, parse_result.netloc]) and not parse_result.path
+        result = all([parse_result.scheme, parse_result.netloc
+                      ]) and not parse_result.path
     return result
 
 
@@ -360,7 +361,8 @@ def root_context() -> ApiCallContext:
                                default=SchedulingMode.immediate))
 
 
-_contexts: contextvars.ContextVar = contextvars.ContextVar('contexts', default=[])
+_contexts: contextvars.ContextVar = contextvars.ContextVar('contexts',
+                                                           default=[])
 
 
 def push_context(**kwargs):

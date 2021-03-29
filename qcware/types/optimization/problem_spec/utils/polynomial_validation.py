@@ -21,11 +21,9 @@ def compute_degree(polynomial: dict):
     return max(len(term) for term in polynomial)
 
 
-def polynomial_validation(
-        polynomial: dict,
-        num_variables: int,
-        validate_types: bool = True
-):
+def polynomial_validation(polynomial: dict,
+                          num_variables: int,
+                          validate_types: bool = True):
     """
 
     Args:
@@ -73,13 +71,11 @@ def polynomial_validation(
                     f'Specified number of variables {self.num_vars} is inconsistent with '
                     f'the variables in the polynomial.\nExpected variables '
                     f'to be ints in the range {{0,...,{self.num_vars - 1}}} '
-                    f'but found variables between {min(self.variables)} and ' 
-                    f'{max(self.variables)} inclusive.'
-                )
+                    f'but found variables between {min(self.variables)} and '
+                    f'{max(self.variables)} inclusive.')
 
     return pydantic_model_abridge_validation_errors(
         model=_PolynomialValidation,
         max_num_errors=10,
         poly=polynomial,
-        num_vars=num_variables
-    )
+        num_vars=num_variables)

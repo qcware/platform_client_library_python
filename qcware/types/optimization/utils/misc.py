@@ -13,10 +13,11 @@ def iterable(obj):
 
 
 def int_to_bin(
-        x: int, num_bits: int,
-        int_return=False,
+    x: int,
+    num_bits: int,
+    int_return=False,
 ):
-    if x >= 2 ** num_bits:
+    if x >= 2**num_bits:
         raise ValueError(f'Insufficient bits to store integer {x}.')
     if x < 0:
         raise ValueError(f'Integer should be nonnegative but found {x}.')
@@ -30,11 +31,9 @@ def int_to_bin(
         return [int(x) for x in bin_format]
 
 
-def intlist_to_binlist(
-        integers: List[int],
-        num_bits: int,
-        symbols: Union[Tuple[str, str], Domain, None] = None
-):
+def intlist_to_binlist(integers: List[int],
+                       num_bits: int,
+                       symbols: Union[Tuple[str, str], Domain, None] = None):
     """Convert list of integers to list of binary strings.
 
     Example: if there are three bits, [3, 1] will be
@@ -53,10 +52,11 @@ def intlist_to_binlist(
     if symbols is Domain.SPIN:
         symbols = ('+', '-')
 
-    bin_list = [int_to_bin(x, num_bits)for x in integers]
+    bin_list = [int_to_bin(x, num_bits) for x in integers]
     if symbols is None:
         return bin_list
     else:
+
         def bin_to_symbols(x):
             if x == '0':
                 return symbols[0]
@@ -67,6 +67,3 @@ def intlist_to_binlist(
                     f'Encountered {x} but expected \'0\' or \'1\'.')
 
         return [''.join(map(bin_to_symbols, s)) for s in bin_list]
-
-
-

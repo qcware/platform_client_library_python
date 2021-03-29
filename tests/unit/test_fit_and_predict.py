@@ -3,13 +3,17 @@ import numpy as np
 import pytest
 import pprint
 
-@pytest.mark.parametrize("backend", ['qcware/cpu_simulator', 'qcware/gpu_simulator', 'ibm/simulator', 'awsbraket/sv1'])
+
+@pytest.mark.parametrize("backend", [
+    'qcware/cpu_simulator', 'qcware/gpu_simulator', 'ibm/simulator',
+    'awsbraket/sv1'
+])
 def test_fit_and_predict(backend: str):
     X = np.array([[-1, -2, 2, -1], [-1, -1, 2, 0], [2, 1, -2, -1],
                   [1, 2, 0, -1]])
     y = np.array([0, 0, 1, 1])
     try:
-        with qcware.config.additional_config(client_timeout = 5*60):
+        with qcware.config.additional_config(client_timeout=5 * 60):
             result = qcware.qml.fit_and_predict(X=X,
                                                 y=y,
                                                 model="QNearestCentroid",

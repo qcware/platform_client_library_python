@@ -215,10 +215,7 @@ class PolynomialObjective:
         the original variable identifiers.
         """
         qv_model = self.qubovert(use_variable_names=False)
-        return {
-            'polynomial': qv_model.to_pubo(),
-            'mapping': qv_model.mapping
-        }
+        return {'polynomial': qv_model.to_pubo(), 'mapping': qv_model.mapping}
 
     def qubovert_spin(self):
         """Get a spin qubovert model equivalent to this polynomial.
@@ -230,10 +227,7 @@ class PolynomialObjective:
         the original variable identifiers.
         """
         qv_model = self.qubovert(use_variable_names=False)
-        return {
-            'polynomial': qv_model.to_puso(),
-            'mapping': qv_model.mapping
-        }
+        return {'polynomial': qv_model.to_puso(), 'mapping': qv_model.mapping}
 
     def reduce_variables(self):
         """Return a PolynomialObjective with trivial variables removed.
@@ -263,12 +257,14 @@ class PolynomialObjective:
         num_vars = reduced_qv.num_binary_variables
 
         return {
-            'polynomial': PolynomialObjective(polynomial=reduced_qv,
-                                              num_variables=num_vars,
-                                              domain=self.domain,
-                                              variable_name_mapping=None,
-                                              validate_types=False),
-            'mapping': mapping
+            'polynomial':
+            PolynomialObjective(polynomial=reduced_qv,
+                                num_variables=num_vars,
+                                domain=self.domain,
+                                variable_name_mapping=None,
+                                validate_types=False),
+            'mapping':
+            mapping
         }
 
     @classmethod
@@ -340,9 +336,7 @@ class PolynomialObjective:
         }
 
 
-def simplify_polynomial(
-        polynomial: dict, domain: Domain
-) -> dict:
+def simplify_polynomial(polynomial: dict, domain: Domain) -> dict:
     """Simplify given polynomial dict."""
     domain = Domain(domain.lower())
     if domain is Domain.BOOLEAN:

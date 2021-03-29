@@ -33,8 +33,7 @@ class BruteOptimizeResult(pydantic.BaseModel):
         else:
             if values['value'] is None or values['arguments'] == []:
                 raise ValueError(
-                    'solution_exists=True, but no solution was specified.'
-                )
+                    'solution_exists=True, but no solution was specified.')
         return sol_exists
 
     def int_argument(self) -> List[List[int]]:
@@ -50,6 +49,7 @@ class BruteOptimizeResult(pydantic.BaseModel):
                 else:
                     raise ValueError(
                         f'Unrecognized symbol {x}. Expected \'+\' or \'-\'.')
+
         return [[to_int(x) for x in s] for s in self.arguments]
 
     @property
@@ -63,10 +63,10 @@ class BruteOptimizeResult(pydantic.BaseModel):
             out = 'forge.return_types.BruteOptimizeResult(\n'
             out += f'value={self.value}\n'
             char_estimate = self.num_variables * len(self.arguments)
-            out += utils.short_list_str(
-                self.arguments, char_estimate, 'arguments'
-            )
+            out += utils.short_list_str(self.arguments, char_estimate,
+                                        'arguments')
             return out + '\n)'
         else:
             return (
-                'forge.return_types.BruteOptimizeResult(solution_exists=False)')
+                'forge.return_types.BruteOptimizeResult(solution_exists=False)'
+            )
