@@ -1,5 +1,6 @@
 python_requirements(
   module_mapping={
-    "qcware-quasar": ["quasar"]
+#    "qcware-quasar": ["quasar"],
+    "python-decouple": ["decouple"]
   }
 )

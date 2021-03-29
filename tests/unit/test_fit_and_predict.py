@@ -17,7 +17,8 @@ def test_fit_and_predict(backend: str):
             result = qcware.qml.fit_and_predict(X=X,
                                                 y=y,
                                                 model="QNearestCentroid",
-                                                backend=backend)
+                                                backend=backend,
+                                                parameters={'num_measurements':100})
     except Exception as e:
         print(e)
         print(type(e.traceback))
