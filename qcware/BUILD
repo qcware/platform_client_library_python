@@ -6,6 +6,8 @@ python_library(
       "//python_client:qubovert",
       "//python_client:icontract",
       "//python_client:python-decouple",
+      '//python_client:numpy',
+      '//python_client:pydantic'
     ],
     sources=["*.py", "**/*.py"],
 )
