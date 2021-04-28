@@ -1,8 +1,20 @@
 import time
 import qcware
 import pytest
+import qubovert as qv
+from qcware.types.optimization import BinaryProblem
+from qcware.types.optimization import PolynomialObjective
 
-Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
+def generate_problem():
+    Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
+
+    qubo = PolynomialObjective(
+        polynomial=Q,
+        num_variables=4,
+        domain='boolean'
+    )
+    problem = BinaryProblem(Q_dict=qubo)
+    return problem
 
 
 def test_timeout_with_solve_binary():
@@ -13,7 +25,7 @@ def test_timeout_with_solve_binary():
 
     with pytest.raises(qcware.exceptions.ApiTimeoutError):
         sol = qcware.optimization.find_optimal_qaoa_angles(
-            Q,
+            generate_problem().Q_dict,
             num_evals=100,
             num_min_vals=10,
             fastmath_flag_in=True,
@@ -31,12 +43,15 @@ def test_retrieve_result_with_timeout():
     qcware.config.set_server_timeout(0)
 
     try:
-        result = qcware.optimization.solve_binary(Q=Q, backend='qcware/cpu')
+        result = qcware.optimization.solve_binary_2(Q=generate_problem(),
+                                                    backend='qcware/cpu')
     except qcware.exceptions.ApiTimeoutError as e:
-        time.sleep(5)
+        # should change this to use batching API
+        time.sleep(8)
         result = qcware.api_calls.retrieve_result(e.api_call_info['uid'])
-        assert (result['solution'] == [0, 0, 1, 1]
-                or result['solution'] == [1, 1, 1, 1])
+        result_vectors = [x[1] for x in result.return_results()]
+        assert ([0, 0, 1, 1] in result_vectors)
+        assert ([1, 1, 1, 1] in result_vectors)
     qcware.config.set_client_timeout(old_timeout)
     qcware.config.set_server_timeout(old_server_timeout)
 
@@ -48,10 +63,11 @@ async def test_async():
     old_server_timeout = qcware.config.server_timeout()
     qcware.config.set_server_timeout(0)
 
-    result = await qcware.optimization.async_solve_binary(Q=Q,
+    result = await qcware.optimization.async_solve_binary_2(Q=generate_problem(),
                                                           backend='qcware/cpu')
-    assert (result['solution'] == [0, 0, 1, 1]
-            or result['solution'] == [1, 1, 1, 1])
+    result_vectors = [x[1] for x in result.return_results()]
+    assert ([0, 0, 1, 1] in result_vectors)
+    assert ([1, 1, 1, 1] in result_vectors)
 
     qcware.config.set_client_timeout(old_timeout)
     qcware.config.set_server_timeout(old_server_timeout)

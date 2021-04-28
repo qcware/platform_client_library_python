@@ -23,6 +23,7 @@ Table of contents
 
    optimization/solve_binary
    optimization/brute_force
+   optimization/types
 
 .. toctree::
    :maxdepth: 2

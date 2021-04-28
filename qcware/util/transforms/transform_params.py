@@ -10,6 +10,7 @@ from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
                       complex_dtype_to_string, string_to_complex_dtype)
 from ...types.optimization import PolynomialObjective, Constraints
 from typing import Optional, Mapping, Callable
+from qcware.types.optimization import BinaryProblem, BinaryResults
 
 
 def update_with_replacers(d: Mapping[object, object],
@@ -67,9 +68,16 @@ def register_argument_transform(method_name: str,
     _from_wire_arg_replacers[method_name] = from_wire
 
 
-register_argument_transform('optimization.solve_binary',
-                            to_wire={'Q': remap_q_indices_to_strings},
-                            from_wire={'Q': remap_q_indices_from_strings})
+register_argument_transform(
+    'optimization.solve_binary_2',
+    to_wire={'Q': lambda x: x.to_wire()},
+    from_wire={'Q': lambda x: BinaryProblem.from_wire(x)})
+
+register_argument_transform(
+    'optimization.solve_binary',
+    to_wire={'Q': lambda x: BinaryProblem.from_q(x).to_wire()},
+    from_wire={'Q': lambda x: BinaryProblem.from_wire(x)})
+
 
 register_argument_transform('optimization.find_optimal_qaoa_angles',
                             to_wire={'Q': remap_q_indices_to_strings},

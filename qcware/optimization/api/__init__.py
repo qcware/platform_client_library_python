@@ -7,3 +7,4 @@ from .brute_force_minimize import brute_force_minimize, submit_brute_force_minim
 from .find_optimal_qaoa_angles import find_optimal_qaoa_angles, submit_find_optimal_qaoa_angles, async_find_optimal_qaoa_angles
 
 from .solve_binary import solve_binary, submit_solve_binary, async_solve_binary
+from .solve_binary_2 import solve_binary_2, submit_solve_binary_2, async_solve_binary_2

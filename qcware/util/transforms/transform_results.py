@@ -6,8 +6,9 @@ from ..serialize_quasar import (quasar_to_list, sequence_to_quasar,
                                 list_to_pauli)
 from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
                       dict_to_scalar, dict_to_numeric, numeric_to_dict)
-from ...types.optimization import BruteOptimizeResult
+from ...types.optimization import BinaryResults, BruteOptimizeResult
 import numpy
+
 _to_wire_result_replacers = {}
 
 
@@ -109,6 +110,40 @@ def run_backend_method_from_wire(backend_method_result: dict):
         '_shadowed.' + backend_method_result['method'],
         backend_method_result['result'])
 
+
+# it may seem odd to have multiple registrations for solve_binary, but
+# it was named multiple things in different solvers since it could be dispatched
+# to different tasks based on the back ends.
+
+
+def old_binary_result_from_new(x: str):
+    br = BinaryResults.from_wire(x)
+    result = dict(solution=br.results[0].bitstring,
+                  extra_info=br.backend_data_finish['extra_info'])
+    if 'qubo_energy_list' in br.backend_data_finish:
+        result['qubo_energy_list'] = qubo_energy_list=br.backend_data_finish['qubo_energy_list'],
+
+    return result
+
+
+register_result_transform('optimization.solve_binary_2',
+                          to_wire=lambda x: x.to_wire(),
+                          from_wire=lambda x: BinaryResults.from_wire(x))
+register_result_transform('optimization.solve_binary',
+                          to_wire=lambda x: x.to_wire(),
+                          from_wire=old_binary_result_from_new)
+register_result_transform('solve_qubo_with_brute_force_task',
+                          to_wire=lambda x: x.to_wire(),
+                          from_wire=lambda x: BinaryResults.from_wire(x))
+register_result_transform('solve_qubo_with_quasar_qaoa_simulator_task',
+                          to_wire=lambda x: x.to_wire(),
+                          from_wire=lambda x: BinaryResults.from_wire(x))
+register_result_transform('solve_qubo_with_dwave_task',
+                          to_wire=lambda x: x.to_wire(),
+                          from_wire=lambda x: BinaryResults.from_wire(x))
+register_result_transform('solve_qubo_with_quasar_qaoa_vulcan_task',
+                          to_wire=lambda x: x.to_wire(),
+                          from_wire=lambda x: BinaryResults.from_wire(x))
 
 register_result_transform('circuits.run_backend_method',
                           to_wire=run_backend_method_to_wire,
