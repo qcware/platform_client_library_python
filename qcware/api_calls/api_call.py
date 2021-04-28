@@ -61,13 +61,17 @@ async def async_api_call(api_call_context: ApiCallContext, call_token: str):
 def status(call_token: str):
     api_call_context = current_context()
     do_client_api_compatibility_check_once()
-    return post(f'{api_call_context.qcware_host}/api_calls/status', locals())
+    return post(
+        f'{api_call_context.qcware_host}/api_calls/status',
+        dict(api_call_context=api_call_context.dict(), call_token=call_token))
 
 
 def cancel(call_token: str):
     api_call_context = current_context()
     do_client_api_compatibility_check_once()
-    return post(f'{api_call_context.qcware_host}/api_calls/cancel', locals())
+    return post(
+        f'{api_call_context.qcware_host}/api_calls/cancel',
+        dict(api_call_context=api_call_context.dict(), call_token=call_token))
 
 
 def _print_waiting_handler(details: Dict):
@@ -116,8 +120,10 @@ def handle_result(api_call):
             k: api_call.get(k, None)
             for k in ['method', 'time_created', 'state', 'uid']
         }
-        raise ApiCallExecutionError(f"API Call {api_call.get('uid', 'ERROR')} rescheduled for {schedule_at_str}",
-                                    traceback="", api_call_info = api_call_info)
+        raise ApiCallExecutionError(
+            f"API Call {api_call.get('uid', 'ERROR')} rescheduled for {schedule_at_str}",
+            traceback="",
+            api_call_info=api_call_info)
     # if we've got to this point, we either have a result (state == 'success') or we have
     # some other result (state == error, open, new).  If that's the case, we've likely
     # timed out

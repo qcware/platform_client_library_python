@@ -1,7 +1,9 @@
-from qcware.qutils import qdot
+from qcware.qutils import qdot, submit_qdot
+from qcware.api_calls import status, retrieve_result
 import numpy as np
 import pytest
 import itertools
+import time
 # the tricky thing here for serialization is to make
 # sure that the types come out right.  For dot,
 # we have
@@ -37,4 +39,24 @@ def test_qdot(x, y, backend, num_measurements):
         assert isinstance(result,
                           np.ndarray) and result.shape == numpy_result.shape
     # big tolerance here since this is more or less a smoke test for the client
+    assert np.allclose(result, numpy_result, atol=7)
+
+
+@pytest.mark.parametrize('backend', ['ibmq:ibmq_qasm_simulator'])
+def test_qdot_ibmq(backend):
+    """This is primarily a smoke test, and uses the submit_ forms
+    because of the often long IBM queue times
+    """
+    x = np.array([5, 4])
+    y = np.array([3, 1])
+    job_id = submit_qdot(x, y, backend=backend, num_measurements=100)
+
+    job_status = status(job_id)
+    while job_status['status'] == 'open':
+        time.sleep(0.5)
+        job_status = status(job_id)
+
+    result = retrieve_result(job_id)
+    numpy_result = np.dot(x, y)
+
     assert np.allclose(result, numpy_result, atol=7)

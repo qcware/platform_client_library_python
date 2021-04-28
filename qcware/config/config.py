@@ -327,9 +327,61 @@ def set_scheduling_mode(new_mode: SchedulingMode):
     os.environ['QCWARE_SCHEDULING_MODE'] = new_value.value
 
 
+def set_ibmq_credentials(token: Optional[str] = None,
+                         hub: Optional[str] = None,
+                         group: Optional[str] = None,
+                         project: Optional[str] = None):
+    def _set_if(envvar_name: str, value: Optional[str] = None):
+        if value is None and envvar_name in os.environ:
+            del os.environ[envvar_name]
+        elif value is not None:
+            os.environ[envvar_name] = value
+
+    _set_if('QCWARE_CRED_IBMQ_TOKEN', token)
+    _set_if('QCWARE_CRED_IBMQ_HUB', hub)
+    _set_if('QCWARE_CRED_IBMQ_GROUP', group)
+    _set_if('QCWARE_CRED_IBMQ_PROJECT', project)
+
+
+def set_ibmq_credentials_from_ibmq(ibmq):
+    """Set the IBMQ credentials from the ibmq object (you'd call it as
+            set_ibmq_credentials_from_ibmq(IBMQ)
+    """
+    set_ibmq_credentials(ibmq._credentials.token, ibmq._credentials.hub,
+                         ibmq._credentials.group, ibmq._credentials.project)
+
+
+class IBMQCredentials(BaseModel):
+
+    token: Optional[str]
+    hub: Optional[str]
+    group: Optional[str]
+    project: Optional[str]
+
+    @classmethod
+    def from_ibmq(cls, ibmq):
+        """Creates the IBMQ credentials from an existing initialized
+        IBMQFactory object.  To be used as
+
+            from qiskit import IBMQ
+            IBMQ.load_account() # or enable_account(...)
+            credentials=IBMQCredentials.from_ibmq(IBMQ)
+        """
+        return cls(token=ibmq._credentials.token,
+                   hub=ibmq._credentials.hub,
+                   group=ibmq._credentials.group,
+                   project=ibmq._credentials.project)
+
+    class Config:
+        extra = 'forbid'
+
+
 class ApiCredentials(BaseModel):
     qcware_api_key: Optional[str] = None
-    qcware_cred_ibmq_token: Optional[str] = None
+    ibmq: Optional[IBMQCredentials] = None
+
+    class Config:
+        extra = 'forbid'
 
 
 class ApiCallContext(BaseModel):
@@ -352,7 +404,11 @@ def root_context() -> ApiCallContext:
         qcware_host=config('QCWARE_HOST', 'https://api.forge.qcware.com'),
         credentials=ApiCredentials(
             qcware_api_key=config('QCWARE_API_KEY', None),
-            qcware_cred_ibmq_token=config('QCWARE_CRED_IBMQ_TOKEN', None)),
+            ibmq=IBMQCredentials(token=config('QCWARE_CRED_IBMQ_TOKEN', None),
+                                 hub=config('QCWARE_CRED_IBMQ_HUB', None),
+                                 group=config('QCWARE_CRED_IBMQ_GROUP', None),
+                                 project=config('QCWARE_CRED_IBMQ_PROJECT',
+                                                None))),
         server_timeout=config('QCWARE_SERVER_TIMEOUT', default=10, cast=int),
         client_timeout=config('QCWARE_CLIENT_TIMEOUT', default=60, cast=int),
         async_interval_between_tries=config(
@@ -384,18 +440,41 @@ def pop_context():
     _contexts.set(_contexts.get()[:-1])
 
 
+# from https://github.com/pytoolz/toolz/issues/281
+# although as noted more efficient solutions exist.  This is also
+# modified to ignore k/v pairs in b for which the value is None
+def deep_merge(a, b):
+    """ Merge two dictionaries recursively. """
+    def merge_values(k, v1, v2):
+        if isinstance(v1, dict) and isinstance(v2, dict):
+            return k, deep_merge(v1, v2)
+        elif v2 is not None:
+            return k, v2
+        else:
+            return k, v1
+
+    a_keys = set(a.keys())
+    b_keys = set(b.keys())
+    pairs = [merge_values(k, a[k], b[k]) for k in a_keys & b_keys] \
+        + [(k, a[k]) for k in a_keys - b_keys] \
+        + [(k, b[k]) for k in b_keys - a_keys]
+    return dict(pairs)
+
+
+def merge_models(c1: BaseModel, c2: BaseModel) -> BaseModel:
+    d1 = c1.dict()
+    d2 = c2.dict()
+    result_dict = deep_merge(d1, d2)
+    return c1.copy(update=result_dict)
+
+
 def current_context() -> ApiCallContext:
     """
     Returns the "current context" for an API call, which is the calculated
     root context plus any additional changes through the stack.  Normally
     not called by the user.
     """
-    def merge_contexts(c1, c2):
-        return c1.copy(
-            update={k: v
-                    for k, v in c2.dict().items() if v is not None})
-
-    return reduce(merge_contexts, _contexts.get(), root_context())
+    return reduce(merge_models, _contexts.get(), root_context())
 
 
 @contextmanager
@@ -413,6 +492,34 @@ def additional_config(**kwargs):
     ```
     """
     push_context(**kwargs)
+    try:
+        yield
+    finally:
+        pop_context()
+
+
+@contextmanager
+def ibmq_credentials(token: str,
+                     hub: Optional[str] = None,
+                     group: Optional[str] = None,
+                     project: Optional[str] = None):
+    ibmq_creds = IBMQCredentials(token=token,
+                                 hub=hub,
+                                 group=group,
+                                 project=project)
+    credentials = ApiCredentials(ibmq=ibmq_creds)
+    push_context(credentials=credentials)
+    try:
+        yield
+    finally:
+        pop_context()
+
+
+@contextmanager
+def ibmq_credentials_from_ibmq(ibmq):
+    ibmq_creds = IBMQCredentials.from_ibmq(ibmq)
+    credentials = ApiCredentials(ibmq=ibmq_creds)
+    push_context(credentials=credentials)
     try:
         yield
     finally:
