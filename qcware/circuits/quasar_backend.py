@@ -1,7 +1,30 @@
 from quasar.backend import Backend
-from quasar import Circuit
-import numpy as np
-from . import (run_backend_method)
+from types import MethodType, FunctionType
+from ..api_calls.declare_api_call import ApiCall
+from ..util.transforms import client_args_to_wire
+import inspect
+
+
+class QuasarBackendApiCall(ApiCall):
+
+    # you must manually assign backend and method
+    def data(self, *args, **kwargs):
+        if hasattr(self, 'signature'):
+            new_bound_kwargs = self.signature.bind(*[[self] + [args]], **
+                                             kwargs)
+            new_bound_kwargs.apply_defaults()
+            new_kwargs = new_bound_kwargs.arguments
+            # one problem here is that "kwargs" isn't a real argument, so
+            if 'kwargs' in new_kwargs:
+                del new_kwargs['kwargs']
+        else:
+            new_kwargs = {}
+        if 'self' in new_kwargs:
+            del new_kwargs['self']
+        all_kwargs = dict(backend=self.backend,
+                          method=self.method,
+                          kwargs=new_kwargs)
+        return client_args_to_wire('circuits.run_backend_method', **all_kwargs)
 
 
 class QuasarBackend(object):
@@ -24,13 +47,38 @@ class QuasarBackend(object):
         self.backend_args = backend_args
 
     def __getattr__(self, name):
-        def wrapper(*args, **kwargs):
-            if ((name in dir(Backend)) and (name[0] != '_') and (name not in (
-                    'linear_commuting_group',
-                    'run_pauli_expectation_value_gradient_pauli_contraction',
-                    'run_pauli_expectation_value_hessian'))):
-                return run_backend_method(self.forge_backend, name, kwargs)
-            else:
-                raise NotImplementedError(name)
+        # we override this to return a BackendApiCall object instead of
+        # an actual wrapper
+        if ((name not in dir(Backend)) or (name[0] == '_') or
+            (name in ('linear_commuting_group',
+                      'run_pauli_expectation_value_gradient_pauli_contraction',
+                      'run_pauli_expectation_value_hessian'))):
+            raise NotImplementedError
+        f = getattr(Backend, name)
 
-        return wrapper
+        if isinstance(f, MethodType) or isinstance(f, FunctionType):
+            result = type(
+                name, (QuasarBackendApiCall, ),
+                dict({
+                    'name': 'circuits.run_backend_method',
+                    'endpoint': 'circuits/run_backend_method',
+                    'backend': self.forge_backend,
+                    'method': name,
+                    '_decorated': True,
+                    '__doc__': f.__doc__,
+                    '__module__': f.__module__,
+                    '__annotations__': f.__annotations__,
+                    'signature': inspect.signature(f),
+                    '__wrapper__': f
+                }))()
+
+        else:
+            result = type(
+                name, (QuasarBackendApiCall, ),
+                dict({
+                    'name': 'circuits.run_backend_method',
+                    'endpoint': 'circuits/run_backend_method',
+                    'backend': self.forge_backend,
+                    'method': name
+                }))()
+        return result

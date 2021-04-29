@@ -43,12 +43,12 @@ def test_run_measurement(backend):
     q = quasar.Circuit()
     q.H(0).CX(0, 1)
     b = QuasarBackend(backend)
-    result = b.run_measurement(circuit=q)
+    result = b.run_measurement(circuit=q, nmeasurement=100)
     assert isinstance(result, quasar.ProbabilityHistogram)
     assert isinstance(result.histogram, dict)
     assert 0 in result.histogram
-    # yeah, pretty fuzzy but I'll take it
-    assert abs(result.histogram[0] - 0.5) < 0.05
+    # yeah, pretty fuzzy but I'll take it; this is more or less a smoke test
+    assert abs(result.histogram[0] - 0.5) < 0.1
 
 
 @pytest.mark.parametrize("backend",

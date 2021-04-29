@@ -133,9 +133,7 @@ def handle_result(api_call):
             k: api_call.get(k, None)
             for k in ['method', 'time_created', 'state', 'uid']
         }
-        raise ApiTimeoutError(
-            f"Api call timed out; can retrieve with qcware.api_calls.retrieve_result(call_token=\"{api_call_info['uid']}\")",
-            api_call_info)
+        raise ApiTimeoutError(api_call_info)
     else:
         if 'result_url' in api_call:
             result = json.loads(get(api_call['result_url']))
@@ -184,3 +182,4 @@ async def async_retrieve_result(call_token: str,
             return handle_result(await async_wait_for_call(call_token))
         except ApiTimeoutError as e:
             await asyncio.sleep(async_interval_between_tries())
+

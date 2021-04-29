@@ -93,25 +93,24 @@ def remap_q_indices_to_strings(Q: dict) -> dict:
     return {str(k): v for k, v in Q.items()}
 
 
-def complex_dtype_to_string(t: type):
+def complex_or_real_dtype_to_string(t: type):
     if t is None:
-        return None
+        result = None
     else:
-        result = t.__name__
-        if result not in ['complex64', 'complex128']:
-            raise NotImplementedError(
-                'dtypes not of complex64 or complex128 not currently supported'
-            )
-        return result
+        if np.isreal(t()) or np.iscomplex(t()):
+            result = t.__name__
+        else:
+            raise NotImplementedError('dtypes must be complex or real')
+    return result
 
 
-def string_to_complex_dtype(s: str):
+def string_to_complex_or_real_dtype(s: str):
     if s is None:
-        return None
-    elif s == 'complex64':
-        return np.complex64
-    elif s == 'complex128':
-        return np.complex128
+        result = None
     else:
-        raise NotImplementedError(
-            'dtypes not of complex64 or complex128 not currently supported')
+        t = np.dtype(s).type
+        if np.isreal(t()) or np.iscomplex(t()):
+            result = t
+        else:
+            raise NotImplementedError('dtypes must be complex or real')
+    return result

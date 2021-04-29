@@ -7,7 +7,8 @@ from ..serialize_quasar import (quasar_to_string, string_to_quasar,
 from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
                       dict_to_scalar, numeric_to_dict, dict_to_numeric,
                       remap_q_indices_from_strings, remap_q_indices_to_strings,
-                      complex_dtype_to_string, string_to_complex_dtype)
+                      complex_or_real_dtype_to_string,
+                      string_to_complex_or_real_dtype)
 from ...types.optimization import PolynomialObjective, Constraints
 from typing import Optional, Mapping, Callable
 from qcware.types.optimization import BinaryProblem, BinaryResults
@@ -77,7 +78,6 @@ register_argument_transform(
     'optimization.solve_binary',
     to_wire={'Q': lambda x: BinaryProblem.from_q(x).to_wire()},
     from_wire={'Q': lambda x: BinaryProblem.from_wire(x)})
-
 
 register_argument_transform('optimization.find_optimal_qaoa_angles',
                             to_wire={'Q': remap_q_indices_to_strings},
@@ -159,22 +159,22 @@ register_argument_transform('_shadowed.run_measurement',
                             to_wire={
                                 'circuit': quasar_to_string,
                                 'statevector': ndarray_to_dict,
-                                'dtype': complex_dtype_to_string
+                                'dtype': complex_or_real_dtype_to_string
                             },
                             from_wire={
                                 'statevector': dict_to_ndarray,
-                                'dtype': string_to_complex_dtype
+                                'dtype': string_to_complex_or_real_dtype
                             })
 
 register_argument_transform('_shadowed.run_statevector',
                             to_wire={
                                 'circuit': quasar_to_string,
                                 'statevector': ndarray_to_dict,
-                                'dtype': complex_dtype_to_string
+                                'dtype': complex_or_real_dtype_to_string
                             },
                             from_wire={
                                 'statevector': dict_to_ndarray,
-                                'dtype': string_to_complex_dtype
+                                'dtype': string_to_complex_or_real_dtype
                             })
 
 register_argument_transform('_shadowed.circuit_in_basis',
@@ -183,53 +183,73 @@ register_argument_transform('_shadowed.circuit_in_basis',
                             },
                             from_wire={})
 register_argument_transform('_shadowed.run_density_matrix',
-                            to_wire=dict(circuit=quasar_to_string,
-                                         statevector=ndarray_to_dict),
-                            from_wire=dict(statevector=dict_to_ndarray))
+                            to_wire=dict(
+                                circuit=quasar_to_string,
+                                statevector=ndarray_to_dict,
+                                dtype=complex_or_real_dtype_to_string),
+                            from_wire=dict(statevector=dict_to_ndarray,
+                                           dtype=string_to_complex_or_real_dtype))
 register_argument_transform('_shadowed.run_pauli_diagonal',
-                            to_wire=dict(pauli=pauli_to_list),
-                            from_wire=dict(pauli=list_to_pauli))
+                            to_wire=dict(pauli=pauli_to_list,
+                                         dtype=complex_or_real_dtype_to_string),
+                            from_wire=dict(pauli=list_to_pauli,
+                                           dtype=string_to_complex_or_real_dtype))
 register_argument_transform('_shadowed.run_pauli_expectation',
                             to_wire=dict(circuit=quasar_to_string,
                                          pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict),
+                                         statevector=ndarray_to_dict,
+                                         dtype=complex_or_real_dtype_to_string),
                             from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray))
+                                           statevector=dict_to_ndarray,
+                                           dtype=string_to_complex_or_real_dtype))
 register_argument_transform('_shadowed.run_pauli_expectation_ideal',
                             to_wire=dict(circuit=quasar_to_string,
                                          pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict),
+                                         statevector=ndarray_to_dict,
+                                         dtype=complex_or_real_dtype_to_string),
                             from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray))
+                                           statevector=dict_to_ndarray,
+                                           dtype=string_to_complex_or_real_dtype))
 register_argument_transform('_shadowed.run_pauli_expectation_measurement',
                             to_wire=dict(circuit=quasar_to_string,
                                          pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict),
+                                         statevector=ndarray_to_dict,
+                                         dtype=complex_or_real_dtype_to_string),
                             from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray))
+                                           statevector=dict_to_ndarray,
+                                           dtype=string_to_complex_or_real_dtype))
 register_argument_transform('_shadowed.run_pauli_expectation_value',
                             to_wire=dict(circuit=quasar_to_string,
                                          pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict),
+                                         statevector=ndarray_to_dict,
+                                         dtype=complex_or_real_dtype_to_string),
                             from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray))
+                                           statevector=dict_to_ndarray,
+                                           dtype=string_to_complex_or_real_dtype))
 register_argument_transform('_shadowed.run_pauli_expectation_value_gradient',
                             to_wire=dict(circuit=quasar_to_string,
                                          pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict),
+                                         statevector=ndarray_to_dict,
+                                         dtype=complex_or_real_dtype_to_string),
                             from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray))
+                                           statevector=dict_to_ndarray,
+                                           dtype=string_to_complex_or_real_dtype))
 register_argument_transform('_shadowed.run_pauli_expectation_value_ideal',
                             to_wire=dict(circuit=quasar_to_string,
                                          pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict),
+                                         statevector=ndarray_to_dict,
+                                         dtype=complex_or_real_dtype_to_string),
                             from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray))
+                                           statevector=dict_to_ndarray,
+                                           dtype=string_to_complex_or_real_dtype))
 register_argument_transform('_shadowed.run_pauli_sigma',
                             to_wire=dict(pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict),
+                                         statevector=ndarray_to_dict,
+                                         dtype=complex_or_real_dtype_to_string),
                             from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray))
+                                           statevector=dict_to_ndarray,
+                                           dtype=string_to_complex_or_real_dtype))
 register_argument_transform('_shadowed.run_unitary',
-                            to_wire=dict(circuit=quasar_to_string),
-                            from_wire=dict())
+                            to_wire=dict(circuit=quasar_to_string,
+                                         dtype=complex_or_real_dtype_to_string),
+                            from_wire=dict(dtype=string_to_complex_or_real_dtype))

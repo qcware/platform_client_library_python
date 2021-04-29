@@ -41,6 +41,8 @@ def test_pauli(backend):
     circuit = generate_circuit(N)
     pauli = generate_pauli(N)
     vulcan_backend = QuasarBackend(backend)
+    data = vulcan_backend.run_pauli_expectation_value_gradient.data(
+        circuit=circuit, pauli=pauli, parameter_indices=[0,1,2,3])
     result = vulcan_backend.run_pauli_expectation_value_gradient(
         circuit=circuit, pauli=pauli, parameter_indices=[0, 1, 2, 3])
     assert np.isclose(

@@ -1,4 +1,4 @@
-from qcware.qutils import qdot, submit_qdot
+from qcware.qutils import qdot
 from qcware.api_calls import status, retrieve_result
 import numpy as np
 import pytest
@@ -49,7 +49,7 @@ def test_qdot_ibmq(backend):
     """
     x = np.array([5, 4])
     y = np.array([3, 1])
-    job_id = submit_qdot(x, y, backend=backend, num_measurements=100)
+    job_id = qdot.submit(x, y, backend=backend, num_measurements=100)
 
     job_status = status(job_id)
     while job_status['status'] == 'open':
