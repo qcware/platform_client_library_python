@@ -1,5 +1,5 @@
-from qcware.util.transforms import ndarray_to_dict, dict_to_ndarray
-from qcware.util.transforms.helpers import (scalar_to_dict, dict_to_scalar,
+from qcware.serialization.transforms import ndarray_to_dict, dict_to_ndarray
+from qcware.serialization.transforms.helpers import (scalar_to_dict, dict_to_scalar,
                                             numeric_to_dict, dict_to_numeric)
 import numpy as np
 from hypothesis.strategies import floats, one_of

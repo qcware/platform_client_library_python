@@ -4,6 +4,8 @@ from qcware.types.optimization.problem_spec import Constraints
 from qcware.optimization import brute_force_minimize
 import itertools
 import pytest
+from qcware.serialization.transforms.helpers import (to_wire, constraints_from_wire,
+                                            polynomial_objective_from_wire)
 
 
 def pubo_example_1(constrained: bool):
@@ -176,14 +178,14 @@ constrained_examples = (pubo_example_1(True), pubo_example_2(True),
 
 def test_serialize_objective():
     p = pubo_example_1(False)['pubo']
-    p2 = PolynomialObjective.from_wire(p.to_wire())
+    p2 = polynomial_objective_from_wire(to_wire(p))
     assert p.dict() == p2.dict()
 
 
 def test_serialize_constraints():
     c = pubo_example_1(True)['constraints']
-    c2 = Constraints.from_wire(c.to_wire())
-    assert c.to_wire() == c2.to_wire()
+    c2 = constraints_from_wire(to_wire(c))
+    assert to_wire(c) == to_wire(c2)
 
 
 @pytest.mark.parametrize("example,backend",

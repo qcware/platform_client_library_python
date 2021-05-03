@@ -1,5 +1,6 @@
 import dataclasses
 import pydantic
+import itertools
 from qcware.types.utils import pydantic_model_abridge_validation_errors
 
 from typing import Dict, Tuple, Set, Union
@@ -63,9 +64,7 @@ def polynomial_validation(polynomial: dict,
             assert self.deg is None
             assert self.variables is None
             self.deg = compute_degree(self.poly)
-            self.variables = set()
-            for term in self.poly:
-                self.variables.update(term)
+            self.variables = set(itertools.chain.from_iterable(self.poly.keys()))
             if not self.variables.issubset(range(self.num_vars)):
                 raise ValueError(
                     f'Specified number of variables {self.num_vars} is inconsistent with '

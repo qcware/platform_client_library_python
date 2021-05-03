@@ -6,8 +6,9 @@ This is the client library for QC Ware's Forge product,
 a SaaS product for solving problems with quantum computing.
 Please see the documentation at http://qcware.readthedocs.io
 """
-__version__ = '4.1.0'
 import logging
+
+__version__ = '4.1.0'
 
 logger = logging.getLogger('qcware')
 

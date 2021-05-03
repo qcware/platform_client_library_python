@@ -109,38 +109,6 @@ class PolynomialObjective:
                 for i in range(num_variables)
             }
 
-    def to_wire(self) -> Dict:
-        result = self.dict()
-
-        def remap_q_indices_to_strings(Q: dict) -> dict:
-            return {str(k): v for k, v in Q.items()}
-
-        result['polynomial'] = remap_q_indices_to_strings(result['polynomial'])
-        return result
-
-    @classmethod
-    def from_wire(cls, d: Dict):
-        # I copy this so that changes don't affect the original,
-        # not that it matters much here
-        remapped_dict = d.copy()
-
-        def string_to_int_tuple(s: str):
-            term_strings = s.split(',')
-            if term_strings[-1] == '':
-                term_strings = term_strings[:-1]
-            return tuple(map(int, term_strings))
-
-        def remap_q_indices_from_strings(q_old: dict) -> dict:
-            q_new = {
-                string_to_int_tuple(k[1:-1].strip(", ")): v
-                for k, v in q_old.items()
-            }
-            return q_new
-
-        remapped_dict['polynomial'] = remap_q_indices_from_strings(
-            d['polynomial'])
-        return cls(**remapped_dict)
-
     def keys(self):
         return self.polynomial.keys()
 

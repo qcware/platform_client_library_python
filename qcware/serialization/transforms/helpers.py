@@ -3,6 +3,10 @@ import base64
 from typing import Dict
 import lz4.frame
 from icontract import require
+from functools import singledispatch
+from ...types.optimization import (PolynomialObjective, Constraints,
+                                   BinaryProblem, BinaryResults,
+                                   BruteOptimizeResult)
 
 
 def ndarray_to_dict(x: np.ndarray):
@@ -78,7 +82,10 @@ def dict_to_numeric(x):
 
 
 def string_to_int_tuple(s: str):
-    return tuple(map(int, s.split(',')))
+    term_strings = s.split(',')
+    if term_strings[-1] == '':
+        term_strings = term_strings[:-1]
+    return tuple(map(int, term_strings))
 
 
 def remap_q_indices_from_strings(q_old: dict) -> dict:
@@ -114,3 +121,81 @@ def string_to_complex_or_real_dtype(s: str):
         else:
             raise NotImplementedError('dtypes must be complex or real')
     return result
+
+
+@singledispatch
+def to_wire(x):
+    """For complex types, this dispatches to create a JSON-compatible dict
+    """
+    raise NotImplementedError("Unsupported Type")
+
+
+@to_wire.register(PolynomialObjective)
+def _(x):
+    result = x.dict()
+    result['polynomial'] = remap_q_indices_to_strings(result['polynomial'])
+    return result
+
+
+def polynomial_objective_from_wire(d: dict):
+    remapped_dict = d.copy()
+
+    remapped_dict['polynomial'] = remap_q_indices_from_strings(d['polynomial'])
+    return PolynomialObjective(**remapped_dict)
+
+
+@to_wire.register(Constraints)
+def _(x):
+    result = x.dict()
+    result['constraints'] = {
+        k: [to_wire(x) for x in v]
+        for k, v in x.dict()['constraints'].items()
+    }
+    return result
+
+
+def constraints_from_wire(d: dict):
+    remapped_dict = d.copy()
+    remapped_dict['constraints'] = {
+        k: [polynomial_objective_from_wire(x) for x in v]
+        for k, v in d['constraints'].items()
+    }
+
+    return Constraints(**remapped_dict)
+
+
+@to_wire.register(BinaryProblem)
+def _(x):
+    result = x.dict()
+    result['Q_dict'] = remap_q_indices_to_strings(result['Q_dict'].polynomial)
+
+    return result
+
+
+def binary_problem_from_wire(d: dict):
+    remapped_dict = d.copy()
+    remapped_dict['Q_dict'] = remap_q_indices_from_strings(d['Q_dict'])
+    return BinaryProblem.from_q(remapped_dict['Q_dict'])
+
+
+@to_wire.register(BinaryResults)
+def _(x):
+    result = x.dict()
+    result['original_problem'] = to_wire(x.original_problem)
+    result['backend_data_start'] = {
+        k: v
+        for k, v in result['backend_data_start'].items()
+        if k not in ('Q', 'Q_array', 'split_to_full_map_array')
+    }
+    return result
+
+
+def binary_results_from_wire(d: dict):
+    remapped_dict = d.copy()
+    remapped_dict['original_problem'] = binary_problem_from_wire(
+        d['original_problem'])
+    return BinaryResults(**remapped_dict)
+
+
+def brute_optimize_result_from_wire(d: dict):
+    return BruteOptimizeResult(**d)

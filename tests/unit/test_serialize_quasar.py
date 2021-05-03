@@ -1,7 +1,7 @@
 import inspect
 from random import uniform
 from quasar import Circuit, CompositeGate, ControlledGate, Gate
-from qcware.util.serialize_quasar import (quasar_to_sequence,
+from qcware.serialization.serialize_quasar import (quasar_to_sequence,
                                           sequence_to_quasar, base_gate_name,
                                           num_adjoints, make_gate,
                                           quasar_to_string, string_to_quasar,

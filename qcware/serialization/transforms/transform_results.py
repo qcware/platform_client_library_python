@@ -5,8 +5,9 @@ from ..serialize_quasar import (quasar_to_list, sequence_to_quasar,
                                 dict_to_probability_histogram, pauli_to_list,
                                 list_to_pauli)
 from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
-                      dict_to_scalar, dict_to_numeric, numeric_to_dict)
-from ...types.optimization import BinaryResults, BruteOptimizeResult
+                      dict_to_scalar, dict_to_numeric, numeric_to_dict,
+                      to_wire, binary_results_from_wire,
+                      brute_optimize_result_from_wire)
 import numpy
 
 _to_wire_result_replacers = {}
@@ -117,40 +118,41 @@ def run_backend_method_from_wire(backend_method_result: dict):
 
 
 def old_binary_result_from_new(x: str):
-    br = BinaryResults.from_wire(x)
+    br = binary_results_from_wire(x)
     result = dict(solution=br.results[0].bitstring,
                   extra_info=br.backend_data_finish['extra_info'])
     if 'qubo_energy_list' in br.backend_data_finish:
-        result['qubo_energy_list'] = qubo_energy_list=br.backend_data_finish['qubo_energy_list'],
+        result['qubo_energy_list'] = qubo_energy_list = br.backend_data_finish[
+            'qubo_energy_list'],
 
     return result
 
 
 register_result_transform('optimization.solve_binary_2',
-                          to_wire=lambda x: x.to_wire(),
-                          from_wire=lambda x: BinaryResults.from_wire(x))
+                          to_wire=to_wire,
+                          from_wire=lambda x: binary_results_from_wire(x))
 register_result_transform('optimization.solve_binary',
-                          to_wire=lambda x: x.to_wire(),
+                          to_wire=to_wire,
                           from_wire=old_binary_result_from_new)
 register_result_transform('solve_qubo_with_brute_force_task',
-                          to_wire=lambda x: x.to_wire(),
-                          from_wire=lambda x: BinaryResults.from_wire(x))
+                          to_wire=to_wire,
+                          from_wire=lambda x: binary_results_from_wire(x))
 register_result_transform('solve_qubo_with_quasar_qaoa_simulator_task',
-                          to_wire=lambda x: x.to_wire(),
-                          from_wire=lambda x: BinaryResults.from_wire(x))
+                          to_wire=to_wire,
+                          from_wire=lambda x: binary_results_from_wire(x))
 register_result_transform('solve_qubo_with_dwave_task',
-                          to_wire=lambda x: x.to_wire(),
-                          from_wire=lambda x: BinaryResults.from_wire(x))
+                          to_wire=to_wire,
+                          from_wire=lambda x: binary_results_from_wire(x))
 register_result_transform('solve_qubo_with_quasar_qaoa_vulcan_task',
-                          to_wire=lambda x: x.to_wire(),
-                          from_wire=lambda x: BinaryResults.from_wire(x))
+                          to_wire=to_wire,
+                          from_wire=lambda x: binary_results_from_wire(x))
 
 register_result_transform('circuits.run_backend_method',
                           to_wire=run_backend_method_to_wire,
                           from_wire=run_backend_method_from_wire)
 register_result_transform('optimization.brute_force_minimize',
                           to_wire=lambda x: x.dict(),
-                          from_wire=lambda x: BruteOptimizeResult(**x))
+                          from_wire=brute_optimize_result_from_wire)
 register_result_transform('_shadowed.run_measurement',
                           to_wire=probability_histogram_to_dict,
                           from_wire=dict_to_probability_histogram)

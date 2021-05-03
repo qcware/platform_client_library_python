@@ -5,7 +5,7 @@ import backoff
 from ..request import post, get
 from ..async_request import post as async_post, get as async_get
 from ..exceptions import ApiCallExecutionError, ApiTimeoutError
-from ..util.transforms import client_result_from_wire
+from ..serialization.transforms import client_result_from_wire
 from ..config import (client_timeout, do_client_api_compatibility_check_once,
                       async_interval_between_tries, current_context,
                       ApiCallContext)

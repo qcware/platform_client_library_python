@@ -124,27 +124,6 @@ class Constraints:
         else:
             self.max_degree = max(self.max_degree_dict.values())
 
-    def to_wire(self) -> Dict:
-        result = self.dict().copy()
-        result['constraints'] = {
-            k: [x.to_wire() for x in v]
-            for k, v in self.dict()['constraints'].items()
-        }
-        print(result)
-        return result
-
-    @classmethod
-    def from_wire(cls, d: Dict):
-        remapped_dict = d.copy()
-        remapped_dict['constraints'] = {
-            k: [PolynomialObjective.from_wire(x) for x in v]
-            for k, v in d['constraints'].items()
-        }
-
-        print('remapped:')
-        print(remapped_dict)
-        return cls(**remapped_dict)
-
     def get_constraint_group(self,
                              predicate: Predicate,
                              order: Union[int, Iterable[int], None] = None):

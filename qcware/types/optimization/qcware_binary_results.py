@@ -2,14 +2,11 @@ from pydantic import BaseModel, conint, ValidationError, validator
 from typing import List, Union, Dict, Tuple, Any
 import qubovert as qv
 import numpy as np
-from ...util.transforms.helpers import remap_q_indices_from_strings, remap_q_indices_to_strings
-
 from ...types.optimization import PolynomialObjective
 from .problem_spec import Constraints
 from ...types.optimization.predicate import Predicate
 
 from ...types.optimization.variable_types import Domain
-
 
 BinaryProblemTerms = Union[PolynomialObjective]
 BinaryConstraintTerms = Union[Constraints]
@@ -18,7 +15,7 @@ BinaryConstraintTerms = Union[Constraints]
 class BinaryProblem(BaseModel):
     Q_dict: BinaryProblemTerms
 
-    constraints:  Any = None
+    constraints: Any = None
 
     name: str = 'my_qcware_binary_problem'
 
@@ -42,32 +39,17 @@ class BinaryProblem(BaseModel):
 
         return string_out
 
-    def to_wire(self) -> Dict:
-        result = self.dict()
-        result['Q_dict'] = remap_q_indices_to_strings(result['Q_dict'].polynomial)
-
-        return result
-
     @classmethod
     def from_q(cls, Q: Dict[Tuple[int, ...], float]):
         """
         Creates the BinaryProblem from an old-style Q-matrix
         """
-        num_var=qv.QUBO(Q).num_binary_variables
-        qubo = PolynomialObjective(
-            polynomial=Q,
-            num_variables=num_var,
-            domain='boolean'
-        )
+        num_var = qv.QUBO(Q).num_binary_variables
+        qubo = PolynomialObjective(polynomial=Q,
+                                   num_variables=num_var,
+                                   domain='boolean')
 
         return cls(Q_dict=qubo)
-
-    @classmethod
-    def from_wire(cls, d: Dict):
-        remapped_dict = d.copy()
-        print(d['Q_dict'])
-        remapped_dict['Q_dict'] = remap_q_indices_from_strings(d['Q_dict'])
-        return cls.from_q(remapped_dict['Q_dict'])
 
     def set_name(self, name: str) -> None:
         """Sets the name of the quadratic program.
@@ -80,19 +62,18 @@ class BinaryProblem(BaseModel):
     def dwave_Q(self):
         """Returns a dict valid for D-Wave problems
         """
-        Q_start=self.Q_dict.polynomial
+        Q_start = self.Q_dict.polynomial
 
-        Q_final={}
+        Q_final = {}
         for elm in Q_start.keys():
-            if elm==():
+            if elm == ():
                 pass
-            elif len(elm)==1:
-                Q_final[(elm[0],elm[0])]=Q_start[(elm[0],)]
+            elif len(elm) == 1:
+                Q_final[(elm[0], elm[0])] = Q_start[(elm[0], )]
             else:
                 Q_final[elm] = Q_start[elm]
 
         return Q_final
-
 
 
 class BinarySample(BaseModel):
@@ -155,7 +136,8 @@ class BinaryResults(BaseModel):
 
     def __str__(self) -> str:
         '''Print the problem in a nice way'''
-        title = 'Name: {0} \n'.format('results_of_'+self.original_problem.name)
+        title = 'Name: {0} \n'.format('results_of_' +
+                                      self.original_problem.name)
         header0 = 'Lowest energy sample:\n'
         if len(self.results) == 0:
             header1 = 'Empty'
@@ -189,7 +171,6 @@ class BinaryResults(BaseModel):
         Args:
             sample: The objective function of the quadratic program.
         """
-
         def calculate_energy(bitstring: List) -> float:
             """Calculates the energy of a bitstring
             Args:
@@ -199,7 +180,6 @@ class BinaryResults(BaseModel):
             for elm in range(len(bitstring)):
                 x[elm] = bitstring[elm]
 
-            print(self.original_problem)
             return self.original_problem.Q_dict.qubovert().value(x)
 
         def sort_bin(b):
@@ -282,18 +262,12 @@ class BinaryResults(BaseModel):
         """
         return self.results[0].energy
 
-    def lowest_energy_bitstring(self) -> List:
-        """Returns lowest energy
+    def lowest_energy_bitstrings(self) -> List:
+        """Returns all the bitstrings with the lowest energy
         """
-        lowest_energy = self.results[0].energy
-
-        bitstring_list = []
-        for elm in self.results[1:]:
-            if elm.energy == lowest_energy:
-                bitstring_list.append(elm)
-            else:
-                break
-        return bitstring_list
+        # these are sorted, so result[0] has the lowest energy
+        result = [elm for elm in self.results if elm.energy == self.results[0].energy]
+        return result
 
     def variable_mapping(self) -> Dict:
         """Returns variable mapping
@@ -313,8 +287,8 @@ class BinaryResults(BaseModel):
 
         for sample in self.results:
             histo_data += [
-                              sample.energy,
-                          ] * sample.num_occurrences
+                sample.energy,
+            ] * sample.num_occurrences
 
         plt.style.use('ggplot')
         plt.hist(histo_data, bins=len(self.results))
@@ -345,7 +319,7 @@ class BinaryResults(BaseModel):
     def name(self) -> str:
         """Returns the name of the quadratic program.
         """
-        return 'results_of_'+self.original_problem.name
+        return 'results_of_' + self.original_problem.name
 
     def set_output_data(self, output_data: Dict) -> None:
         """Sets the output data of the quadratic program.
@@ -354,7 +328,6 @@ class BinaryResults(BaseModel):
         """
         return self.copy(deep=True,
                          update=dict(backend_data_finish=output_data))
-
 
     def has_result_with_energy(self, bitstring: List[int],
                                energy: float) -> bool:
@@ -368,19 +341,9 @@ class BinaryResults(BaseModel):
         ]
         return len(results) > 0
 
-    def to_wire(self) -> Dict:
-        result = self.dict()
-        result['original_problem'] = self.original_problem.to_wire()
-        result['backend_data_start'] = {
-            k: v
-            for k, v in result['backend_data_start'].items()
-            if k not in ('Q', 'Q_array', 'split_to_full_map_array')
-        }
-        return result
-
     @classmethod
     def from_wire(cls, d: Dict):
         remapped_dict = d.copy()
-        remapped_dict['original_problem']=BinaryProblem.from_wire(d['original_problem'])
+        remapped_dict['original_problem'] = BinaryProblem.from_wire(
+            d['original_problem'])
         return cls(**remapped_dict)
-

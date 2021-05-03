@@ -1,6 +1,10 @@
 """
 Methods to transform FROM native types used by the backends
-TO serializable types for the api to send to the client
+TO serializable types for the api to send to the client.
+
+This file should primarily contain the marshaling for argument
+transformations and functions, not so much the transformation functions
+themselves for particular types (those go in the helpers file).
 """
 from ..serialize_quasar import (quasar_to_string, string_to_quasar,
                                 pauli_to_list, list_to_pauli)
@@ -8,11 +12,11 @@ from .helpers import (ndarray_to_dict, dict_to_ndarray, scalar_to_dict,
                       dict_to_scalar, numeric_to_dict, dict_to_numeric,
                       remap_q_indices_from_strings, remap_q_indices_to_strings,
                       complex_or_real_dtype_to_string,
-                      string_to_complex_or_real_dtype)
-from ...types.optimization import PolynomialObjective, Constraints
+                      string_to_complex_or_real_dtype, to_wire,
+                      polynomial_objective_from_wire, constraints_from_wire,
+                      binary_problem_from_wire, binary_results_from_wire)
 from typing import Optional, Mapping, Callable
-from qcware.types.optimization import BinaryProblem, BinaryResults
-
+from ...types.optimization import BinaryProblem
 
 def update_with_replacers(d: Mapping[object, object],
                           replacers: Mapping[object, Callable]):
@@ -71,13 +75,13 @@ def register_argument_transform(method_name: str,
 
 register_argument_transform(
     'optimization.solve_binary_2',
-    to_wire={'Q': lambda x: x.to_wire()},
-    from_wire={'Q': lambda x: BinaryProblem.from_wire(x)})
+    to_wire={'Q': to_wire},
+    from_wire={'Q': lambda x: binary_problem_from_wire})
 
 register_argument_transform(
     'optimization.solve_binary',
-    to_wire={'Q': lambda x: BinaryProblem.from_q(x).to_wire()},
-    from_wire={'Q': lambda x: BinaryProblem.from_wire(x)})
+    to_wire={'Q': lambda x: to_wire(BinaryProblem.from_q(x))},
+    from_wire={'Q': lambda x: binary_problem_from_wire(x)})
 
 register_argument_transform('optimization.find_optimal_qaoa_angles',
                             to_wire={'Q': remap_q_indices_to_strings},
@@ -85,17 +89,15 @@ register_argument_transform('optimization.find_optimal_qaoa_angles',
 
 register_argument_transform('optimization.brute_force_minimize',
                             to_wire={
-                                'objective':
-                                lambda x: x.to_wire(),
+                                'objective': lambda x: to_wire(x),
                                 'constraints':
-                                lambda x: x.to_wire()
+                                lambda x: to_wire(x)
                                 if x is not None else None
                             },
                             from_wire={
-                                'objective':
-                                PolynomialObjective.from_wire,
+                                'objective': polynomial_objective_from_wire,
                                 'constraints':
-                                lambda x: Constraints.from_wire(x)
+                                lambda x: constraints_from_wire(x)
                                 if x is not None else None
                             })
 
@@ -182,74 +184,81 @@ register_argument_transform('_shadowed.circuit_in_basis',
                                 'circuit': quasar_to_string,
                             },
                             from_wire={})
-register_argument_transform('_shadowed.run_density_matrix',
-                            to_wire=dict(
-                                circuit=quasar_to_string,
-                                statevector=ndarray_to_dict,
-                                dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(statevector=dict_to_ndarray,
-                                           dtype=string_to_complex_or_real_dtype))
-register_argument_transform('_shadowed.run_pauli_diagonal',
-                            to_wire=dict(pauli=pauli_to_list,
-                                         dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(pauli=list_to_pauli,
-                                           dtype=string_to_complex_or_real_dtype))
-register_argument_transform('_shadowed.run_pauli_expectation',
-                            to_wire=dict(circuit=quasar_to_string,
-                                         pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict,
-                                         dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray,
-                                           dtype=string_to_complex_or_real_dtype))
-register_argument_transform('_shadowed.run_pauli_expectation_ideal',
-                            to_wire=dict(circuit=quasar_to_string,
-                                         pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict,
-                                         dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray,
-                                           dtype=string_to_complex_or_real_dtype))
-register_argument_transform('_shadowed.run_pauli_expectation_measurement',
-                            to_wire=dict(circuit=quasar_to_string,
-                                         pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict,
-                                         dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray,
-                                           dtype=string_to_complex_or_real_dtype))
-register_argument_transform('_shadowed.run_pauli_expectation_value',
-                            to_wire=dict(circuit=quasar_to_string,
-                                         pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict,
-                                         dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray,
-                                           dtype=string_to_complex_or_real_dtype))
-register_argument_transform('_shadowed.run_pauli_expectation_value_gradient',
-                            to_wire=dict(circuit=quasar_to_string,
-                                         pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict,
-                                         dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray,
-                                           dtype=string_to_complex_or_real_dtype))
-register_argument_transform('_shadowed.run_pauli_expectation_value_ideal',
-                            to_wire=dict(circuit=quasar_to_string,
-                                         pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict,
-                                         dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray,
-                                           dtype=string_to_complex_or_real_dtype))
-register_argument_transform('_shadowed.run_pauli_sigma',
-                            to_wire=dict(pauli=pauli_to_list,
-                                         statevector=ndarray_to_dict,
-                                         dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(pauli=list_to_pauli,
-                                           statevector=dict_to_ndarray,
-                                           dtype=string_to_complex_or_real_dtype))
-register_argument_transform('_shadowed.run_unitary',
-                            to_wire=dict(circuit=quasar_to_string,
-                                         dtype=complex_or_real_dtype_to_string),
-                            from_wire=dict(dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_density_matrix',
+    to_wire=dict(circuit=quasar_to_string,
+                 statevector=ndarray_to_dict,
+                 dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(statevector=dict_to_ndarray,
+                   dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_pauli_diagonal',
+    to_wire=dict(pauli=pauli_to_list, dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(pauli=list_to_pauli, dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_pauli_expectation',
+    to_wire=dict(circuit=quasar_to_string,
+                 pauli=pauli_to_list,
+                 statevector=ndarray_to_dict,
+                 dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(pauli=list_to_pauli,
+                   statevector=dict_to_ndarray,
+                   dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_pauli_expectation_ideal',
+    to_wire=dict(circuit=quasar_to_string,
+                 pauli=pauli_to_list,
+                 statevector=ndarray_to_dict,
+                 dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(pauli=list_to_pauli,
+                   statevector=dict_to_ndarray,
+                   dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_pauli_expectation_measurement',
+    to_wire=dict(circuit=quasar_to_string,
+                 pauli=pauli_to_list,
+                 statevector=ndarray_to_dict,
+                 dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(pauli=list_to_pauli,
+                   statevector=dict_to_ndarray,
+                   dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_pauli_expectation_value',
+    to_wire=dict(circuit=quasar_to_string,
+                 pauli=pauli_to_list,
+                 statevector=ndarray_to_dict,
+                 dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(pauli=list_to_pauli,
+                   statevector=dict_to_ndarray,
+                   dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_pauli_expectation_value_gradient',
+    to_wire=dict(circuit=quasar_to_string,
+                 pauli=pauli_to_list,
+                 statevector=ndarray_to_dict,
+                 dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(pauli=list_to_pauli,
+                   statevector=dict_to_ndarray,
+                   dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_pauli_expectation_value_ideal',
+    to_wire=dict(circuit=quasar_to_string,
+                 pauli=pauli_to_list,
+                 statevector=ndarray_to_dict,
+                 dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(pauli=list_to_pauli,
+                   statevector=dict_to_ndarray,
+                   dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_pauli_sigma',
+    to_wire=dict(pauli=pauli_to_list,
+                 statevector=ndarray_to_dict,
+                 dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(pauli=list_to_pauli,
+                   statevector=dict_to_ndarray,
+                   dtype=string_to_complex_or_real_dtype))
+register_argument_transform(
+    '_shadowed.run_unitary',
+    to_wire=dict(circuit=quasar_to_string,
+                 dtype=complex_or_real_dtype_to_string),
+    from_wire=dict(dtype=string_to_complex_or_real_dtype))
