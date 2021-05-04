@@ -279,25 +279,25 @@ class BinaryResults(BaseModel):
         """
         return self.original_problem.qubovert.reverse_mapping
 
-    def plot_histogram(self) -> None:
-        """Plots histogram
-        """
-        import matplotlib.pyplot as plt
-        histo_data = []
+    # def plot_histogram(self) -> None:
+    #     """Plots histogram
+    #     """
+    #     import matplotlib.pyplot as plt
+    #     histo_data = []
 
-        for sample in self.results:
-            histo_data += [
-                sample.energy,
-            ] * sample.num_occurrences
+    #     for sample in self.results:
+    #         histo_data += [
+    #             sample.energy,
+    #         ] * sample.num_occurrences
 
-        plt.style.use('ggplot')
-        plt.hist(histo_data, bins=len(self.results))
+    #     plt.style.use('ggplot')
+    #     plt.hist(histo_data, bins=len(self.results))
 
-        plt.title('Results histogram')
-        plt.xlabel('Energy')
-        plt.ylabel('Frequency')
+    #     plt.title('Results histogram')
+    #     plt.xlabel('Energy')
+    #     plt.ylabel('Frequency')
 
-        plt.show()
+    #     plt.show()
 
     def results_original_notation(self) -> List[Dict]:
         """Plots histogram
