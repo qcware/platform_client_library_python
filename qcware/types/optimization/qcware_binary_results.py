@@ -266,7 +266,9 @@ class BinaryResults(BaseModel):
         """Returns all the bitstrings with the lowest energy
         """
         # these are sorted, so result[0] has the lowest energy
-        result = [elm for elm in self.results if elm.energy == self.results[0].energy]
+        result = [
+            elm for elm in self.results if elm.energy == self.results[0].energy
+        ]
         return result
 
     def variable_mapping(self) -> Dict:

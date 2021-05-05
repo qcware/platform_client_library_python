@@ -1,11 +1,9 @@
 import inspect
 from random import uniform
 from quasar import Circuit, CompositeGate, ControlledGate, Gate
-from qcware.serialization.serialize_quasar import (quasar_to_sequence,
-                                          sequence_to_quasar, base_gate_name,
-                                          num_adjoints, make_gate,
-                                          quasar_to_string, string_to_quasar,
-                                          Canonical_gate_names)
+from qcware.serialization.serialize_quasar import (
+    quasar_to_sequence, sequence_to_quasar, base_gate_name, num_adjoints,
+    make_gate, quasar_to_string, string_to_quasar, Canonical_gate_names)
 from scipy.stats import unitary_group
 
 

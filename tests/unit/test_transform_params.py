@@ -1,7 +1,8 @@
 import pytest
-from qcware.serialization.transforms import (client_args_to_wire, server_args_from_wire,
-                                    server_result_to_wire,
-                                    client_result_from_wire)
+from qcware.serialization.transforms import (client_args_to_wire,
+                                             server_args_from_wire,
+                                             server_result_to_wire,
+                                             client_result_from_wire)
 import numpy as np
 
 

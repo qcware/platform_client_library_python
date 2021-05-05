@@ -182,4 +182,3 @@ async def async_retrieve_result(call_token: str,
             return handle_result(await async_wait_for_call(call_token))
         except ApiTimeoutError as e:
             await asyncio.sleep(async_interval_between_tries())
-

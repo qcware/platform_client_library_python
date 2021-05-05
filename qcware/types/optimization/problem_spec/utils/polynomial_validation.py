@@ -64,7 +64,8 @@ def polynomial_validation(polynomial: dict,
             assert self.deg is None
             assert self.variables is None
             self.deg = compute_degree(self.poly)
-            self.variables = set(itertools.chain.from_iterable(self.poly.keys()))
+            self.variables = set(
+                itertools.chain.from_iterable(self.poly.keys()))
             if not self.variables.issubset(range(self.num_vars)):
                 raise ValueError(
                     f'Specified number of variables {self.num_vars} is inconsistent with '

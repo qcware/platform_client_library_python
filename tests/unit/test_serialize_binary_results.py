@@ -2,15 +2,13 @@ from qcware.types.optimization import BinaryProblem, BinaryResults
 import qubovert as qv
 import json
 from qcware.types.optimization import PolynomialObjective
-from qcware.serialization.transforms.helpers import (to_wire, binary_problem_from_wire)
+from qcware.serialization.transforms.helpers import (to_wire,
+                                                     binary_problem_from_wire)
+
 
 def create_binary_problem():
     Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
-    qubo = PolynomialObjective(
-        polynomial=Q,
-        num_variables=4,
-        domain='boolean'
-    )
+    qubo = PolynomialObjective(polynomial=Q, num_variables=4, domain='boolean')
     problem = BinaryProblem(Q_dict=qubo)
     return problem
 

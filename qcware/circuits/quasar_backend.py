@@ -10,8 +10,8 @@ class QuasarBackendApiCall(ApiCall):
     # you must manually assign backend and method
     def data(self, *args, **kwargs):
         if hasattr(self, 'signature'):
-            new_bound_kwargs = self.signature.bind(*[[self] + [args]], **
-                                             kwargs)
+            new_bound_kwargs = self.signature.bind(*[[self] + [args]],
+                                                   **kwargs)
             new_bound_kwargs.apply_defaults()
             new_kwargs = new_bound_kwargs.arguments
             # one problem here is that "kwargs" isn't a real argument, so
