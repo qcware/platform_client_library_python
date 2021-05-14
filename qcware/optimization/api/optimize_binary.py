@@ -2,72 +2,74 @@
 #  Project: qcware
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
+from qcware.types.optimization import BinaryProblem, BinaryResults
+
 import asyncio
 from ...api_calls import declare_api_call
 
 
-@declare_api_call(name="optimization.solve_binary_2",
-                  endpoint="optimization/solve_binary_2")
-def solve_binary_2(Q: dict,
-                 backend: str,
-                 constraints_linear_A: list = [],
-                 constraints_linear_b: list = [],
-                 constraints_sat_max_runs: int = 3100,
-                 constraints_hard: bool = False,
-                 constraints_penalty_scaling_factor: int = 1,
-                 constraints_equality_R: list = [],
-                 constraints_equality_c: list = [],
-                 constraints_inequality_S: list = [],
-                 constraints_inequality_d: list = [],
-                 return_all_solutions: bool = False,
-                 num_runs: int = 50,
-                 dwave_algorithm: str = None,
-                 dwave_solver_limit: str = None,
-                 dwave_target_energy: str = None,
-                 dwave_find_max: str = None,
-                 dwave_reduce_intersample_correlation: str = None,
-                 dwave_num_spin_reversal_transforms: str = None,
-                 dwave_programming_thermalization: str = None,
-                 dwave_reinitialize_state: str = None,
-                 dwave_anneal_offsets: str = None,
-                 dwave_anneal_offsets_delta: str = None,
-                 dwave_num_reads: str = None,
-                 dwave_max_answers: str = None,
-                 dwave_flux_biases: str = None,
-                 dwave_beta: str = None,
-                 dwave_answer_mode: str = None,
-                 dwave_auto_scale: str = None,
-                 dwave_postprocess: str = None,
-                 dwave_annealing_time: str = None,
-                 dwave_anneal_schedule: str = None,
-                 dwave_initial_state: str = None,
-                 dwave_chains: str = None,
-                 dwave_flux_drift_compensation: bool = None,
-                 dwave_beta_range: str = None,
-                 dwave_num_sweeps: str = None,
-                 dwave_precision_ancillas: str = None,
-                 dwave_precision_ancillas_tuples: str = None,
-                 constraints_hard_num: int = 4,
-                 sa_num_sweeps: int = 200,
-                 use_sample_persistence: bool = False,
-                 sample_persistence_solution_threshold: float = 0.5,
-                 sample_persistence_persistence_threshold: float = 0.5,
-                 sample_persistence_persistence_iterations: int = 0,
-                 google_num_steps: int = 1,
-                 google_n_samples: int = 1000,
-                 google_arguments_optimizer: dict = {},
-                 google_step_sampling: bool = True,
-                 google_n_samples_step_sampling: int = 1000,
-                 number_of_blocks: int = 1,
-                 iterations: int = 50,
-                 initial_solution: list = None,
-                 always_update_with_best: bool = True,
-                 update_q_each_block_solution: bool = True,
-                 qaoa_nmeasurement: int = None,
-                 qaoa_optimizer: str = 'COBYLA',
-                 qaoa_beta: float = None,
-                 qaoa_gamma: float = None,
-                 qaoa_p_val: int = 1):
+@declare_api_call(name="optimization.optimize_binary",
+                  endpoint="optimization/optimize_binary")
+def optimize_binary(Q: BinaryProblem,
+                    backend: str,
+                    constraints_linear_A: list = [],
+                    constraints_linear_b: list = [],
+                    constraints_sat_max_runs: int = 3100,
+                    constraints_hard: bool = False,
+                    constraints_penalty_scaling_factor: int = 1,
+                    constraints_equality_R: list = [],
+                    constraints_equality_c: list = [],
+                    constraints_inequality_S: list = [],
+                    constraints_inequality_d: list = [],
+                    return_all_solutions: bool = False,
+                    num_runs: int = 50,
+                    dwave_algorithm: str = None,
+                    dwave_solver_limit: str = None,
+                    dwave_target_energy: str = None,
+                    dwave_find_max: str = None,
+                    dwave_reduce_intersample_correlation: str = None,
+                    dwave_num_spin_reversal_transforms: str = None,
+                    dwave_programming_thermalization: str = None,
+                    dwave_reinitialize_state: str = None,
+                    dwave_anneal_offsets: str = None,
+                    dwave_anneal_offsets_delta: str = None,
+                    dwave_num_reads: str = None,
+                    dwave_max_answers: str = None,
+                    dwave_flux_biases: str = None,
+                    dwave_beta: str = None,
+                    dwave_answer_mode: str = None,
+                    dwave_auto_scale: str = None,
+                    dwave_postprocess: str = None,
+                    dwave_annealing_time: str = None,
+                    dwave_anneal_schedule: str = None,
+                    dwave_initial_state: str = None,
+                    dwave_chains: str = None,
+                    dwave_flux_drift_compensation: bool = None,
+                    dwave_beta_range: str = None,
+                    dwave_num_sweeps: str = None,
+                    dwave_precision_ancillas: str = None,
+                    dwave_precision_ancillas_tuples: str = None,
+                    constraints_hard_num: int = 4,
+                    sa_num_sweeps: int = 200,
+                    use_sample_persistence: bool = False,
+                    sample_persistence_solution_threshold: float = 0.5,
+                    sample_persistence_persistence_threshold: float = 0.5,
+                    sample_persistence_persistence_iterations: int = 0,
+                    google_num_steps: int = 1,
+                    google_n_samples: int = 1000,
+                    google_arguments_optimizer: dict = {},
+                    google_step_sampling: bool = True,
+                    google_n_samples_step_sampling: int = 1000,
+                    number_of_blocks: int = 1,
+                    iterations: int = 50,
+                    initial_solution: list = None,
+                    always_update_with_best: bool = True,
+                    update_q_each_block_solution: bool = True,
+                    qaoa_nmeasurement: int = None,
+                    qaoa_optimizer: str = 'COBYLA',
+                    qaoa_beta: float = None,
+                    qaoa_gamma: float = None,
+                    qaoa_p_val: int = 1):
     r"""Solve a binary optimization problem using one of the solvers provided by the platform.
 This function solves a binary optimization problem that is either
   * Unconstrained (quadratic or higher order)
@@ -125,7 +127,7 @@ It is strongly recommended to wrap a call to :obj:`solve_binary` in a try/catch 
 Arguments:
 
 :param Q: The objective function matrix in the optimization problem described above.  In the case of a quadratic problem, this is a 2D matrix; generally, in the case of higher-order problems, this is an :math:`n`-dimensional matrix (a tensor). Since :math:`Q` is usually sparse, :math:`Q` should be specified as a Python dictionary with integer or string pairs :math:`(i,j)` as keys (representing the :math:`(i,j)`th entry of :math:`Q`) and integer or float values.  In the case of a cubic function, for example, some dictionary keys will be 3-tuples of integers, rather than pairs. Alternatively, :math:`Q` may be specified as a numpy array or list, in which case :obj:`mat_to_dict` is called on :math:`Q` before sending it to the platform.  Note that that helper function assumes :math:`Q` is symmetric, which may not be true in general. It is strongly encouraged to format :math:`Q` is a dictionary.
-:type Q: dict
+:type Q: BinaryProblem
 
 :param backend: The name of the backend to use for the given problem.  Currently valid values are:
 
@@ -310,28 +312,8 @@ Arguments:
 :type qaoa_p_val: int
 
   
-:return: A dict, containing zero or more of the fields:
-
-  * 'solution' (:obj:`dict`): A Python dictionary representing the solution vector.  If :obj:`return_all_solutions` is
-    :obj:`True`, this is a list of dicts. However, if the input :obj:`Q` is a 2D numpy array, then each :obj`solution` will
-    be a 1D numpy array; if the input :obj:`Q` is a list of lists, then each :obj`solution` will also be a list. :obj`solution`
-    maps variables labels to their binary values, thus :obj`solution[i]` is the value of the :obj`i`th binary variable.
-  * 'num_runs' (:obj:`int`): How many total runs of the chosen solver were performed in order to produce the
-    returned solution.
-  * 'num_qubits' (:obj:`int`): How many physical qubits (or simulated qubits, in the case of a software
-    solver) were used for solving the problem.
-  * 'num_logical_variables' (:obj:`int`): How many logical variables were contained in the problem.
-  * 'warnings' (:obj:`list`): A list of strings containing warning messages from the platform generated when
-    attempting to solve the problem.  This key does not exist if no warnings were raised.
-  * 'warning_codes' (:obj:`list`): A list of ints containing warning codes from the platform generated when
-    attempting to solve the problem.  This key does not exist if no warnings were raised.
-  * 'error' (:obj:`str`): A string containing an error message from the platform generated when
-    attempting to solve the problem.  This key does not exist if no error occurred.
-  * 'error_code' (:obj:`int`): An int containing an error codes from the platform generated when
-    attempting to solve the problem.  This key does not exist if no error occurred.
-  * 'extra_info' (:obj:`list`): A Python list containing additional information returned by a solver.
-
+:return: A BinaryResults object
   
-:rtype: dict
+:rtype: BinaryResults
 """
     pass

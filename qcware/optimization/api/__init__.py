@@ -8,4 +8,4 @@ from .find_optimal_qaoa_angles import find_optimal_qaoa_angles
 
 from .solve_binary import solve_binary
 
-from .solve_binary_2 import solve_binary_2
+from .optimize_binary import optimize_binary

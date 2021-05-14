@@ -74,14 +74,14 @@ def register_argument_transform(method_name: str,
 
 
 register_argument_transform(
-    'optimization.solve_binary_2',
+    'optimization.optimize_binary',
     to_wire={'Q': to_wire},
-    from_wire={'Q': lambda x: binary_problem_from_wire})
+    from_wire={'Q': binary_problem_from_wire})
 
 register_argument_transform(
     'optimization.solve_binary',
     to_wire={'Q': lambda x: to_wire(BinaryProblem.from_q(x))},
-    from_wire={'Q': lambda x: binary_problem_from_wire(x)})
+    from_wire={'Q': binary_problem_from_wire})
 
 register_argument_transform('optimization.find_optimal_qaoa_angles',
                             to_wire={'Q': remap_q_indices_to_strings},

@@ -128,7 +128,7 @@ def old_binary_result_from_new(x: str):
     return result
 
 
-register_result_transform('optimization.solve_binary_2',
+register_result_transform('optimization.optimize_binary',
                           to_wire=to_wire,
                           from_wire=lambda x: binary_results_from_wire(x))
 register_result_transform('optimization.solve_binary',

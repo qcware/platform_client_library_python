@@ -43,7 +43,7 @@ def test_retrieve_result_with_timeout():
     qcware.config.set_server_timeout(0)
 
     try:
-        result = qcware.optimization.solve_binary_2(Q=generate_problem(),
+        result = qcware.optimization.optimize_binary(Q=generate_problem(),
                                                     backend='qcware/cpu')
     except qcware.exceptions.ApiTimeoutError as e:
         # should change this to use batching API
@@ -63,7 +63,7 @@ async def test_async():
     old_server_timeout = qcware.config.server_timeout()
     qcware.config.set_server_timeout(0)
 
-    result = await qcware.optimization.solve_binary_2.call_async(Q=generate_problem(),
+    result = await qcware.optimization.optimize_binary.call_async(Q=generate_problem(),
                                                           backend='qcware/cpu')
     result_vectors = [x[1] for x in result.return_results()]
     assert ([0, 0, 1, 1] in result_vectors)

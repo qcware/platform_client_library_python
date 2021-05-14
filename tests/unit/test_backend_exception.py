@@ -33,4 +33,4 @@ def test_solve_binary_with_brute_force():
 
     # if there's a problem in the dispatcher (no backend), task_failure should handle that too
     with pytest.raises(qcware.exceptions.ApiCallFailedError):
-        result = qcware.optimization.solve_binary_2(Q=problem, backend="POTATO")
+        result = qcware.optimization.optimize_binary(Q=problem, backend="POTATO")
