@@ -36,7 +36,8 @@ def test_solve_binary(backend: str):
                          )
 def test_optimize_binary(backend):
     Q = sample_q()
-    result = qcware.optimization.optimize_binary(Q=BinaryProblem.from_q(Q), backend=backend)
+    result = qcware.optimization.optimize_binary(
+        instance=BinaryProblem.from_dict(Q), backend=backend)
     result_vectors = [x[1] for x in result.return_results()]
     assert ([0, 0, 1, 1] in result_vectors) or ([1, 1, 1, 1] in result_vectors)
     
@@ -65,10 +66,9 @@ def test_anneal_offsets(backend: str):
 def test_solve_binary_qaoa(backend: str, nmeasurement: int):
     Q = sample_q()
 
-    result = qcware.optimization.optimize_binary(Q=BinaryProblem.from_q(Q),
-                                              backend=backend,
-                                              qaoa_optimizer='analytical',
-                                              qaoa_nmeasurement=nmeasurement)
+    result = qcware.optimization.optimize_binary(
+        instance=BinaryProblem.from_dict(Q), backend=backend,
+        qaoa_nmeasurement=nmeasurement, qaoa_optimizer='analytical')
     result_vectors = [x[1] for x in result.return_results()]
     assert ([0, 0, 1, 1] in result_vectors) or ([1, 1, 1, 1] in result_vectors)
 
@@ -79,9 +79,9 @@ def test_solve_binary_qaoa(backend: str, nmeasurement: int):
                              ('qcware/cpu_simulator', 'qcware/gpu_simulator')))
 def test_various_qaoa_optimizers(optimizer, backend):
     Q = sample_q()
-    result = qcware.optimization.optimize_binary(Q=BinaryProblem.from_q(Q),
-                                              backend=backend,
-                                              qaoa_optimizer=optimizer)
+    result = qcware.optimization.optimize_binary(
+        instance=BinaryProblem.from_dict(Q), backend=backend,
+        qaoa_optimizer=optimizer)
     result_vectors = [x[1] for x in result.return_results()]
     assert ([0, 0, 1, 1] in result_vectors) or ([1, 1, 1, 1] in result_vectors)
 
@@ -96,10 +96,8 @@ def test_analytical_angles_with_qaoa(backend):
     # print("EXVALS: ", exvals)
     # print("ANGLES: ", angles)
 
-    result = qcware.optimization.optimize_binary(Q=BinaryProblem.from_q(Q),
-                                              backend='qcware/cpu_simulator',
-                                              qaoa_beta=angles[1][0],
-                                              qaoa_gamma=angles[1][1],
-                                              qaoa_p_val=1)
+    result = qcware.optimization.optimize_binary(
+        instance=BinaryProblem.from_dict(Q), backend='qcware/cpu_simulator',
+        qaoa_beta=angles[1][0], qaoa_gamma=angles[1][1], qaoa_p_val=1)
     result_vectors = [x[1] for x in result.return_results()]
     assert ([0, 0, 1, 1] in result_vectors) or ([1, 1, 1, 1] in result_vectors)

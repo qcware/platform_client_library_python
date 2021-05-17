@@ -167,15 +167,15 @@ def constraints_from_wire(d: dict):
 @to_wire.register(BinaryProblem)
 def _(x):
     result = x.dict()
-    result['Q_dict'] = remap_q_indices_to_strings(result['Q_dict'].polynomial)
+    result['objective'] = remap_q_indices_to_strings(result['objective'].polynomial)
 
     return result
 
 
 def binary_problem_from_wire(d: dict):
     remapped_dict = d.copy()
-    remapped_dict['Q_dict'] = remap_q_indices_from_strings(d['Q_dict'])
-    return BinaryProblem.from_q(remapped_dict['Q_dict'])
+    remapped_dict['objective'] = remap_q_indices_from_strings(d['objective'])
+    return BinaryProblem.from_dict(remapped_dict['objective'])
 
 
 @to_wire.register(BinaryResults)

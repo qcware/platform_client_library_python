@@ -10,7 +10,7 @@ from ...api_calls import declare_api_call
 
 @declare_api_call(name="optimization.optimize_binary",
                   endpoint="optimization/optimize_binary")
-def optimize_binary(Q: BinaryProblem,
+def optimize_binary(instance: BinaryProblem,
                     backend: str,
                     constraints_linear_A: list = [],
                     constraints_linear_b: list = [],
@@ -126,8 +126,8 @@ It is strongly recommended to wrap a call to :obj:`solve_binary` in a try/catch 
 
 Arguments:
 
-:param Q: The objective function matrix in the optimization problem described above.  In the case of a quadratic problem, this is a 2D matrix; generally, in the case of higher-order problems, this is an :math:`n`-dimensional matrix (a tensor). Since :math:`Q` is usually sparse, :math:`Q` should be specified as a Python dictionary with integer or string pairs :math:`(i,j)` as keys (representing the :math:`(i,j)`th entry of :math:`Q`) and integer or float values.  In the case of a cubic function, for example, some dictionary keys will be 3-tuples of integers, rather than pairs. Alternatively, :math:`Q` may be specified as a numpy array or list, in which case :obj:`mat_to_dict` is called on :math:`Q` before sending it to the platform.  Note that that helper function assumes :math:`Q` is symmetric, which may not be true in general. It is strongly encouraged to format :math:`Q` is a dictionary.
-:type Q: BinaryProblem
+:param instance: The objective function matrix in the optimization problem described above.  In the case of a quadratic problem, this is a 2D matrix; generally, in the case of higher-order problems, this is an :math:`n`-dimensional matrix (a tensor). Since :math:`Q` is usually sparse, :math:`Q` should be specified as a Python dictionary with integer or string pairs :math:`(i,j)` as keys (representing the :math:`(i,j)`th entry of :math:`Q`) and integer or float values.  In the case of a cubic function, for example, some dictionary keys will be 3-tuples of integers, rather than pairs. Alternatively, :math:`Q` may be specified as a numpy array or list, in which case :obj:`mat_to_dict` is called on :math:`Q` before sending it to the platform.  Note that that helper function assumes :math:`Q` is symmetric, which may not be true in general. It is strongly encouraged to format :math:`Q` is a dictionary.
+:type instance: BinaryProblem
 
 :param backend: The name of the backend to use for the given problem.  Currently valid values are:
 

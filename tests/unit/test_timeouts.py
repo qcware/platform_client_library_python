@@ -13,7 +13,7 @@ def generate_problem():
         num_variables=4,
         domain='boolean'
     )
-    problem = BinaryProblem(Q_dict=qubo)
+    problem = BinaryProblem(objective=qubo)
     return problem
 
 
@@ -25,7 +25,7 @@ def test_timeout_with_solve_binary():
 
     with pytest.raises(qcware.exceptions.ApiTimeoutError):
         sol = qcware.optimization.find_optimal_qaoa_angles(
-            generate_problem().Q_dict,
+            generate_problem().objective,
             num_evals=100,
             num_min_vals=10,
             fastmath_flag_in=True,
@@ -43,8 +43,8 @@ def test_retrieve_result_with_timeout():
     qcware.config.set_server_timeout(0)
 
     try:
-        result = qcware.optimization.optimize_binary(Q=generate_problem(),
-                                                    backend='qcware/cpu')
+        result = qcware.optimization.optimize_binary(
+            instance=generate_problem(), backend='qcware/cpu')
     except qcware.exceptions.ApiTimeoutError as e:
         # should change this to use batching API
         time.sleep(8)
@@ -63,8 +63,9 @@ async def test_async():
     old_server_timeout = qcware.config.server_timeout()
     qcware.config.set_server_timeout(0)
 
-    result = await qcware.optimization.optimize_binary.call_async(Q=generate_problem(),
-                                                          backend='qcware/cpu')
+    result = await qcware.optimization.optimize_binary.call_async(
+        instance=generate_problem(),
+        backend='qcware/cpu')
     result_vectors = [x[1] for x in result.return_results()]
     assert ([0, 0, 1, 1] in result_vectors)
     assert ([1, 1, 1, 1] in result_vectors)

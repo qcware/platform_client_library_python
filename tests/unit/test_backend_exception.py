@@ -21,7 +21,7 @@ def test_solve_binary_with_brute_force():
         num_variables=4,
         domain='boolean'
     )
-    problem = BinaryProblem(Q_dict=qubo)
+    problem = BinaryProblem(objective=qubo)
 
     # run_backend_method is a sort of special case because it nests kwargs, so let's
     # just make sure
@@ -33,4 +33,5 @@ def test_solve_binary_with_brute_force():
 
     # if there's a problem in the dispatcher (no backend), task_failure should handle that too
     with pytest.raises(qcware.exceptions.ApiCallFailedError):
-        result = qcware.optimization.optimize_binary(Q=problem, backend="POTATO")
+        result = qcware.optimization.optimize_binary(instance=problem,
+                                                     backend="POTATO")

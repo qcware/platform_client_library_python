@@ -1,79 +1,72 @@
 from pydantic import BaseModel, conint, ValidationError, validator
-from typing import List, Union, Dict, Tuple, Any
+from typing import List, Union, Dict, Tuple, Any, Optional
 import qubovert as qv
 import numpy as np
+from . import Predicate, Domain
+
 from ...types.optimization import PolynomialObjective
 from .problem_spec import Constraints
-from ...types.optimization.predicate import Predicate
-
-from ...types.optimization.variable_types import Domain
-
-BinaryProblemTerms = Union[PolynomialObjective]
-BinaryConstraintTerms = Union[Constraints]
 
 
 class BinaryProblem(BaseModel):
-    Q_dict: BinaryProblemTerms
-
-    constraints: Any = None
-
+    objective: PolynomialObjective
+    constraints: Optional[Constraints] = None
     name: str = 'my_qcware_binary_problem'
 
     class Config:
         validate_assignment = True
         allow_mutation = False
+        # you may want to remove this if you change constraints to be a pydantic style model;
+        # otherwise you get "no validator found for ...Constraints,
+        arbitrary_types_allowed = True
 
     def __str__(self) -> str:
-        '''Print the problem in a nice way'''
-
         header0 = '* Name: {0} *\n'.format(self.name)
-        header1 = '* Variable type: {0} *\n'.format(self.Q_dict.domain)
+        header1 = '* Variable type: {0} *\n'.format(self.objective.domain)
         line = '**********************\n'
-        header2 = 'Objective function: {0} \n'.format(self.Q_dict.polynomial)
+        header2 = 'Objective function: {0} \n'.format(self.objective.polynomial)
 
         string_out = line + header0 + header1 + line + header2
-
-        if self.constraints != None:
-
+        if self.constraints is not None:
             string_out += self.constraints.__repr__()
-
         return string_out
 
     @classmethod
-    def from_q(cls, Q: Dict[Tuple[int, ...], float]):
+    def from_dict(
+            cls,
+            objective: Dict[Tuple[int, ...], int],
+            domain: Domain = Domain.BOOLEAN
+    ):
         """
-        Creates the BinaryProblem from an old-style Q-matrix
+        Creates the BinaryProblem from a dict specifying a boolean polynomial.
         """
-        num_var = qv.QUBO(Q).num_binary_variables
-        qubo = PolynomialObjective(polynomial=Q,
-                                   num_variables=num_var,
-                                   domain='boolean')
+        def count_variables(polynomial: dict):
+            var_names = set()
+            for k in polynomial.keys():
+                var_names.update(k)
+            return len(var_names)
 
-        return cls(Q_dict=qubo)
+        objective = PolynomialObjective(
+            polynomial=objective,
+            num_variables=count_variables(objective),
+            domain=domain
+        )
 
-    def set_name(self, name: str) -> None:
-        """Sets the name of the quadratic program.
-        Args:
-            name: The name of the quadratic program.
-        """
+        return cls(objective=objective)
 
-        return self.copy(deep=True, update=dict(name=name))
-
-    def dwave_Q(self):
-        """Returns a dict valid for D-Wave problems
-        """
-        Q_start = self.Q_dict.polynomial
-
-        Q_final = {}
-        for elm in Q_start.keys():
+    def dwave_dict(self):
+        """Returns a dict valid for D-Wave problem specification."""
+        q_start = self.objective.polynomial
+        q_final = {}
+        for elm in q_start.keys():
             if elm == ():
                 pass
             elif len(elm) == 1:
-                Q_final[(elm[0], elm[0])] = Q_start[(elm[0], )]
+                q_final[(elm[0], elm[0])] = q_start[(elm[0], )]
             else:
-                Q_final[elm] = Q_start[elm]
+                q_final[elm] = q_start[elm]
 
-        return Q_final
+        return q_final
 
 
 class BinarySample(BaseModel):
@@ -180,7 +173,7 @@ class BinaryResults(BaseModel):
             for elm in range(len(bitstring)):
                 x[elm] = bitstring[elm]
 
-            return self.original_problem.Q_dict.qubovert().value(x)
+            return self.original_problem.objective.qubovert().value(x)
 
         def sort_bin(b):
             'Orders bitstrings'
@@ -192,7 +185,7 @@ class BinaryResults(BaseModel):
 
         # First assert that the solution is the same length as the problem
         assert len(
-            sample_bitstring) == self.original_problem.Q_dict.num_variables
+            sample_bitstring) == self.original_problem.objective.num_variables
 
         # Obtain existing results
 
