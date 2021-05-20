@@ -185,7 +185,7 @@ def _(x):
     result['backend_data_start'] = {
         k: v
         for k, v in result['backend_data_start'].items()
-        if k not in ('Q', 'Q_array', 'split_to_full_map_array')
+        if k not in ('Q', 'Q_array', 'split_to_full_map_array', 'instance')
     }
     return result
 
