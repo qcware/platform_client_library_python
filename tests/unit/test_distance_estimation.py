@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 import itertools
 
-backends = (('qcware/cpu_simulator', None), ('awsbraket/sv1', 100),
+backends = (('qcware/cpu_simulator', None), ('awsbraket/sv1', 100), ('awsbraket/tn1', 100),
             ('ibm/simulator', 100), ('qcware/gpu_simulator', None))
 
 

@@ -7,7 +7,7 @@ from qcware.qml import fit_and_predict
 
 @pytest.mark.parametrize("backend", [
     'qcware/cpu_simulator', 'qcware/gpu_simulator', 'ibm/simulator',
-    'awsbraket/sv1'
+    'awsbraket/sv1', 'awsbraket/tn1'
 ])
 def test_fit_and_predict(backend: str):
     X = np.array([[-1, -2, 2, -1], [-1, -1, 2, 0], [2, 1, -2, -1],

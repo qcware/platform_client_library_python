@@ -17,7 +17,7 @@ import time
 # I really wanted to use hypothesis here, but the fact is it
 # takes too long to send it over the wire, so we'll do case studies
 # for each
-backends = (('qcware/cpu_simulator', None), ('awsbraket/sv1', 100),
+backends = (('qcware/cpu_simulator', None), ('awsbraket/sv1', 100), ('awsbraket/tn1', 100),
             ('ibm/simulator', 100), ('qcware/gpu_simulator', None))
 
 
