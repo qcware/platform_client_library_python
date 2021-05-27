@@ -7,6 +7,7 @@ import qcware.types.optimization as types
 from typing import Optional
 
 import asyncio
+import warnings
 from ...api_calls import declare_api_call
 
 
@@ -33,3 +34,19 @@ Arguments:
 :rtype: types.BruteOptimizeResult
 """
     pass
+
+
+def submit_brute_force_minimize(*args, **kwargs):
+    """This method is deprecated; please use brute_force_minimize.submit"""
+    w = "The old submit_brute_force_minimize function has been deprecated and will be removed.  Please use brute_force_minimize.submit"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return brute_force_minimize.submit(*args, **kwargs)
+
+
+async def async_brute_force_minimize(*args, **kwargs):
+    """This method is deprecated; please use brute_force_minimize.call_async"""
+    w = "The old async_brute_force_minimize function has been deprecated and will be removed.  Please use brute_force_minimize.call_async"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return await brute_force_minimize.call_async(*args, **kwargs)

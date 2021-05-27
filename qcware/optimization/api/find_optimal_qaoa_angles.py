@@ -3,6 +3,7 @@
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
 import asyncio
+import warnings
 from ...api_calls import declare_api_call
 
 
@@ -48,3 +49,19 @@ Arguments:
 :rtype: tuple
 """
     pass
+
+
+def submit_find_optimal_qaoa_angles(*args, **kwargs):
+    """This method is deprecated; please use find_optimal_qaoa_angles.submit"""
+    w = "The old submit_find_optimal_qaoa_angles function has been deprecated and will be removed.  Please use find_optimal_qaoa_angles.submit"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return find_optimal_qaoa_angles.submit(*args, **kwargs)
+
+
+async def async_find_optimal_qaoa_angles(*args, **kwargs):
+    """This method is deprecated; please use find_optimal_qaoa_angles.call_async"""
+    w = "The old async_find_optimal_qaoa_angles function has been deprecated and will be removed.  Please use find_optimal_qaoa_angles.call_async"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return await find_optimal_qaoa_angles.call_async(*args, **kwargs)

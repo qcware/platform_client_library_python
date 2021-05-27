@@ -9,6 +9,7 @@ import quasar
 from typing import Union
 
 import asyncio
+import warnings
 from ...api_calls import declare_api_call
 
 
@@ -59,3 +60,19 @@ Arguments:
 :rtype: Union[float, numpy.ndarray]
 """
     pass
+
+
+def submit_distance_estimation(*args, **kwargs):
+    """This method is deprecated; please use distance_estimation.submit"""
+    w = "The old submit_distance_estimation function has been deprecated and will be removed.  Please use distance_estimation.submit"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return distance_estimation.submit(*args, **kwargs)
+
+
+async def async_distance_estimation(*args, **kwargs):
+    """This method is deprecated; please use distance_estimation.call_async"""
+    w = "The old async_distance_estimation function has been deprecated and will be removed.  Please use distance_estimation.call_async"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return await distance_estimation.call_async(*args, **kwargs)

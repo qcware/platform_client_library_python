@@ -44,7 +44,7 @@ def test_qdot(x, y, backend, num_measurements):
 
 @pytest.mark.parametrize('backend', ['ibmq:ibmq_qasm_simulator'])
 def test_qdot_ibmq(backend):
-    """This is primarily a smoke test, and uses the submit_ forms
+    """This is primarily a smoke test, and uses the .submit forms
     because of the often long IBM queue times
     """
     x = np.array([5, 4])

@@ -11,7 +11,7 @@ class ApiCall:
         return self.do(*args, **kwargs)
 
     def data(self, *args, **kwargs):
-        new_bound_kwargs = self.signature.bind(*args, **kwargs)
+        new_bound_kwargs = self.__signature__.bind(*args, **kwargs)
         new_bound_kwargs.apply_defaults()
         new_kwargs = new_bound_kwargs.arguments
         return client_args_to_wire(self.name, **new_kwargs)
@@ -56,7 +56,7 @@ def declare_api_call(name, endpoint):
                 '__doc__': f.__doc__,
                 '__module__': f.__module__,
                 '__annotations__': f.__annotations__,
-                'signature': inspect.signature(f),
+                '__signature__': inspect.signature(f),
                 '__wrapper__': f
             }))()
 

@@ -5,6 +5,7 @@
 from qcware.types.optimization import BinaryProblem, BinaryResults
 
 import asyncio
+import warnings
 from ...api_calls import declare_api_call
 
 
@@ -317,3 +318,19 @@ Arguments:
 :rtype: BinaryResults
 """
     pass
+
+
+def submit_optimize_binary(*args, **kwargs):
+    """This method is deprecated; please use optimize_binary.submit"""
+    w = "The old submit_optimize_binary function has been deprecated and will be removed.  Please use optimize_binary.submit"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return optimize_binary.submit(*args, **kwargs)
+
+
+async def async_optimize_binary(*args, **kwargs):
+    """This method is deprecated; please use optimize_binary.call_async"""
+    w = "The old async_optimize_binary function has been deprecated and will be removed.  Please use optimize_binary.call_async"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return await optimize_binary.call_async(*args, **kwargs)

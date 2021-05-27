@@ -3,6 +3,7 @@
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
 import asyncio
+import warnings
 from ...api_calls import declare_api_call
 
 
@@ -335,3 +336,19 @@ Arguments:
 :rtype: dict
 """
     pass
+
+
+def submit_solve_binary(*args, **kwargs):
+    """This method is deprecated; please use solve_binary.submit"""
+    w = "The old submit_solve_binary function has been deprecated and will be removed.  Please use solve_binary.submit"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return solve_binary.submit(*args, **kwargs)
+
+
+async def async_solve_binary(*args, **kwargs):
+    """This method is deprecated; please use solve_binary.call_async"""
+    w = "The old async_solve_binary function has been deprecated and will be removed.  Please use solve_binary.call_async"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return await solve_binary.call_async(*args, **kwargs)

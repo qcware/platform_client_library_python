@@ -9,6 +9,7 @@ import quasar
 from typing import Union
 
 import asyncio
+import warnings
 from ...api_calls import declare_api_call
 
 
@@ -58,3 +59,19 @@ Arguments:
 :rtype: Union[float, numpy.ndarray]
 """
     pass
+
+
+def submit_qdot(*args, **kwargs):
+    """This method is deprecated; please use qdot.submit"""
+    w = "The old submit_qdot function has been deprecated and will be removed.  Please use qdot.submit"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return qdot.submit(*args, **kwargs)
+
+
+async def async_qdot(*args, **kwargs):
+    """This method is deprecated; please use qdot.call_async"""
+    w = "The old async_qdot function has been deprecated and will be removed.  Please use qdot.call_async"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return await qdot.call_async(*args, **kwargs)
