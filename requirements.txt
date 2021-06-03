@@ -14,3 +14,4 @@ qubovert==1.2.3
 tabulate==0.8.9
 qcware-quasar==1.0.3
 icontract==2.5.0
+hypothesis[numpy]==6.8.4
