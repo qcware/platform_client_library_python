@@ -24,7 +24,7 @@ def result_represents_error(worker_result: object):
     which conflicted with some results which inherited from dict but magically parsed
     key requests and would throw exceptions.
     """
-    result = worker_result.__class__ == 'dict' and 'error' in worker_result
+    result = isinstance(worker_result, dict) and 'error' in worker_result
     return result
 
 
