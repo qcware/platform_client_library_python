@@ -130,10 +130,16 @@ def old_binary_result_from_new(x: str):
 
 register_result_transform('optimization.optimize_binary',
                           to_wire=to_wire,
-                          from_wire=lambda x: binary_results_from_wire(x))
+                          from_wire=binary_results_from_wire)
 register_result_transform('optimization.solve_binary',
                           to_wire=to_wire,
                           from_wire=old_binary_result_from_new)
+register_result_transform('optimization.qaoa_expectation_value',
+                          to_wire=lambda x: scalar_to_dict(x, dtype=numpy.float64),
+                          from_wire=dict_to_scalar)
+register_result_transform('optimization.qaoa_sample',
+                          to_wire=to_wire,
+                          from_wire=binary_results_from_wire)
 register_result_transform('solve_qubo_with_brute_force_task',
                           to_wire=to_wire,
                           from_wire=lambda x: binary_results_from_wire(x))

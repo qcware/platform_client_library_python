@@ -16,8 +16,6 @@ class BinaryProblem(BaseModel):
     class Config:
         validate_assignment = True
         allow_mutation = False
-        # you may want to remove this if you change constraints to be a pydantic style model;
-        # otherwise you get "no validator found for ...Constraints,
         arbitrary_types_allowed = True
 
     def __str__(self) -> str:
@@ -68,10 +66,33 @@ class BinaryProblem(BaseModel):
 
         return q_final
 
+    @property
+    def num_variables(self):
+        """The number of variables for the objective function."""
+        return self.objective.num_variables
+
+    @property
+    def constraint_dict(self):
+        """Constraints in a dict format."""
+        return self.constraints.constraint_dict
+
+    def num_constraints(self, predicate: Optional[Predicate] = None):
+        """Return the number of constraints.
+
+        If a predicate is specified, only return the number of constraints
+        for that predicate.
+        """
+        return self.constraints.num_constraints(predicate)
+
+    @property
+    def constrained(self):
+        """True if this problem instance is constrained."""
+        return self.constraints is not None
+
 
 class BinarySample(BaseModel):
     bitstring: List[int]
-    energy: float = None
+    energy: int = None
     num_occurrences: int
 
     @validator('bitstring')
@@ -113,6 +134,8 @@ class BinaryResults(BaseModel):
       backend_data_finish: A dictionary of data retrieved from the backend
         often containing run information
       results: a list of BinarySample objects
+      variable_mapping: Optional specification of how variables in the original
+        problem instance map to variables appearing in binary samples.
     """
     original_problem: BinaryProblem
 
@@ -263,16 +286,6 @@ class BinaryResults(BaseModel):
             elm for elm in self.results if elm.energy == self.results[0].energy
         ]
         return result
-
-    def variable_mapping(self) -> Dict:
-        """Returns variable mapping
-        """
-        return self.original_problem.qubovert.mapping
-
-    def reverse_mapping(self) -> Dict:
-        """Returns reverse variable mapping
-        """
-        return self.original_problem.qubovert.reverse_mapping
 
     # def plot_histogram(self) -> None:
     #     """Plots histogram

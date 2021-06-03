@@ -9,3 +9,5 @@ from .find_optimal_qaoa_angles import find_optimal_qaoa_angles, submit_find_opti
 from .solve_binary import solve_binary, submit_solve_binary, async_solve_binary
 
 from .optimize_binary import optimize_binary, submit_optimize_binary, async_optimize_binary
+
+from .qaoa_expectation_value import qaoa_expectation_value

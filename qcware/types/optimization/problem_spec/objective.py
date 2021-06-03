@@ -79,6 +79,9 @@ class PolynomialObjective:
                  domain: Union[Domain, str] = Domain.BOOLEAN,
                  variable_name_mapping: Optional[Dict[int, str]] = None,
                  validate_types: bool = True):
+        # TODO: introduce mapping structure to guarantee consistent variable
+        #   reduction. This is also critical because we don't want
+        #   reduction to annoyingly re-order variables when it's not necessary.
         self.num_variables = num_variables
         self.domain = Domain(domain.lower())
         polynomial = simplify_polynomial(polynomial, self.domain)
@@ -89,7 +92,8 @@ class PolynomialObjective:
             validate_types=validate_types)
 
         self.polynomial = parsed_polynomial.poly
-        self.variables = parsed_polynomial.variables
+        self.active_variables = parsed_polynomial.variables
+        self.num_active_variables = len(self.active_variables)
         self.degree = parsed_polynomial.deg
         if self.degree < 0:
             self.degree = float('-inf')
@@ -207,10 +211,11 @@ class PolynomialObjective:
             num_variables=3
         )
 
-        which essentially means p(x, y, z) = y. This has two variables that
-        the polynomial doesn't actually depend on. In this case, this function
-        will return a polynomial of one variable along with a mapping to
-        identify variables appropriately. Specifically, the return would be
+        which essentially means the polynomial p defined by p(x, y, z) = y.
+        This has two variables that p doesn't actually depend on. In this
+        case, the method `reduce_variables` will return a polynomial of one
+        variable along with a mapping to identify variables appropriately.
+        Specifically, in this case the return would be
 
         {
             'polynomial': PolynomialObjective(polynomial={(0,): 1},

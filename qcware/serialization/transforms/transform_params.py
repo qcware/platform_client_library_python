@@ -87,6 +87,23 @@ register_argument_transform('optimization.find_optimal_qaoa_angles',
                             to_wire={'Q': remap_q_indices_to_strings},
                             from_wire={'Q': remap_q_indices_from_strings})
 
+register_argument_transform('optimization.qaoa_expectation_value',
+                            to_wire={'problem_instance': to_wire,
+                                     'beta': ndarray_to_dict,
+                                     'gamma': ndarray_to_dict},
+                            from_wire={'problem_instance': binary_problem_from_wire,
+                                       'beta': dict_to_ndarray,
+                                       'gamma': dict_to_ndarray})
+
+register_argument_transform('optimization.qaoa_sample',
+                            to_wire={'problem_instance': to_wire,
+                                     'beta': ndarray_to_dict,
+                                     'gamma': ndarray_to_dict},
+                            from_wire={'problem_instance': binary_problem_from_wire,
+                                       'beta': dict_to_ndarray,
+                                       'gamma': dict_to_ndarray})
+
+
 register_argument_transform('optimization.brute_force_minimize',
                             to_wire={
                                 'objective': lambda x: to_wire(x),
