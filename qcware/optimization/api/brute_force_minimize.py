@@ -6,7 +6,6 @@ import qcware.types.optimization as types
 
 from typing import Optional
 
-import asyncio
 import warnings
 from ...api_calls import declare_api_call
 

@@ -6,7 +6,7 @@ from qcware.types.optimization import BinaryProblem, BinaryResults
 
 import numpy
 
-import asyncio
+import warnings
 from ...api_calls import declare_api_call
 
 
@@ -43,3 +43,19 @@ Arguments:
 :rtype: BinaryResults
 """
     pass
+
+
+def submit_qaoa_sample(*args, **kwargs):
+    """This method is deprecated; please use qaoa_sample.submit"""
+    w = "The old submit_qaoa_sample function has been deprecated and will be removed.  Please use qaoa_sample.submit"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return qaoa_sample.submit(*args, **kwargs)
+
+
+async def async_qaoa_sample(*args, **kwargs):
+    """This method is deprecated; please use qaoa_sample.call_async"""
+    w = "The old async_qaoa_sample function has been deprecated and will be removed.  Please use qaoa_sample.call_async"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return await qaoa_sample.call_async(*args, **kwargs)

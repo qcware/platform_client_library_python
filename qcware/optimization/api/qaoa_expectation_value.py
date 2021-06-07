@@ -3,11 +3,12 @@
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
 from qcware.types.optimization import BinaryProblem, BinaryResults
-from typing import Optional
 
 import numpy
 
-import asyncio
+from typing import Optional
+
+import warnings
 from ...api_calls import declare_api_call
 
 
@@ -34,10 +35,8 @@ Arguments:
 :param gamma: NumPy array with shape (p,) giving gamma angles as typically defined in the QAOA).
 :type gamma: numpy.ndarray
 
-:param num_samples: The number of measurements to use to estimate expectation value.
-    When set to None (the default value), simulation is used (if the
-    backend allows it) to get an exact expectation value.
-    This can be much faster than using samples.
+:param num_samples: The number of measurements to use to estimate expectation value. When set to None (the default value), simulation is used (if the backend allows it) to get an exact expectation value. This can be much faster than using samples., defaults to None
+:type num_samples: Optional[int]
 
 :param backend: String specifying the backend.  Currently only [qcware/cpu] available, defaults to qcware/cpu
 :type backend: str
@@ -47,3 +46,19 @@ Arguments:
 :rtype: float
 """
     pass
+
+
+def submit_qaoa_expectation_value(*args, **kwargs):
+    """This method is deprecated; please use qaoa_expectation_value.submit"""
+    w = "The old submit_qaoa_expectation_value function has been deprecated and will be removed.  Please use qaoa_expectation_value.submit"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return qaoa_expectation_value.submit(*args, **kwargs)
+
+
+async def async_qaoa_expectation_value(*args, **kwargs):
+    """This method is deprecated; please use qaoa_expectation_value.call_async"""
+    w = "The old async_qaoa_expectation_value function has been deprecated and will be removed.  Please use qaoa_expectation_value.call_async"
+    warnings.warn(w, DeprecationWarning)
+    print(w)
+    return await qaoa_expectation_value.call_async(*args, **kwargs)

@@ -4,7 +4,6 @@
 
 import numpy
 
-import asyncio
 import warnings
 from ...api_calls import declare_api_call
 

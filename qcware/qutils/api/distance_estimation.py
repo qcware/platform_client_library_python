@@ -8,7 +8,6 @@ import quasar
 
 from typing import Union
 
-import asyncio
 import warnings
 from ...api_calls import declare_api_call
 

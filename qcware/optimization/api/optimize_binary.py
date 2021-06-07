@@ -4,7 +4,6 @@
 
 from qcware.types.optimization import BinaryProblem, BinaryResults
 
-import asyncio
 import warnings
 from ...api_calls import declare_api_call
 

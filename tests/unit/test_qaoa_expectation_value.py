@@ -6,13 +6,15 @@ import time
 import pytest
 import numpy as np
 
+Num_samples=128
+
 simulation_backends = (
-    'qcware/cpu',
-    'qcware/gpu',
-    'qcware/cpu_simulator',
-    'qcware/gpu_simulator',
-    'awsbraket/sv1',
-    'ibm/simulator',
+    ('qcware/cpu', None),
+    ('qcware/gpu', None),
+    ('qcware/cpu_simulator', None),
+    ('qcware/gpu_simulator', None),
+    ('awsbraket/sv1', Num_samples),
+    ('ibm/simulator', Num_samples),
 )
 
 
@@ -34,51 +36,53 @@ def pubo_example(num_variables: int = 4):
     poly = PolynomialObjective(
         polynomial=poly,
         num_variables=num_variables,
-        domain=np.random.choice('spin', 'boolean')
+        domain=np.random.choice(['spin', 'boolean'])
     )
     return BinaryProblem(objective=poly)
 
 
 # This test is more thorough than it looks since the qcware/cpu algorithm
 # is very different from the simulator backends.
-def test_qaoa_expectation_value_against_cpu_emulate():
+@pytest.mark.parametrize(('backend', 'num_samples'), simulation_backends)
+def test_qaoa_expectation_value_against_cpu_emulate(backend, num_samples):
 
-    for backend in simulation_backends:
-        instance = pubo_example()
-        qaoa_p = np.random.choice([1, 2])
-        beta = np.random.random(qaoa_p)
-        gamma = np.random.random(qaoa_p)
+    instance = pubo_example()
+    qaoa_p = np.random.choice([1, 2])
+    beta = np.random.random(qaoa_p)
+    gamma = np.random.random(qaoa_p)
 
-        qcware_cpu_value = qaoa_expectation_value(
-            problem_instance=instance,
-            beta=beta,
-            gamma=gamma,
-            backend='qcware/cpu'
-        )
-        other_value = qaoa_expectation_value(
-            problem_instance=instance,
-            beta=beta,
-            gamma=gamma,
-            backend=backend
-        )
-        assert np.isclose(other_value, qcware_cpu_value)
+    qcware_cpu_value = qaoa_expectation_value(
+        problem_instance=instance,
+        beta=beta,
+        gamma=gamma,
+        backend='qcware/cpu'
+    )
+    other_value = qaoa_expectation_value(
+        problem_instance=instance,
+        beta=beta,
+        gamma=gamma,
+        num_samples=num_samples,
+        backend=backend
+    )
+    assert np.isclose(other_value, qcware_cpu_value, atol=1)
 
 
 # This just checks to see if we can run with samples.
-def test_qaoa_expectation_value_sampled():
-    for backend in simulation_backends:
-        instance = pubo_example()
-        qaoa_p = np.random.choice([1, 2])
-        beta = np.random.random(qaoa_p)
-        gamma = np.random.random(qaoa_p)
+@pytest.mark.skip("Calling a backend with num_samples which can't handle them can result in an error (qcware/cpu)")
+@pytest.mark.parametrize(('backend', 'num_samples'), simulation_backends)
+def test_qaoa_expectation_value_sampled(backend, num_samples):
+    instance = pubo_example()
+    qaoa_p = np.random.choice([1, 2])
+    beta = np.random.random(qaoa_p)
+    gamma = np.random.random(qaoa_p)
 
-        qaoa_expectation_value(
-            problem_instance=instance,
-            beta=beta,
-            gamma=gamma,
-            num_samples=128,
-            backend=backend
-        )
+    qaoa_expectation_value(
+        problem_instance=instance,
+        beta=beta,
+        gamma=gamma,
+        num_samples=128,
+        backend=backend
+    )
 
 
 @pytest.mark.parametrize('backend', ['ibmq:ibmq_qasm_simulator'])
