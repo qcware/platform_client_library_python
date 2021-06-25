@@ -7,8 +7,8 @@ def test_loader():
     x = np.random.rand(4)
     x = x / np.linalg.norm(x)
 
-    circ = loader(data=x, mode='optimized')
-    backend = QuasarBackend('qcware/cpu_simulator')
+    circ = loader(data=x, mode="optimized")
+    backend = QuasarBackend("qcware/cpu_simulator")
     state = np.real(backend.run_statevector(circuit=circ))
     indices = [10, 9, 6, 5]
     reduced_vec = state[indices]

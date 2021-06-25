@@ -9,9 +9,9 @@ from qcware.types.optimization.predicate import Predicate
 from qcware.types.optimization.problem_spec import PolynomialObjective
 
 
-def constraint_validation(constraints: dict,
-                          num_variables: int,
-                          validate_types: bool = True):
+def constraint_validation(
+    constraints: dict, num_variables: int, validate_types: bool = True
+):
     from qcware.types.optimization import Predicate
 
     # By changing from a pydantic.dataclass to a vanilla dataclass,
@@ -41,9 +41,10 @@ def constraint_validation(constraints: dict,
                 for p in pubo_list:
                     if p.num_variables != self.num_vars:
                         raise RuntimeError(
-                            f'Found a constraint for {p.num_variables} '
-                            f'variables, but expected {self.num_vars} '
-                            f'variables.')
+                            f"Found a constraint for {p.num_variables} "
+                            f"variables, but expected {self.num_vars} "
+                            f"variables."
+                        )
 
             for pred in removals:
                 self.constraint_dict.pop(pred)
@@ -52,4 +53,5 @@ def constraint_validation(constraints: dict,
         model=_ConstraintValidation,
         max_num_errors=10,
         constraint_dict=constraints,
-        num_vars=num_variables)
+        num_vars=num_variables,
+    )

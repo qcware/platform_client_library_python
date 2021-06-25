@@ -2,8 +2,15 @@ import inspect
 from random import uniform
 from quasar import Circuit, CompositeGate, ControlledGate, Gate
 from qcware.serialization.serialize_quasar import (
-    quasar_to_sequence, sequence_to_quasar, base_gate_name, num_adjoints,
-    make_gate, quasar_to_string, string_to_quasar, Canonical_gate_names)
+    quasar_to_sequence,
+    sequence_to_quasar,
+    base_gate_name,
+    num_adjoints,
+    make_gate,
+    quasar_to_string,
+    string_to_quasar,
+    Canonical_gate_names,
+)
 from scipy.stats import unitary_group
 
 
@@ -32,8 +39,8 @@ def test_serialize_parmgates():
 def test_serialize_compositegates():
     cg = CompositeGate(
         Circuit().CF(0, 1, theta=0.42).CX(1, 0),
-        name='PS',
-        ascii_symbols=['P', 'S'],
+        name="PS",
+        ascii_symbols=["P", "S"],
     )
     q = Circuit()
     q.add_gate(cg, (0, 1))
@@ -58,20 +65,20 @@ def test_serialize_controlledgate():
 
 
 def test_adjoint_regexes():
-    s = 'S'
-    st = 'S^+'
-    stt = 'S^+^+'
+    s = "S"
+    st = "S^+"
+    stt = "S^+^+"
 
-    assert base_gate_name(s) == 'S'
+    assert base_gate_name(s) == "S"
     assert num_adjoints(s) == 0
-    assert base_gate_name(st) == 'S'
+    assert base_gate_name(st) == "S"
     assert num_adjoints(st) == 1
-    assert base_gate_name(stt) == 'S'
+    assert base_gate_name(stt) == "S"
     assert num_adjoints(stt) == 2
 
 
 def test_create_adjoint():
-    st = make_gate('S^+', {})
+    st = make_gate("S^+", {})
     assert st == Gate.ST
 
     stt = make_gate("S^+^+", {})
@@ -87,17 +94,17 @@ def test_all_canonical_gates():
         g = getattr(Gate, gate_name)
         # print(f"Gate {g} (callable: {callable(g)})")
         if callable(g):
-            if gate_name == 'U1':
+            if gate_name == "U1":
                 g = Gate.U1(unitary_group.rvs(2))
-            elif gate_name == 'U2':
+            elif gate_name == "U2":
                 g = Gate.U2(unitary_group.rvs(4))
             else:
                 # this is a function-style gate; instantiate it
                 # with random parameters
                 argnames = inspect.getfullargspec(g).args
                 args = dict(
-                    zip(argnames,
-                        [uniform(0, 3.14) for x in range(len(argnames))]))
+                    zip(argnames, [uniform(0, 3.14) for x in range(len(argnames))])
+                )
                 # print(f"Instantiating {gate_name}")
                 g = g(**args)
         try:
@@ -111,7 +118,7 @@ def test_all_canonical_gates():
     q2 = sequence_to_quasar(s)
     s2 = list(quasar_to_sequence(q2))
     assert Circuit.test_equivalence(q, q2)
-    assert (s == s2)
+    assert s == s2
 
     s2 = quasar_to_string(q)
     # print(s2)

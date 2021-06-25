@@ -8,21 +8,31 @@ from pprint import pprint
 import numpy as np
 
 
-@pytest.mark.parametrize("backend,expected", [("qcware/cpu_simulator", True),
-                                              ("qcware/gpu_simulator", True),
-                                              ("ibm/simulator", True),
-                                              ("awsbraket/sv1", False),
-                                              ("awsbraket/tn1", False)])
+@pytest.mark.parametrize(
+    "backend,expected",
+    [
+        ("qcware/cpu_simulator", True),
+        ("qcware/gpu_simulator", True),
+        ("ibm/simulator", True),
+        ("awsbraket/sv1", False),
+        ("awsbraket/tn1", False),
+    ],
+)
 def test_has_run_statevector(backend: str, expected: bool):
     b = QuasarBackend(backend)
     assert b.has_run_statevector() is expected
 
 
-@pytest.mark.parametrize("backend,expected", [("qcware/cpu_simulator", True),
-                                              ("qcware/gpu_simulator", True),
-                                              ("ibm/simulator", True),
-                                              ("awsbraket/sv1", False),
-                                              ("awsbraket/tn1", False)])
+@pytest.mark.parametrize(
+    "backend,expected",
+    [
+        ("qcware/cpu_simulator", True),
+        ("qcware/gpu_simulator", True),
+        ("ibm/simulator", True),
+        ("awsbraket/sv1", False),
+        ("awsbraket/tn1", False),
+    ],
+)
 def test_has_statevector_input(backend: str, expected: bool):
     b = QuasarBackend(backend)
     assert b.has_statevector_input() is expected
@@ -38,7 +48,8 @@ def test_has_statevector_input(backend: str, expected: bool):
         ("awsbraket/sv1"),
         ("awsbraket/tn1"),
         #        ("awsbraket/rigetti")
-    ])
+    ],
+)
 def test_run_measurement(backend):
     q = quasar.Circuit()
     q.H(0).CX(0, 1)
@@ -51,8 +62,7 @@ def test_run_measurement(backend):
     assert abs(result.histogram[0] - 0.5) < 0.1
 
 
-@pytest.mark.parametrize("backend",
-                         (("awsbraket/ionq"), ("awsbraket/rigetti")))
+@pytest.mark.parametrize("backend", (("awsbraket/ionq"), ("awsbraket/rigetti")))
 def test_smoke_backend_exception(backend):
     """This is a 'smoke test' for having a NotImplementedError from a
     backend. Accuracy doesn't matter here so long as the call gives a
@@ -64,13 +74,12 @@ def test_smoke_backend_exception(backend):
     try:
         result = b.run_statevector(circuit=q)
     except ApiCallExecutionError as e:
-        assert str(e) == 'NotImplementedError: '
+        assert str(e) == "NotImplementedError: "
         return
     assert False
 
 
-@pytest.mark.parametrize("backend",
-                         (("awsbraket/ionq"), ("awsbraket/rigetti")))
+@pytest.mark.parametrize("backend", (("awsbraket/ionq"), ("awsbraket/rigetti")))
 def test_smoke_rescheduled_backends(backend):
     """This is another 'smoke test' for the backends that can be rescheduled; they
     need to either raise a rescheduled exception or run
@@ -87,7 +96,8 @@ def test_smoke_rescheduled_backends(backend):
         ("qcware/cpu_simulator"),
         ("qcware/gpu_simulator"),
         #        ("awsbraket/rigetti")
-    ])
+    ],
+)
 def test_run_statevector(backend):
     q = quasar.Circuit()
     q.H(0).CX(0, 1)

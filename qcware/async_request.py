@@ -31,18 +31,16 @@ def _fatal_code(e):
 # https://stackoverflow.com/questions/56152651/how-to-retry-async-aiohttp-requests-depending-on-the-status-code
 
 
-@backoff.on_exception(backoff.expo,
-                      requests.exceptions.RequestException,
-                      max_tries=3,
-                      giveup=_fatal_code)
+@backoff.on_exception(
+    backoff.expo, requests.exceptions.RequestException, max_tries=3, giveup=_fatal_code
+)
 def post_request(url, data):
     return client_session().post(url, json=data, raise_for_status=True)
 
 
-@backoff.on_exception(backoff.expo,
-                      requests.exceptions.RequestException,
-                      max_tries=3,
-                      giveup=_fatal_code)
+@backoff.on_exception(
+    backoff.expo, requests.exceptions.RequestException, max_tries=3, giveup=_fatal_code
+)
 def get_request(url):
     return client_session().get(url, raise_for_status=True)
 
@@ -50,7 +48,7 @@ def get_request(url):
 async def post(url, data):
     async with post_request(url, data) as response:
         if response.status >= 400:
-            raise ApiCallFailedError(response.json()['message'])
+            raise ApiCallFailedError(response.json()["message"])
         return await response.json()
 
 
@@ -58,6 +56,6 @@ async def get(url):
     async with get_request(url) as response:
         if response.status >= 400:
             raise ApiCallResultUnavailableError(
-                'Unable to retrieve result, please try again later or contact support'
+                "Unable to retrieve result, please try again later or contact support"
             )
         return await response.text()

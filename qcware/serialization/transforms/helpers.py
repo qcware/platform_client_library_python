@@ -4,9 +4,13 @@ from typing import Dict
 import lz4.frame
 from icontract import require
 from functools import singledispatch
-from ...types.optimization import (PolynomialObjective, Constraints,
-                                   BinaryProblem, BinaryResults,
-                                   BruteOptimizeResult)
+from ...types.optimization import (
+    PolynomialObjective,
+    Constraints,
+    BinaryProblem,
+    BinaryResults,
+    BruteOptimizeResult,
+)
 
 
 def ndarray_to_dict(x: np.ndarray):
@@ -20,26 +24,28 @@ def ndarray_to_dict(x: np.ndarray):
         Compression_threshold = 1024
         if len(b) > Compression_threshold:
             b = lz4.frame.compress(b)
-            compression = 'lz4'
+            compression = "lz4"
         else:
-            compression = 'none'
-        return dict(ndarray=base64.b64encode(b).decode('utf-8'),
-                    compression=compression,
-                    dtype=x.dtype.str,
-                    shape=x.shape)
+            compression = "none"
+        return dict(
+            ndarray=base64.b64encode(b).decode("utf-8"),
+            compression=compression,
+            dtype=x.dtype.str,
+            shape=x.shape,
+        )
 
 
 def dict_to_ndarray(d: dict):
     if d is None:
         return None
     else:
-        b = base64.b64decode(d['ndarray'])
-        if d['compression'] == 'lz4':
+        b = base64.b64decode(d["ndarray"])
+        if d["compression"] == "lz4":
             b = lz4.frame.decompress(b)
         return np.frombuffer(
             b,
-            dtype=np.dtype(d['dtype']),
-        ).reshape(d['shape'])
+            dtype=np.dtype(d["dtype"]),
+        ).reshape(d["shape"])
 
 
 @require(lambda v: np.isscalar(v))
@@ -53,11 +59,11 @@ def scalar_to_dict(v, dtype=None) -> Dict:
     if dtype is None:
         dtype = np.complex128 if np.iscomplex(v) else np.float64
     result = ndarray_to_dict(np.array([v], dtype=dtype))
-    result['is_scalar'] = True
+    result["is_scalar"] = True
     return result
 
 
-@require(lambda d: d.get('is_scalar', False) is True)
+@require(lambda d: d.get("is_scalar", False) is True)
 def dict_to_scalar(d: Dict):
     return dict_to_ndarray(d)[0]
 
@@ -71,28 +77,24 @@ def numeric_to_dict(x):
     return scalar_to_dict(x) if np.isscalar(x) else ndarray_to_dict(x)
 
 
-@require(lambda x: isinstance(x, dict) and 'ndarray' in x)
+@require(lambda x: isinstance(x, dict) and "ndarray" in x)
 def dict_to_numeric(x):
-    """See numeric_to_dict
-    """
-    if x.get('is_scalar', False) is True:
+    """See numeric_to_dict"""
+    if x.get("is_scalar", False) is True:
         return dict_to_scalar(x)
     else:
         return dict_to_ndarray(x)
 
 
 def string_to_int_tuple(s: str):
-    term_strings = s.split(',')
-    if term_strings[-1] == '':
+    term_strings = s.split(",")
+    if term_strings[-1] == "":
         term_strings = term_strings[:-1]
     return tuple(map(int, term_strings))
 
 
 def remap_q_indices_from_strings(q_old: dict) -> dict:
-    q_new = {
-        string_to_int_tuple(k[1:-1].strip(", ")): v
-        for k, v in q_old.items()
-    }
+    q_new = {string_to_int_tuple(k[1:-1].strip(", ")): v for k, v in q_old.items()}
     return q_new
 
 
@@ -107,7 +109,7 @@ def complex_or_real_dtype_to_string(t: type):
         if np.isreal(t()) or np.iscomplex(t()):
             result = t.__name__
         else:
-            raise NotImplementedError('dtypes must be complex or real')
+            raise NotImplementedError("dtypes must be complex or real")
     return result
 
 
@@ -119,46 +121,44 @@ def string_to_complex_or_real_dtype(s: str):
         if np.isreal(t()) or np.iscomplex(t()):
             result = t
         else:
-            raise NotImplementedError('dtypes must be complex or real')
+            raise NotImplementedError("dtypes must be complex or real")
     return result
 
 
 @singledispatch
 def to_wire(x):
-    """For complex types, this dispatches to create a JSON-compatible dict
-    """
+    """For complex types, this dispatches to create a JSON-compatible dict"""
     raise NotImplementedError("Unsupported Type")
 
 
 @to_wire.register(PolynomialObjective)
 def _(x):
     result = x.dict()
-    result['polynomial'] = remap_q_indices_to_strings(result['polynomial'])
+    result["polynomial"] = remap_q_indices_to_strings(result["polynomial"])
     return result
 
 
 def polynomial_objective_from_wire(d: dict):
     remapped_dict = d.copy()
 
-    remapped_dict['polynomial'] = remap_q_indices_from_strings(d['polynomial'])
+    remapped_dict["polynomial"] = remap_q_indices_from_strings(d["polynomial"])
     return PolynomialObjective(**remapped_dict)
 
 
 @to_wire.register(Constraints)
 def _(x):
     result = x.dict()
-    result['constraints'] = {
-        k: [to_wire(x) for x in v]
-        for k, v in x.dict()['constraints'].items()
+    result["constraints"] = {
+        k: [to_wire(x) for x in v] for k, v in x.dict()["constraints"].items()
     }
     return result
 
 
 def constraints_from_wire(d: dict):
     remapped_dict = d.copy()
-    remapped_dict['constraints'] = {
+    remapped_dict["constraints"] = {
         k: [polynomial_objective_from_wire(x) for x in v]
-        for k, v in d['constraints'].items()
+        for k, v in d["constraints"].items()
     }
 
     return Constraints(**remapped_dict)
@@ -167,33 +167,32 @@ def constraints_from_wire(d: dict):
 @to_wire.register(BinaryProblem)
 def _(x):
     result = x.dict()
-    result['objective'] = remap_q_indices_to_strings(result['objective'].polynomial)
+    result["objective"] = remap_q_indices_to_strings(result["objective"].polynomial)
 
     return result
 
 
 def binary_problem_from_wire(d: dict):
     remapped_dict = d.copy()
-    remapped_dict['objective'] = remap_q_indices_from_strings(d['objective'])
-    return BinaryProblem.from_dict(remapped_dict['objective'])
+    remapped_dict["objective"] = remap_q_indices_from_strings(d["objective"])
+    return BinaryProblem.from_dict(remapped_dict["objective"])
 
 
 @to_wire.register(BinaryResults)
 def _(x):
     result = x.dict()
-    result['original_problem'] = to_wire(x.original_problem)
-    result['backend_data_start'] = {
+    result["original_problem"] = to_wire(x.original_problem)
+    result["backend_data_start"] = {
         k: v
-        for k, v in result['backend_data_start'].items()
-        if k not in ('Q', 'Q_array', 'split_to_full_map_array', 'instance')
+        for k, v in result["backend_data_start"].items()
+        if k not in ("Q", "Q_array", "split_to_full_map_array", "instance")
     }
     return result
 
 
 def binary_results_from_wire(d: dict):
     remapped_dict = d.copy()
-    remapped_dict['original_problem'] = binary_problem_from_wire(
-        d['original_problem'])
+    remapped_dict["original_problem"] = binary_problem_from_wire(d["original_problem"])
     return BinaryResults(**remapped_dict)
 
 

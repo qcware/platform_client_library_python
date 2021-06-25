@@ -14,7 +14,7 @@ def generate_circuit(N: int) -> quasar.Circuit:
 
     parameter_values = []
     for I in range(N):
-        value = (1.0 - I / 17.0)
+        value = 1.0 - I / 17.0
         parameter_values.append(+value)
         parameter_values.append(-value)
     circuit.set_parameter_values(parameter_values)
@@ -32,20 +32,25 @@ def generate_pauli(N: int) -> quasar.Pauli:
 @pytest.mark.parametrize(
     "backend",
     (
-        'qcware/cpu_simulator',
-        'qcware/gpu_simulator'
+        "qcware/cpu_simulator",
+        "qcware/gpu_simulator"
         #    'awsbraket/qs1')
-    ))
+    ),
+)
 def test_pauli(backend):
     N = 5
     circuit = generate_circuit(N)
     pauli = generate_pauli(N)
     vulcan_backend = QuasarBackend(backend)
     data = vulcan_backend.run_pauli_expectation_value_gradient.data(
-        circuit=circuit, pauli=pauli, parameter_indices=[0,1,2,3])
+        circuit=circuit, pauli=pauli, parameter_indices=[0, 1, 2, 3]
+    )
     result = vulcan_backend.run_pauli_expectation_value_gradient(
-        circuit=circuit, pauli=pauli, parameter_indices=[0, 1, 2, 3])
+        circuit=circuit, pauli=pauli, parameter_indices=[0, 1, 2, 3]
+    )
     assert np.isclose(
         result,
-        np.array([0.68287656, -0.68287656, 0.37401749, -0.37401749],
-                 dtype=np.complex128)).all()
+        np.array(
+            [0.68287656, -0.68287656, 0.37401749, -0.37401749], dtype=np.complex128
+        ),
+    ).all()

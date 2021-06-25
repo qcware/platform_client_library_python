@@ -1,7 +1,8 @@
 from typing import Dict, Tuple, Set, Union, Optional
 import qubovert as qv
-from qcware.types.optimization.problem_spec.utils import \
-    polynomial_validation as validator
+from qcware.types.optimization.problem_spec.utils import (
+    polynomial_validation as validator,
+)
 from qcware.types.optimization.variable_types import Domain
 
 
@@ -67,18 +68,21 @@ class PolynomialObjective:
         domain: Specifies if variables take on boolean (0, 1) or spin (1, -1)
             values.
     """
+
     polynomial: Dict[Tuple[int, ...], int]
     variables: Set[int]
     num_variables: int
     degree: Union[int, float]
     domain: Domain
 
-    def __init__(self,
-                 polynomial: Dict[Tuple[int, ...], int],
-                 num_variables: int,
-                 domain: Union[Domain, str] = Domain.BOOLEAN,
-                 variable_name_mapping: Optional[Dict[int, str]] = None,
-                 validate_types: bool = True):
+    def __init__(
+        self,
+        polynomial: Dict[Tuple[int, ...], int],
+        num_variables: int,
+        domain: Union[Domain, str] = Domain.BOOLEAN,
+        variable_name_mapping: Optional[Dict[int, str]] = None,
+        validate_types: bool = True,
+    ):
         # TODO: introduce mapping structure to guarantee consistent variable
         #   reduction. This is also critical because we don't want
         #   reduction to annoyingly re-order variables when it's not necessary.
@@ -89,28 +93,28 @@ class PolynomialObjective:
         parsed_polynomial = validator.polynomial_validation(
             polynomial=polynomial,
             num_variables=num_variables,
-            validate_types=validate_types)
+            validate_types=validate_types,
+        )
 
         self.polynomial = parsed_polynomial.poly
         self.active_variables = parsed_polynomial.variables
         self.num_active_variables = len(self.active_variables)
         self.degree = parsed_polynomial.deg
         if self.degree < 0:
-            self.degree = float('-inf')
+            self.degree = float("-inf")
 
         self.variable_name_mapping = variable_name_mapping
 
         def default_symbol(variable_type: Domain):
             if variable_type is Domain.BOOLEAN:
-                return 'x'
+                return "x"
             elif variable_type is Domain.SPIN:
-                return 'z'
+                return "z"
 
         if variable_name_mapping is None:
             symbol = default_symbol(self.domain)
             self.variable_name_mapping = {
-                i: f'{symbol}_{i}'
-                for i in range(num_variables)
+                i: f"{symbol}_{i}" for i in range(num_variables)
             }
 
     def keys(self):
@@ -126,11 +130,11 @@ class PolynomialObjective:
         return self.polynomial.__iter__()
 
     def __repr__(self):
-        out = 'PolynomialObjective(\n'
-        out += '    polynomial=' + self.polynomial.__repr__() + '\n'
-        out += '    num_variables=' + str(self.num_variables) + '\n'
-        out += '    domain=' + repr(self.domain)
-        out += '\n)'
+        out = "PolynomialObjective(\n"
+        out += "    polynomial=" + self.polynomial.__repr__() + "\n"
+        out += "    num_variables=" + str(self.num_variables) + "\n"
+        out += "    domain=" + repr(self.domain)
+        out += "\n)"
         return out
 
     def __str__(self):
@@ -146,7 +150,8 @@ class PolynomialObjective:
             num_variables=self.num_variables,
             domain=self.domain,
             variable_name_mapping=self.variable_name_mapping.copy(),
-            validate_types=False)
+            validate_types=False,
+        )
 
     def qubovert(self, use_variable_names: bool = False):
         """Get a qubovert model describing this polynomial.
@@ -172,7 +177,7 @@ class PolynomialObjective:
         elif self.domain is Domain.SPIN:
             model = qv.PUSO(polynomial)
         else:
-            raise RuntimeError('Domain is not valid.')
+            raise RuntimeError("Domain is not valid.")
         if use_variable_names:
             model.set_reverse_mapping(self.variable_name_mapping)
         return model
@@ -187,7 +192,7 @@ class PolynomialObjective:
         the original variable identifiers.
         """
         qv_model = self.qubovert(use_variable_names=False)
-        return {'polynomial': qv_model.to_pubo(), 'mapping': qv_model.mapping}
+        return {"polynomial": qv_model.to_pubo(), "mapping": qv_model.mapping}
 
     def qubovert_spin(self):
         """Get a spin qubovert model equivalent to this polynomial.
@@ -199,7 +204,7 @@ class PolynomialObjective:
         the original variable identifiers.
         """
         qv_model = self.qubovert(use_variable_names=False)
-        return {'polynomial': qv_model.to_puso(), 'mapping': qv_model.mapping}
+        return {"polynomial": qv_model.to_puso(), "mapping": qv_model.mapping}
 
     def reduce_variables(self):
         """Return a PolynomialObjective with trivial variables removed.
@@ -230,14 +235,14 @@ class PolynomialObjective:
         num_vars = reduced_qv.num_binary_variables
 
         return {
-            'polynomial':
-            PolynomialObjective(polynomial=reduced_qv,
-                                num_variables=num_vars,
-                                domain=self.domain,
-                                variable_name_mapping=None,
-                                validate_types=False),
-            'mapping':
-            mapping
+            "polynomial": PolynomialObjective(
+                polynomial=reduced_qv,
+                num_variables=num_vars,
+                domain=self.domain,
+                variable_name_mapping=None,
+                validate_types=False,
+            ),
+            "mapping": mapping,
         }
 
     @classmethod
@@ -255,8 +260,9 @@ class PolynomialObjective:
         """
         if not isinstance(v, PolynomialObjective):
             raise TypeError(
-                'Expected an object of class PolynomialObjective, but found '
-                f'{type(v)}.')
+                "Expected an object of class PolynomialObjective, but found "
+                f"{type(v)}."
+            )
         return v
 
     def pretty_str(self):
@@ -268,7 +274,7 @@ class PolynomialObjective:
         Adapted from qubovert--thanks to Joseph T. Iosue.
         """
         if self.polynomial == {}:
-            return ''
+            return ""
 
         if self.domain is Domain.BOOLEAN:
             res = f"Boolean Variables: "
@@ -281,31 +287,31 @@ class PolynomialObjective:
         first = True
         for term, coef in self.items():
             if coef >= 0 and (coef != 1 or not term):
-                res += f'{coef} '
+                res += f"{coef} "
             elif coef < 0:
                 if coef == -1:
                     if first:
                         res += "-" if term else "-1 "
                     else:
-                        res = res[:-2] + ('- ' if term else "- 1 ")
+                        res = res[:-2] + ("- " if term else "- 1 ")
                 else:
                     if first:
-                        res += f'{coef} '
+                        res += f"{coef} "
                     else:
-                        res = res[:-2] + f'- {abs(coef)} '
+                        res = res[:-2] + f"- {abs(coef)} "
 
             for x in term:
 
-                res += self.variable_name_mapping[x] + ' '
+                res += self.variable_name_mapping[x] + " "
             res += "+ "
             first = False
         return res[:-2].strip()
 
     def dict(self):
         return {
-            'polynomial': self.polynomial,
-            'num_variables': self.num_variables,
-            'domain': self.domain.lower()
+            "polynomial": self.polynomial,
+            "num_variables": self.num_variables,
+            "domain": self.domain.lower(),
         }
 
 

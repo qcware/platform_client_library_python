@@ -11,7 +11,7 @@ from .problem_spec import Constraints
 class BinaryProblem(BaseModel):
     objective: PolynomialObjective
     constraints: Optional[Constraints] = None
-    name: str = 'my_qcware_binary_problem'
+    name: str = "my_qcware_binary_problem"
 
     class Config:
         validate_assignment = True
@@ -19,10 +19,10 @@ class BinaryProblem(BaseModel):
         arbitrary_types_allowed = True
 
     def __str__(self) -> str:
-        header0 = '* Name: {0} *\n'.format(self.name)
-        header1 = '* Variable type: {0} *\n'.format(self.objective.domain)
-        line = '**********************\n'
-        header2 = 'Objective function: {0} \n'.format(self.objective.polynomial)
+        header0 = "* Name: {0} *\n".format(self.name)
+        header1 = "* Variable type: {0} *\n".format(self.objective.domain)
+        line = "**********************\n"
+        header2 = "Objective function: {0} \n".format(self.objective.polynomial)
 
         string_out = line + header0 + header1 + line + header2
         if self.constraints is not None:
@@ -31,13 +31,12 @@ class BinaryProblem(BaseModel):
 
     @classmethod
     def from_dict(
-            cls,
-            objective: Dict[Tuple[int, ...], int],
-            domain: Domain = Domain.BOOLEAN
+        cls, objective: Dict[Tuple[int, ...], int], domain: Domain = Domain.BOOLEAN
     ):
         """
         Creates the BinaryProblem from a dict specifying a boolean polynomial.
         """
+
         def count_variables(polynomial: dict):
             var_names = set()
             for k in polynomial.keys():
@@ -47,7 +46,7 @@ class BinaryProblem(BaseModel):
         objective = PolynomialObjective(
             polynomial=objective,
             num_variables=count_variables(objective),
-            domain=domain
+            domain=domain,
         )
 
         return cls(objective=objective)
@@ -60,7 +59,7 @@ class BinaryProblem(BaseModel):
             if elm == ():
                 pass
             elif len(elm) == 1:
-                q_final[(elm[0], elm[0])] = q_start[(elm[0], )]
+                q_final[(elm[0], elm[0])] = q_start[(elm[0],)]
             else:
                 q_final[elm] = q_start[elm]
 
@@ -95,11 +94,11 @@ class BinarySample(BaseModel):
     energy: int = None
     num_occurrences: int
 
-    @validator('bitstring')
+    @validator("bitstring")
     def bitstring_must_be_01(cls, v):
         for elm in v:
             if elm != 0 and elm != 1:
-                raise ValueError('Bitstring values must be 0 or 1')
+                raise ValueError("Bitstring values must be 0 or 1")
         return v
 
     class Config:
@@ -107,11 +106,10 @@ class BinarySample(BaseModel):
         allow_mutation = False
 
     def __str__(self) -> str:
-        '''Print the problem in a nice way'''
-        header0 = '* Bitstring: {0} *\n'.format(self.bitstring)
-        header1 = '* Energy: {0} *\n'.format(self.energy)
-        header2 = '* Number of ocurrences: {0} *\n'.format(
-            self.num_occurrences)
+        """Print the problem in a nice way"""
+        header0 = "* Bitstring: {0} *\n".format(self.bitstring)
+        header1 = "* Energy: {0} *\n".format(self.energy)
+        header2 = "* Number of ocurrences: {0} *\n".format(self.num_occurrences)
 
         string_out = header0 + header1 + header2  # + '\n'
 
@@ -137,12 +135,12 @@ class BinaryResults(BaseModel):
       variable_mapping: Optional specification of how variables in the original
         problem instance map to variables appearing in binary samples.
     """
+
     original_problem: BinaryProblem
 
     backend_data_start: Dict[str, Union[str, int, float, Dict, List, None]]
 
-    backend_data_finish: Dict[str, Union[str, int, float, Dict, List,
-                                         None]] = {}
+    backend_data_finish: Dict[str, Union[str, int, float, Dict, List, None]] = {}
 
     results: List[BinarySample] = []
 
@@ -151,12 +149,11 @@ class BinaryResults(BaseModel):
         allow_mutation = False
 
     def __str__(self) -> str:
-        '''Print the problem in a nice way'''
-        title = 'Name: {0} \n'.format('results_of_' +
-                                      self.original_problem.name)
-        header0 = 'Lowest energy sample:\n'
+        """Print the problem in a nice way"""
+        title = "Name: {0} \n".format("results_of_" + self.original_problem.name)
+        header0 = "Lowest energy sample:\n"
         if len(self.results) == 0:
-            header1 = 'Empty'
+            header1 = "Empty"
 
             return title + header0 + header1
         else:
@@ -170,13 +167,9 @@ class BinaryResults(BaseModel):
                 else:
                     break
 
-            num_occurrences_results = [
-                elm.num_occurrences for elm in self.results
-            ]
-            header2 = 'Number of Samples: {0} \n'.format(
-                sum(num_occurrences_results))
-            header3 = 'Number of Unique Samples: {0} \n'.format(
-                len(self.results))
+            num_occurrences_results = [elm.num_occurrences for elm in self.results]
+            header2 = "Number of Samples: {0} \n".format(sum(num_occurrences_results))
+            header3 = "Number of Unique Samples: {0} \n".format(len(self.results))
 
             string_out = title + header0 + header1 + header2 + header3
 
@@ -187,6 +180,7 @@ class BinaryResults(BaseModel):
         Args:
             sample: The objective function of the quadratic program.
         """
+
         def calculate_energy(bitstring: List) -> float:
             """Calculates the energy of a bitstring
             Args:
@@ -199,16 +193,16 @@ class BinaryResults(BaseModel):
             return self.original_problem.objective.qubovert().value(x)
 
         def sort_bin(b):
-            'Orders bitstrings'
+            "Orders bitstrings"
             b_view = np.ascontiguousarray(b).view(
-                np.dtype((np.void, b.dtype.itemsize * b.shape[1])))
+                np.dtype((np.void, b.dtype.itemsize * b.shape[1]))
+            )
             return np.argsort(b_view.ravel())
 
         sample_bitstring = sample.bitstring
 
         # First assert that the solution is the same length as the problem
-        assert len(
-            sample_bitstring) == self.original_problem.objective.num_variables
+        assert len(sample_bitstring) == self.original_problem.objective.num_variables
 
         # Obtain existing results
 
@@ -227,9 +221,11 @@ class BinaryResults(BaseModel):
                     old_frequency = new_results[elm].num_occurrences
                     # Modify by new one
                     new_frequency = old_frequency + sample.num_occurrences
-                    new_sample = BinarySample(bitstring=sample.bitstring,
-                                              energy=new_results[elm].energy,
-                                              num_occurrences=new_frequency)
+                    new_sample = BinarySample(
+                        bitstring=sample.bitstring,
+                        energy=new_results[elm].energy,
+                        num_occurrences=new_frequency,
+                    )
                     # Remove the old sample
                     new_results.remove(new_results[elm])
                     # Add new sample
@@ -238,8 +234,7 @@ class BinaryResults(BaseModel):
         else:
             # If bitstring not there just add
             # But first calculate energy
-            sample = sample.set_energy(
-                calculate_energy(bitstring=sample_bitstring))
+            sample = sample.set_energy(calculate_energy(bitstring=sample_bitstring))
             new_results.append(sample)
 
         bitstrings = [elm.bitstring for elm in new_results]
@@ -274,17 +269,13 @@ class BinaryResults(BaseModel):
             return result_list
 
     def lowest_energy(self) -> float:
-        """Returns lowest energy
-        """
+        """Returns lowest energy"""
         return self.results[0].energy
 
     def lowest_energy_bitstrings(self) -> List:
-        """Returns all the bitstrings with the lowest energy
-        """
+        """Returns all the bitstrings with the lowest energy"""
         # these are sorted, so result[0] has the lowest energy
-        result = [
-            elm for elm in self.results if elm.energy == self.results[0].energy
-        ]
+        result = [elm for elm in self.results if elm.energy == self.results[0].energy]
         return result
 
     # def plot_histogram(self) -> None:
@@ -308,8 +299,7 @@ class BinaryResults(BaseModel):
     #     plt.show()
 
     def results_original_notation(self) -> List[Dict]:
-        """Plots histogram
-        """
+        """Plots histogram"""
         results_ori = []
 
         for elm in self.results:
@@ -317,41 +307,37 @@ class BinaryResults(BaseModel):
             original_mapping = self.original_problem.qubovert.mapping
             dict_sample = {}
             for dict_elm in original_mapping:
-                dict_sample[dict_elm] = bitstring_sample[
-                    original_mapping[dict_elm]]
+                dict_sample[dict_elm] = bitstring_sample[original_mapping[dict_elm]]
 
             results_ori.append(dict_sample)
 
         return results_ori
 
     def name(self) -> str:
-        """Returns the name of the quadratic program.
-        """
-        return 'results_of_' + self.original_problem.name
+        """Returns the name of the quadratic program."""
+        return "results_of_" + self.original_problem.name
 
     def set_output_data(self, output_data: Dict) -> None:
         """Sets the output data of the quadratic program.
         Args:
             output_data: The output data of the quadratic program.
         """
-        return self.copy(deep=True,
-                         update=dict(backend_data_finish=output_data))
+        return self.copy(deep=True, update=dict(backend_data_finish=output_data))
 
-    def has_result_with_energy(self, bitstring: List[int],
-                               energy: float) -> bool:
+    def has_result_with_energy(self, bitstring: List[int], energy: float) -> bool:
         """
         Returns whether or not there exists in the list of results a bitstring
         with the given energy.
         """
         results = [
-            x for x in self.results
-            if x.bitstring == bitstring and x.energy == energy
+            x for x in self.results if x.bitstring == bitstring and x.energy == energy
         ]
         return len(results) > 0
 
     @classmethod
     def from_wire(cls, d: Dict):
         remapped_dict = d.copy()
-        remapped_dict['original_problem'] = BinaryProblem.from_wire(
-            d['original_problem'])
+        remapped_dict["original_problem"] = BinaryProblem.from_wire(
+            d["original_problem"]
+        )
         return cls(**remapped_dict)

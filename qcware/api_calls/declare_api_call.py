@@ -1,6 +1,12 @@
 from .. import logger
 import inspect
-from .api_call import post_call, wait_for_call, handle_result, async_post_call, async_retrieve_result
+from .api_call import (
+    post_call,
+    wait_for_call,
+    handle_result,
+    async_post_call,
+    async_retrieve_result,
+)
 from ..serialization.transforms import client_args_to_wire
 from ..config import client_timeout
 from ..exceptions import ApiTimeoutError
@@ -18,9 +24,9 @@ class ApiCall:
 
     def do(self, *args, **kwargs):
         api_call = post_call(self.endpoint, self.data(*args, **kwargs))
-        api_call_id = api_call['uid']
+        api_call_id = api_call["uid"]
         logger.info(
-            f'API call to {self.name} successful; api call token is {api_call_id}'
+            f"API call to {self.name} successful; api call token is {api_call_id}"
         )
         if client_timeout() == 0:
             raise ApiTimeoutError(api_call)
@@ -32,15 +38,14 @@ class ApiCall:
         logger.info(
             f'Call submitted to {self.name} successful; api call token is {api_call["uid"]}'
         )
-        return api_call['uid']
+        return api_call["uid"]
 
     async def call_async(self, *args, **kwargs):
-        api_call = await async_post_call(self.endpoint,
-                                         self.data(*args, **kwargs))
+        api_call = await async_post_call(self.endpoint, self.data(*args, **kwargs))
         logger.info(
             f'Async call to {self.name} successful; api call token is {api_call["uid"]}'
         )
-        return await async_retrieve_result(api_call['uid'])
+        return await async_retrieve_result(api_call["uid"])
 
 
 # much of this is inspired by the celery task decorator;
@@ -48,17 +53,21 @@ class ApiCall:
 def declare_api_call(name, endpoint):
     def inner_decorator(f):
         result = type(
-            f.__name__, (ApiCall, ),
-            dict({
-                'name': name,
-                'endpoint': endpoint,
-                '_decorated': True,
-                '__doc__': f.__doc__,
-                '__module__': f.__module__,
-                '__annotations__': f.__annotations__,
-                '__signature__': inspect.signature(f),
-                '__wrapper__': f
-            }))()
+            f.__name__,
+            (ApiCall,),
+            dict(
+                {
+                    "name": name,
+                    "endpoint": endpoint,
+                    "_decorated": True,
+                    "__doc__": f.__doc__,
+                    "__module__": f.__module__,
+                    "__annotations__": f.__annotations__,
+                    "__signature__": inspect.signature(f),
+                    "__wrapper__": f,
+                }
+            ),
+        )()
 
         return result
 

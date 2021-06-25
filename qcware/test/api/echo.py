@@ -7,18 +7,17 @@ from ...api_calls import declare_api_call
 
 
 @declare_api_call(name="test.echo", endpoint="test/echo")
-def echo(text: str = 'hello world.'):
+def echo(text: str = "hello world."):
     r"""
 
-Arguments:
+    Arguments:
 
-:param text: The text to return, defaults to hello world.
-:type text: str
+    :param text: The text to return, defaults to hello world.
+    :type text: str
 
-  
-:return: 
-:rtype: 
-"""
+
+    :return:
+    :rtype:"""
     pass
 
 

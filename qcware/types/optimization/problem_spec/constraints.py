@@ -6,8 +6,9 @@ from qcware.types.optimization.predicate import Predicate
 from qcware.types.optimization.variable_types import Domain
 from qcware.types.optimization import utils
 from qcware.types.optimization.problem_spec import PolynomialObjective
-from qcware.types.optimization.problem_spec.utils import \
-    constraint_validation as validator
+from qcware.types.optimization.problem_spec.utils import (
+    constraint_validation as validator,
+)
 
 
 class Constraints:
@@ -19,7 +20,7 @@ class Constraints:
 
     To specify constraints, we use a "constraint dict". The format
     of this dict is::
-      
+
         {type of constraint: list of constraints of that type}.
 
     The "type of constraint" means a `Predicate` object. The list of
@@ -52,13 +53,16 @@ class Constraints:
     add additional constraints of those types in this fashion by adding
     more entries to the lists.
     """
+
     constraint_dict: Dict[Predicate, List[PolynomialObjective]]
     domain: Domain
 
-    def __init__(self,
-                 constraints: Dict[Predicate, List[PolynomialObjective]],
-                 num_variables: int,
-                 validate_types: bool = True):
+    def __init__(
+        self,
+        constraints: Dict[Predicate, List[PolynomialObjective]],
+        num_variables: int,
+        validate_types: bool = True,
+    ):
         """
         Args:
             constraints: Constraints are specified with a dict from
@@ -90,7 +94,8 @@ class Constraints:
                 constraints constrain.
         """
         parsed_constraints = validator.constraint_validation(
-            constraints, num_variables, validate_types)
+            constraints, num_variables, validate_types
+        )
         del constraints
         self.constraint_dict = parsed_constraints.constraint_dict
         self.num_variables = num_variables
@@ -111,22 +116,22 @@ class Constraints:
                     selected_domain = c.domain
                 elif selected_domain is not c.domain:
                     raise ValueError(
-                        'Encountered constraints with both boolean and spin '
-                        'variable domains.')
+                        "Encountered constraints with both boolean and spin "
+                        "variable domains."
+                    )
 
         self.domain = selected_domain
         self.max_degree_dict = {
-            predicate: max(degs)
-            for predicate, degs in self.degree_dict.items()
+            predicate: max(degs) for predicate, degs in self.degree_dict.items()
         }
         if self.constraint_dict == {}:
             self.max_degree = None
         else:
             self.max_degree = max(self.max_degree_dict.values())
 
-    def get_constraint_group(self,
-                             predicate: Predicate,
-                             order: Union[int, Iterable[int], None] = None):
+    def get_constraint_group(
+        self, predicate: Predicate, order: Union[int, Iterable[int], None] = None
+    ):
         """Iterate over constraints with specified predicate and order.
 
         If order is not specified, all orders are generated.
@@ -136,16 +141,20 @@ class Constraints:
         elif isinstance(order, int):
             order = range(order, order + 1)
         if not utils.iterable(order):
-            raise TypeError(f'Expected `order` to be int or iterable '
-                            f'of int but got type {type(order)}.')
+            raise TypeError(
+                f"Expected `order` to be int or iterable "
+                f"of int but got type {type(order)}."
+            )
 
         for i, constraint in enumerate(self[predicate]):
             if constraint.degree in order:
                 yield i, constraint
 
-    def constraint_exists(self,
-                          order: Union[int, Iterable[int], None] = None,
-                          predicate: Optional[Predicate] = None):
+    def constraint_exists(
+        self,
+        order: Union[int, Iterable[int], None] = None,
+        predicate: Optional[Predicate] = None,
+    ):
         """Return True iff a constraint exists with given order or predicate.
 
         `order` can be an int or an iterable of ints. `predicate` is a
@@ -193,7 +202,7 @@ class Constraints:
             if isinstance(predicate, Predicate):
                 return 0
             else:
-                raise TypeError(f'Expected Predicate, found {type(predicate)}')
+                raise TypeError(f"Expected Predicate, found {type(predicate)}")
 
     def __len__(self):
         """Get the total number of constraints"""
@@ -206,28 +215,28 @@ class Constraints:
         return self.constraint_dict.__getitem__(item)
 
     def __repr__(self):
-        out = f'Number of variables: {self.num_variables}\n'
-        out += f'Total number of constraints: {self.num_constraints()}\n\n'
-        header = ['Predicate', 'Number of Constraints', 'Highest Degree']
-        data = [[
-            rel.upper(),
-            self.num_constraints(rel), self.max_degree_dict[rel]
-        ] for rel in self.predicates]
+        out = f"Number of variables: {self.num_variables}\n"
+        out += f"Total number of constraints: {self.num_constraints()}\n\n"
+        header = ["Predicate", "Number of Constraints", "Highest Degree"]
+        data = [
+            [rel.upper(), self.num_constraints(rel), self.max_degree_dict[rel]]
+            for rel in self.predicates
+        ]
 
         out += tabulate.tabulate(data, header)
 
-        out = textwrap.indent(out, '    ', predicate=None)
-        out = 'Constraints:\n' + out
+        out = textwrap.indent(out, "    ", predicate=None)
+        out = "Constraints:\n" + out
         return out
 
     def dict(self):
         return {
-            'constraints': self.constraint_dict,
-            'num_variables': self.num_variables
+            "constraints": self.constraint_dict,
+            "num_variables": self.num_variables,
         }
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     def std_constraints_3vars(feasible):
         """Generate a standard constraint-specifying dict for three variables.
@@ -261,35 +270,28 @@ if __name__ == '__main__':
         """
         neg_constraints = [
             # a + b + c < 3 (violated iff a=b=c=1)
-            PolynomialObjective(polynomial={
-                (): -3,
-                (0, ): 1,
-                (1, ): 1,
-                (2, ): 1
-            },
-                                num_variables=3),
+            PolynomialObjective(
+                polynomial={(): -3, (0,): 1, (1,): 1, (2,): 1}, num_variables=3
+            ),
             # Always true
             PolynomialObjective(polynomial={(): -1}, num_variables=3),
         ]
         zero_constraints = [
             # (a+b+c-1)^2 == 0 (true iff exactly one variable is 1.)
-            PolynomialObjective(polynomial={
-                (0, 1): 2,
-                (0, 2): 2,
-                (1, 2): 2,
-                (0, ): -1,
-                (1, ): -1,
-                (2, ): -1,
-                (): 1
-            },
-                                num_variables=3),
+            PolynomialObjective(
+                polynomial={
+                    (0, 1): 2,
+                    (0, 2): 2,
+                    (1, 2): 2,
+                    (0,): -1,
+                    (1,): -1,
+                    (2,): -1,
+                    (): 1,
+                },
+                num_variables=3,
+            ),
             # a + c = 1 (true iff a XOR c)
-            PolynomialObjective(polynomial={
-                (0, ): 1,
-                (2, ): 1,
-                (): -1
-            },
-                                num_variables=3),
+            PolynomialObjective(polynomial={(0,): 1, (2,): 1, (): -1}, num_variables=3),
         ]
         pos_constraints = [
             # Always true
@@ -299,16 +301,17 @@ if __name__ == '__main__':
         constraints = {
             Predicate.NEGATIVE: neg_constraints,
             Predicate.ZERO: zero_constraints,
-            Predicate.POSITIVE: pos_constraints
+            Predicate.POSITIVE: pos_constraints,
         }
 
         if not feasible:
-            constraints.update({
-                Predicate.NONZERO: [
-                    PolynomialObjective(polynomial={(0, 1, 2): 1},
-                                        num_variables=3)
-                ]
-            })
+            constraints.update(
+                {
+                    Predicate.NONZERO: [
+                        PolynomialObjective(polynomial={(0, 1, 2): 1}, num_variables=3)
+                    ]
+                }
+            )
 
         return Constraints(constraints, 3)
 

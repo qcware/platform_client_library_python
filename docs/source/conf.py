@@ -12,16 +12,17 @@
 #
 import os
 import sys
-print(os.path.abspath('../..'))
-sys.path.insert(0, os.path.abspath('../..'))
+
+print(os.path.abspath("../.."))
+sys.path.insert(0, os.path.abspath("../.."))
 import qcware
 
 # -- Project information -----------------------------------------------------
 
-project = 'qcware'
-copyright = '2019, QC Ware Corp.'
-author = 'Bryan E. Burr (bryan@qcware.com)'
-master_doc = 'index'
+project = "qcware"
+copyright = "2019, QC Ware Corp."
+author = "Bryan E. Burr (bryan@qcware.com)"
+master_doc = "index"
 version = qcware.__version__
 
 # -- General configuration ---------------------------------------------------
@@ -30,14 +31,14 @@ version = qcware.__version__
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.napoleon',
+    "sphinx.ext.autodoc",
+    "sphinx.ext.coverage",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -49,19 +50,19 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
 
-html_theme_options = {'collapse_navigation': False}
+html_theme_options = {"collapse_navigation": False}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'qcwaredoc'
+htmlhelp_basename = "qcwaredoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -69,15 +70,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -87,15 +85,14 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'qcware.tex', 'qcware Documentation', 'QC Ware, Corp.',
-     'manual'),
+    (master_doc, "qcware.tex", "qcware Documentation", "QC Ware, Corp.", "manual"),
 ]
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, 'qcware', 'qcware Documentation', [author], 1)]
+man_pages = [(master_doc, "qcware", "qcware Documentation", [author], 1)]
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -103,8 +100,15 @@ man_pages = [(master_doc, 'qcware', 'qcware Documentation', [author], 1)]
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'qcware', 'qcware Documentation', author, 'qcware',
-     'The Python client library for the QC Ware Platform.', 'Miscellaneous'),
+    (
+        master_doc,
+        "qcware",
+        "qcware Documentation",
+        author,
+        "qcware",
+        "The Python client library for the QC Ware Platform.",
+        "Miscellaneous",
+    ),
 ]
 
 # -- Options for Epub output -------------------------------------------------
@@ -122,6 +126,6 @@ epub_title = project
 # epub_uid = ''
 
 # A list of files that should not be packed into the epub file.
-epub_exclude_files = ['search.html']
+epub_exclude_files = ["search.html"]
 
 # -- Extension configuration -------------------------------------------------
