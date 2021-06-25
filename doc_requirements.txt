@@ -1,7 +1,7 @@
 backoff==1.10.0
 requests==2.25.1
 python-decouple==3.4
-networkx==2.5
-numpy==1.20.2
+networkx==2.5.1
+numpy==1.21.0
 qcware-quasar==1.0.3
-icontract==2.5.0
+icontract==2.5.3
