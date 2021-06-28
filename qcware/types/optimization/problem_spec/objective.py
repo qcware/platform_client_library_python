@@ -1,5 +1,6 @@
 from typing import Dict, Tuple, Set, Union, Optional
 import qubovert as qv
+from icontract import require
 from qcware.types.optimization.problem_spec.utils import (
     polynomial_validation as validator,
 )
@@ -74,7 +75,9 @@ class PolynomialObjective:
     num_variables: int
     degree: Union[int, float]
     domain: Domain
+    variable_name_mapping: dict[int, str]
 
+    #    @require(lambda polynomial: len(polynomial) > 0)
     def __init__(
         self,
         polynomial: Dict[Tuple[int, ...], int],
@@ -133,7 +136,8 @@ class PolynomialObjective:
         out = "PolynomialObjective(\n"
         out += "    polynomial=" + self.polynomial.__repr__() + "\n"
         out += "    num_variables=" + str(self.num_variables) + "\n"
-        out += "    domain=" + repr(self.domain)
+        out += "    domain=" + repr(self.domain) + "\n"
+        out += "    variable_mapping=" + repr(self.variable_name_mapping)
         out += "\n)"
         return out
 
@@ -312,6 +316,7 @@ class PolynomialObjective:
             "polynomial": self.polynomial,
             "num_variables": self.num_variables,
             "domain": self.domain.lower(),
+            "variable_name_mapping": self.variable_name_mapping,
         }
 
 

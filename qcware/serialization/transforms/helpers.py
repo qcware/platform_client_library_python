@@ -1,15 +1,17 @@
-import numpy as np
 import base64
-from typing import Dict
-import lz4.frame
-from icontract import require
 from functools import singledispatch
+from typing import Dict
+
+import lz4.frame
+import numpy as np
+from icontract import require
+
 from ...types.optimization import (
-    PolynomialObjective,
-    Constraints,
     BinaryProblem,
     BinaryResults,
     BruteOptimizeResult,
+    Constraints,
+    PolynomialObjective,
 )
 
 
@@ -135,6 +137,9 @@ def to_wire(x):
 def _(x):
     result = x.dict()
     result["polynomial"] = remap_q_indices_to_strings(result["polynomial"])
+    result["variable_name_mapping"] = {
+        str(k): v for k, v in result["variable_name_mapping"].items()
+    }
     return result
 
 
@@ -142,6 +147,9 @@ def polynomial_objective_from_wire(d: dict):
     remapped_dict = d.copy()
 
     remapped_dict["polynomial"] = remap_q_indices_from_strings(d["polynomial"])
+    remapped_dict["variable_name_mapping"] = {
+        int(k): v for k, v in remapped_dict["variable_name_mapping"].items()
+    }
     return PolynomialObjective(**remapped_dict)
 
 
@@ -167,15 +175,22 @@ def constraints_from_wire(d: dict):
 @to_wire.register(BinaryProblem)
 def _(x):
     result = x.dict()
-    result["objective"] = remap_q_indices_to_strings(result["objective"].polynomial)
-
+    result["objective"] = to_wire(result["objective"])
+    result["constraints"] = (
+        to_wire(result["constraints"]) if result["constraints"] is not None else None
+    )
     return result
 
 
 def binary_problem_from_wire(d: dict):
     remapped_dict = d.copy()
-    remapped_dict["objective"] = remap_q_indices_from_strings(d["objective"])
-    return BinaryProblem.from_dict(remapped_dict["objective"])
+    remapped_dict["objective"] = polynomial_objective_from_wire(d["objective"])
+    remapped_dict["constraints"] = (
+        constraints_from_wire(remapped_dict["constraints"])
+        if remapped_dict["constraints"] is not None
+        else None
+    )
+    return BinaryProblem(**remapped_dict)
 
 
 @to_wire.register(BinaryResults)
