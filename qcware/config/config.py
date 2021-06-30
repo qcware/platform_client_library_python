@@ -1,16 +1,19 @@
-from decouple import config, UndefinedValueError  # type: ignore
-from urllib.parse import urlparse, urljoin
-from typing import Optional
-from functools import reduce
-from packaging import version
-import requests
-import colorama  # type: ignore
-from .api_semver import api_semver
-import os
-from pydantic import BaseModel
-from contextlib import contextmanager
 import contextvars
+import os
+import sys
+from contextlib import contextmanager
 from enum import Enum
+from functools import reduce
+from typing import Optional
+from urllib.parse import urljoin, urlparse
+
+import colorama  # type: ignore
+import qcware
+import requests
+from decouple import UndefinedValueError, config  # type: ignore
+from packaging import version
+from pydantic import BaseModel, constr, conint, confloat
+from qcware.config.api_semver import api_semver
 
 
 class ConfigurationError(Exception):
@@ -294,13 +297,13 @@ def set_server_timeout(new_wait: int):
 
 
 def async_interval_between_tries(override: Optional[float] = None):
-    """
-    Returns the maximum time the server should sit pinging the database for
-    a result before giving up.
+    """Return the maximum time the server should sit pinging the database
+    for a result before giving up.
 
     This is configurable by the environment variable QCWARE_SERVER_TIMEOUT
 
     The default value is 10 seconds; the maximum is 50
+
     """
     result = (
         override
@@ -311,11 +314,13 @@ def async_interval_between_tries(override: Optional[float] = None):
 
 
 def set_async_interval_between_tries(new_interval: float):
-    """
-    Sets the maximum server timeout (how long the server will poll for a result
-    before returning to the client with a result or 'still waiting' message.
+    """Set the maximum server timeout.
+
+    This sets how long the server will poll for a result before
+    returning to the client with a result or 'still waiting' message.
 
     Normally the user should not change this from the default value of 10s.
+
     """
     if new_interval < 0 or new_interval > 50:
         print(
@@ -328,6 +333,16 @@ def set_async_interval_between_tries(new_interval: float):
 
 
 class SchedulingMode(str, Enum):
+    """Scheduling modes for API calls.
+
+    'immediate' means 'attempt this now; if it must be rescheduled
+    (such as for an unavailable backend), fail with an exception'
+
+    'next_available' means 'attempt this now, but if the backend is
+    unavailable, schedule during the next availability window.'
+
+    """
+
     immediate = "immediate"
     next_available = "next_available"
 
@@ -366,6 +381,8 @@ def set_ibmq_credentials(
     group: Optional[str] = None,
     project: Optional[str] = None,
 ):
+    """Set the IBMQ credentials "by hand"."""
+
     def _set_if(envvar_name: str, value: Optional[str] = None):
         if value is None and envvar_name in os.environ:
             del os.environ[envvar_name]
@@ -379,8 +396,10 @@ def set_ibmq_credentials(
 
 
 def set_ibmq_credentials_from_ibmq(ibmq):
-    """Set the IBMQ credentials from the ibmq object (you'd call it as
-    set_ibmq_credentials_from_ibmq(IBMQ)
+    """Set the IBMQ credentials from the ibmq object.
+
+    Called normally as set_ibmq_credentials_from_ibmq(IBMQ)
+
     """
     set_ibmq_credentials(
         ibmq._credentials.token,
@@ -392,10 +411,10 @@ def set_ibmq_credentials_from_ibmq(ibmq):
 
 class IBMQCredentials(BaseModel):
 
-    token: Optional[str]
-    hub: Optional[str]
-    group: Optional[str]
-    project: Optional[str]
+    token: Optional[constr(max_length=255)]
+    hub: Optional[constr(max_length=255)]
+    group: Optional[constr(max_length=255)]
+    project: Optional[constr(max_length=255)]
 
     @classmethod
     def from_ibmq(cls, ibmq):
@@ -418,19 +437,65 @@ class IBMQCredentials(BaseModel):
 
 
 class ApiCredentials(BaseModel):
-    qcware_api_key: Optional[str] = None
+    qcware_api_key: Optional[constr(max_length=255)] = None
     ibmq: Optional[IBMQCredentials] = None
 
     class Config:
         extra = "forbid"
 
 
+class Environment(BaseModel):
+    """This deserves a little explanation; it is greatly helpful to us
+    when diagnosing a problem to have recorded information about the
+    "environment" of the call.  These are manually overloadable should
+    users wish to hide this information, but it is set by default in this
+    fashion:
+
+    client, client_version: usually "qcware" and this library's version
+
+    version environment: the sort of "global environment".  Usually
+    this is set by environment variable
+    "QCWARE_ENVIRONMENT_ENVIRONMENT", which is "hosted_jupyter"on
+    hosted jupyter notebooks, or "local" for a local installation.
+
+    source_file: this is empty by default so that we do not collect
+    unnecessary information from users.  It is set in our hosted example
+    notebooks so that we can see what calls come from example notebooks.
+    This is set via the environment variable QCWARE_ENVIRONMENT_SOURCE_FILE.
+    """
+
+    client: constr(max_length=255)
+    client_version: constr(max_length=255)
+    python_version: constr(max_length=255)
+    environment: constr(max_length=255)
+    source_file: constr(max_length=255)
+
+
+def set_environment_environment(new_environment: str):
+    """Set the Environment ... environment."""
+    os.environ["QCWARE_ENVIRONMENT_ENVIRONMENT"] = new_environment
+
+
+def set_environment_source_file(new_source_file: str):
+    """Set the source file recorded in the context environment."""
+    os.environ["QCWARE_ENVIRONMENT_SOURCE_FILE"] = new_source_file
+
+
 class ApiCallContext(BaseModel):
-    qcware_host: Optional[str] = None
+    """The context sent over with every API call.
+
+    A number of things are listed as "optional" which really are not; they are
+    created by default in the `root_context` function.  By allowing them to be
+    optional, you can augment the current context with "temporary contexts" that
+    override only one field (or a subset).
+    """
+
+    qcware_host: Optional[constr(max_length=255)] = None
     credentials: Optional[ApiCredentials] = None
-    server_timeout: Optional[int] = None
-    client_timeout: Optional[int] = None
-    async_interval_between_tries: Optional[float] = None
+    environment: Optional[Environment] = None
+    server_timeout: Optional[conint(ge=0)] = None
+    client_timeout: Optional[conint(ge=0)] = None
+    async_interval_between_tries: Optional[confloat(ge=0)] = None
     scheduling_mode: Optional[SchedulingMode] = None
 
     class Config:
@@ -439,7 +504,9 @@ class ApiCallContext(BaseModel):
 
 def root_context() -> ApiCallContext:
     """
-    Returns a dictionary containing relevant information for API calls; used internally
+    Return a dictionary containing relevant information for API calls.
+
+    Used internally
     """
     return ApiCallContext(
         qcware_host=config("QCWARE_HOST", "https://api.forge.qcware.com"),
@@ -451,6 +518,13 @@ def root_context() -> ApiCallContext:
                 group=config("QCWARE_CRED_IBMQ_GROUP", None),
                 project=config("QCWARE_CRED_IBMQ_PROJECT", None),
             ),
+        ),
+        environment=Environment(
+            client="qcware (python)",
+            client_version=qcware.__version__,
+            python_version=sys.version,
+            environment=config("QCWARE_ENVIRONMENT_ENVIRONMENT", default="local"),
+            source_file=config("QCWARE_ENVIRONMENT_SOURCE_FILE", default=""),
         ),
         server_timeout=config("QCWARE_SERVER_TIMEOUT", default=10, cast=int),
         client_timeout=config("QCWARE_CLIENT_TIMEOUT", default=60, cast=int),
@@ -467,20 +541,22 @@ _contexts: contextvars.ContextVar = contextvars.ContextVar("contexts", default=[
 
 
 def push_context(**kwargs):
-    """
-    Manually pushes a configuration context onto the stack; normally
-    this is done with the `additional_config` context rather than called
-    directly by the user
+    """Manually pushes a configuration context onto the stack.
+
+    Normally this is done with the `additional_config` context rather
+    than called directly by the user
+
     """
     next_context = ApiCallContext(**kwargs)
     _contexts.set(_contexts.get() + [next_context])
 
 
 def pop_context():
-    """
-    Manually pops a configuration context from the stack; normally
-    this is done with the `additional_config` context rather than called
-    directly by the user
+    """Manually pops a configuration context from the stack.
+
+    Normally this is done with the `additional_config` context rather
+    than called directly by the user
+
     """
     _contexts.set(_contexts.get()[:-1])
 
@@ -517,10 +593,11 @@ def merge_models(c1: BaseModel, c2: BaseModel) -> BaseModel:
 
 
 def current_context() -> ApiCallContext:
-    """
-    Returns the "current context" for an API call, which is the calculated
-    root context plus any additional changes through the stack.  Normally
-    not called by the user.
+    """Return the "current context" for an API call.
+
+    This is the calculated root context plus any additional changes
+    through the stack.  Normally not called by the user.
+
     """
     return reduce(merge_models, _contexts.get(), root_context())
 

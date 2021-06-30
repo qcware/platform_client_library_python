@@ -75,7 +75,7 @@ class PolynomialObjective:
     num_variables: int
     degree: Union[int, float]
     domain: Domain
-    variable_name_mapping: dict[int, str]
+    variable_name_mapping: Dict[int, str]
 
     #    @require(lambda polynomial: len(polynomial) > 0)
     def __init__(
