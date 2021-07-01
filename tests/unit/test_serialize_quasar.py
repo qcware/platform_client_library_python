@@ -120,6 +120,10 @@ def test_all_canonical_gates():
     assert Circuit.test_equivalence(q, q2)
     assert s == s2
 
+    s = quasar_to_sequence(q)
+    q2 = sequence_to_quasar(s)
+    assert Circuit.test_equivalence(q, q2)
+
     s2 = quasar_to_string(q)
     # print(s2)
     q3 = string_to_quasar(s2)

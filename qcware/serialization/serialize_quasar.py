@@ -267,16 +267,6 @@ def make_gate(gate_name: str, original_parameters: dict):
 def sequence_to_quasar(s: Sequence) -> Circuit:
     # make a sequence of tuples (gate, qubits, times) and manually
     # add to circuit, no need for copy
-    instructions = [
-        (
-            make_gate(instruction["gate"], instruction["parameters"]),
-            tuple(instruction["bits"]),
-            tuple(instruction["times"]),
-        )
-        for instruction in s
-    ]
-    gate_dict = SortedDict({(x[2], x[1]): x[0] for x in instructions}.items())
-    qubit_set = SortedSet
     result = Circuit()
     for instruction in s:
         gate = make_gate(instruction["gate"], instruction["parameters"])
