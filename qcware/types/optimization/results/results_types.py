@@ -11,16 +11,20 @@ class BruteOptimizeResult(pydantic.BaseModel):
     """Return type for brute force maximization and minimization.
 
     When solution_exists == False, we must have value is None and
-    arguments == [].
+    argmin == [].
 
     Arguments are specified with a list of strings that describe solutions.
     For the boolean case, this means something like ['00101', '11100'] and
     for the spin case, this means something like ['++-+-', '---++'].
-    """
 
+    The method int_argmin can be used to obtain minima in the format
+        Boolean case: [[0, 0, 1, 0, 1], [1, 1, 1, 0, 0]]
+    or
+        Spin case: [[1, 1, -1, 1, -1], [-1, -1, -1, 1, 1]].
+    """
     domain: Domain
     value: Optional[int] = None
-    arguments: List[str] = []
+    argmin: List[str] = []
     solution_exists: bool = True
 
     @pydantic.validator("solution_exists", always=True)
@@ -28,17 +32,16 @@ class BruteOptimizeResult(pydantic.BaseModel):
         if not sol_exists:
             if not values["value"] is None:
                 raise ValueError("Value given but solution_exists=False.")
-            if not values["arguments"] == []:
-                raise ValueError("arguments given but solution_exists=False.")
+            if not values["argmin"] == []:
+                raise ValueError("argmin given but solution_exists=False.")
 
         else:
-            if values["value"] is None or values["arguments"] == []:
+            if values["value"] is None or values["argmin"] == []:
                 raise ValueError("solution_exists=True, but no solution was specified.")
         return sol_exists
 
-    def int_argument(self) -> List[List[int]]:
-        """Convert arguments to a list of list of ints."""
-
+    def int_argmin(self) -> List[List[int]]:
+        """Convert argmin to a list of list of ints."""
         def to_int(x: str):
             if self.domain is Domain.BOOLEAN:
                 return int(x)
@@ -48,22 +51,46 @@ class BruteOptimizeResult(pydantic.BaseModel):
                 elif x == "-":
                     return -1
                 else:
-                    raise ValueError(f"Unrecognized symbol {x}. Expected '+' or '-'.")
+                    raise ValueError(
+                        f"Unrecognized symbol {x}. Expected '+' or '-'.")
 
-        return [[to_int(x) for x in s] for s in self.arguments]
+        return [[to_int(x) for x in s] for s in self.argmin]
 
     @property
     def num_variables(self):
         if not self.solution_exists:
             return
-        return len(self.arguments[0])
+        return len(self.argmin[0])
+
+    @property
+    def num_minima(self):
+        return len(self.argmin)
 
     def __repr__(self):
         if self.solution_exists:
-            out = "forge.return_types.BruteOptimizeResult(\n"
+            out = "forge.types.BruteOptimizeResult(\n"
             out += f"value={self.value}\n"
-            char_estimate = self.num_variables * len(self.arguments)
-            out += utils.short_list_str(self.arguments, char_estimate, "arguments")
+            char_estimate = self.num_variables * len(self.argmin)
+            out += utils.short_list_str(self.argmin, char_estimate, "argmin")
             return out + "\n)"
         else:
-            return "forge.return_types.BruteOptimizeResult(solution_exists=False)"
+            return "forge.types.BruteOptimizeResult(solution_exists=False)"
+
+    def __str__(self):
+        if not self.solution_exists:
+            return 'No bit string satisfies constraints.'
+
+        out = 'Minimum value: ' + str(self.value) + '\n'
+        out += 'Minimizing bitstrings:\n'
+
+        int_argmin = self.int_argmin()
+        for i in range(self.num_minima):
+            if i >= 10:
+                out += f' ... ({self.num_minima - 10} minima hidden)'
+                break
+            out += int_argmin[i].__str__() + '\n'
+
+        return out
+
+
+

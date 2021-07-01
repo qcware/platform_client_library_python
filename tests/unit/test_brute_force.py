@@ -221,7 +221,7 @@ def test_brute_force_minimize_unconstrained(example, backend):
     expected_solution_exists = example["solution_exists"]
 
     out = brute_force_minimize(p, backend=backend)
-    actual_minima = set(out.arguments)
+    actual_minima = set(out.argmin)
     actual_value = out.value
 
     assert actual_value == expected_value
@@ -241,7 +241,7 @@ def test_brute_force_minimize_constrained(example, backend):
     expected_solution_exists = example["solution_exists"]
 
     out = brute_force_minimize(p, constraints)
-    actual_minima = set(out.arguments)
+    actual_minima = set(out.argmin)
     actual_value = out.value
 
     assert actual_value == expected_value
