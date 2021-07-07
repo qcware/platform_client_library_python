@@ -80,16 +80,15 @@ class BruteOptimizeResult(pydantic.BaseModel):
         if not self.solution_exists:
             return 'No bit string satisfies constraints.'
 
-        out = 'Minimum value: ' + str(self.value) + '\n'
-        out += 'Minimizing bitstrings:\n'
-
+        out = 'Objective value: ' + str(self.value) + '\n'
         int_argmin = self.int_argmin()
-        for i in range(self.num_minima):
-            if i >= 10:
-                out += f' ... ({self.num_minima - 10} minima hidden)'
-                break
-            out += int_argmin[i].__str__() + '\n'
-
+        out += f'Solution: {int_argmin[0]}'
+        if self.num_minima > 1:
+            out += f' (and {self.num_minima-1} other equally good solution'
+            if self.num_minima == 2:
+                out += ')'
+            else:
+                out += 's)'
         return out
 
 
