@@ -22,6 +22,7 @@ class BruteOptimizeResult(pydantic.BaseModel):
     or
         Spin case: [[1, 1, -1, 1, -1], [-1, -1, -1, 1, 1]].
     """
+
     domain: Domain
     value: Optional[int] = None
     argmin: List[str] = []
@@ -42,6 +43,7 @@ class BruteOptimizeResult(pydantic.BaseModel):
 
     def int_argmin(self) -> List[List[int]]:
         """Convert argmin to a list of list of ints."""
+
         def to_int(x: str):
             if self.domain is Domain.BOOLEAN:
                 return int(x)
@@ -51,8 +53,7 @@ class BruteOptimizeResult(pydantic.BaseModel):
                 elif x == "-":
                     return -1
                 else:
-                    raise ValueError(
-                        f"Unrecognized symbol {x}. Expected '+' or '-'.")
+                    raise ValueError(f"Unrecognized symbol {x}. Expected '+' or '-'.")
 
         return [[to_int(x) for x in s] for s in self.argmin]
 
@@ -78,18 +79,15 @@ class BruteOptimizeResult(pydantic.BaseModel):
 
     def __str__(self):
         if not self.solution_exists:
-            return 'No bit string satisfies constraints.'
+            return "No bit string satisfies constraints."
 
-        out = 'Objective value: ' + str(self.value) + '\n'
+        out = "Objective value: " + str(self.value) + "\n"
         int_argmin = self.int_argmin()
-        out += f'Solution: {int_argmin[0]}'
+        out += f"Solution: {int_argmin[0]}"
         if self.num_minima > 1:
-            out += f' (and {self.num_minima-1} other equally good solution'
+            out += f" (and {self.num_minima-1} other equally good solution"
             if self.num_minima == 2:
-                out += ')'
+                out += ")"
             else:
-                out += 's)'
+                out += "s)"
         return out
-
-
-

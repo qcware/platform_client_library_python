@@ -151,10 +151,10 @@ class BinaryResults(BaseModel):
     def __str__(self) -> str:
         if len(self.results) == 0:
             return "No solutions sampled."
-        out = 'Objective value: '
+        out = "Objective value: "
         lowest_value = self.results[0].energy
-        out += str(lowest_value) + '\n'
-        out += 'Solution: '
+        out += str(lowest_value) + "\n"
+        out += "Solution: "
         out += str(self.results[0].bitstring)
         num_solutions = 1
         for elm in self.results[1:]:
@@ -164,11 +164,11 @@ class BinaryResults(BaseModel):
                 break
 
         if num_solutions > 1:
-            out += f' (and {num_solutions-1} other equally good solution'
+            out += f" (and {num_solutions-1} other equally good solution"
             if num_solutions == 2:
-                out += ')'
+                out += ")"
             else:
-                out += 's)'
+                out += "s)"
         return out
 
     def add_sample(self, sample: BinarySample) -> None:
