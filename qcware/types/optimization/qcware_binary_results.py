@@ -149,27 +149,31 @@ class BinaryResults(BaseModel):
         allow_mutation = False
 
     def __str__(self) -> str:
+        """Print the problem in a nice way"""
+        title = "Name: {0} \n".format("results_of_" + self.original_problem.name)
+        header0 = "Lowest energy sample:\n"
         if len(self.results) == 0:
-            return "No solutions sampled."
-        out = "Objective value: "
-        lowest_value = self.results[0].energy
-        out += str(lowest_value) + "\n"
-        out += "Solution: "
-        out += str(self.results[0].bitstring)
-        num_solutions = 1
-        for elm in self.results[1:]:
-            if elm.energy == lowest_value:
-                num_solutions += 1
-            else:
-                break
+            header1 = "Empty"
 
-        if num_solutions > 1:
-            out += f" (and {num_solutions-1} other equally good solution"
-            if num_solutions == 2:
-                out += ")"
-            else:
-                out += "s)"
-        return out
+            return title + header0 + header1
+        else:
+            lowest_energy = self.results[0].energy
+
+            header1 = str(self.results[0])
+
+            for elm in self.results[1:]:
+                if elm.energy == lowest_energy:
+                    header1 += str(elm)
+                else:
+                    break
+
+            num_occurrences_results = [elm.num_occurrences for elm in self.results]
+            header2 = "Number of Samples: {0} \n".format(sum(num_occurrences_results))
+            header3 = "Number of Unique Samples: {0} \n".format(len(self.results))
+
+            string_out = title + header0 + header1 + header2 + header3
+
+            return string_out
 
     def add_sample(self, sample: BinarySample) -> None:
         """Adds a provided sample to results.

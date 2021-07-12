@@ -1,6 +1,7 @@
 python_library(
   dependencies=[
-    "//python_client:qubovert",
-    "//python_client:tabulate"
+    "//types:qubovert",
+    "//types:tabulate",
+    "//types:icontract",
   ]
 )

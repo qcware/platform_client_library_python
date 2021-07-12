@@ -8,6 +8,8 @@ python_library(
       "//python_client:icontract",
       "//python_client:python-decouple",
       '//python_client:numpy',
-      '//python_client:pydantic'
+      '//python_client:pydantic',
+      '//types/qcware/types',
+      '//serialization/qcware/serialization'
     ],
 )

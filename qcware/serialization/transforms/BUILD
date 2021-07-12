@@ -1,6 +1,7 @@
 python_library(
   dependencies=[
-    "//python_client:numpy",
-    "//python_client:icontract"
+    "//serialization:numpy",
+    "//serialization:icontract",
+    "//serialization:lz4"
   ]
 )

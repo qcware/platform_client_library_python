@@ -20,11 +20,9 @@ jobs:
           name: "publish to pypi"
           command: |
             sudo pip3 install --upgrade pip
-            sudo pip3 install flit
-            sudo pip3 install pygments
-            flit install --deps none
-            flit build
-            flit publish
+            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+            poetry build
+            # poetry publish
 
 workflows:
 
