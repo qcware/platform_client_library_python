@@ -1,0 +1,13 @@
+python_library(
+    dependencies=[
+      "//python_client:tabulate",
+      "//python_client:pydantic",
+      '!//qcware_algorithms:numpy',
+      "//python_client:numpy",
+      "//python_client:qubovert",
+      "//python_client:icontract",
+      "//python_client:python-decouple",
+      '//python_client:numpy',
+      '//python_client:pydantic'
+    ],
+)

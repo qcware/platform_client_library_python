@@ -9,7 +9,6 @@ from urllib.parse import urljoin, urlparse
 
 import colorama  # type: ignore
 import qcware
-from qcware.client_init import __version__ as Qcware_client_version
 import requests
 from decouple import UndefinedValueError, config  # type: ignore
 from packaging import version
@@ -522,7 +521,7 @@ def root_context() -> ApiCallContext:
         ),
         environment=Environment(
             client="qcware (python)",
-            client_version=Qcware_client_version,
+            client_version=qcware.__version__,
             python_version=sys.version,
             environment=config("QCWARE_ENVIRONMENT_ENVIRONMENT", default="local"),
             source_file=config("QCWARE_ENVIRONMENT_SOURCE_FILE", default=""),
