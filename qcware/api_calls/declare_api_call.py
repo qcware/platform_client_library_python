@@ -1,4 +1,4 @@
-from .. import logger
+from qcware.client_init import logger
 import inspect
 from .api_call import (
     post_call,

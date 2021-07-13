@@ -1,34 +1,39 @@
 [build-system]
-requires = ["flit_core >=2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
-[tool.flit.metadata]
-module = "qcware"
-dist-name = "qcware"
-author = "Vic Putz"
-author-email = "vic.putz@qcware.com"
-home-page = "http://github.com/qcware/platform_client_library_python"
-keywords = "quantum,computing,cloud,API"
-description-file="README.rst"
+[tool.poetry]
+name = "qcware"
+version = "4.3.2"
+description = "The python client for QC Ware's Forge SaaS quantum computing product"
+authors = ["Vic Putz <vic.putz@qcware.com>","Bryan Burr <bryan.e.burr@qcware.com"]
+packages = [
+  {include = "qcware"}
+]
+repository = "http://github.com/qcware/platform_client_library_python"
+documentation = "http://qcware.readthedocs.io/en/stable"
+keywords = ["quantum","computing","cloud","API"]
+readme="README.rst"
 classifiers = [
 	    "License :: OSI Approved :: Apache Software License",
 	    "Programming Language :: Python :: 3",
 	    "Operating System :: OS Independent",
 	    ]
+
+
+[tool.poetry.dependencies]
+aiohttp = ">= 3.7.4.post0"
+backoff = ">= 1.10.0"
+colorama = ">= 0.4.4"
+icontract = ">= 2.5.3"
+lz4 = ">= 3.1.3"
+networkx = ">= 2.5.1"
+numpy = ">= 1.21.0"
+packaging = ">= 20.9"
+pydantic = ">= 1.8.2"
+python-decouple = ">= 3.4"
+qcware-quasar = ">= 1.0.3"
+qubovert = ">= 1.2.3"
+requests = ">= 2.25.1"
+tabulate = ">= 0.8.9"
 	    
-requires = [
-	 "aiohttp >= 3.7.4.post0",
-	 "backoff >= 1.10.0",
-	 "colorama >= 0.4.4",
-	 "icontract >= 2.5.3",
-	 "lz4 >= 3.1.3",
-	 "networkx >= 2.5.1",
-	 "numpy >= 1.21.0",
-	 "packaging >= 20.9",
-	 "pydantic >= 1.8.2",
-	 "python-decouple >= 3.4",
-	 "qcware-quasar >= 1.0.3",
-	 "qubovert >= 1.2.3",
-	 "requests >= 2.25.1",
-	 "tabulate >= 0.8.9",
-]

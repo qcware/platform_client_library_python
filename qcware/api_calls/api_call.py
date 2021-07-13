@@ -2,11 +2,11 @@ import json
 from typing import Dict
 from urllib.parse import urljoin
 import backoff
-from ..request import post, get
-from ..async_request import post as async_post, get as async_get
-from ..exceptions import ApiCallExecutionError, ApiTimeoutError
-from ..serialization.transforms import client_result_from_wire
-from ..config import (
+from qcware.request import post, get
+from qcware.async_request import post as async_post, get as async_get
+from qcware.exceptions import ApiCallExecutionError, ApiTimeoutError
+from qcware.serialization.transforms import client_result_from_wire
+from qcware.config import (
     client_timeout,
     do_client_api_compatibility_check_once,
     async_interval_between_tries,

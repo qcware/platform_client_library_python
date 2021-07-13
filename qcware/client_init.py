@@ -6,14 +6,19 @@ This is the client library for QC Ware's Forge product,
 a SaaS product for solving problems with quantum computing.
 Please see the documentation at http://qcware.readthedocs.io
 """
-__version__ = "4.3.2"
+import pkg_resources
+try:
+    __version__ = pkg_resources.get_distribution('qcware').version
+except Exception:
+    __version__ = "4.3.2"
+
 import logging
 
 logger = logging.getLogger("qcware")
 
-from . import qio
-from . import qutils
-from . import circuits
-from . import qml
-from . import test
-from . import optimization
+# from . import qio
+# from . import qutils
+# from . import circuits
+# from . import qml
+# from . import test
+# from . import optimization
