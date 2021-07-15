@@ -15,15 +15,15 @@ Platform from Python.
 .. image:: https://badge.fury.io/py/qcware.svg
    :target: https://badge.fury.io/py/qcware
    :alt: PyPI version
- 
+
 .. image:: https://pepy.tech/badge/qcware
    :target: https://pepy.tech/project/qcware
    :alt: Downloads
- 
+
 .. image:: https://pepy.tech/badge/qcware/month
    :target: https://pepy.tech/project/qcware/month
    :alt: Downloads
- 
+
 .. image:: https://circleci.com/gh/qcware/platform_client_library_python.svg?style=svg
    :target: https://circleci.com/gh/qcware/platform_client_library_python
    :alt: CircleCI
@@ -59,4 +59,4 @@ Or, to install from source:
 
 Sign up for an API key at `https://forge.qcware.com <https://forge.qcware.com>`_ to access *Forge*. Please see our `documentation <https://qcware.readthedocs.io>`_.
 
-Please see the `documentation <https://qcware.readthedocs.io>`_ 
+Please see the `documentation <https://qcware.readthedocs.io>`_

@@ -8,4 +8,4 @@ vectors, they comprise a category we (so far) simply refer to as
 
 .. autofunction:: qcware.qutils.qdot
 
-.. autofunction:: qcware.qutils.distance_estimation		  
+.. autofunction:: qcware.qutils.distance_estimation

@@ -24,7 +24,7 @@ class ApiCallExecutionError(ApiException):
 class ApiTimeoutError(ApiException):
     def __init__(self, api_call_info, message=None):
         if message is None:
-            message = f"""API Call timed out.  
+            message = f"""API Call timed out.
 You can retrieve with qcware.api_calls.retrieve_result(call_token='{api_call_info['uid']}')
 or use the .submit or .call_async forms of the API call.
 See the getting started notebook "Retrieving_long_task_results.ipynb" in Forge"""

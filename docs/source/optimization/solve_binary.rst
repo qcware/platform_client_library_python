@@ -12,8 +12,8 @@ Types
 
 .. autoclass:: qcware.types.optimization.BinaryProblem
    :members:
-	       
-.. autoclass:: qcware.types.optimization.BinaryResults	       
+
+.. autoclass:: qcware.types.optimization.BinaryResults
    :members:
 
 Functions

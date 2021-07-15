@@ -29,7 +29,7 @@ Table of contents
    :caption: Circuits
 
    circuits/circuits
-   
+
 .. toctree::
    :maxdepth: 2
    :caption: Quantum classification

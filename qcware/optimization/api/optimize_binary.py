@@ -77,31 +77,31 @@ def optimize_binary(
 This function solves a binary optimization problem that is either
   * Unconstrained (quadratic or higher order)
   * Linearly and/or quadratically Constrained (quadratic)
-  
+
 Constraints may be linear or quadratic.  Specifically, the function is capable of solving a function of the form
 
 .. math::
     \min_x x^T& Q x \\
-    
+
     \text{such that} \hspace{4em} Ax &= b \\
-    
+
     x^T R_i x &= c_i \\
-    
+
     x^T S_i x &\geq d_i \\
 
 Here, :math:`x` is a length-:math:`n` vector of binary values, i.e., :math:`\{0,1\}^n` (this is what the solver finds).  :math:`Q` is a :math:`(n\times n)` matrix of reals.  :math:`A` is a :math:`(m \times n)` matrix of reals (partially specifying :math:`m` different linear constraints).  :math:`b` is a length-:math:`m` vector of reals (specifying the other component of `m` different linear constraints).  Every :math:`R_i` and :math:`S_i` is a :math:`(n \times n)` matrix of reals, and every :math:`c_i` and :math:`d_i` is a real constant.  The :math:`(R_i, c_i)` pairs specify quadratic equality constraints, and the :math:`(S_i, d_i)` pairs specify quadratic inequality constraints.
 
 In the simplest case, the only variables required to be passed to this function are a valid access key for the platform and a dictionary representing a QUBO.  Additional options are available to:
-  
+
     * Specify constraints for a problem
     * Select different solvers (note: different accounts have different solvers available)
     * Specify solver-specific parameters
-    
+
 
 Error handling is provided by the platform, and warnings and errors that are detected while attempting to run a problem are returned in the JSON object returned by this function.
 
 Possible warnings include:
-  
+
 
 +--------------+--------------------------------------------------------------------+
 | Warning Code | Warning Message                                                    |
@@ -314,9 +314,9 @@ Arguments:
 :param qaoa_p_val: A p_val to provide the qaoa algorithm if a simulator backend is chosen.  Must be equal to the number of :math:`\beta` and :math:`\gamma` angles provided in `qaoa_beta` and `qaoa_gamma`., defaults to 1
 :type qaoa_p_val: int
 
-  
+
 :return: A BinaryResults object
-  
+
 :rtype: BinaryResults
 """
     pass
