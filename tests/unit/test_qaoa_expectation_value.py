@@ -6,7 +6,7 @@ import time
 import pytest
 import numpy as np
 
-Num_samples = 128
+Num_samples = 512
 
 simulation_backends = (
     ("qcware/cpu", None),
@@ -61,7 +61,7 @@ def test_qaoa_expectation_value_against_cpu_emulate(backend, num_samples):
         num_samples=num_samples,
         backend=backend,
     )
-    assert np.isclose(other_value, qcware_cpu_value, atol=1)
+    assert np.isclose(other_value, qcware_cpu_value, rtol=0.2)
 
 
 # This just checks to see if we can run with samples.

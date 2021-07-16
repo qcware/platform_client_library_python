@@ -1,4 +1,4 @@
-import qcware
+import qcware.optimization
 import pytest
 import itertools
 from qcware.types.optimization import BinaryProblem
