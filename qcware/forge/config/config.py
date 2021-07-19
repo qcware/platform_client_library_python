@@ -8,13 +8,13 @@ from typing import Optional
 from urllib.parse import urljoin, urlparse
 
 import colorama  # type: ignore
-import qcware
-from qcware.client_init import __version__ as Qcware_client_version
 import requests
-from decouple import UndefinedValueError, config  # type: ignore
+from decouple import config  # type: ignore
 from packaging import version
-from pydantic import BaseModel, constr, conint, confloat
-from qcware.config.api_semver import api_semver
+from pydantic import BaseModel, confloat, conint, constr
+
+from .. import __version__ as Qcware_client_version
+from .api_semver import api_semver
 
 
 class ConfigurationError(Exception):

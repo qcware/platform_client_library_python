@@ -1,8 +1,9 @@
-import qcware
+import pprint
+
 import numpy as np
 import pytest
-import pprint
-from qcware.qml import fit_and_predict
+import qcware.forge
+from qcware.forge.qml import fit_and_predict
 
 
 @pytest.mark.parametrize(
@@ -19,7 +20,7 @@ def test_fit_and_predict(backend: str):
     X = np.array([[-1, -2, 2, -1], [-1, -1, 2, 0], [2, 1, -2, -1], [1, 2, 0, -1]])
     y = np.array([0, 0, 1, 1])
     try:
-        with qcware.config.additional_config(client_timeout=5 * 60):
+        with qcware.forge.config.additional_config(client_timeout=5 * 60):
             result = fit_and_predict(
                 X=X,
                 y=y,

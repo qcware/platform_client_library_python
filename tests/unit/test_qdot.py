@@ -1,5 +1,5 @@
-from qcware.qutils import qdot
-from qcware.api_calls import status, retrieve_result
+from qcware.forge.qutils import qdot
+from qcware.forge.api_calls import status, retrieve_result
 import numpy as np
 import pytest
 import itertools

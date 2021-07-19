@@ -1,14 +1,14 @@
-from qcware.types.optimization.predicate import Predicate
-from qcware.types.optimization.problem_spec import PolynomialObjective
-from qcware.types.optimization.problem_spec import Constraints
-from qcware.optimization import brute_force_minimize
 import itertools
+
 import pytest
+from qcware.forge.optimization import brute_force_minimize
 from qcware.serialization.transforms.helpers import (
-    to_wire,
     constraints_from_wire,
     polynomial_objective_from_wire,
+    to_wire,
 )
+from qcware.types.optimization.predicate import Predicate
+from qcware.types.optimization.problem_spec import Constraints, PolynomialObjective
 
 
 def pubo_example_1(constrained: bool):

@@ -1,21 +1,22 @@
-from qcware.config import (
+import os
+
+import pytest
+from decouple import UndefinedValueError, config
+from qcware.forge.config import (
+    ConfigurationError,
+    SchedulingMode,
+    additional_config,
+    current_context,
+    pop_context,
+    push_context,
     qcware_api_key,
     qcware_host,
+    scheduling_mode,
     set_api_key,
     set_host,
     set_scheduling_mode,
-    scheduling_mode,
     set_server_timeout,
-    ConfigurationError,
-    current_context,
-    push_context,
-    pop_context,
-    additional_config,
-    SchedulingMode,
 )
-from decouple import config, UndefinedValueError
-import pytest
-import os
 
 
 @pytest.fixture(autouse=True)

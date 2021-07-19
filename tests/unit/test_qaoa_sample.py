@@ -1,1 +1,1 @@
-from qcware.optimization import qaoa_sample
+from qcware.forge.optimization import qaoa_sample

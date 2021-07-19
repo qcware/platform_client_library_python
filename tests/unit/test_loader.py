@@ -1,5 +1,5 @@
-from qcware.qio import loader
-from qcware.circuits.quasar_backend import QuasarBackend
+from qcware.forge.qio import loader
+from qcware.forge.circuits.quasar_backend import QuasarBackend
 import numpy as np
 
 

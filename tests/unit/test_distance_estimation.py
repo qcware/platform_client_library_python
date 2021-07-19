@@ -1,7 +1,6 @@
-from qcware.qutils import distance_estimation
+from qcware.forge.qutils import distance_estimation
 import numpy as np
 import pytest
-import itertools
 
 backends = (
     ("qcware/cpu_simulator", None),

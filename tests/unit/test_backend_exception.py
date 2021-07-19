@@ -1,11 +1,12 @@
-import qcware
 import os
+
 import pytest
-import qubovert as qv
-from qcware.types.optimization import BinaryProblem
-from qcware.circuits.quasar_backend import QuasarBackend
-from qcware.types.optimization import PolynomialObjective
+import qcware
 import quasar
+import qubovert as qv
+from qcware import forge
+from qcware.forge.circuits.quasar_backend import QuasarBackend
+from qcware.types.optimization import BinaryProblem, PolynomialObjective
 
 QCWARE_API_KEY = os.environ["QCWARE_API_KEY"]
 QCWARE_HOST = os.environ["QCWARE_HOST"]
@@ -23,12 +24,12 @@ def test_solve_binary_with_brute_force():
 
     # run_backend_method is a sort of special case because it nests kwargs, so let's
     # just make sure
-    with pytest.raises(qcware.exceptions.ApiCallExecutionError):
+    with pytest.raises(forge.exceptions.ApiCallExecutionError):
         backend = QuasarBackend("qcware/cpu_simulator")
         q = quasar.Circuit()
         q.H(0).CX(0, 1)
         backend.run_measurement(circuit=q, nqubit=-42)
 
     # if there's a problem in the dispatcher (no backend), task_failure should handle that too
-    with pytest.raises(qcware.exceptions.ApiCallFailedError):
-        result = qcware.optimization.optimize_binary(instance=problem, backend="POTATO")
+    with pytest.raises(forge.exceptions.ApiCallFailedError):
+        result = forge.optimization.optimize_binary(instance=problem, backend="POTATO")

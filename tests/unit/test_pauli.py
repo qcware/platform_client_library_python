@@ -2,7 +2,7 @@ import quasar
 import time
 import numpy as np
 import qcware
-from qcware.circuits.quasar_backend import QuasarBackend
+from qcware.forge.circuits.quasar_backend import QuasarBackend
 import pytest
 
 

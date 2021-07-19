@@ -1,11 +1,12 @@
+import os
+from pprint import pprint
+
+import numpy as np
+import pytest
 import qcware
 import quasar
-import os
-import pytest
-from qcware.circuits.quasar_backend import QuasarBackend
-from qcware.exceptions import ApiCallExecutionError
-from pprint import pprint
-import numpy as np
+from qcware.forge.circuits.quasar_backend import QuasarBackend
+from qcware.forge.exceptions import ApiCallExecutionError
 
 
 @pytest.mark.parametrize(

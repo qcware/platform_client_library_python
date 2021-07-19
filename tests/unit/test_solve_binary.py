@@ -1,4 +1,4 @@
-import qcware.optimization
+import qcware.forge.optimization
 import pytest
 import itertools
 from qcware.types.optimization import BinaryProblem
@@ -22,7 +22,9 @@ def sample_q():
 def test_solve_binary(backend: str):
     Q = sample_q()
 
-    result = qcware.optimization.solve_binary(Q=Q, backend=backend, dwave_num_reads=1)
+    result = qcware.forge.optimization.solve_binary(
+        Q=Q, backend=backend, dwave_num_reads=1
+    )
     assert result["solution"] == [0, 0, 1, 1] or result["solution"] == [1, 1, 1, 1]
 
 
@@ -34,7 +36,7 @@ def test_solve_binary(backend: str):
 def test_optimize_binary(backend):
     Q = sample_q()
     problem_instance = BinaryProblem.from_dict(Q)
-    result = qcware.optimization.optimize_binary(
+    result = qcware.forge.optimization.optimize_binary(
         instance=problem_instance, backend=backend
     )
     assert result.original_problem.objective.dict() == problem_instance.objective.dict()
@@ -55,7 +57,7 @@ def test_anneal_offsets(backend: str):
     """
     Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2}  # sample_q()
 
-    result = qcware.optimization.solve_binary(
+    result = qcware.forge.optimization.solve_binary(
         Q=Q, backend=backend, dwave_num_reads=1, dwave_anneal_offsets_delta=0.5
     )
     assert "solution" in result
@@ -72,7 +74,7 @@ def test_anneal_offsets(backend: str):
 def test_solve_binary_qaoa(backend: str, nmeasurement: int):
     Q = sample_q()
 
-    result = qcware.optimization.optimize_binary(
+    result = qcware.forge.optimization.optimize_binary(
         instance=BinaryProblem.from_dict(Q),
         backend=backend,
         qaoa_nmeasurement=nmeasurement,
@@ -91,7 +93,7 @@ def test_solve_binary_qaoa(backend: str, nmeasurement: int):
 )
 def test_various_qaoa_optimizers(optimizer, backend):
     Q = sample_q()
-    result = qcware.optimization.optimize_binary(
+    result = qcware.forge.optimization.optimize_binary(
         instance=BinaryProblem.from_dict(Q), backend=backend, qaoa_optimizer=optimizer
     )
     result_vectors = [x[1] for x in result.return_results()]
@@ -102,13 +104,13 @@ def test_various_qaoa_optimizers(optimizer, backend):
 def test_analytical_angles_with_qaoa(backend):
     Q = sample_q()
 
-    exvals, angles, Z = qcware.optimization.find_optimal_qaoa_angles(
+    exvals, angles, Z = qcware.forge.optimization.find_optimal_qaoa_angles(
         Q, num_evals=100, num_min_vals=10
     )
     # print("EXVALS: ", exvals)
     # print("ANGLES: ", angles)
 
-    result = qcware.optimization.optimize_binary(
+    result = qcware.forge.optimization.optimize_binary(
         instance=BinaryProblem.from_dict(Q),
         backend="qcware/cpu_simulator",
         qaoa_beta=angles[1][0],

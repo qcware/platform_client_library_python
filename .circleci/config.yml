@@ -22,7 +22,7 @@ jobs:
             sudo pip3 install --upgrade pip
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
             poetry build
-            # poetry publish
+            poetry publish -u ${POETRY_USERNAME} -p ${POETRY_PASSWORD}
 
 workflows:
 

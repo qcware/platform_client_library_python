@@ -1,7 +1,7 @@
 from qcware.types import PolynomialObjective, BinaryProblem
 
-from qcware.optimization import qaoa_expectation_value
-from qcware.api_calls import status, retrieve_result
+from qcware.forge.optimization import qaoa_expectation_value
+from qcware.forge.api_calls import status, retrieve_result
 import time
 import pytest
 import numpy as np

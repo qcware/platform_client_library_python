@@ -1,4 +1,4 @@
-import qcware
+from qcware import forge
 import networkx as nx
 import numpy
 
@@ -21,7 +21,7 @@ def test_analytical_angle_determination():
     cost_dictionary, graph = generate_rand_reg_p5(2, 5)
     n_linear = 100
     # Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -5}
-    sol = qcware.optimization.find_optimal_qaoa_angles(
+    sol = forge.optimization.find_optimal_qaoa_angles(
         cost_dictionary,
         num_evals=n_linear,
         num_min_vals=10,
