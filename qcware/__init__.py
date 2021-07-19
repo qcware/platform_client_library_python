@@ -12,7 +12,7 @@ with "from qcware import forge" and then use "forge.optimization..."
 into the "qcware" namespace, but this compatibility will be removed
 in a future version.
 """,
-    warnings.FutureWarning,
+    FutureWarning,
 )
 
 from .forge import *
