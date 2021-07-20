@@ -1,9 +1,7 @@
 import os
 
 import pytest
-import qcware
 import quasar
-import qubovert as qv
 from qcware import forge
 from qcware.forge.circuits.quasar_backend import QuasarBackend
 from qcware.types.optimization import BinaryProblem, PolynomialObjective

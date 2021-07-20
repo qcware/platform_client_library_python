@@ -4,7 +4,6 @@ from typing import Dict
 from urllib.parse import urljoin
 
 import backoff
-from qcware.forge.async_request import get as async_get
 from qcware.forge.async_request import post as async_post
 from qcware.forge.config import (
     ApiCallContext,

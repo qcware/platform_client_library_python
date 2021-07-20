@@ -13,8 +13,8 @@ from decouple import config  # type: ignore
 from packaging import version
 from pydantic import BaseModel, confloat, conint, constr
 
-from .. import __version__ as Qcware_client_version
-from .api_semver import api_semver
+from qcware.forge import __version__ as Qcware_client_version
+from qcware.forge.config.api_semver import api_semver
 
 
 class ConfigurationError(Exception):

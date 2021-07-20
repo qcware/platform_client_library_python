@@ -1,7 +1,7 @@
 import backoff
 import requests
 
-from .exceptions import ApiCallFailedError, ApiCallResultUnavailableError
+from qcware.forge.exceptions import ApiCallFailedError, ApiCallResultUnavailableError
 
 _client_session = None
 

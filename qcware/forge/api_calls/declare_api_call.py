@@ -4,8 +4,8 @@ from qcware.forge.config import client_timeout
 from qcware.forge.exceptions import ApiTimeoutError
 from qcware.serialization.transforms import client_args_to_wire
 
-from .. import logger
-from .api_call import (
+from qcware.forge import logger
+from qcware.forge.api_calls.api_call import (
     async_post_call,
     async_retrieve_result,
     handle_result,

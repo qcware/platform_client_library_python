@@ -13,16 +13,16 @@ import pkg_resources
 try:
     __version__ = pkg_resources.get_distribution("qcware").version
 except Exception:
-    __version__ = "5.3.2"
+    __version__ = "5.0.0"
 
 import logging
 
-logger = logging.getLogger("qcware")
+logger = logging.getLogger("qcware.forge")
 
 
-from . import qio
-from . import qutils
-from . import circuits
-from . import qml
-from . import test
-from . import optimization
+from qcware.forge import qio
+from qcware.forge import qutils
+from qcware.forge import circuits
+from qcware.forge import qml
+from qcware.forge import test
+from qcware.forge import optimization

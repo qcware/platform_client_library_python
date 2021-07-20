@@ -1,4 +1,4 @@
-from .api_call import (
+from qcware.forge.api_calls.api_call import (
     api_call,
     post_call,
     async_post_call,
@@ -9,4 +9,4 @@ from .api_call import (
     status,
     cancel,
 )
-from .declare_api_call import declare_api_call
+from qcware.forge.api_calls.declare_api_call import declare_api_call

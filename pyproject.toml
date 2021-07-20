@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "qcware"
-version = "5.3.2"
+version = "5.0.0"
 description = "The python client for QC Ware's Forge SaaS quantum computing product"
 authors = ["Vic Putz <vic.putz@qcware.com>","Bryan Burr <bryan.e.burr@qcware.com"]
 packages = [
