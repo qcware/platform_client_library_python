@@ -155,8 +155,8 @@ register_result_transform(
 )
 register_result_transform(
     "optimization.qaoa_expectation_value",
-    to_wire=lambda x: scalar_to_dict(x, dtype=numpy.float64),
-    from_wire=dict_to_scalar,
+    to_wire=numeric_to_dict,
+    from_wire=dict_to_numeric,
 )
 register_result_transform(
     "optimization.qaoa_sample", to_wire=to_wire, from_wire=binary_results_from_wire
