@@ -133,15 +133,15 @@ def run_backend_method_from_wire(backend_method_result: dict):
 # to different tasks based on the back ends.
 
 
-def old_binary_result_from_new(x: str):
+def old_binary_result_from_new(x: dict):
     br = binary_results_from_wire(x)
     result = dict(
-        solution=br.results[0].bitstring,
-        extra_info=br.backend_data_finish["extra_info"],
+        solution=br.lowest_value_bitstring,
+        extra_info=br.result_metadata["extra_info"],
     )
-    if "qubo_energy_list" in br.backend_data_finish:
+    if "qubo_energy_list" in br.result_metadata:
         result["qubo_energy_list"] = qubo_energy_list = (
-            br.backend_data_finish["qubo_energy_list"],
+            br.result_metadata["qubo_energy_list"],
         )
 
     return result

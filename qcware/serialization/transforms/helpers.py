@@ -8,11 +8,11 @@ from icontract import require
 
 from ...types.optimization import (
     BinaryProblem,
-    BinaryResults,
     BruteOptimizeResult,
     Constraints,
     PolynomialObjective,
 )
+from ...types.optimization.results.results_types import BinaryResults, Sample
 
 
 def ndarray_to_dict(x: np.ndarray):
@@ -197,9 +197,9 @@ def binary_problem_from_wire(d: dict):
 def _(x):
     result = x.dict()
     result["original_problem"] = to_wire(x.original_problem)
-    result["backend_data_start"] = {
+    result["task_metadata"] = {
         k: v
-        for k, v in result["backend_data_start"].items()
+        for k, v in result["task_metadata"].items()
         if k not in ("Q", "Q_array", "split_to_full_map_array", "instance")
     }
     return result
@@ -207,6 +207,9 @@ def _(x):
 
 def binary_results_from_wire(d: dict):
     remapped_dict = d.copy()
+    remapped_dict["sample_ordered_dict"] = {
+        k: Sample(**v) for k, v in remapped_dict["sample_ordered_dict"].items()
+    }
     remapped_dict["original_problem"] = binary_problem_from_wire(d["original_problem"])
     return BinaryResults(**remapped_dict)
 

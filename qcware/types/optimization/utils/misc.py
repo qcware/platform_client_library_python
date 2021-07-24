@@ -1,5 +1,6 @@
 from typing import List, Optional, Tuple, Union
 from qcware.types.optimization import Domain
+import numpy as np
 
 
 def iterable(obj):
@@ -68,3 +69,86 @@ def intlist_to_binlist(
                 raise RuntimeError(f"Encountered {x} but expected '0' or '1'.")
 
         return ["".join(map(bin_to_symbols, s)) for s in bin_list]
+
+
+def bitarray_to_int(bitstrings: np.ndarray, domain: Domain):
+    """Convert an array of binary strings to corresponding ints.
+
+    For example, if `bitstrings` is
+        np.array(
+            [[0, 1, 0, 0],
+            [1, 1, 1, 1],
+            [0, 0, 0, 0]]
+        )
+    then this function returns []
+    """
+    if domain is Domain.SPIN:
+        bitstrings = (1 - bitstrings) // 2
+
+    num_variables = bitstrings.shape[-1]
+    powers = np.array(
+        [2 ** n for n in reversed(range(num_variables))]
+    )
+    return (powers * bitstrings).sum(axis=-1)
+
+
+def bitstring_to_intlist(binstring, domain: Domain):
+    if domain is Domain.BOOLEAN:
+        return [int(i) for i in binstring]
+    elif domain is Domain.SPIN:
+        def conversion(i):
+            if i == '+':
+                return 1
+            elif i == '-':
+                return -1
+            else:
+                raise ValueError(
+                    'For spin domain, if binstring is an str, bits must be'
+                    f'\'+\' or \'-\'. Encountered {i}.')
+        return [conversion(i) for i in binstring]
+    else:
+        raise TypeError(f'Expected Domain, encountered {type(domain)}.')
+
+
+def bin_to_int(
+        bin_spec, domain: Domain, num_variables: Optional[int] = None):
+    """Convert a binary specification of a number to an int.
+
+    If `bin_spec` is already an int, it is returned as is.
+
+    Args:
+        bin_spec: Binary specification of a number. Valid specifications are:
+            - List[int] as in [0, 1, 0, 1]
+            - str as in '0101' (or '+-+-' in the spin case)
+            - int as in 5. In this case, 5 is returned.
+        domain: Domain for the variables (boolean or spin).
+        num_variables: When specified, checks that the number of variables is
+            consistent with `spec`. Note that if `spec` is an `int`, then
+            this validation can only confirm that `spec` is not too large.
+
+    Returns: Integer corresponding to the given binary string.
+    """
+    if isinstance(bin_spec, int):
+        if bin_spec < 0:
+            raise ValueError(
+                f'Integer bin_spec must be positive, found {bin_spec}.')
+        if num_variables is not None:
+            if bin_spec >= 2 ** num_variables:
+                raise ValueError(
+                    f'{bin_spec} is too large for {num_variables} '
+                    f'binary variables.'
+                )
+        return bin_spec
+    if num_variables is not None:
+        if len(bin_spec) != num_variables:
+            raise ValueError(
+                f'Expected a binary string with {num_variables} variables, '
+                f'but got {bin_spec} which has {len(bin_spec)} variables.')
+    if isinstance(bin_spec, str):
+        return bin_to_int(
+            bin_spec=bitstring_to_intlist(binstring=bin_spec, domain=domain),
+            domain=domain
+        )
+    else:
+        bin_spec = bitarray_to_int(np.array(bin_spec), domain=domain)
+        return int(bin_spec)

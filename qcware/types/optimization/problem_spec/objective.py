@@ -120,6 +120,12 @@ class PolynomialObjective:
                 i: f"{symbol}_{i}" for i in range(num_variables)
             }
 
+        # We use qubovert to compute function values. Since we don't want
+        # to reconstruct a qubovert object every time we use it, we keep
+        # these private attributes around to use as a cache.
+        self._qv_polynomial = None
+        self._qv_polynomial_named = None
+
     def keys(self):
         return self.polynomial.keys()
 
@@ -158,6 +164,32 @@ class PolynomialObjective:
         )
 
     def qubovert(self, use_variable_names: bool = False):
+        """Get a qubovert model describing this polynomial.
+
+        This method will return a qubovert PUBO or PUSO depending on
+        the domain of the variables.
+
+        This method creates a cached qubovert object once it is called.
+        TODO: This fact makes it particularly important that
+            PolynomialObjective is immutable. We should try to enforce this.
+
+        Args:
+            use_variable_names: When True, the variables in the qubovert
+                object will use the same string names as appear in
+                the attribute variable_name_mapping.
+        """
+        if not use_variable_names:
+            if self._qv_polynomial is None:
+                self._qv_polynomial = self._qubovert(use_variable_names=False)
+            return self._qv_polynomial
+
+        else:
+            if self._qv_polynomial_named is None:
+                self._qv_polynomial_named = self._qubovert(
+                    use_variable_names=True)
+            return self._qv_polynomial_named
+
+    def _qubovert(self, use_variable_names: bool = False):
         """Get a qubovert model describing this polynomial.
 
         This method will return a qubovert PUBO or PUSO depending on
@@ -248,6 +280,15 @@ class PolynomialObjective:
             ),
             "mapping": mapping,
         }
+
+    def compute_value(
+            self,
+            variable_values: dict,
+            use_variable_names: bool = False
+    ):
+        """Compute the value of this polynomial at a specified input."""
+        qv_polynomial = self.qubovert(use_variable_names=use_variable_names)
+        return qv_polynomial.value(variable_values)
 
     @classmethod
     def __get_validators__(cls):

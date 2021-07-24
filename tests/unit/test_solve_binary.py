@@ -25,7 +25,7 @@ def test_solve_binary(backend: str):
     result = qcware.forge.optimization.solve_binary(
         Q=Q, backend=backend, dwave_num_reads=1
     )
-    assert result["solution"] == [0, 0, 1, 1] or result["solution"] == [1, 1, 1, 1]
+    assert result["solution"] in {(0, 0, 1, 1), (1, 1, 1, 1)}
 
 
 @pytest.mark.parametrize(
@@ -40,8 +40,8 @@ def test_optimize_binary(backend):
         instance=problem_instance, backend=backend
     )
     assert result.original_problem.objective.dict() == problem_instance.objective.dict()
-    result_vectors = [x[1] for x in result.return_results()]
-    assert ([0, 0, 1, 1] in result_vectors) or ([1, 1, 1, 1] in result_vectors)
+    result_bitstrings = {x.bitstring for x in result.samples}
+    assert ((0, 0, 1, 1) in result_bitstrings) or ((1, 1, 1, 1) in result_bitstrings)
 
 
 @pytest.mark.parametrize(
@@ -80,8 +80,8 @@ def test_solve_binary_qaoa(backend: str, nmeasurement: int):
         qaoa_nmeasurement=nmeasurement,
         qaoa_optimizer="analytical",
     )
-    result_vectors = [x[1] for x in result.return_results()]
-    assert ([0, 0, 1, 1] in result_vectors) or ([1, 1, 1, 1] in result_vectors)
+    result_bitstrings = {x.bitstring for x in result.samples}
+    assert ((0, 0, 1, 1) in result_bitstrings) or ((1, 1, 1, 1) in result_bitstrings)
 
 
 @pytest.mark.parametrize(
@@ -96,8 +96,8 @@ def test_various_qaoa_optimizers(optimizer, backend):
     result = qcware.forge.optimization.optimize_binary(
         instance=BinaryProblem.from_dict(Q), backend=backend, qaoa_optimizer=optimizer
     )
-    result_vectors = [x[1] for x in result.return_results()]
-    assert ([0, 0, 1, 1] in result_vectors) or ([1, 1, 1, 1] in result_vectors)
+    result_bitstrings = {x.bitstring for x in result.samples}
+    assert ((0, 0, 1, 1) in result_bitstrings) or ((1, 1, 1, 1) in result_bitstrings)
 
 
 @pytest.mark.parametrize("backend", ("qcware/cpu_simulator", "qcware/gpu_simulator"))
@@ -117,5 +117,5 @@ def test_analytical_angles_with_qaoa(backend):
         qaoa_gamma=angles[1][1],
         qaoa_p_val=1,
     )
-    result_vectors = [x[1] for x in result.return_results()]
-    assert ([0, 0, 1, 1] in result_vectors) or ([1, 1, 1, 1] in result_vectors)
+    result_bitstrings = {x.bitstring for x in result.samples}
+    assert ((0, 0, 1, 1) in result_bitstrings) or ((1, 1, 1, 1) in result_bitstrings)

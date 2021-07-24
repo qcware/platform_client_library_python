@@ -48,9 +48,9 @@ def test_retrieve_result_with_timeout():
         # should change this to use batching API
         time.sleep(8)
         result = forge.api_calls.retrieve_result(e.api_call_info["uid"])
-        result_vectors = [x[1] for x in result.return_results()]
-        assert [0, 0, 1, 1] in result_vectors
-        assert [1, 1, 1, 1] in result_vectors
+        result_vectors = {x.bitstring for x in result.samples}
+        assert (0, 0, 1, 1) in result_vectors
+        assert (1, 1, 1, 1) in result_vectors
     forge.config.set_client_timeout(old_timeout)
     forge.config.set_server_timeout(old_server_timeout)
 
@@ -65,9 +65,9 @@ async def test_async():
     result = await forge.optimization.optimize_binary.call_async(
         instance=generate_problem(), backend="qcware/cpu"
     )
-    result_vectors = [x[1] for x in result.return_results()]
-    assert [0, 0, 1, 1] in result_vectors
-    assert [1, 1, 1, 1] in result_vectors
+    result_vectors = {x.bitstring for x in result.samples}
+    assert (0, 0, 1, 1) in result_vectors
+    assert (1, 1, 1, 1) in result_vectors
 
     forge.config.set_client_timeout(old_timeout)
     forge.config.set_server_timeout(old_server_timeout)
