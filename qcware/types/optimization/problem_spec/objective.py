@@ -185,8 +185,7 @@ class PolynomialObjective:
 
         else:
             if self._qv_polynomial_named is None:
-                self._qv_polynomial_named = self._qubovert(
-                    use_variable_names=True)
+                self._qv_polynomial_named = self._qubovert(use_variable_names=True)
             return self._qv_polynomial_named
 
     def _qubovert(self, use_variable_names: bool = False):
@@ -281,11 +280,7 @@ class PolynomialObjective:
             "mapping": mapping,
         }
 
-    def compute_value(
-            self,
-            variable_values: dict,
-            use_variable_names: bool = False
-    ):
+    def compute_value(self, variable_values: dict, use_variable_names: bool = False):
         """Compute the value of this polynomial at a specified input."""
         qv_polynomial = self.qubovert(use_variable_names=use_variable_names)
         return qv_polynomial.value(variable_values)

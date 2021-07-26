@@ -22,8 +22,6 @@ from .find_optimal_qaoa_angles import (
     async_find_optimal_qaoa_angles,
 )
 
-from .solve_binary import solve_binary, submit_solve_binary, async_solve_binary
-
 from .optimize_binary import (
     optimize_binary,
     submit_optimize_binary,

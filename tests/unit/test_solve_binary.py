@@ -1,31 +1,12 @@
-import qcware.forge.optimization
-import pytest
 import itertools
+
+import pytest
+import qcware.forge.optimization
 from qcware.types.optimization import BinaryProblem
 
 
 def sample_q():
     return {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
-
-
-@pytest.mark.parametrize(
-    "backend",
-    (
-        "qcware/cpu",
-        "dwave/2000q",
-        "dwave/advantage",
-        "dwave_direct/2000q",
-        "dwave_direct/advantage",
-    )  # ,
-    #                           'awsbraket/dwave/2000q', 'awsbraket/dwave/advantage')
-)
-def test_solve_binary(backend: str):
-    Q = sample_q()
-
-    result = qcware.forge.optimization.solve_binary(
-        Q=Q, backend=backend, dwave_num_reads=1
-    )
-    assert result["solution"] in {(0, 0, 1, 1), (1, 1, 1, 1)}
 
 
 @pytest.mark.parametrize(
@@ -57,10 +38,12 @@ def test_anneal_offsets(backend: str):
     """
     Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2}  # sample_q()
 
-    result = qcware.forge.optimization.solve_binary(
-        Q=Q, backend=backend, dwave_num_reads=1, dwave_anneal_offsets_delta=0.5
+    result = qcware.forge.optimization.optimize_binary(
+        instance=BinaryProblem.from_dict(Q),
+        backend=backend,
+        dwave_num_reads=1,
+        dwave_anneal_offsets_delta=0.5,
     )
-    assert "solution" in result
 
 
 @pytest.mark.parametrize(
@@ -71,7 +54,7 @@ def test_anneal_offsets(backend: str):
         ("awsbraket/sv1", 1000),
     ],
 )
-def test_solve_binary_qaoa(backend: str, nmeasurement: int):
+def test_optimize_binary_qaoa(backend: str, nmeasurement: int):
     Q = sample_q()
 
     result = qcware.forge.optimization.optimize_binary(

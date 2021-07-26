@@ -1,25 +1,27 @@
 import os
-from typing import Optional, Callable
+from typing import Callable, Optional
+
+import numpy
+
 from ..serialize_quasar import (
+    dict_to_probability_histogram,
+    list_to_pauli,
+    pauli_to_list,
+    probability_histogram_to_dict,
     quasar_to_list,
     sequence_to_quasar,
-    probability_histogram_to_dict,
-    dict_to_probability_histogram,
-    pauli_to_list,
-    list_to_pauli,
 )
 from .helpers import (
-    ndarray_to_dict,
-    dict_to_ndarray,
-    scalar_to_dict,
-    dict_to_scalar,
-    dict_to_numeric,
-    numeric_to_dict,
-    to_wire,
     binary_results_from_wire,
     brute_optimize_result_from_wire,
+    dict_to_ndarray,
+    dict_to_numeric,
+    dict_to_scalar,
+    ndarray_to_dict,
+    numeric_to_dict,
+    scalar_to_dict,
+    to_wire,
 )
-import numpy
 
 _to_wire_result_replacers = {}
 
@@ -150,9 +152,7 @@ def old_binary_result_from_new(x: dict):
 register_result_transform(
     "optimization.optimize_binary", to_wire=to_wire, from_wire=binary_results_from_wire
 )
-register_result_transform(
-    "optimization.solve_binary", to_wire=to_wire, from_wire=old_binary_result_from_new
-)
+
 register_result_transform(
     "optimization.qaoa_expectation_value",
     to_wire=numeric_to_dict,

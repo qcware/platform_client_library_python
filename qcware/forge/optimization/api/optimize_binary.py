@@ -35,7 +35,7 @@ def optimize_binary(
     dwave_reinitialize_state: str = None,
     dwave_anneal_offsets: str = None,
     dwave_anneal_offsets_delta: str = None,
-    dwave_num_reads: str = None,
+    dwave_num_reads: int = 1,
     dwave_max_answers: str = None,
     dwave_flux_biases: str = None,
     dwave_beta: str = None,
@@ -125,7 +125,7 @@ Possible errors include:
 | 100        | Invalid solver selected.               |
 +------------+----------------------------------------+
 
-It is strongly recommended to wrap a call to :obj:`solve_binary` in a try/catch block since it is possible for the platform or the client library to raise an exception.
+It is strongly recommended to wrap a call to :obj:`optimize_binary` in a try/catch block since it is possible for the platform or the client library to raise an exception.
 
 Arguments:
 

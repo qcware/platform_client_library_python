@@ -18,4 +18,4 @@ def domain_bit_values(domain: Domain):
     elif domain is Domain.SPIN:
         return [1, -1]
     else:
-        raise TypeError(f'Expected Domain, found {type(domain)}.')
+        raise TypeError(f"Expected Domain, found {type(domain)}.")

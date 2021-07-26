@@ -86,9 +86,7 @@ def bitarray_to_int(bitstrings: np.ndarray, domain: Domain):
         bitstrings = (1 - bitstrings) // 2
 
     num_variables = bitstrings.shape[-1]
-    powers = np.array(
-        [2 ** n for n in reversed(range(num_variables))]
-    )
+    powers = np.array([2 ** n for n in reversed(range(num_variables))])
     return (powers * bitstrings).sum(axis=-1)
 
 
@@ -96,22 +94,24 @@ def bitstring_to_intlist(binstring, domain: Domain):
     if domain is Domain.BOOLEAN:
         return [int(i) for i in binstring]
     elif domain is Domain.SPIN:
+
         def conversion(i):
-            if i == '+':
+            if i == "+":
                 return 1
-            elif i == '-':
+            elif i == "-":
                 return -1
             else:
                 raise ValueError(
-                    'For spin domain, if binstring is an str, bits must be'
-                    f'\'+\' or \'-\'. Encountered {i}.')
+                    "For spin domain, if binstring is an str, bits must be"
+                    f"'+' or '-'. Encountered {i}."
+                )
+
         return [conversion(i) for i in binstring]
     else:
-        raise TypeError(f'Expected Domain, encountered {type(domain)}.')
+        raise TypeError(f"Expected Domain, encountered {type(domain)}.")
 
 
-def bin_to_int(
-        bin_spec, domain: Domain, num_variables: Optional[int] = None):
+def bin_to_int(bin_spec, domain: Domain, num_variables: Optional[int] = None):
     """Convert a binary specification of a number to an int.
 
     If `bin_spec` is already an int, it is returned as is.
@@ -130,24 +130,23 @@ def bin_to_int(
     """
     if isinstance(bin_spec, int):
         if bin_spec < 0:
-            raise ValueError(
-                f'Integer bin_spec must be positive, found {bin_spec}.')
+            raise ValueError(f"Integer bin_spec must be positive, found {bin_spec}.")
         if num_variables is not None:
             if bin_spec >= 2 ** num_variables:
                 raise ValueError(
-                    f'{bin_spec} is too large for {num_variables} '
-                    f'binary variables.'
+                    f"{bin_spec} is too large for {num_variables} " f"binary variables."
                 )
         return bin_spec
     if num_variables is not None:
         if len(bin_spec) != num_variables:
             raise ValueError(
-                f'Expected a binary string with {num_variables} variables, '
-                f'but got {bin_spec} which has {len(bin_spec)} variables.')
+                f"Expected a binary string with {num_variables} variables, "
+                f"but got {bin_spec} which has {len(bin_spec)} variables."
+            )
     if isinstance(bin_spec, str):
         return bin_to_int(
             bin_spec=bitstring_to_intlist(binstring=bin_spec, domain=domain),
-            domain=domain
+            domain=domain,
         )
     else:
         bin_spec = bitarray_to_int(np.array(bin_spec), domain=domain)

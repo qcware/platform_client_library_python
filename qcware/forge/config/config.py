@@ -614,7 +614,7 @@ def additional_config(**kwargs):
 
     ```
     with additional_config(client_tiemout=5*60):
-        result = solve_binary(...)
+        result = optimize_binary(...)
     ```
     """
     push_context(**kwargs)

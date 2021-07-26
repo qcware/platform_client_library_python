@@ -21,7 +21,7 @@ Table of contents
    :maxdepth: 2
    :caption: Optimization
 
-   optimization/solve_binary
+   optimization/optimize_binary
    optimization/brute_force
 
 .. toctree::
