@@ -5,14 +5,13 @@ from typing import Dict
 import lz4.frame
 import numpy as np
 from icontract import require
-
-from ...types.optimization import (
+from qcware.types.optimization import (
     BinaryProblem,
     BruteOptimizeResult,
     Constraints,
     PolynomialObjective,
 )
-from ...types.optimization.results.results_types import BinaryResults, Sample
+from qcware.types.optimization.results.results_types import BinaryResults, Sample
 
 
 def ndarray_to_dict(x: np.ndarray):

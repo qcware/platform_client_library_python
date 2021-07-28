@@ -3,7 +3,7 @@ import re
 from quasar.circuit import Circuit, CompositeGate, ControlledGate, Gate
 from quasar.pauli import PauliString, Pauli
 from quasar.measurement import ProbabilityHistogram
-from .transforms.helpers import (
+from qcware.serialization.transforms.helpers import (
     ndarray_to_dict,
     dict_to_ndarray,
     scalar_to_dict,
