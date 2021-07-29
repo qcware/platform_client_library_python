@@ -15,7 +15,7 @@ import sys
 
 print(os.path.abspath("../.."))
 sys.path.insert(0, os.path.abspath("../.."))
-import qcware
+import qcware.forge
 
 # -- Project information -----------------------------------------------------
 
@@ -23,7 +23,7 @@ project = "qcware"
 copyright = "2019, QC Ware Corp."
 author = "Bryan E. Burr (bryan@qcware.com)"
 master_doc = "index"
-version = qcware.__version__
+version = qcware.forge.__version__
 
 # -- General configuration ---------------------------------------------------
 

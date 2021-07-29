@@ -20,4 +20,4 @@ types for problem specification, constraints, and results.
 Functions
 ---------
 
-.. autofunction:: qcware.optimization.brute_force_minimize
+.. autofunction:: qcware.forge.optimization.brute_force_minimize

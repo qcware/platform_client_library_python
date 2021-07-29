@@ -13,8 +13,8 @@ Types
 Functions
 ---------
 
-.. autofunction:: qcware.optimization.optimize_binary
+.. autofunction:: qcware.forge.optimization.optimize_binary
 
 Optimal QAOA Angles
 ========================
-.. autofunction:: qcware.optimization.find_optimal_qaoa_angles
+.. autofunction:: qcware.forge.optimization.find_optimal_qaoa_angles

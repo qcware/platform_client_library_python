@@ -26,10 +26,10 @@ Using the quasar Forge backend:
 ```````````````````````````````
 
 The `QuasarBackend` class provides a more integrated backend to Quasar using Forge
-as a platform.  You can import the class from `qcware.circuits.quasar_backend`
+as a platform.  You can import the class from `qcware.forge.circuits.quasar_backend`
 and use it as shown below::
 
-  >>> from qcware.circuits.quasar_backend import QuasarBackend
+  >>> from qcware.forge.circuits.quasar_backend import QuasarBackend
   >>> backend = QuasarBackend("qcware/cpu_simulator")
   >>> backend.has_run_statevector
   True
