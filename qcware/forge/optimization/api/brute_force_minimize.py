@@ -36,19 +36,3 @@ def brute_force_minimize(
     :return: BruteOptimizeResult object specifying the minimum value of the objective function (that does not violate a constraint) as well as the variables that attain this value.
     :rtype: types.BruteOptimizeResult"""
     pass
-
-
-def submit_brute_force_minimize(*args, **kwargs):
-    """This method is deprecated; please use brute_force_minimize.submit"""
-    w = "The old submit_brute_force_minimize function has been deprecated and will be removed.  Please use brute_force_minimize.submit"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return brute_force_minimize.submit(*args, **kwargs)
-
-
-async def async_brute_force_minimize(*args, **kwargs):
-    """This method is deprecated; please use brute_force_minimize.call_async"""
-    w = "The old async_brute_force_minimize function has been deprecated and will be removed.  Please use brute_force_minimize.call_async"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return await brute_force_minimize.call_async(*args, **kwargs)

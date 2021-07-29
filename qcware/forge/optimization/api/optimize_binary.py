@@ -102,7 +102,6 @@ Error handling is provided by the platform, and warnings and errors that are det
 
 Possible warnings include:
 
-
 +--------------+--------------------------------------------------------------------+
 | Warning Code | Warning Message                                                    |
 +==============+====================================================================+
@@ -188,7 +187,7 @@ Arguments:
 :param dwave_reduce_intersample_correlation: D-Wave hardware system parameter. See `reduce_intersample_correlation <https://docs.dwavesys.com/docs/latest/c_solver_1.html#reduce-intersample-correlation>`_., defaults to None
 :type dwave_reduce_intersample_correlation: str
 
-:param dwave_num_spin_reversal_transforms: D-Wave hardware system parameter. See `num_spin_reversal_transforms <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-spin-reversal-transforms>`_.                , defaults to None
+:param dwave_num_spin_reversal_transforms: D-Wave hardware system parameter. See `num_spin_reversal_transforms <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-spin-reversal-transforms>`_., defaults to None
 :type dwave_num_spin_reversal_transforms: str
 
 :param dwave_programming_thermalization: D-Wave hardware system parameter. See `programming_thermalization <https://docs.dwavesys.com/docs/latest/c_solver_1.html#programming-thermalization>`_., defaults to None
@@ -203,8 +202,8 @@ Arguments:
 :param dwave_anneal_offsets_delta: Parameter greater or equal to 0 that is used to generate anneal offsets, cannot be specified if dwave_anneal_offsets is also specified. We recommend the value to be in [0, 0.05]. See `<https://arxiv.org/pdf/1806.11091.pdf>`_., defaults to None
 :type dwave_anneal_offsets_delta: str
 
-:param dwave_num_reads: D-Wave hardware system parameter. See `num_reads <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-reads>`_., defaults to None
-:type dwave_num_reads: str
+:param dwave_num_reads: D-Wave hardware system parameter. See `num_reads <https://docs.dwavesys.com/docs/latest/c_solver_1.html#num-reads>`_., defaults to 1
+:type dwave_num_reads: int
 
 :param dwave_max_answers: D-Wave hardware system parameter. See `max_answers <https://docs.dwavesys.com/docs/latest/c_solver_1.html#max-answers>`_., defaults to None
 :type dwave_max_answers: str
@@ -212,7 +211,7 @@ Arguments:
 :param dwave_flux_biases: D-Wave hardware system parameter. See `flux_biases <https://docs.dwavesys.com/docs/latest/c_solver_1.html#flux-biases>`_., defaults to None
 :type dwave_flux_biases: str
 
-:param dwave_beta: D-Wave hardware system parameter. See `beta <https://docs.dwavesys.com/docs/latest/c_solver_1.html#beta>`_.                , defaults to None
+:param dwave_beta: D-Wave hardware system parameter. See `beta <https://docs.dwavesys.com/docs/latest/c_solver_1.html#beta>`_., defaults to None
 :type dwave_beta: str
 
 :param dwave_answer_mode: D-Wave hardware system parameter. See `answer_mode <https://docs.dwavesys.com/docs/latest/c_solver_1.html#answer-mode>`_., defaults to None
@@ -316,23 +315,6 @@ Arguments:
 
 
 :return: A BinaryResults object
-
 :rtype: BinaryResults
 """
     pass
-
-
-def submit_optimize_binary(*args, **kwargs):
-    """This method is deprecated; please use optimize_binary.submit"""
-    w = "The old submit_optimize_binary function has been deprecated and will be removed.  Please use optimize_binary.submit"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return optimize_binary.submit(*args, **kwargs)
-
-
-async def async_optimize_binary(*args, **kwargs):
-    """This method is deprecated; please use optimize_binary.call_async"""
-    w = "The old async_optimize_binary function has been deprecated and will be removed.  Please use optimize_binary.call_async"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return await optimize_binary.call_async(*args, **kwargs)

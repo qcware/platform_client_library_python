@@ -47,21 +47,5 @@ def qaoa_expectation_value(
 
 
     :return: The expectation value for the QAOA state.
-    :rtype: float"""
+    :rtype: ndarray"""
     pass
-
-
-def submit_qaoa_expectation_value(*args, **kwargs):
-    """This method is deprecated; please use qaoa_expectation_value.submit"""
-    w = "The old submit_qaoa_expectation_value function has been deprecated and will be removed.  Please use qaoa_expectation_value.submit"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return qaoa_expectation_value.submit(*args, **kwargs)
-
-
-async def async_qaoa_expectation_value(*args, **kwargs):
-    """This method is deprecated; please use qaoa_expectation_value.call_async"""
-    w = "The old async_qaoa_expectation_value function has been deprecated and will be removed.  Please use qaoa_expectation_value.call_async"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return await qaoa_expectation_value.call_async(*args, **kwargs)

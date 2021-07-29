@@ -33,7 +33,6 @@ def distance_estimation(
       x is 1d, y is 2d; performs vector - matrix multiplication. Returns 1d array.
       x is 2d, y is 2d; performs matrix - matrix multiplication. Returns 2d array.
 
-
     Arguments:
 
     :param x: 1d or 2d array
@@ -61,19 +60,3 @@ def distance_estimation(
     :return: float, 1d array, or 2d array: distance estimation
     :rtype: Union[float, numpy.ndarray]"""
     pass
-
-
-def submit_distance_estimation(*args, **kwargs):
-    """This method is deprecated; please use distance_estimation.submit"""
-    w = "The old submit_distance_estimation function has been deprecated and will be removed.  Please use distance_estimation.submit"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return distance_estimation.submit(*args, **kwargs)
-
-
-async def async_distance_estimation(*args, **kwargs):
-    """This method is deprecated; please use distance_estimation.call_async"""
-    w = "The old async_distance_estimation function has been deprecated and will be removed.  Please use distance_estimation.call_async"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return await distance_estimation.call_async(*args, **kwargs)

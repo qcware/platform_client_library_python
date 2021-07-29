@@ -38,7 +38,6 @@ def find_optimal_qaoa_angles(
 
 
     :return: A tuple of three values min_val, min_beta_gamma, Z where:
-
     * min_val is a list of the best `num_min_vals` expectation values found, sorted from minimum to maximum.
     * min_beta_gamma is a list of [:math:`\beta`, :math:`\gamma`] pairs representing the best
       `num_min_vals` expectation values found, in the same order as the expectation values
@@ -48,22 +47,5 @@ def find_optimal_qaoa_angles(
       the beta/gamma pair.  Each row represents a choice of :math:`\gamma` and each column represents
       a choice of :math:`\beta`, so `Z[1,2]` represents the expectation value from the :math:`\gamma` value `Y[1]`
       and the :math:`\beta` value `X[2]`
-
     :rtype: tuple"""
     pass
-
-
-def submit_find_optimal_qaoa_angles(*args, **kwargs):
-    """This method is deprecated; please use find_optimal_qaoa_angles.submit"""
-    w = "The old submit_find_optimal_qaoa_angles function has been deprecated and will be removed.  Please use find_optimal_qaoa_angles.submit"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return find_optimal_qaoa_angles.submit(*args, **kwargs)
-
-
-async def async_find_optimal_qaoa_angles(*args, **kwargs):
-    """This method is deprecated; please use find_optimal_qaoa_angles.call_async"""
-    w = "The old async_find_optimal_qaoa_angles function has been deprecated and will be removed.  Please use find_optimal_qaoa_angles.call_async"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return await find_optimal_qaoa_angles.call_async(*args, **kwargs)

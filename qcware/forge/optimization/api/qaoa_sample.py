@@ -43,19 +43,3 @@ def qaoa_sample(
     :return: BinaryResults providing a histogram of bit samples.
     :rtype: BinaryResults"""
     pass
-
-
-def submit_qaoa_sample(*args, **kwargs):
-    """This method is deprecated; please use qaoa_sample.submit"""
-    w = "The old submit_qaoa_sample function has been deprecated and will be removed.  Please use qaoa_sample.submit"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return qaoa_sample.submit(*args, **kwargs)
-
-
-async def async_qaoa_sample(*args, **kwargs):
-    """This method is deprecated; please use qaoa_sample.call_async"""
-    w = "The old async_qaoa_sample function has been deprecated and will be removed.  Please use qaoa_sample.call_async"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return await qaoa_sample.call_async(*args, **kwargs)

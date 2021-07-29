@@ -45,19 +45,3 @@ def fit_and_predict(
     :return: A numpy array the length of the test data `T` containing fit labels
     :rtype: numpy.array"""
     pass
-
-
-def submit_fit_and_predict(*args, **kwargs):
-    """This method is deprecated; please use fit_and_predict.submit"""
-    w = "The old submit_fit_and_predict function has been deprecated and will be removed.  Please use fit_and_predict.submit"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return fit_and_predict.submit(*args, **kwargs)
-
-
-async def async_fit_and_predict(*args, **kwargs):
-    """This method is deprecated; please use fit_and_predict.call_async"""
-    w = "The old async_fit_and_predict function has been deprecated and will be removed.  Please use fit_and_predict.call_async"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return await fit_and_predict.call_async(*args, **kwargs)

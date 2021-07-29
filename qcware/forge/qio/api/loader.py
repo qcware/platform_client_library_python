@@ -29,19 +29,3 @@ def loader(
     :return: A Quasar circuit suitable for execution on any quasar backend supporting the required gates which loads the classical vector into a quantum state.
     :rtype: quasar.Circuit"""
     pass
-
-
-def submit_loader(*args, **kwargs):
-    """This method is deprecated; please use loader.submit"""
-    w = "The old submit_loader function has been deprecated and will be removed.  Please use loader.submit"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return loader.submit(*args, **kwargs)
-
-
-async def async_loader(*args, **kwargs):
-    """This method is deprecated; please use loader.call_async"""
-    w = "The old async_loader function has been deprecated and will be removed.  Please use loader.call_async"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return await loader.call_async(*args, **kwargs)

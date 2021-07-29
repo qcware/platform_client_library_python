@@ -31,7 +31,6 @@ def qdot(
       x is 1d, y is 2d; performs vector - matrix multiplication. Returns 1d array.
       x is 2d, y is 2d; performs matrix - matrix multiplication. Returns 2d array.
 
-
     Arguments:
 
     :param x: 1d or 2d array
@@ -59,19 +58,3 @@ def qdot(
     :return: float, 1d array, or 2d array: dot product
     :rtype: Union[float, numpy.ndarray]"""
     pass
-
-
-def submit_qdot(*args, **kwargs):
-    """This method is deprecated; please use qdot.submit"""
-    w = "The old submit_qdot function has been deprecated and will be removed.  Please use qdot.submit"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return qdot.submit(*args, **kwargs)
-
-
-async def async_qdot(*args, **kwargs):
-    """This method is deprecated; please use qdot.call_async"""
-    w = "The old async_qdot function has been deprecated and will be removed.  Please use qdot.call_async"
-    warnings.warn(w, DeprecationWarning)
-    print(w)
-    return await qdot.call_async(*args, **kwargs)
