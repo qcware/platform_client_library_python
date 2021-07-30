@@ -1,18 +1,36 @@
 import pydantic
 import dataclasses
-from typing import Dict, List
+from typing import Dict, List, Optional, Union
 
 from qcware.types.utils import pydantic_model_abridge_validation_errors
 
 from qcware.types.optimization.predicate import Predicate
-
+from qcware.types.optimization.variable_types import Domain
 from qcware.types.optimization.problem_spec import PolynomialObjective
 
-
 def constraint_validation(
-    constraints: dict, num_variables: int, validate_types: bool = True
+        constraints: dict,
+        num_variables: int,
+        validate_types: bool = True,
+        domain: Optional[Union[Domain, str]] = None,
+        variable_name_mapping: Optional[Dict[int, str]] = None
 ):
-    from qcware.types.optimization import Predicate
+    if domain is not None:
+        domain = Domain(domain.lower())
+    for p_list in constraints.values():
+        for i, p in enumerate(p_list):
+            if not isinstance(p, PolynomialObjective):
+                if domain is None:
+                    domain = Domain.BOOLEAN
+                p_list[i] = PolynomialObjective(
+                    polynomial=p,
+                    num_variables=num_variables,
+                    domain=domain,
+                    variable_name_mapping=variable_name_mapping,
+                    validate_types=validate_types
+                )
+
+
 
     # By changing from a pydantic.dataclass to a vanilla dataclass,
     # we are able to turn off type checking while still using __post_init__.

@@ -54,7 +54,6 @@ class Constraints:
     add additional constraints of those types in this fashion by adding
     more entries to the lists.
     """
-
     constraint_dict: Dict[Predicate, List[PolynomialObjective]]
     domain: Domain
 
@@ -62,6 +61,8 @@ class Constraints:
         self,
         constraints: Dict[Predicate, List[PolynomialObjective]],
         num_variables: int,
+        domain: Optional[Union[Domain, str]] = None,
+        variable_name_mapping: Optional[dict] = None,
         validate_types: bool = True,
     ):
         """
@@ -95,7 +96,11 @@ class Constraints:
                 constraints constrain.
         """
         parsed_constraints = validator.constraint_validation(
-            constraints, num_variables, validate_types
+            constraints=constraints,
+            num_variables=num_variables,
+            validate_types=validate_types,
+            domain=domain,
+            variable_name_mapping=variable_name_mapping
         )
         del constraints
         self.constraint_dict = parsed_constraints.constraint_dict
@@ -107,6 +112,8 @@ class Constraints:
         self._num_constraints_dict = {rel: 0 for rel in self.predicates}
 
         selected_domain = None
+        if domain is not None:
+            selected_domain = Domain(domain.lower())
         for predicate in self.predicates:
             for c in self.constraint_dict[predicate]:
                 self.degree_dict[predicate].append(c.degree)
@@ -117,8 +124,8 @@ class Constraints:
                     selected_domain = c.domain
                 elif selected_domain is not c.domain:
                     raise ValueError(
-                        "Encountered constraints with both boolean and spin "
-                        "variable domains."
+                        "Inconsistent specification of spin versus boolean "
+                        "constraints."
                     )
 
         self.domain = selected_domain
@@ -250,7 +257,8 @@ class Constraints:
 
     def __str__(self):
         out = f"Number of variables: {self.num_variables}\n"
-        out += f"Total number of constraints: {self.num_constraints()}\n\n"
+        out += f"Total number of constraints: {self.num_constraints()}\n"
+        out += f"Variable domain: {self.domain.value}\n\n"
         header = ["Predicate", "Number of Constraints", "Highest Degree"]
         data = [
             [rel.upper(), self.num_constraints(rel), self.max_degree_dict[rel]]
