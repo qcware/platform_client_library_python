@@ -18,15 +18,11 @@ class BinaryProblem(BaseModel):
         arbitrary_types_allowed = True
 
     def __str__(self) -> str:
-        header0 = "* Name: {0} *\n".format(self.name)
-        header1 = "* Variable type: {0} *\n".format(self.objective.domain)
-        line = "**********************\n"
-        header2 = "Objective function: {0} \n".format(self.objective.polynomial)
+        out = "Objective:\n"
+        out += "    " + self.objective.__str__() + "\n\n"
 
-        string_out = line + header0 + header1 + line + header2
-        if self.constraints is not None:
-            string_out += self.constraints.__repr__()
-        return string_out
+        out += self.constraints.__str__()
+        return out
 
     @classmethod
     def from_dict(

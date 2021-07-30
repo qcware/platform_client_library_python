@@ -305,7 +305,7 @@ class PolynomialObjective:
             )
         return v
 
-    def pretty_str(self):
+    def pretty_str(self, include_domain: bool = True):
         """Make a string that presents the polynomial algebraically.
 
         The names of variables can be controlled with the attribute
@@ -313,17 +313,20 @@ class PolynomialObjective:
 
         Adapted from qubovert--thanks to Joseph T. Iosue.
         """
-        if self.polynomial == {}:
-            return ""
-
         if self.domain is Domain.BOOLEAN:
-            res = f"Boolean Variables: "
+            domain_label = f"({self.num_variables} boolean variables)"
         elif self.domain is Domain.SPIN:
-            res = f"Spin Variables: "
+            domain_label = f"({self.num_variables} spin variables)"
         else:
             raise RuntimeError("Variable domain type seems to be invalid.")
 
-        res += f"{list(self.variable_name_mapping.values())}\n"
+        if self.polynomial == {}:
+            if include_domain:
+                return "0  " + domain_label
+            else:
+                return "0"
+
+        res = ""
         first = True
         for term, coef in self.items():
             if coef >= 0 and (coef != 1 or not term):
@@ -345,7 +348,12 @@ class PolynomialObjective:
                 res += self.variable_name_mapping[x] + " "
             res += "+ "
             first = False
-        return res[:-2].strip()
+        res = res[:-2].strip()
+
+        if include_domain:
+            return res + "  " + domain_label
+        else:
+            return res
 
     def dict(self):
         return {

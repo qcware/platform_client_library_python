@@ -1,3 +1,4 @@
+import itertools
 import textwrap
 from typing import Dict, List, Union, Iterable, Optional
 
@@ -215,6 +216,39 @@ class Constraints:
         return self.constraint_dict.__getitem__(item)
 
     def __repr__(self):
+        out = "Constraints(\n"
+        out += f"    constraints={self.constraint_dict},\n"
+        out += f"    num_variables={self.num_variables}\n"
+        out += f")"
+        return out
+
+    def constraint_string(self, max_shown: int = 10):
+        predicate_meaning = {
+            Predicate.ZERO: " = 0",
+            Predicate.NONZERO: " ≠ 0",
+            Predicate.POSITIVE: " > 0",
+            Predicate.NEGATIVE: " < 0",
+            Predicate.NONNEGATIVE: " ≥ 0",
+            Predicate.NONPOSITIVE: " ≤ 0",
+        }
+        constraint_string_list = []
+        for pred in self.predicates:
+            pred_string = predicate_meaning[pred]
+            polynomials = self.constraint_dict[pred]
+            for p in itertools.islice(polynomials, max_shown):
+                constraint_string_list.append(
+                    p.pretty_str(include_domain=False) + pred_string
+                )
+            if self.num_constraints(predicate=pred) > max_shown:
+                num_hidden = self.num_constraints(predicate=pred) - max_shown
+                constraint_string_list += [f'({num_hidden} not shown)']
+            constraint_string_list += ['\n']
+
+        # remove final '\n'
+        constraint_string_list = constraint_string_list[:-1]
+        return '\n'.join(constraint_string_list)
+
+    def __str__(self):
         out = f"Number of variables: {self.num_variables}\n"
         out += f"Total number of constraints: {self.num_constraints()}\n\n"
         header = ["Predicate", "Number of Constraints", "Highest Degree"]
@@ -227,6 +261,11 @@ class Constraints:
 
         out = textwrap.indent(out, "    ", predicate=None)
         out = "Constraints:\n" + out
+
+        out += "\n\n" + textwrap.indent(
+            self.constraint_string(max_shown=5),
+            "    "
+        )
         return out
 
     def dict(self):
