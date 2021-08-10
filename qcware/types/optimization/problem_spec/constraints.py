@@ -54,6 +54,7 @@ class Constraints:
     add additional constraints of those types in this fashion by adding
     more entries to the lists.
     """
+
     constraint_dict: Dict[Predicate, List[PolynomialObjective]]
     domain: Domain
 
@@ -100,7 +101,7 @@ class Constraints:
             num_variables=num_variables,
             validate_types=validate_types,
             domain=domain,
-            variable_name_mapping=variable_name_mapping
+            variable_name_mapping=variable_name_mapping,
         )
         del constraints
         self.constraint_dict = parsed_constraints.constraint_dict
@@ -248,12 +249,12 @@ class Constraints:
                 )
             if self.num_constraints(predicate=pred) > max_shown:
                 num_hidden = self.num_constraints(predicate=pred) - max_shown
-                constraint_string_list += [f'({num_hidden} not shown)']
-            constraint_string_list += ['\n']
+                constraint_string_list += [f"({num_hidden} not shown)"]
+            constraint_string_list += ["\n"]
 
         # remove final '\n'
         constraint_string_list = constraint_string_list[:-1]
-        return '\n'.join(constraint_string_list)
+        return "\n".join(constraint_string_list)
 
     def __str__(self):
         out = f"Number of variables: {self.num_variables}\n"
@@ -270,10 +271,7 @@ class Constraints:
         out = textwrap.indent(out, "    ", predicate=None)
         out = "Constraints:\n" + out
 
-        out += "\n\n" + textwrap.indent(
-            self.constraint_string(max_shown=5),
-            "    "
-        )
+        out += "\n\n" + textwrap.indent(self.constraint_string(max_shown=5), "    ")
         return out
 
     def dict(self):

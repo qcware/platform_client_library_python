@@ -8,12 +8,13 @@ from qcware.types.optimization.predicate import Predicate
 from qcware.types.optimization.variable_types import Domain
 from qcware.types.optimization.problem_spec import PolynomialObjective
 
+
 def constraint_validation(
-        constraints: dict,
-        num_variables: int,
-        validate_types: bool = True,
-        domain: Optional[Union[Domain, str]] = None,
-        variable_name_mapping: Optional[Dict[int, str]] = None
+    constraints: dict,
+    num_variables: int,
+    validate_types: bool = True,
+    domain: Optional[Union[Domain, str]] = None,
+    variable_name_mapping: Optional[Dict[int, str]] = None,
 ):
     if domain is not None:
         domain = Domain(domain.lower())
@@ -27,10 +28,8 @@ def constraint_validation(
                     num_variables=num_variables,
                     domain=domain,
                     variable_name_mapping=variable_name_mapping,
-                    validate_types=validate_types
+                    validate_types=validate_types,
                 )
-
-
 
     # By changing from a pydantic.dataclass to a vanilla dataclass,
     # we are able to turn off type checking while still using __post_init__.
