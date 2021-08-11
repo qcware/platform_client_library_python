@@ -4,4 +4,4 @@
 
 from .qdot import qdot
 
-from .distance_estimation import distance_estimation
+from .qdist import qdist

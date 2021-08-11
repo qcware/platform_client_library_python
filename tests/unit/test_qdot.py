@@ -19,11 +19,11 @@ import time
 # takes too long to send it over the wire, so we'll do case studies
 # for each
 backends = (
-    ("qcware/cpu_simulator", None),
+    ("qcware/cpu_simulator", 100),
     ("awsbraket/sv1", 100),
     ("awsbraket/tn1", 100),
     ("ibm/simulator", 100),
-    ("qcware/gpu_simulator", None),
+    ("qcware/gpu_simulator", 100),
 )
 
 

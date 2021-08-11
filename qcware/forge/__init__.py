@@ -13,7 +13,7 @@ import pkg_resources
 try:
     __version__ = pkg_resources.get_distribution("qcware").version
 except Exception:
-    __version__ = "5.0.0"
+    __version__ = "6.0.0"
 
 import logging
 

@@ -167,7 +167,7 @@ register_argument_transform(
 )
 
 register_argument_transform(
-    "qutils.distance_estimation",
+    "qutils.qdist",
     to_wire={
         "x": numeric_to_dict,
         "y": numeric_to_dict,

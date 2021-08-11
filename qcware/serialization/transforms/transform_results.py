@@ -96,7 +96,7 @@ register_result_transform(
 )
 
 register_result_transform(
-    "qutils.distance_estimation", to_wire=numeric_to_dict, from_wire=dict_to_numeric
+    "qutils.qdist", to_wire=numeric_to_dict, from_wire=dict_to_numeric
 )
 
 register_result_transform(

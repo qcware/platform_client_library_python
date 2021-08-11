@@ -6,7 +6,7 @@ import numpy
 
 import quasar
 
-from typing import Union
+from typing import Union, Optional
 
 import warnings
 from ...api_calls import declare_api_call
@@ -16,11 +16,12 @@ from ...api_calls import declare_api_call
 def qdot(
     x: Union[float, numpy.ndarray],
     y: Union[float, numpy.ndarray],
-    circuit: quasar.Circuit = None,
     loader_mode: str = "parallel",
-    circuit_mode: str = "sequential",
+    circuit: quasar.Circuit = None,
     backend: str = "qcware/cpu_simulator",
-    num_measurements: int = None,
+    num_measurements: int = 1000,
+    absolute: bool = False,
+    opt_shape: Optional[tuple[int, ...]] = None,
 ):
     r"""Outputs the dot product of two arrays; quantum analogue of::
       numpy.dot
@@ -39,20 +40,23 @@ def qdot(
     :param y: 1d or 2d array
     :type y: Union[float, numpy.ndarray]
 
-    :param circuit: Circuit to use for evaluation (None to implicitly create circuit), defaults to None
-    :type circuit: quasar.Circuit
-
     :param loader_mode: , defaults to parallel
     :type loader_mode: str
 
-    :param circuit_mode: , defaults to sequential
-    :type circuit_mode: str
+    :param circuit: Circuit to use for evaluation (None to implicitly create circuit), defaults to None
+    :type circuit: quasar.Circuit
 
-    :param backend: , defaults to qcware/cpu_simulator
+    :param backend: string describing the desired backend, defaults to qcware/cpu_simulator
     :type backend: str
 
-    :param num_measurements: , defaults to None
+    :param num_measurements: Number of measurements (necessary for all backends), defaults to 1000
     :type num_measurements: int
+
+    :param absolute: Whether to return the absolute value of output, defaults to False
+    :type absolute: bool
+
+    :param opt_shape: Shape of optimal loader (N1, N2), defaults to None
+    :type opt_shape: Optional[tuple[int,...]]
 
 
     :return: float, 1d array, or 2d array: dot product

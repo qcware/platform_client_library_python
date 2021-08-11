@@ -44,7 +44,7 @@ Table of contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Utilities (qdot, distance_estimation)
+   :caption: Utilities (qdot, qdist)
 
    qutils/qutils
 
