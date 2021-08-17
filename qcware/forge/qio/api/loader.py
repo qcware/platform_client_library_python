@@ -4,7 +4,7 @@
 
 import numpy
 
-from typing import Optional
+from typing import Optional, Tuple
 
 import warnings
 from ...api_calls import declare_api_call
@@ -14,7 +14,7 @@ from ...api_calls import declare_api_call
 def loader(
     data: numpy.ndarray,
     mode: str = "optimized",
-    opt_shape: Optional[tuple[int, ...]] = None,
+    opt_shape: Optional[Tuple[int, ...]] = None,
     initial: bool = True,
 ):
     r"""Creates a circuit which loads an array of classical data into the state space of a quantum computer or simulator.  This is useful in order to act on known data or to simulator quantum RAM.
@@ -28,7 +28,7 @@ def loader(
     :type mode: str
 
     :param opt_shape: If the loader is an optimized loader, this corresponds to the new shape of the input matrix, defaults to None
-    :type opt_shape: Optional[tuple[int,...]]
+    :type opt_shape: Optional[Tuple[int,...]]
 
     :param initial: Whether the loader is at the beginning of the circuit (in which it performs an initial X gate on the first qubit), defaults to True
     :type initial: bool

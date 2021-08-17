@@ -22,9 +22,9 @@ class BinaryProblem(BaseModel):
         out += "    " + self.objective.__str__() + "\n\n"
 
         if self.constraints is None:
-            out += 'Unconstrained'
+            out += "Unconstrained"
         elif self.constraints.num_constraints() == 0:
-            out += 'Unconstrained'
+            out += "Unconstrained"
         else:
             out += self.constraints.__str__()
         return out

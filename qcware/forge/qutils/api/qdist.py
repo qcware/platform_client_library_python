@@ -6,7 +6,7 @@ import numpy
 
 import quasar
 
-from typing import Union, Optional
+from typing import Union, Optional, Tuple
 
 import warnings
 from ...api_calls import declare_api_call
@@ -21,7 +21,7 @@ def qdist(
     backend: str = "qcware/cpu_simulator",
     num_measurements: int = 1000,
     absolute: bool = False,
-    opt_shape: Optional[tuple[int, ...]] = None,
+    opt_shape: Optional[Tuple[int, ...]] = None,
 ):
     r"""Outputs the distance between input vectors; quantum analogue of::
       numpy.linalg.norm(X - Y)**2
@@ -56,7 +56,7 @@ def qdist(
     :type absolute: bool
 
     :param opt_shape: shape of the optimized loader's input (N1, N2), defaults to None
-    :type opt_shape: Optional[tuple[int,...]]
+    :type opt_shape: Optional[Tuple[int,...]]
 
 
     :return: float, 1d array, or 2d array: distance estimation

@@ -6,7 +6,7 @@ import numpy
 
 import quasar
 
-from typing import Union, Optional
+from typing import Union, Optional, Tuple
 
 import warnings
 from ...api_calls import declare_api_call
@@ -21,7 +21,7 @@ def qdot(
     backend: str = "qcware/cpu_simulator",
     num_measurements: int = 1000,
     absolute: bool = False,
-    opt_shape: Optional[tuple[int, ...]] = None,
+    opt_shape: Optional[Tuple[int, ...]] = None,
 ):
     r"""Outputs the dot product of two arrays; quantum analogue of::
       numpy.dot
@@ -56,7 +56,7 @@ def qdot(
     :type absolute: bool
 
     :param opt_shape: Shape of optimal loader (N1, N2), defaults to None
-    :type opt_shape: Optional[tuple[int,...]]
+    :type opt_shape: Optional[Tuple[int,...]]
 
 
     :return: float, 1d array, or 2d array: dot product
