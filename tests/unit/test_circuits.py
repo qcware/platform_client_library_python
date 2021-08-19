@@ -60,7 +60,7 @@ def test_run_measurement(backend):
     assert isinstance(result.histogram, dict)
     assert 0 in result.histogram
     # yeah, pretty fuzzy but I'll take it; this is more or less a smoke test
-    assert abs(result.histogram[0] - 0.5) < 0.1
+    assert abs(result.histogram[0] - 0.5) < 0.2
 
 
 @pytest.mark.parametrize("backend", (("awsbraket/ionq"), ("awsbraket/rigetti")))
