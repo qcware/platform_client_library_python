@@ -14,7 +14,10 @@ from qcware.forge.config import (
 )
 from qcware.forge.exceptions import ApiCallExecutionError, ApiTimeoutError
 from qcware.forge.request import get, post
-from qcware.serialization.transforms import client_result_from_wire
+from qcware.serialization.transforms import (
+    client_result_from_wire,
+    server_args_from_wire,
+)
 
 
 def post_call(endpoint: str, data: dict):
@@ -159,6 +162,14 @@ def handle_result(api_call):
         return client_result_from_wire(api_call["method"], result)
 
 
+def handle_params(params_data):
+    method = params_data["method"]
+    raw_params = json.loads(get(params_data["params_url"]))
+    params = server_args_from_wire(method, **raw_params)
+    del params["api_call_context"]
+    return params
+
+
 def retrieve_result(call_token: str, api_call_context: ApiCallContext = None):
     """
     Retrieves the result of a call or an error object if the call is not complete
@@ -201,3 +212,51 @@ async def async_retrieve_result(
             return handle_result(await async_wait_for_call(call_token))
         except ApiTimeoutError as e:
             await asyncio.sleep(async_interval_between_tries())
+
+
+def retrieve_parameters(call_token: str, api_call_context: ApiCallContext = None):
+    """
+    Retrieves the parameters of an API call.
+    :param call_token: The token of the API call; can be
+    retrieved from last_x_calls or the web interface
+    :type call_token: str
+
+    :param api_call_context: API Call context; default context used if none provided
+    :type api_call_context: ApiCallContext
+
+    :return: The parameters passed to the API call
+    """
+    api_call_context = (
+        current_context() if api_call_context is None else api_call_context
+    )
+    return handle_params(
+        post(
+            f"{api_call_context.qcware_host}/api_calls/params",
+            dict(api_call_context=api_call_context.dict(), call_token=call_token),
+        )
+    )
+
+
+async def async_retrieve_parameters(
+    call_token: str, api_call_context: ApiCallContext = None
+):
+    """
+    Retrieves the parameters of an API call asynchronously.
+    :param call_token: The token of the API call; can be
+    retrieved from last_x_calls or the web interface
+    :type call_token: str
+
+    :param api_call_context: API Call context; default context used if none provided
+    :type api_call_context: ApiCallContext
+
+    :return: The parameters passed to the API call
+    """
+    api_call_context = (
+        current_context() if api_call_context is None else api_call_context
+    )
+    return handle_params(
+        await async_post(
+            f"{api_call_context.qcware_host}/api_calls/params",
+            dict(api_call_context=api_call_context.dict(), call_token=call_token),
+        )
+    )

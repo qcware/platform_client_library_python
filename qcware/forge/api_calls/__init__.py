@@ -6,6 +6,8 @@ from qcware.forge.api_calls.api_call import (
     handle_result,
     retrieve_result,
     async_retrieve_result,
+    retrieve_parameters,
+    async_retrieve_parameters,
     status,
     cancel,
 )

@@ -30,7 +30,7 @@ from .helpers import (
     binary_results_from_wire,
 )
 from typing import Optional, Mapping, Callable
-from ...types.optimization import BinaryProblem
+from qcware.types.optimization import BinaryProblem
 
 
 def update_with_replacers(
