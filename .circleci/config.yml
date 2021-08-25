@@ -39,7 +39,7 @@ workflows:
     jobs:
       - build
       - publish_to_pypi:
-          context: python_client_publish
+          context: aws
           filters:
             branches:
               ignore: /.*/
