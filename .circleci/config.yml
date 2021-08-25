@@ -2,8 +2,6 @@ version: 2.1
 
 orbs:
   python: circleci/python@0.2.1
-  aws-cli: circleci/aws-cli@2.0
-  jq: circleci/jq@2.2
 
 jobs:
 
@@ -18,13 +16,6 @@ jobs:
 
     steps:
       - checkout
-      - jq/install
-      - aws-cli/install
-      - run:
-          name: Source PyPi creds
-          command: |
-            echo "export PYPI_PASSWORD=$(aws secretsmanager get-secret-value --secret-id admin/cicd/circleci/context/pypi | jq -r '.SecretString | fromjson.password')" >> $BASH_ENV
-            echo "export PYPI_USERNAME=$(aws secretsmanager get-secret-value --secret-id admin/cicd/circleci/context/pypi | jq -r '.SecretString | fromjson.username')" >> $BASH_ENV
       - run:
           name: "publish to pypi"
           command: |
@@ -39,7 +30,7 @@ workflows:
     jobs:
       - build
       - publish_to_pypi:
-          context: aws
+          context: python_client_publish
           filters:
             branches:
               ignore: /.*/
