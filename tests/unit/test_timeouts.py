@@ -46,7 +46,7 @@ def test_retrieve_result_with_timeout():
         )
     except forge.exceptions.ApiTimeoutError as e:
         # should change this to use batching API
-        time.sleep(8)
+        time.sleep(10)
         result = forge.api_calls.retrieve_result(e.api_call_info["uid"])
         result_vectors = {x.bitstring for x in result.samples}
         assert (0, 0, 1, 1) in result_vectors
