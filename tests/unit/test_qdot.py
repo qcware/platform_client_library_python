@@ -1,9 +1,10 @@
-from qcware.forge.qutils import qdot
-from qcware.forge.api_calls import status, retrieve_result
-import numpy as np
-import pytest
 import itertools
 import time
+
+import numpy as np
+import pytest
+from qcware.forge.api_calls import retrieve_result, status
+from qcware.forge.qutils import qdot
 
 # the tricky thing here for serialization is to make
 # sure that the types come out right.  For dot,
@@ -26,13 +27,15 @@ backends = (
     ("qcware/gpu_simulator", 100),
 )
 
+loader_modes = (("parallel",), ("optimized",))
+
 
 def flatten(x):
     return list(itertools.chain.from_iterable(x))
 
 
 @pytest.mark.parametrize(
-    "x, y, backend, num_measurements",
+    "x, y, backend, num_measurements, loader_mode",
     (
         flatten(x)
         for x in itertools.product(
@@ -41,11 +44,18 @@ def flatten(x):
                 (np.array([[5, 4, 3], [2, 1, 0]]), np.array([8, 7, 6])),
             ),
             backends,
+            loader_modes,
         )
     ),
 )
-def test_qdot(x, y, backend, num_measurements):
-    result = qdot(x, y, backend=backend, num_measurements=num_measurements)
+def test_qdot(x, y, backend, num_measurements, loader_mode):
+    result = qdot(
+        x,
+        y,
+        backend=backend,
+        num_measurements=num_measurements,
+        loader_mode=loader_mode,
+    )
     numpy_result = np.dot(x, y)
     if np.isscalar(numpy_result):
         assert np.isscalar(result)
