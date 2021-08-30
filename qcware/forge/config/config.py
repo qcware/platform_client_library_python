@@ -4,14 +4,14 @@ import sys
 from contextlib import contextmanager
 from enum import Enum
 from functools import reduce
-from typing import Optional
+from typing import Optional, Annotated
 from urllib.parse import urljoin, urlparse
 
 import colorama  # type: ignore
 import requests
 from decouple import config  # type: ignore
 from packaging import version
-from pydantic import BaseModel, confloat, conint, constr
+from pydantic import BaseModel, ConstrainedStr, Field
 
 from qcware.forge import __version__ as Qcware_client_version
 from qcware.forge.config.api_semver import api_semver
@@ -50,7 +50,7 @@ def qcware_api_key(override: Optional[str] = None) -> str:
     result = (
         override
         if override is not None
-        else current_context().credentials.qcware_api_key
+        else current_context().credentials.qcware_api_key  # type:ignore
     )
     if result is None:
         raise ConfigurationError(
@@ -412,10 +412,10 @@ def set_ibmq_credentials_from_ibmq(ibmq):
 
 class IBMQCredentials(BaseModel):
 
-    token: Optional[constr(max_length=255)]
-    hub: Optional[constr(max_length=255)]
-    group: Optional[constr(max_length=255)]
-    project: Optional[constr(max_length=255)]
+    token: Optional[Annotated[str, Field(max_length=255)]]
+    hub: Optional[Annotated[str, Field(max_length=255)]]
+    group: Optional[Annotated[str, Field(max_length=255)]]
+    project: Optional[Annotated[str, Field(max_length=255)]]
 
     @classmethod
     def from_ibmq(cls, ibmq):
@@ -438,7 +438,7 @@ class IBMQCredentials(BaseModel):
 
 
 class ApiCredentials(BaseModel):
-    qcware_api_key: Optional[constr(max_length=255)] = None
+    qcware_api_key: Optional[Annotated[str, Field(max_length=255)]] = None
     ibmq: Optional[IBMQCredentials] = None
 
     class Config:
@@ -465,11 +465,11 @@ class Environment(BaseModel):
     This is set via the environment variable QCWARE_ENVIRONMENT_SOURCE_FILE.
     """
 
-    client: constr(max_length=255)
-    client_version: constr(max_length=255)
-    python_version: constr(max_length=255)
-    environment: constr(max_length=255)
-    source_file: constr(max_length=255)
+    client: Annotated[str, Field(max_length=255)]
+    client_version: Annotated[str, Field(max_length=255)]
+    python_version: Annotated[str, Field(max_length=255)]
+    environment: Annotated[str, Field(max_length=255)]
+    source_file: Annotated[str, Field(max_length=255)]
 
 
 def set_environment_environment(new_environment: str):
@@ -491,12 +491,12 @@ class ApiCallContext(BaseModel):
     override only one field (or a subset).
     """
 
-    qcware_host: Optional[constr(max_length=255)] = None
+    qcware_host: Optional[Annotated[str, Field(max_length=255)]] = None
     credentials: Optional[ApiCredentials] = None
     environment: Optional[Environment] = None
-    server_timeout: Optional[conint(ge=0)] = None
-    client_timeout: Optional[conint(ge=0)] = None
-    async_interval_between_tries: Optional[confloat(ge=0)] = None
+    server_timeout: Optional[Annotated[int, Field(ge=0)]] = None
+    client_timeout: Optional[Annotated[int, Field(ge=0)]] = None
+    async_interval_between_tries: Optional[Annotated[float, Field(ge=0)]] = None
     scheduling_mode: Optional[SchedulingMode] = None
 
     class Config:
@@ -538,7 +538,9 @@ def root_context() -> ApiCallContext:
     )
 
 
-_contexts: contextvars.ContextVar = contextvars.ContextVar("contexts", default=[])
+_contexts: contextvars.ContextVar[ApiCallContext] = contextvars.ContextVar(
+    "contexts", default=[]
+)  # type:ignore
 
 
 def push_context(**kwargs):
@@ -600,7 +602,9 @@ def current_context() -> ApiCallContext:
     through the stack.  Normally not called by the user.
 
     """
-    return reduce(merge_models, _contexts.get(), root_context())
+    # known problem below with mypy and reduce, see https://github.com/python/mypy/issues/4150
+    # among others
+    return reduce(merge_models, _contexts.get(), root_context())  # type:ignore
 
 
 @contextmanager

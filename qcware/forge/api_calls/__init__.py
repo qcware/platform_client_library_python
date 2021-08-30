@@ -11,4 +11,4 @@ from qcware.forge.api_calls.api_call import (
     status,
     cancel,
 )
-from qcware.forge.api_calls.declare_api_call import declare_api_call
+from qcware.forge.api_calls.api_call_decorator import declare_api_call

@@ -3,17 +3,17 @@
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
 import numpy
-
+import numpy.typing
 import warnings
 from ...api_calls import declare_api_call
 
 
 @declare_api_call(name="qml.fit_and_predict", endpoint="qml/fit_and_predict")
 def fit_and_predict(
-    X: numpy.array,
+    X: numpy.typing.ArrayLike,
     model: str,
-    y: numpy.array = None,
-    T: numpy.array = None,
+    y: numpy.typing.ArrayLike = None,
+    T: numpy.typing.ArrayLike = None,
     parameters: dict = {},
     backend: str = "qcware/cpu_simulator",
 ):

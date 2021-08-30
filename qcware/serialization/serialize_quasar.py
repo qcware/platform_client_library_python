@@ -10,7 +10,8 @@ from qcware.serialization.transforms.helpers import (
     dict_to_scalar,
 )
 import numpy as np
-from typing import Sequence, List, Tuple, Dict, Mapping
+from collections.abc import Iterable
+from typing import List, Tuple, Dict, Mapping
 import json
 import lz4
 import base64
@@ -97,7 +98,7 @@ def base_gate_name(gate_name: str) -> str:
     return gate_name if adjoint_index == -1 else gate_name[0:adjoint_index]
 
 
-def num_adjoints(gate_name: str) -> str:
+def num_adjoints(gate_name: str) -> int:
     "the number of adjoint markers in this gate name"
     # return len(adjoint_re.findall(gate_name))
     return gate_name.count(adjoint_str)
@@ -233,7 +234,7 @@ def dict_to_quasar(d: Mapping) -> Circuit:
     return result
 
 
-def quasar_to_sequence(q: Circuit) -> Sequence:
+def quasar_to_sequence(q: Circuit) -> Iterable:
     return (q_instruction_to_s(k, v) for k, v in q.gates.items())
 
 
@@ -264,7 +265,7 @@ def make_gate(gate_name: str, original_parameters: dict):
     return gate
 
 
-def sequence_to_quasar(s: Sequence) -> Circuit:
+def sequence_to_quasar(s: Iterable) -> Circuit:
     # make a sequence of tuples (gate, qubits, times) and manually
     # add to circuit, no need for copy
     result = Circuit()
@@ -298,7 +299,7 @@ def dict_to_probability_histogram(d: dict):
 
 
 def pauli_item_to_tuple(k: PauliString, v: object) -> Tuple[str, Dict]:
-    return tuple((str(k), scalar_to_dict(v)))
+    return (str(k), scalar_to_dict(v))
 
 
 def tuple_to_pauli_item(t: Tuple[str, Dict]) -> Tuple:

@@ -133,7 +133,7 @@ def to_wire(x):
 
 
 @to_wire.register(PolynomialObjective)
-def _(x):
+def polynomial_objective_to_wire(x):
     result = x.dict()
     result["polynomial"] = remap_q_indices_to_strings(result["polynomial"])
     result["variable_name_mapping"] = {
@@ -153,7 +153,7 @@ def polynomial_objective_from_wire(d: dict):
 
 
 @to_wire.register(Constraints)
-def _(x):
+def constraints_to_wire(x):
     result = x.dict()
     result["constraints"] = {
         k: [to_wire(x) for x in v] for k, v in x.dict()["constraints"].items()
@@ -172,7 +172,7 @@ def constraints_from_wire(d: dict):
 
 
 @to_wire.register(BinaryProblem)
-def _(x):
+def binary_problem_to_wire(x):
     result = x.dict()
     result["objective"] = to_wire(result["objective"])
     result["constraints"] = (

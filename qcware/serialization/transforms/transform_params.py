@@ -29,13 +29,11 @@ from .helpers import (
     binary_problem_from_wire,
     binary_results_from_wire,
 )
-from typing import Optional, Mapping, Callable
+from typing import Optional, Mapping, Callable, Any
 from qcware.types.optimization import BinaryProblem
 
 
-def update_with_replacers(
-    d: Mapping[object, object], replacers: Mapping[object, Callable]
-):
+def update_with_replacers(d: dict[str, Any], replacers: Mapping[str, Callable]):
     """for all (k,f) in replacers, updates the dict entry marked by k by calling the
     function f on the value"""
     result = d.copy()
@@ -45,7 +43,7 @@ def update_with_replacers(
     return result
 
 
-_to_wire_arg_replacers = {}
+_to_wire_arg_replacers: dict[str, dict[str, Callable]] = {}
 
 
 def client_args_to_wire(method_name: str, **kwargs):
@@ -61,7 +59,7 @@ def client_args_to_wire(method_name: str, **kwargs):
         )
 
 
-_from_wire_arg_replacers = {}
+_from_wire_arg_replacers: dict[str, dict[str, Callable]] = {}
 
 
 def server_args_from_wire(method_name: str, **kwargs):

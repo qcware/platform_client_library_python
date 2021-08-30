@@ -1,6 +1,6 @@
 from quasar.backend import Backend
 from types import MethodType, FunctionType
-from qcware.forge.api_calls.declare_api_call import ApiCall
+from qcware.forge.api_calls.api_call_decorator import ApiCall
 from qcware.serialization.transforms import client_args_to_wire
 import inspect
 

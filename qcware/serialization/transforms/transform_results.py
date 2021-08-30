@@ -1,6 +1,6 @@
 import os
-from typing import Callable, Optional
-
+from typing import Callable, Optional, cast
+from decouple import config
 import numpy
 
 from ..serialize_quasar import (
@@ -23,11 +23,11 @@ from .helpers import (
     to_wire,
 )
 
-_to_wire_result_replacers = {}
+_to_wire_result_replacers: dict[str, Callable] = {}
 
 
 def debug_is_set() -> bool:
-    return os.environ.get("QCWARE_CLIENT_DEBUG", False)
+    return config("QCWARE_CLIENT_DEBUG", default=False, cast=bool)
 
 
 def result_represents_error(worker_result: object):
@@ -50,18 +50,18 @@ def strip_traceback_if_debug_set(error_result: dict) -> dict:
 
 def server_result_to_wire(method_name: str, worker_result: object):
     if result_represents_error(worker_result):
-        return strip_traceback_if_debug_set(worker_result)
+        return strip_traceback_if_debug_set(cast(dict, worker_result))
     else:
         f = _to_wire_result_replacers.get(method_name, lambda x: x)
         return f(worker_result)
 
 
-_from_wire_result_replacers = {}
+_from_wire_result_replacers: dict[str, Callable] = {}
 
 
 def client_result_from_wire(method_name: str, worker_result: object):
     if result_represents_error(worker_result):
-        return strip_traceback_if_debug_set(worker_result)
+        return strip_traceback_if_debug_set(cast(dict, worker_result))
     else:
         f = _from_wire_result_replacers.get(method_name, lambda x: x)
         return f(worker_result)
