@@ -45,9 +45,16 @@ def test_retrieve_result_with_timeout():
             instance=generate_problem(), backend="qcware/cpu"
         )
     except forge.exceptions.ApiTimeoutError as e:
-        # should change this to use batching API
-        time.sleep(10)
-        result = forge.api_calls.retrieve_result(e.api_call_info["uid"])
+        call_id = e.api_call_info["uid"]
+        start = time.perf_counter()
+        # 30s timeouts
+        timeout = 30
+        while ((time.perf_counter() - start) < timeout) and forge.api_calls.status(
+            call_id
+        )["status"] == "open":
+            time.sleep(1)
+        assert forge.api_calls.status(call_id)["status"] == "success"
+        result = forge.api_calls.retrieve_result(call_id)
         result_vectors = {x.bitstring for x in result.samples}
         assert (0, 0, 1, 1) in result_vectors
         assert (1, 1, 1, 1) in result_vectors
