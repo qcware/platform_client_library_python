@@ -13,7 +13,7 @@ def pytest_addoption(parser):
     )
     parser.addoption("--ibmq", action="store_true", help="run test for ibmq backends")
     parser.addoption(
-        "--awswindows",
+        "--awsslow",
         action="store_true",
         help="run tests for braket schedule-window backends (ionq, rigetti)",
     )
@@ -31,8 +31,10 @@ def pytest_collection_modifyitems(session, config, items):
         elif "ibmq" in item.nodeid and not config.getoption("ibmq"):
             deselected_items.append(item)
         elif (
-            "awsbraket/ionq" in item.nodeid or "awsbraket/rigetti" in item.nodeid
-        ) and not config.getoption("awswindows"):
+            "awsbraket/ionq" in item.nodeid
+            or "awsbraket/rigetti" in item.nodeid
+            or "awsbraket/tn1" in item.nodeid
+        ) and not config.getoption("awsslow"):
             deselected_items.append(item)
         else:
             selected_items.append(item)
