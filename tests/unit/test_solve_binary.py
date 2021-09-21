@@ -6,7 +6,14 @@ from qcware.types.optimization import BinaryProblem
 
 
 def sample_q():
-    return {(0, 0): 1, (1, 1): 1, (0, 1): -2, (2, 2): -2, (3, 3): -4, (3, 2): -6}
+    return {
+        (0, 0): 1,
+        (1, 1): 1,
+        (0, 1): -2,
+        (2, 2): -2,
+        (3, 3): -4,
+        (3, 2): -6
+    }
 
 
 def is_plausible_bitstring(bs, length):
@@ -22,9 +29,9 @@ def test_optimize_binary(backend):
     Q = sample_q()
     problem_instance = BinaryProblem.from_dict(Q)
     result = qcware.forge.optimization.optimize_binary(
-        instance=problem_instance, backend=backend
-    )
-    assert result.original_problem.objective.dict() == problem_instance.objective.dict()
+        instance=problem_instance, backend=backend)
+    assert result.original_problem.objective.dict(
+    ) == problem_instance.objective.dict()
     result_bitstrings = {x.bitstring for x in result.samples}
     # this is just a smoke test now
     assert all([is_plausible_bitstring(bs, 4) for bs in result_bitstrings])
@@ -84,20 +91,21 @@ def test_optimize_binary_qaoa(backend: str, nmeasurement: int):
 def test_various_qaoa_optimizers(optimizer, backend):
     Q = sample_q()
     result = qcware.forge.optimization.optimize_binary(
-        instance=BinaryProblem.from_dict(Q), backend=backend, qaoa_optimizer=optimizer
-    )
+        instance=BinaryProblem.from_dict(Q),
+        backend=backend,
+        qaoa_optimizer=optimizer)
     result_bitstrings = {x.bitstring for x in result.samples}
     assert all([is_plausible_bitstring(bs, 4) for bs in result_bitstrings])
     # assert ((0, 0, 1, 1) in result_bitstrings) or ((1, 1, 1, 1) in result_bitstrings)
 
 
-@pytest.mark.parametrize("backend", ("qcware/cpu_simulator", "qcware/gpu_simulator"))
+@pytest.mark.parametrize("backend",
+                         ("qcware/cpu_simulator", "qcware/gpu_simulator"))
 def test_analytical_angles_with_qaoa(backend):
     Q = sample_q()
 
     exvals, angles, Z = qcware.forge.optimization.find_optimal_qaoa_angles(
-        Q, num_evals=100, num_min_vals=10
-    )
+        Q, num_evals=100, num_min_vals=10)
     # print("EXVALS: ", exvals)
     # print("ANGLES: ", angles)
 

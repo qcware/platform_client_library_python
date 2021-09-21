@@ -30,13 +30,12 @@ class BinaryProblem(BaseModel):
         return out
 
     @classmethod
-    def from_dict(
-        cls, objective: Dict[Tuple[int, ...], int], domain: Domain = Domain.BOOLEAN
-    ):
+    def from_dict(cls,
+                  objective: Dict[Tuple[int, ...], int],
+                  domain: Domain = Domain.BOOLEAN):
         """
         Creates the BinaryProblem from a dict specifying a boolean polynomial.
         """
-
         def count_variables(polynomial: dict):
             var_names = set()
             for k in polynomial.keys():
@@ -59,7 +58,7 @@ class BinaryProblem(BaseModel):
             if elm == ():
                 pass
             elif len(elm) == 1:
-                q_final[(elm[0], elm[0])] = q_start[(elm[0],)]
+                q_final[(elm[0], elm[0])] = q_start[(elm[0], )]
             else:
                 q_final[elm] = q_start[elm]
 

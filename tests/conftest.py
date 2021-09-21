@@ -8,10 +8,12 @@ selectable but not run as default.
 
 
 def pytest_addoption(parser):
-    parser.addoption(
-        "--vulcan", action="store_true", help="run test for vulcan backends"
-    )
-    parser.addoption("--ibmq", action="store_true", help="run test for ibmq backends")
+    parser.addoption("--vulcan",
+                     action="store_true",
+                     help="run test for vulcan backends")
+    parser.addoption("--ibmq",
+                     action="store_true",
+                     help="run test for ibmq backends")
     parser.addoption(
         "--awsslow",
         action="store_true",
@@ -24,17 +26,14 @@ def pytest_collection_modifyitems(session, config, items):
     deselected_items = []
     selected_items = []
     for item in items:
-        if (
-            "qcware/gpu_simulator" in item.nodeid or "qcware/gpu" in item.nodeid
-        ) and not config.getoption("vulcan"):
+        if ("qcware/gpu_simulator" in item.nodeid or "qcware/gpu"
+                in item.nodeid) and not config.getoption("vulcan"):
             deselected_items.append(item)
         elif "ibmq" in item.nodeid and not config.getoption("ibmq"):
             deselected_items.append(item)
-        elif (
-            "awsbraket/ionq" in item.nodeid
-            or "awsbraket/rigetti" in item.nodeid
-            or "awsbraket/tn1" in item.nodeid
-        ) and not config.getoption("awsslow"):
+        elif ("awsbraket/ionq" in item.nodeid
+              or "awsbraket/rigetti" in item.nodeid or "awsbraket/tn1"
+              in item.nodeid) and not config.getoption("awsslow"):
             deselected_items.append(item)
         else:
             selected_items.append(item)
