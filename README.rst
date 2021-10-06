@@ -58,5 +58,3 @@ Or, to install from source:
    pip install -e .
 
 Sign up for an API key at `https://forge.qcware.com <https://forge.qcware.com>`_ to access *Forge*. Please see our `documentation <https://qcware.readthedocs.io>`_.
-
-Please see the `documentation <https://qcware.readthedocs.io>`_
