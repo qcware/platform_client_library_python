@@ -1,7 +1,10 @@
 version: 2
 
+build:
+  image: testing
+
 python:
-  version: 3.8
+  version: 3.9
   install:
     - requirements: doc_requirements.txt
     - requirements: docs/source/requirements.txt
