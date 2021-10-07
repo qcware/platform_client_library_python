@@ -13,6 +13,7 @@ from qcware.forge.exceptions import ApiCallExecutionError
         "qcware/cpu_simulator",
         "qcware/gpu_simulator",
         "ibm/simulator",
+        "ibmq:ibmq_qasm_simulator",
         "awsbraket/sv1",
         "awsbraket/tn1",
     ],
