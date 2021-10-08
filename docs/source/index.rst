@@ -6,16 +6,8 @@
 .. include:: ../../README.rst
 
 
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-
-Table of contents
------------------
+Table of Contents
+=================
 
 .. toctree::
    :maxdepth: 2
@@ -54,3 +46,9 @@ Table of contents
    :caption: Copyright
 
    copyright
+
+
+Indices and Tables
+==================
+
+* :ref:`genindex`

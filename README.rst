@@ -5,6 +5,7 @@
    :alt: logo
 
 
+========================================
 QC Ware Platform Client Library (Python)
 ========================================
 
@@ -34,14 +35,7 @@ Platform from Python.
 
 
 Installation
-____________
-
-This documentation is for the latest (prerelease) version of QCWare's Forge client, which
-at present relies on some internal packages.  It is "baked into" QCWare's Jupyterhub
-notebooks, but local installation will have to wait until Quasar, our circuit-model
-library, is publicly available.
-
-Ordinarily, you would install as follows:
+============
 
 To install with pip:
 
@@ -49,12 +43,15 @@ To install with pip:
 
    pip install qcware
 
-Or, to install from source:
+To install from source, first, you must install `poetry <https://python-poetry.org/docs/>`_.
+Then, execute the following:
 
 .. code:: shell
 
    git clone https://github.com/qcware/platform_client_library_python.git
    cd platform_client_library_python
-   pip install -e .
+   poetry build
+   cd dist
+   pip install qcware-6.0.0-py3-none-any.whl
 
-Sign up for an API key at `https://forge.qcware.com <https://forge.qcware.com>`_ to access *Forge*. Please see our `documentation <https://qcware.readthedocs.io>`_.
+Finally, to access Forge, sign up for an API key at `https://forge.qcware.com <https://forge.qcware.com>`_.
