@@ -24,7 +24,7 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Quantum classification
+   :caption: Quantum Classification
 
    qml/classification
 
@@ -47,6 +47,7 @@ Table of Contents
 
    copyright
 
+|
 
 Indices and Tables
 ==================
