@@ -3,53 +3,67 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. include:: ../../README.rst
 
+.. image:: http://qcwareco.wpengine.com/wp-content/uploads/2019/08/qc-ware-logo-11.png
+   :target: https://qcware.com/
+   :alt: logo
 
-Table of Contents
-=================
+===========================================
+Forge: Your Algorithms on Quantum Computers
+===========================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Optimization
+.. image:: https://badge.fury.io/py/qcware.svg
+   :target: https://badge.fury.io/py/qcware
+   :alt: PyPI version
 
-   optimization/optimize_binary
-   optimization/brute_force
+.. image:: https://pepy.tech/badge/qcware
+   :target: https://pepy.tech/project/qcware
+   :alt: Downloads
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Circuits
+.. image:: https://pepy.tech/badge/qcware/month
+   :target: https://pepy.tech/project/qcware/month
+   :alt: Downloads
 
-   circuits/circuits
+.. image:: https://circleci.com/gh/qcware/platform_client_library_python.svg?style=svg
+   :target: https://circleci.com/gh/qcware/platform_client_library_python
+   :alt: CircleCI
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Quantum Classification
+.. image:: https://readthedocs.org/projects/qcware/badge/?version=latest
+   :target: https://qcware.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
 
-   qml/classification
+Welcome! The documentation on this site will help you understand and use the Forge client library.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Quantum I/O
-
-   qio/qio
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Utilities (qdot, qdist)
-
-   qutils/qutils
+Forge is a service that lets you develop and run quantum software. An interface to this service is exposed to Python developers via the Forge client library.
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Copyright
+   :caption: Get Started
+   :hidden:
+
+   get-started/quickstart
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Learn
+   :hidden:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
+   :hidden:
+
+   Circuits <reference/circuits>
+   Circuit I/O <reference/qio>
+   Utilities <reference/qutils>
+   Machine Learning <reference/classification>
+   Optimization <reference/optimization>
+
+.. toctree::
+   :maxdepth: 2
+   :caption: About
+   :hidden:
 
    copyright
-
-|
-
-Indices and Tables
-==================
-
-* :ref:`genindex`
+   genindex

@@ -1,40 +1,13 @@
+Quickstart
+==========
 
+The quickest way to get started with the Forge client library is to `register <https://app.forge.qcware.com/sign_up/>`_ as a Forge user and use our hosted `Jupyter <https://jupyter.org/>`_ environment. Jupyter notebooks hosted on our service are pre-configured for Forge client library usage. **No additional setup required.**
 
-.. image:: http://qcwareco.wpengine.com/wp-content/uploads/2019/08/qc-ware-logo-11.png
-   :alt: logo
+If you would like to work with the Forge client library locally, read on.
 
-
-========================================
-Forge Client Library
-========================================
-
-This package contains functions for easily interfacing with Forge.
-
-
-.. image:: https://badge.fury.io/py/qcware.svg
-   :target: https://badge.fury.io/py/qcware
-   :alt: PyPI version
-
-.. image:: https://pepy.tech/badge/qcware
-   :target: https://pepy.tech/project/qcware
-   :alt: Downloads
-
-.. image:: https://pepy.tech/badge/qcware/month
-   :target: https://pepy.tech/project/qcware/month
-   :alt: Downloads
-
-.. image:: https://circleci.com/gh/qcware/platform_client_library_python.svg?style=svg
-   :target: https://circleci.com/gh/qcware/platform_client_library_python
-   :alt: CircleCI
-
-.. image:: https://readthedocs.org/projects/qcware/badge/?version=latest
-   :target: https://qcware.readthedocs.io/en/latest/?badge=latest
-   :alt: Documentation Status
-
-|
 
 Installation
-============
+------------
 
 To install with pip:
 
@@ -55,15 +28,15 @@ Then, execute the following:
 
 
 API Key
-=======
+-------
 
-To use the client library, you will need an API key. You can sign up for one at `https://forge.qcware.com <https://forge.qcware.com>`__.
+To use the Forge client library, you will need an API key. You can sign up for one at `https://forge.qcware.com <https://forge.qcware.com>`__.
 
 To access your API key, log in to `Forge <https://forge.qcware.com>`_ and navigate to the API page. Your API key should be plainly visible there.
 
 
 A Tiny Program
-==============
+--------------
 
 The following code snippet illustrates how you might run Forge client code locally. Please make sure that you have installed the client library and obtained an API key before running the Python code presented below.
 
@@ -106,4 +79,8 @@ If the client code has been properly installed and configured, the above code sh
     Objective value: -1
     Solution: [0, 0, 1]
 
-For further guidance on running client code to solve machine learning problems, optimization problems, and more, please read through the documentation made available at `https://qcware.readthedocs.io <https://qcware.readthedocs.io/>`_ as well as the Jupyter notebooks made available on `Forge <https://app.forge.qcware.com/>`__.
+
+Next Steps
+----------
+
+For further guidance on running client code to solve machine learning problems, optimization problems, and more, we encourage you to read through the documentation on this site and the Jupyter notebooks made available on `Forge <https://app.forge.qcware.com/>`__.
