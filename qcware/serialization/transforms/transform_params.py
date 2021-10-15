@@ -31,6 +31,7 @@ from .helpers import (
 )
 from typing import Optional, Mapping, Callable, Any
 from qcware.types.optimization import BinaryProblem
+from functools import wraps
 
 
 def update_with_replacers(d: dict[str, Any], replacers: Mapping[str, Callable]):
@@ -60,6 +61,25 @@ def client_args_to_wire(method_name: str, **kwargs):
 
 
 _from_wire_arg_replacers: dict[str, dict[str, Callable]] = {}
+
+
+def replace_server_args_from_wire(method_name: str):
+    """Decorates a function with a method name for serialization.
+
+    Uses this to transform the keyword parameters (all parameters
+    must be keyword parameters) and call the original function
+    with the transformed parameters.
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            kwargs = server_args_from_wire(method_name, **kwargs)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def server_args_from_wire(method_name: str, **kwargs):
