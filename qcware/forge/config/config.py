@@ -48,14 +48,17 @@ def qcware_api_key(override: Optional[str] = None) -> str:
     returns the provided override)
     """
     result = (
-        override if override is not None else
-        current_context().credentials.qcware_api_key  # type:ignore
+        override
+        if override is not None
+        else current_context().credentials.qcware_api_key  # type:ignore
     )
     if result is None:
-        raise ConfigurationError("You have not provided a QCWare API key.  "
-                                 "Please set one with the argument api_key, "
-                                 "by calling qcware.set_api_key, or via "
-                                 "configuration variables or files.")
+        raise ConfigurationError(
+            "You have not provided a QCWare API key.  "
+            "Please set one with the argument api_key, "
+            "by calling qcware.set_api_key, or via "
+            "configuration variables or files."
+        )
     return result
 
 
@@ -68,8 +71,9 @@ def is_valid_host_url(url: Optional[str]) -> bool:
         result = False
     else:
         parse_result = urlparse(url)
-        result = (all([parse_result.scheme, parse_result.netloc])
-                  and not parse_result.path)
+        result = (
+            all([parse_result.scheme, parse_result.netloc]) and not parse_result.path
+        )
     return result
 
 
@@ -86,8 +90,7 @@ def qcware_host(override: Optional[str] = None) -> str:
     """
     # get the host; default is https://api.forge.qcware.com; this should
     # always work
-    result = override if override is not None else current_context(
-    ).qcware_host
+    result = override if override is not None else current_context().qcware_host
     # check to make sure the host is a valid url
 
     if is_valid_host_url(result):
@@ -98,7 +101,8 @@ def qcware_host(override: Optional[str] = None) -> str:
             f"Configured QCWARE_HOST ({result}): does not seem to be"
             "a valid URL.  Please select a host url with scheme"
             "(http or https) and no path, e.g."
-            "'http://api.forge.qcware.com'")
+            "'http://api.forge.qcware.com'"
+        )
 
 
 def host_api_semver() -> str:
@@ -111,48 +115,56 @@ def host_api_semver() -> str:
         r = requests.get(url)
         if r.status_code != 200:
             raise ConfigurationError(
-                f'Unable to retrieve API version from host "{qcware_host()}"')
+                f'Unable to retrieve API version from host "{qcware_host()}"'
+            )
         result = r.json()["api_semver"]
     except (AttributeError, requests.exceptions.InvalidSchema) as e:
         raise ConfigurationError(
-            f'Error contacting configured host "{qcware_host()}": raised {e}')
+            f'Error contacting configured host "{qcware_host()}": raised {e}'
+        )
     return result
 
 
-def client_api_incompatibility_message(client_version: version.Version,
-                                       host_version: version.Version) -> str:
+def client_api_incompatibility_message(
+    client_version: version.Version, host_version: version.Version
+) -> str:
     """
     Returns an informative string based on the severity of incompatibility between
     client and host API versions
     """
     if client_version.major != host_version.major:
         return (
-            colorama.Fore.RED + colorama.Style.BRIGHT +
-            f"\nMajor API version incompatibility (you: {str(client_version)}; host: {str(host_version)})\n"
-            +
-            "Likely many calls will fail as the API has changed in incompatible ways.\n"
-            + "Please upgrade with 'pip install --upgrade qcware'" +
-            colorama.Style.RESET_ALL)
-    elif (client_version.major == host_version.major
-          and client_version.minor != host_version.minor):
+            colorama.Fore.RED
+            + colorama.Style.BRIGHT
+            + f"\nMajor API version incompatibility (you: {str(client_version)}; host: {str(host_version)})\n"
+            + "Likely many calls will fail as the API has changed in incompatible ways.\n"
+            + "Please upgrade with 'pip install --upgrade qcware'"
+            + colorama.Style.RESET_ALL
+        )
+    elif (
+        client_version.major == host_version.major
+        and client_version.minor != host_version.minor
+    ):
         return (
-            colorama.Fore.YELLOW +
-            f"\nMinor API version incompatibility (you: {str(client_version)}; host: {str(host_version)})\n"
-            +
-            "Some calls may act strangely, and you may be missing out on \n" +
-            "new functionality if using an older client.\n" +
-            "Consider upgrading with 'pip install --upgrade qcware'" +
-            colorama.Style.RESET_ALL)
-    elif (client_version.major == host_version.major
-          and client_version.minor == host_version.minor
-          and client_version.micro != host_version.minor):
+            colorama.Fore.YELLOW
+            + f"\nMinor API version incompatibility (you: {str(client_version)}; host: {str(host_version)})\n"
+            + "Some calls may act strangely, and you may be missing out on \n"
+            + "new functionality if using an older client.\n"
+            + "Consider upgrading with 'pip install --upgrade qcware'"
+            + colorama.Style.RESET_ALL
+        )
+    elif (
+        client_version.major == host_version.major
+        and client_version.minor == host_version.minor
+        and client_version.micro != host_version.minor
+    ):
         return (
-            colorama.Fore.GREEN +
-            f"\nMicro API version incompatibility (you: {str(client_version)}; host: {str(host_version)})\n"
-            +
-            "You may be missing out on minor bugfixes if using an older client.\n"
-            + "consider upgrading with 'pip install --upgrade qcware'" +
-            colorama.Style.RESET_ALL)
+            colorama.Fore.GREEN
+            + f"\nMicro API version incompatibility (you: {str(client_version)}; host: {str(host_version)})\n"
+            + "You may be missing out on minor bugfixes if using an older client.\n"
+            + "consider upgrading with 'pip install --upgrade qcware'"
+            + colorama.Style.RESET_ALL
+        )
     else:
         return ""
 
@@ -160,17 +172,19 @@ def client_api_incompatibility_message(client_version: version.Version,
 Client_api_compatibility_check_has_been_done = False
 
 
-def do_client_api_compatibility_check(client_version_string: str = None,
-                                      host_version_string: str = None):
+def do_client_api_compatibility_check(
+    client_version_string: str = None, host_version_string: str = None
+):
     """
     Checks the client and host API versions and prints an informative
     string if the versions differ in a material way.
     """
-    client_version_string = (client_api_semver()
-                             if client_version_string is None else
-                             client_version_string)
-    host_version_string = (host_api_semver() if host_version_string is None
-                           else host_version_string)
+    client_version_string = (
+        client_api_semver() if client_version_string is None else client_version_string
+    )
+    host_version_string = (
+        host_api_semver() if host_version_string is None else host_version_string
+    )
     client_version = version.Version(client_version_string)
     host_version = version.Version(host_version_string)
     if client_version != host_version:
@@ -179,21 +193,24 @@ def do_client_api_compatibility_check(client_version_string: str = None,
     Client_api_compatibility_check_has_been_done = True
 
 
-def do_client_api_compatibility_check_once(client_version_string: str = None,
-                                           host_version_string: str = None):
+def do_client_api_compatibility_check_once(
+    client_version_string: str = None, host_version_string: str = None
+):
     """
     If an API compatibility check has not been done between client and the
     selected host, do it now and disable further checks.
     """
     global Client_api_compatibility_check_has_been_done
     if not Client_api_compatibility_check_has_been_done:
-        client_version_string = (client_api_semver()
-                                 if client_version_string is None else
-                                 client_version_string)
-        host_version_string = (host_api_semver() if host_version_string is None
-                               else host_version_string)
-        do_client_api_compatibility_check(client_version_string,
-                                          host_version_string)
+        client_version_string = (
+            client_api_semver()
+            if client_version_string is None
+            else client_version_string
+        )
+        host_version_string = (
+            host_api_semver() if host_version_string is None else host_version_string
+        )
+        do_client_api_compatibility_check(client_version_string, host_version_string)
 
 
 def set_api_key(key: str):
@@ -214,7 +231,8 @@ def set_host(host_url: str):
             f"Requested QCWARE_HOST ({host_url}): does not"
             " seem to be a valid URL.  Please select a host url"
             "with scheme (http or https) and no path, e.g."
-            "'http://api.forge.qcware.com'")
+            "'http://api.forge.qcware.com'"
+        )
 
 
 def client_timeout(override: Optional[int] = None):
@@ -227,8 +245,7 @@ def client_timeout(override: Optional[int] = None):
 
     The default value is 60 seconds
     """
-    result = override if override is not None else current_context(
-    ).client_timeout
+    result = override if override is not None else current_context().client_timeout
     return result
 
 
@@ -240,9 +257,11 @@ def set_client_timeout(new_wait: int):
     This may be set to any value greater than or equal to 0 seconds.
     """
     if new_wait < 0:
-        print(colorama.Fore.YELLOW +
-              "Client timeout must be >= 0 seconds; no action taken" +
-              colorama.Style.RESET_ALL)
+        print(
+            colorama.Fore.YELLOW
+            + "Client timeout must be >= 0 seconds; no action taken"
+            + colorama.Style.RESET_ALL
+        )
     else:
         os.environ["QCWARE_CLIENT_TIMEOUT"] = str(new_wait)
 
@@ -257,8 +276,7 @@ def server_timeout(override: Optional[int] = None):
 
     The default value is 60 seconds
     """
-    result = override if override is not None else current_context(
-    ).server_timeout
+    result = override if override is not None else current_context().server_timeout
     return result
 
 
@@ -271,9 +289,10 @@ def set_server_timeout(new_wait: int):
     """
     if new_wait < 0 or new_wait > 50:
         print(
-            colorama.Fore.YELLOW +
-            "Server timeout must be between 0 and 50 seconds; no action taken"
-            + colorama.Style.RESET_ALL)
+            colorama.Fore.YELLOW
+            + "Server timeout must be between 0 and 50 seconds; no action taken"
+            + colorama.Style.RESET_ALL
+        )
     else:
         os.environ["QCWARE_SERVER_TIMEOUT"] = str(new_wait)
 
@@ -287,8 +306,11 @@ def async_interval_between_tries(override: Optional[float] = None):
     The default value is 10 seconds; the maximum is 50
 
     """
-    result = (override if override is not None else
-              current_context().async_interval_between_tries)
+    result = (
+        override
+        if override is not None
+        else current_context().async_interval_between_tries
+    )
     return result
 
 
@@ -303,9 +325,10 @@ def set_async_interval_between_tries(new_interval: float):
     """
     if new_interval < 0 or new_interval > 50:
         print(
-            colorama.Fore.YELLOW +
-            "Time between async tries must be between 0 and 50 seconds; no action taken"
-            + colorama.Style.RESET_ALL)
+            colorama.Fore.YELLOW
+            + "Time between async tries must be between 0 and 50 seconds; no action taken"
+            + colorama.Style.RESET_ALL
+        )
     else:
         os.environ["QCWARE_ASYNC_INTERVAL_BETWEEN_TRIES"] = str(new_interval)
 
@@ -335,8 +358,7 @@ def scheduling_mode(override: Optional[SchedulingMode] = None):
     A reschedule is not a guarantee that the job will be run within that window!  If not,
     it will stay in the queue until the next availability window.
     """
-    result = override if override is not None else current_context(
-    ).scheduling_mode
+    result = override if override is not None else current_context().scheduling_mode
     return result
 
 
@@ -361,6 +383,7 @@ def set_ibmq_credentials(
     project: Optional[str] = None,
 ):
     """Set the IBMQ credentials "by hand"."""
+
     def _set_if(envvar_name: str, value: Optional[str] = None):
         if value is None and envvar_name in os.environ:
             del os.environ[envvar_name]
@@ -473,8 +496,7 @@ class ApiCallContext(BaseModel):
     environment: Optional[Environment] = None
     server_timeout: Optional[Annotated[int, Field(ge=0)]] = None
     client_timeout: Optional[Annotated[int, Field(ge=0)]] = None
-    async_interval_between_tries: Optional[Annotated[float,
-                                                     Field(ge=0)]] = None
+    async_interval_between_tries: Optional[Annotated[float, Field(ge=0)]] = None
     scheduling_mode: Optional[SchedulingMode] = None
 
     class Config:
@@ -502,21 +524,23 @@ def root_context() -> ApiCallContext:
             client="qcware (python)",
             client_version=Qcware_client_version,
             python_version=sys.version,
-            environment=config("QCWARE_ENVIRONMENT_ENVIRONMENT",
-                               default="local"),
+            environment=config("QCWARE_ENVIRONMENT_ENVIRONMENT", default="local"),
             source_file=config("QCWARE_ENVIRONMENT_SOURCE_FILE", default=""),
         ),
         server_timeout=config("QCWARE_SERVER_TIMEOUT", default=10, cast=int),
         client_timeout=config("QCWARE_CLIENT_TIMEOUT", default=60, cast=int),
         async_interval_between_tries=config(
-            "QCWARE_ASYNC_INTERVAL_BETWEEN_TRIES", 0.5, cast=float),
-        scheduling_mode=config("QCWARE_SCHEDULING_MODE",
-                               default=SchedulingMode.immediate),
+            "QCWARE_ASYNC_INTERVAL_BETWEEN_TRIES", 0.5, cast=float
+        ),
+        scheduling_mode=config(
+            "QCWARE_SCHEDULING_MODE", default=SchedulingMode.immediate
+        ),
     )
 
 
 _contexts: contextvars.ContextVar[ApiCallContext] = contextvars.ContextVar(
-    "contexts", default=[])  # type:ignore
+    "contexts", default=[]
+)  # type:ignore
 
 
 def push_context(**kwargs):
@@ -545,6 +569,7 @@ def pop_context():
 # modified to ignore k/v pairs in b for which the value is None
 def deep_merge(a, b):
     """Merge two dictionaries recursively."""
+
     def merge_values(k, v1, v2):
         if isinstance(v1, dict) and isinstance(v2, dict):
             return k, deep_merge(v1, v2)
@@ -555,9 +580,11 @@ def deep_merge(a, b):
 
     a_keys = set(a.keys())
     b_keys = set(b.keys())
-    pairs = ([merge_values(k, a[k], b[k]) for k in a_keys & b_keys] +
-             [(k, a[k]) for k in a_keys - b_keys] + [(k, b[k])
-                                                     for k in b_keys - a_keys])
+    pairs = (
+        [merge_values(k, a[k], b[k]) for k in a_keys & b_keys]
+        + [(k, a[k]) for k in a_keys - b_keys]
+        + [(k, b[k]) for k in b_keys - a_keys]
+    )
     return dict(pairs)
 
 
@@ -608,10 +635,7 @@ def ibmq_credentials(
     group: Optional[str] = None,
     project: Optional[str] = None,
 ):
-    ibmq_creds = IBMQCredentials(token=token,
-                                 hub=hub,
-                                 group=group,
-                                 project=project)
+    ibmq_creds = IBMQCredentials(token=token, hub=hub, group=group, project=project)
     credentials = ApiCredentials(ibmq=ibmq_creds)
     push_context(credentials=credentials)
     try:

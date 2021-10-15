@@ -3,7 +3,9 @@
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
 import numpy
+
 import numpy.typing
+
 import warnings
 from ...api_calls import declare_api_call
 
@@ -14,7 +16,7 @@ def fit_and_predict(
     model: str,
     y: numpy.typing.ArrayLike = None,
     T: numpy.typing.ArrayLike = None,
-    parameters: dict = {},
+    parameters: dict = {"num_measurements": 100},
     backend: str = "qcware/cpu_simulator",
 ):
     r"""This function combines both the fitting of data to a quantum model for the purposes of classification and also the use of that trained model for classifying new data.
@@ -24,18 +26,18 @@ def fit_and_predict(
     Arguments:
 
     :param X: Training data: :math:`(N\times d)` array containing training data
-    :type X: numpy.array
+    :type X: numpy.typing.ArrayLike
 
     :param model: String for the clustering model; one of ['QNearestCentroid', 'QNeighborsClassifier', 'QNeighborsRegressor', 'QMeans']
     :type model: str
 
     :param y: Label vector: length :math:`d` array containing respective labels of each data, defaults to None
-    :type y: numpy.array
+    :type y: numpy.typing.ArrayLike
 
     :param T: Test data: :math:`(M\times d)` array containing test data, defaults to None
-    :type T: numpy.array
+    :type T: numpy.typing.ArrayLike
 
-    :param parameters: Dictionary containing parameters for the model, defaults to {}
+    :param parameters: Dictionary containing parameters for the model, defaults to {'num_measurements': 100}
     :type parameters: dict
 
     :param backend: String describing the backend to use; currently one of [qcware/cpu_simulator, qcware/gpu_simulator], defaults to qcware/cpu_simulator

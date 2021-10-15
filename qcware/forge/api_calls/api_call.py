@@ -49,8 +49,9 @@ async def async_post_call(endpoint: str, data: dict):
 
 
 def api_call(api_call_context: ApiCallContext, call_token: str):
-    api_call_context = (current_context()
-                        if api_call_context is None else api_call_context)
+    api_call_context = (
+        current_context() if api_call_context is None else api_call_context
+    )
     do_client_api_compatibility_check_once()
     return post(
         f"{api_call_context.qcware_host}/api_calls",
@@ -59,8 +60,9 @@ def api_call(api_call_context: ApiCallContext, call_token: str):
 
 
 async def async_api_call(api_call_context: ApiCallContext, call_token: str):
-    api_call_context = (current_context()
-                        if api_call_context is None else api_call_context)
+    api_call_context = (
+        current_context() if api_call_context is None else api_call_context
+    )
     do_client_api_compatibility_check_once()
     return await async_post(
         f"{api_call_context.qcware_host}/api_calls",
@@ -100,8 +102,9 @@ def _print_waiting_handler(details: Dict):
     on_backoff=_print_waiting_handler,
 )
 def wait_for_call(call_token: str, api_call_context=None):
-    api_call_context = (current_context()
-                        if api_call_context is None else api_call_context)
+    api_call_context = (
+        current_context() if api_call_context is None else api_call_context
+    )
     # backoff.on_predicate is mildly problematic.
     return api_call(api_call_context, call_token)
 
@@ -114,8 +117,9 @@ def wait_for_call(call_token: str, api_call_context=None):
     on_backoff=_print_waiting_handler,
 )
 async def async_wait_for_call(call_token: str, api_call_context=None):
-    api_call_context = (current_context()
-                        if api_call_context is None else api_call_context)
+    api_call_context = (
+        current_context() if api_call_context is None else api_call_context
+    )
     # backoff.on_predicate is mildly problematic.
     return await async_api_call(api_call_context, call_token)
 
@@ -128,15 +132,13 @@ def handle_result(api_call):
             result = api_call["result"]
         raise ApiCallExecutionError(
             result["error"],
-            traceback=api_call.get("data", {}).get("stack_trace",
-                                                   "no traceback"),
+            traceback=api_call.get("data", {}).get("stack_trace", "no traceback"),
         )
     elif api_call["state"] == "scheduled":
         # if it's scheduled, try to raise a nice rescheduled ApiCallExecutionError
         schedule_at_str = api_call.get("schedule_at_str", "unscheduled")
         api_call_info = {
-            k: api_call.get(k, None)
-            for k in ["method", "time_created", "state", "uid"]
+            k: api_call.get(k, None) for k in ["method", "time_created", "state", "uid"]
         }
         raise ApiCallExecutionError(
             f"API Call {api_call.get('uid', 'ERROR')} rescheduled for {schedule_at_str}",
@@ -149,8 +151,7 @@ def handle_result(api_call):
     if api_call["state"] in ["open", "new"]:
 
         api_call_info = {
-            k: api_call.get(k, None)
-            for k in ["method", "time_created", "state", "uid"]
+            k: api_call.get(k, None) for k in ["method", "time_created", "state", "uid"]
         }
         raise ApiTimeoutError(api_call_info)
     else:
@@ -183,14 +184,16 @@ def retrieve_result(call_token: str, api_call_context: ApiCallContext = None):
     :return Either the processed result in the type expected, or an error object
     showing the state of the call
     """
-    api_call_context = (current_context()
-                        if api_call_context is None else api_call_context)
+    api_call_context = (
+        current_context() if api_call_context is None else api_call_context
+    )
     call = api_call(api_call_context, call_token=call_token)
     return handle_result(call)
 
 
-async def async_retrieve_result(call_token: str,
-                                api_call_context: ApiCallContext = None):
+async def async_retrieve_result(
+    call_token: str, api_call_context: ApiCallContext = None
+):
     """
     Retrieves the result of a call; if the call is incomplete, waits for it to be complete.
     :param call_token: The token of the API call; can be
@@ -211,8 +214,7 @@ async def async_retrieve_result(call_token: str,
             await asyncio.sleep(async_interval_between_tries())
 
 
-def retrieve_parameters(call_token: str,
-                        api_call_context: ApiCallContext = None):
+def retrieve_parameters(call_token: str, api_call_context: ApiCallContext = None):
     """
     Retrieves the parameters of an API call.
     :param call_token: The token of the API call; can be
@@ -224,18 +226,20 @@ def retrieve_parameters(call_token: str,
 
     :return: The parameters passed to the API call
     """
-    api_call_context = (current_context()
-                        if api_call_context is None else api_call_context)
+    api_call_context = (
+        current_context() if api_call_context is None else api_call_context
+    )
     return handle_params(
         post(
             f"{api_call_context.qcware_host}/api_calls/params",
-            dict(api_call_context=api_call_context.dict(),
-                 call_token=call_token),
-        ))
+            dict(api_call_context=api_call_context.dict(), call_token=call_token),
+        )
+    )
 
 
-async def async_retrieve_parameters(call_token: str,
-                                    api_call_context: ApiCallContext = None):
+async def async_retrieve_parameters(
+    call_token: str, api_call_context: ApiCallContext = None
+):
     """
     Retrieves the parameters of an API call asynchronously.
     :param call_token: The token of the API call; can be
@@ -247,9 +251,12 @@ async def async_retrieve_parameters(call_token: str,
 
     :return: The parameters passed to the API call
     """
-    api_call_context = (current_context()
-                        if api_call_context is None else api_call_context)
-    return handle_params(await async_post(
-        f"{api_call_context.qcware_host}/api_calls/params",
-        dict(api_call_context=api_call_context.dict(), call_token=call_token),
-    ))
+    api_call_context = (
+        current_context() if api_call_context is None else api_call_context
+    )
+    return handle_params(
+        await async_post(
+            f"{api_call_context.qcware_host}/api_calls/params",
+            dict(api_call_context=api_call_context.dict(), call_token=call_token),
+        )
+    )

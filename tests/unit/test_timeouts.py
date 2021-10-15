@@ -42,14 +42,16 @@ def test_retrieve_result_with_timeout():
 
     try:
         result = forge.optimization.optimize_binary(
-            instance=generate_problem(), backend="qcware/cpu")
+            instance=generate_problem(), backend="qcware/cpu"
+        )
     except forge.exceptions.ApiTimeoutError as e:
         call_id = e.api_call_info["uid"]
         start = time.perf_counter()
         # 30s timeouts
         timeout = 30
-        while ((time.perf_counter() - start) < timeout
-               ) and forge.api_calls.status(call_id)["status"] == "open":
+        while ((time.perf_counter() - start) < timeout) and forge.api_calls.status(
+            call_id
+        )["status"] == "open":
             time.sleep(1)
         assert forge.api_calls.status(call_id)["status"] == "success"
         result = forge.api_calls.retrieve_result(call_id)
@@ -68,7 +70,8 @@ async def test_async():
     forge.config.set_server_timeout(0)
 
     result = await forge.optimization.optimize_binary.call_async(
-        instance=generate_problem(), backend="qcware/cpu")
+        instance=generate_problem(), backend="qcware/cpu"
+    )
     result_vectors = {x.bitstring for x in result.samples}
     assert (0, 0, 1, 1) in result_vectors
     assert (1, 1, 1, 1) in result_vectors

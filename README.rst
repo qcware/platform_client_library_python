@@ -81,15 +81,15 @@ The following code snippet illustrates how you might run QC Ware Platform client
     from qcware.types import PolynomialObjective, Constraints, BinaryProblem
 
     qubo = {
-        (0, 0): 1, 
-        (0, 1): 1, 
-        (1, 1): 1, 
-        (1, 2): 1, 
+        (0, 0): 1,
+        (0, 1): 1,
+        (1, 1): 1,
+        (1, 2): 1,
         (2, 2): -1
     }
 
     qubo_objective = PolynomialObjective(
-        polynomial=qubo, 
+        polynomial=qubo,
         num_variables=3,
         domain='boolean'
     )

@@ -44,8 +44,9 @@ def q_instruction_to_s(k, v):
     elif isinstance(v, ControlledGate):
         return dict(
             gate="ControlledGate",
-            parameters=dict(gate=q_instruction_to_s([None, None], v.gate),
-                            controls=v.controls),
+            parameters=dict(
+                gate=q_instruction_to_s([None, None], v.gate), controls=v.controls
+            ),
             bits=k[1],
             times=k[0],
         )
@@ -57,10 +58,7 @@ def q_instruction_to_s(k, v):
     elif base_gate_name(v.name) not in Canonical_gate_names:
         raise GateSerializationNotImplementedError(v.name)
     else:
-        return dict(gate=v.name,
-                    parameters=dict(v.parameters),
-                    bits=k[1],
-                    times=k[0])
+        return dict(gate=v.name, parameters=dict(v.parameters), bits=k[1], times=k[0])
 
 
 def wrap_gate(fn):
@@ -217,10 +215,13 @@ def dict_to_quasar(d: Mapping) -> Circuit:
     Takes a serialized mapping dict as in quasar_to_dict and returns
     a rebuilt circuit from the elements therein
     """
-    gate_generator = ((
-        (tuple(instruction["times"]), tuple(instruction["bits"])),
-        make_gate(instruction["gate"], instruction["parameters"]),
-    ) for instruction in d["instructions"])
+    gate_generator = (
+        (
+            (tuple(instruction["times"]), tuple(instruction["bits"])),
+            make_gate(instruction["gate"], instruction["parameters"]),
+        )
+        for instruction in d["instructions"]
+    )
     gates = SortedDict(gate_generator)
     qubits = SortedSet(d["qubits"])
     times = SortedSet(d["times"])
@@ -271,9 +272,9 @@ def sequence_to_quasar(s: Iterable) -> Circuit:
     for instruction in s:
         gate = make_gate(instruction["gate"], instruction["parameters"])
         # add_gate is quite fussy about taking tuples
-        result.add_gate(gate,
-                        tuple(instruction["bits"]),
-                        times=tuple(instruction["times"]))
+        result.add_gate(
+            gate, tuple(instruction["bits"]), times=tuple(instruction["times"])
+        )
     return result
 
 
@@ -285,17 +286,16 @@ def string_to_quasar(s: str) -> Circuit:
 
 
 def probability_histogram_to_dict(hist: ProbabilityHistogram):
-    return dict(nqubit=hist.nqubit,
-                histogram=hist.histogram,
-                nmeasurement=hist.nmeasurement)
+    return dict(
+        nqubit=hist.nqubit, histogram=hist.histogram, nmeasurement=hist.nmeasurement
+    )
 
 
 def dict_to_probability_histogram(d: dict):
     d2 = d.copy()
     if "histogram" in d2:
         d2["histogram"] = {int(k): v for k, v in d2["histogram"].items()}
-    return ProbabilityHistogram(d2["nqubit"], d2["histogram"],
-                                d2["nmeasurement"])
+    return ProbabilityHistogram(d2["nqubit"], d2["histogram"], d2["nmeasurement"])
 
 
 def pauli_item_to_tuple(k: PauliString, v: object) -> Tuple[str, Dict]:

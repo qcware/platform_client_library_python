@@ -63,8 +63,7 @@ def test_run_measurement(backend):
     assert abs(result.histogram[0] - 0.5) < 0.2
 
 
-@pytest.mark.parametrize("backend",
-                         (("awsbraket/ionq"), ("awsbraket/rigetti")))
+@pytest.mark.parametrize("backend", (("awsbraket/ionq"), ("awsbraket/rigetti")))
 def test_smoke_backend_exception(backend):
     """This is a 'smoke test' for having a NotImplementedError from a
     backend. Accuracy doesn't matter here so long as the call gives a
@@ -81,8 +80,7 @@ def test_smoke_backend_exception(backend):
     assert False
 
 
-@pytest.mark.parametrize("backend",
-                         (("awsbraket/ionq"), ("awsbraket/rigetti")))
+@pytest.mark.parametrize("backend", (("awsbraket/ionq"), ("awsbraket/rigetti")))
 def test_smoke_rescheduled_backends(backend):
     """This is another 'smoke test' for the backends that can be rescheduled; they
     need to either raise a rescheduled exception or run

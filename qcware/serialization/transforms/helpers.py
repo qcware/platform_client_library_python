@@ -95,10 +95,7 @@ def string_to_int_tuple(s: str):
 
 
 def remap_q_indices_from_strings(q_old: dict) -> dict:
-    q_new = {
-        string_to_int_tuple(k[1:-1].strip(", ")): v
-        for k, v in q_old.items()
-    }
+    q_new = {string_to_int_tuple(k[1:-1].strip(", ")): v for k, v in q_old.items()}
     return q_new
 
 
@@ -140,8 +137,7 @@ def polynomial_objective_to_wire(x):
     result = x.dict()
     result["polynomial"] = remap_q_indices_to_strings(result["polynomial"])
     result["variable_name_mapping"] = {
-        str(k): v
-        for k, v in result["variable_name_mapping"].items()
+        str(k): v for k, v in result["variable_name_mapping"].items()
     }
     return result
 
@@ -151,8 +147,7 @@ def polynomial_objective_from_wire(d: dict):
 
     remapped_dict["polynomial"] = remap_q_indices_from_strings(d["polynomial"])
     remapped_dict["variable_name_mapping"] = {
-        int(k): v
-        for k, v in remapped_dict["variable_name_mapping"].items()
+        int(k): v for k, v in remapped_dict["variable_name_mapping"].items()
     }
     return PolynomialObjective(**remapped_dict)
 
@@ -161,8 +156,7 @@ def polynomial_objective_from_wire(d: dict):
 def constraints_to_wire(x):
     result = x.dict()
     result["constraints"] = {
-        k: [to_wire(x) for x in v]
-        for k, v in x.dict()["constraints"].items()
+        k: [to_wire(x) for x in v] for k, v in x.dict()["constraints"].items()
     }
     return result
 
@@ -181,17 +175,20 @@ def constraints_from_wire(d: dict):
 def binary_problem_to_wire(x):
     result = x.dict()
     result["objective"] = to_wire(result["objective"])
-    result["constraints"] = (to_wire(result["constraints"])
-                             if result["constraints"] is not None else None)
+    result["constraints"] = (
+        to_wire(result["constraints"]) if result["constraints"] is not None else None
+    )
     return result
 
 
 def binary_problem_from_wire(d: dict):
     remapped_dict = d.copy()
     remapped_dict["objective"] = polynomial_objective_from_wire(d["objective"])
-    remapped_dict["constraints"] = (constraints_from_wire(
-        remapped_dict["constraints"]) if remapped_dict["constraints"]
-                                    is not None else None)
+    remapped_dict["constraints"] = (
+        constraints_from_wire(remapped_dict["constraints"])
+        if remapped_dict["constraints"] is not None
+        else None
+    )
     return BinaryProblem(**remapped_dict)
 
 
@@ -210,11 +207,9 @@ def _(x):
 def binary_results_from_wire(d: dict):
     remapped_dict = d.copy()
     remapped_dict["sample_ordered_dict"] = {
-        k: Sample(**v)
-        for k, v in remapped_dict["sample_ordered_dict"].items()
+        k: Sample(**v) for k, v in remapped_dict["sample_ordered_dict"].items()
     }
-    remapped_dict["original_problem"] = binary_problem_from_wire(
-        d["original_problem"])
+    remapped_dict["original_problem"] = binary_problem_from_wire(d["original_problem"])
     return BinaryResults(**remapped_dict)
 
 
