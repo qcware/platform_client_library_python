@@ -51,7 +51,7 @@ Then, execute the following:
    cd platform_client_library_python
    poetry build
    cd dist
-   pip install qcware-6.0.0-py3-none-any.whl
+   pip install qcware-7.0.0-py3-none-any.whl
 
 
 API Key
