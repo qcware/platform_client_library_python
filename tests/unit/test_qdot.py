@@ -62,17 +62,17 @@ def test_qdot(x, y, backend, num_measurements, loader_mode):
     elif isinstance(numpy_result, np.ndarray):
         assert isinstance(result, np.ndarray) and result.shape == numpy_result.shape
     # big tolerance here since this is more or less a smoke test for the client
-    assert np.allclose(result, numpy_result, atol=7)
+    assert np.allclose(result, numpy_result, rtol=0.2)
 
 
-@pytest.mark.parametrize("backend", ["ibmq:ibmq_qasm_simulator"])
+@pytest.mark.parametrize("backend", ["ibmq:ibmq_qasm_simulator", "ibm/simulator"])
 def test_qdot_ibmq(backend):
     """This is primarily a smoke test, and uses the .submit forms
     because of the often long IBM queue times
     """
     x = np.array([5, 4])
     y = np.array([3, 1])
-    job_id = qdot.submit(x, y, backend=backend, num_measurements=100)
+    job_id = qdot.submit(x, y, backend=backend, num_measurements=1000)
 
     job_status = status(job_id)
     while job_status["status"] == "open":
@@ -82,4 +82,4 @@ def test_qdot_ibmq(backend):
     result = retrieve_result(job_id)
     numpy_result = np.dot(x, y)
 
-    assert np.allclose(result, numpy_result, atol=7)
+    assert np.allclose(result, numpy_result, rtol=0.2)

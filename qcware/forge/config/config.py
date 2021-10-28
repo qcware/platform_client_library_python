@@ -4,7 +4,7 @@ import sys
 from contextlib import contextmanager
 from enum import Enum
 from functools import reduce
-from typing import Optional, Annotated
+from typing import Annotated, Optional
 from urllib.parse import urljoin, urlparse
 
 import colorama  # type: ignore
@@ -12,7 +12,6 @@ import requests
 from decouple import config  # type: ignore
 from packaging import version
 from pydantic import BaseModel, ConstrainedStr, Field
-
 from qcware.forge import __version__ as Qcware_client_version
 from qcware.forge.config.api_semver import api_semver
 
@@ -396,17 +395,21 @@ def set_ibmq_credentials(
     _set_if("QCWARE_CRED_IBMQ_PROJECT", project)
 
 
-def set_ibmq_credentials_from_ibmq(ibmq):
-    """Set the IBMQ credentials from the ibmq object.
+def set_ibmq_credentials_from_ibmq_provider(
+    provider: "qiskit.providers.ibmq.accountprovider.AccountProvider",
+):
+    """Set the IBMQ credentials from an ibmq provider object.
 
-    Called normally as set_ibmq_credentials_from_ibmq(IBMQ)
+    Called normally as set_ibmq_credentials_from_ibmq(IBMQ.providers()[0]).
+    The IBMQ "factory" can provide several providers, particularly if your
+    IBMQ token is associated with various hubs, groups, or projects.
 
     """
     set_ibmq_credentials(
-        ibmq._credentials.token,
-        ibmq._credentials.hub,
-        ibmq._credentials.group,
-        ibmq._credentials.project,
+        provider.credentials.token,
+        provider.credentials.hub,
+        provider.credentials.group,
+        provider.credentials.project,
     )
 
 

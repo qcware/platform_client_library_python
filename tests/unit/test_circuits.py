@@ -53,14 +53,18 @@ def test_has_statevector_input(backend: str, expected: bool):
 )
 def test_run_measurement(backend):
     q = quasar.Circuit()
-    q.H(0).CX(0, 1)
+    # We'll use a bell-pair with an additional NOT to try and
+    # flush out bit-ordering issues
+    q.H(0).CX(0, 1).X(2)
     b = QuasarBackend(backend)
     result = b.run_measurement(circuit=q, nmeasurement=100)
     assert isinstance(result, quasar.ProbabilityHistogram)
     assert isinstance(result.histogram, dict)
-    assert 0 in result.histogram
+    assert 1 in result.histogram
+    assert 7 in result.histogram
     # yeah, pretty fuzzy but I'll take it; this is more or less a smoke test
-    assert abs(result.histogram[0] - 0.5) < 0.2
+    assert abs(result.histogram[1] - 0.5) < 0.2
+    assert abs(result.histogram[7] - 0.5) < 0.2
 
 
 @pytest.mark.parametrize("backend", (("awsbraket/ionq"), ("awsbraket/rigetti")))
