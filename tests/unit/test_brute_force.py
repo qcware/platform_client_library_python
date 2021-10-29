@@ -2,7 +2,7 @@ import itertools
 
 import pytest
 from qcware.forge.optimization import brute_force_minimize
-from qcware.serialization.transforms.helpers import (
+from qcware.serialization.transforms.to_wire import (
     constraints_from_wire,
     polynomial_objective_from_wire,
     to_wire,

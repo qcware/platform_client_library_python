@@ -6,3 +6,4 @@
 from .api import *
 
 #  add further imports below this line
+from .types import *

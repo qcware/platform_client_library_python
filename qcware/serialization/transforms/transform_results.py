@@ -1,7 +1,8 @@
 import os
 from typing import Callable, Optional, cast
-from decouple import config
+
 import numpy
+from decouple import config
 
 from ..serialize_quasar import (
     dict_to_probability_histogram,
@@ -12,14 +13,18 @@ from ..serialize_quasar import (
     sequence_to_quasar,
 )
 from .helpers import (
-    binary_results_from_wire,
-    brute_optimize_result_from_wire,
     dict_to_ndarray,
     dict_to_numeric,
     dict_to_scalar,
     ndarray_to_dict,
     numeric_to_dict,
     scalar_to_dict,
+)
+from .to_wire import (
+    binary_results_from_wire,
+    brute_optimize_result_from_wire,
+    fit_data_from_wire,
+    fit_data_to_wire,
     to_wire,
 )
 
@@ -114,6 +119,14 @@ register_result_transform(
 )
 register_result_transform(
     "qml.fit_and_predict", to_wire=ndarray_to_dict, from_wire=dict_to_ndarray
+)
+
+register_result_transform(
+    "qml.fit", to_wire=fit_data_to_wire, from_wire=fit_data_from_wire
+)
+
+register_result_transform(
+    "qml.predict", to_wire=ndarray_to_dict, from_wire=dict_to_ndarray
 )
 
 

@@ -1,17 +1,9 @@
 import base64
-from functools import singledispatch
 from typing import Dict
 
 import lz4.frame
 import numpy as np
 from icontract import require
-from qcware.types.optimization import (
-    BinaryProblem,
-    BruteOptimizeResult,
-    Constraints,
-    PolynomialObjective,
-)
-from qcware.types.optimization.results.results_types import BinaryResults, Sample
 
 
 def ndarray_to_dict(x: np.ndarray):
@@ -124,94 +116,3 @@ def string_to_complex_or_real_dtype(s: str):
         else:
             raise NotImplementedError("dtypes must be complex or real")
     return result
-
-
-@singledispatch
-def to_wire(x):
-    """For complex types, this dispatches to create a JSON-compatible dict"""
-    raise NotImplementedError("Unsupported Type")
-
-
-@to_wire.register(PolynomialObjective)
-def polynomial_objective_to_wire(x):
-    result = x.dict()
-    result["polynomial"] = remap_q_indices_to_strings(result["polynomial"])
-    result["variable_name_mapping"] = {
-        str(k): v for k, v in result["variable_name_mapping"].items()
-    }
-    return result
-
-
-def polynomial_objective_from_wire(d: dict):
-    remapped_dict = d.copy()
-
-    remapped_dict["polynomial"] = remap_q_indices_from_strings(d["polynomial"])
-    remapped_dict["variable_name_mapping"] = {
-        int(k): v for k, v in remapped_dict["variable_name_mapping"].items()
-    }
-    return PolynomialObjective(**remapped_dict)
-
-
-@to_wire.register(Constraints)
-def constraints_to_wire(x):
-    result = x.dict()
-    result["constraints"] = {
-        k: [to_wire(x) for x in v] for k, v in x.dict()["constraints"].items()
-    }
-    return result
-
-
-def constraints_from_wire(d: dict):
-    remapped_dict = d.copy()
-    remapped_dict["constraints"] = {
-        k: [polynomial_objective_from_wire(x) for x in v]
-        for k, v in d["constraints"].items()
-    }
-
-    return Constraints(**remapped_dict)
-
-
-@to_wire.register(BinaryProblem)
-def binary_problem_to_wire(x):
-    result = x.dict()
-    result["objective"] = to_wire(result["objective"])
-    result["constraints"] = (
-        to_wire(result["constraints"]) if result["constraints"] is not None else None
-    )
-    return result
-
-
-def binary_problem_from_wire(d: dict):
-    remapped_dict = d.copy()
-    remapped_dict["objective"] = polynomial_objective_from_wire(d["objective"])
-    remapped_dict["constraints"] = (
-        constraints_from_wire(remapped_dict["constraints"])
-        if remapped_dict["constraints"] is not None
-        else None
-    )
-    return BinaryProblem(**remapped_dict)
-
-
-@to_wire.register(BinaryResults)
-def _(x):
-    result = x.dict()
-    result["original_problem"] = to_wire(x.original_problem)
-    result["task_metadata"] = {
-        k: v
-        for k, v in result["task_metadata"].items()
-        if k not in ("Q", "Q_array", "split_to_full_map_array", "instance")
-    }
-    return result
-
-
-def binary_results_from_wire(d: dict):
-    remapped_dict = d.copy()
-    remapped_dict["sample_ordered_dict"] = {
-        k: Sample(**v) for k, v in remapped_dict["sample_ordered_dict"].items()
-    }
-    remapped_dict["original_problem"] = binary_problem_from_wire(d["original_problem"])
-    return BinaryResults(**remapped_dict)
-
-
-def brute_optimize_result_from_wire(d: dict):
-    return BruteOptimizeResult(**d)

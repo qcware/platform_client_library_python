@@ -37,6 +37,7 @@ def get_request(url):
 def post(url, data):
     response = post_request(url, data)
     if response.status_code >= 400:
+        print(response)
         raise ApiCallFailedError(response.json()["message"])
     return response.json()
 

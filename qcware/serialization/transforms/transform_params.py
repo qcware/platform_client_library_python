@@ -6,32 +6,37 @@ This file should primarily contain the marshaling for argument
 transformations and functions, not so much the transformation functions
 themselves for particular types (those go in the helpers file).
 """
-from ..serialize_quasar import (
+from functools import wraps
+from typing import Any, Callable, Mapping, Optional
+
+from qcware.serialization.serialize_quasar import (
+    list_to_pauli,
+    pauli_to_list,
     quasar_to_string,
     string_to_quasar,
-    pauli_to_list,
-    list_to_pauli,
 )
-from .helpers import (
-    ndarray_to_dict,
+from qcware.serialization.transforms.helpers import (
+    complex_or_real_dtype_to_string,
     dict_to_ndarray,
-    scalar_to_dict,
-    dict_to_scalar,
-    numeric_to_dict,
     dict_to_numeric,
+    dict_to_scalar,
+    ndarray_to_dict,
+    numeric_to_dict,
     remap_q_indices_from_strings,
     remap_q_indices_to_strings,
-    complex_or_real_dtype_to_string,
+    scalar_to_dict,
     string_to_complex_or_real_dtype,
-    to_wire,
-    polynomial_objective_from_wire,
-    constraints_from_wire,
+)
+from qcware.serialization.transforms.to_wire import (
     binary_problem_from_wire,
     binary_results_from_wire,
+    constraints_from_wire,
+    fit_data_from_wire,
+    fit_data_to_wire,
+    polynomial_objective_from_wire,
+    to_wire,
 )
-from typing import Optional, Mapping, Callable, Any
 from qcware.types.optimization import BinaryProblem
-from functools import wraps
 
 
 def update_with_replacers(d: dict[str, Any], replacers: Mapping[str, Callable]):
@@ -167,6 +172,18 @@ register_argument_transform(
     "qml.fit_and_predict",
     to_wire={"X": ndarray_to_dict, "y": ndarray_to_dict, "T": ndarray_to_dict},
     from_wire={"X": dict_to_ndarray, "y": dict_to_ndarray, "T": dict_to_ndarray},
+)
+
+register_argument_transform(
+    "qml.fit",
+    to_wire={"X": ndarray_to_dict, "y": ndarray_to_dict},
+    from_wire={"X": dict_to_ndarray, "y": dict_to_ndarray},
+)
+
+register_argument_transform(
+    "qml.predict",
+    to_wire={"X": ndarray_to_dict, "fit_data": fit_data_to_wire},
+    from_wire={"X": dict_to_ndarray, "fit_data": fit_data_from_wire},
 )
 
 register_argument_transform(

@@ -1,4 +1,4 @@
-from qcware.types import PolynomialObjective, BinaryProblem
+from qcware.types.optimization import PolynomialObjective, BinaryProblem
 
 from qcware.forge.optimization import qaoa_expectation_value
 from qcware.forge.api_calls import status, retrieve_result
