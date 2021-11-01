@@ -49,7 +49,7 @@ The following code snippet illustrates how you might run Forge client code local
 
     # specify the problem (for more details, see the "Getting Started" Jupyter notebook on Forge)
     from qcware.forge import optimization
-    from qcware.types import PolynomialObjective, Constraints, BinaryProblem
+    from qcware.types.optimization import PolynomialObjective, Constraints, BinaryProblem
 
     qubo = {
         (0, 0): 1,
