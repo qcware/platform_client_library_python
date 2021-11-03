@@ -182,11 +182,12 @@ def fit_data_to_wire(x):
 
 
 def fit_data_from_wire(d: dict):
-    print(d)
     if d["model_name"] == "QNearestCentroid":
         d["fit_data"] == q_nearest_centroid_fit_data_from_wire(d["fit_data"])
     elif d["model_name"] == "QNeighborsRegressor":
         d["fit_data"] = q_neighbors_regressor_fit_data_from_wire(d["fit_data"])
     elif d["model_name"] == "QNeighborsClassifier":
         d["fit_data"] = q_neighbors_classifier_fit_data_from_wire(d["fit_data"])
+    elif d["model_name"] == "QMeans":
+        d["fit_data"] = q_means_fit_data_from_wire(d["fit_data"])
     return FitData(**d)
