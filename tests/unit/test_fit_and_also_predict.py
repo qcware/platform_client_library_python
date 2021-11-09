@@ -19,10 +19,10 @@ from qcware.forge.qml import (
     "backend",
     [
         "qcware/cpu_simulator",
-        # "qcware/gpu_simulator",
-        # "ibm/simulator",
-        # "ibmq:ibmq_qasm_simulator",
-        # "awsbraket/sv1",
+        "qcware/gpu_simulator",
+        "ibm/simulator",
+        "ibmq:ibmq_qasm_simulator",
+        "awsbraket/sv1",
         # "awsbraket/tn1",
     ],
 )

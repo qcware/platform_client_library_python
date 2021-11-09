@@ -37,7 +37,7 @@ def fit(
     :param parameters: Dictionary containing parameters for the model, defaults to {'num_measurements': 100}
     :type parameters: dict
 
-    :param backend: String describing the backend to use; currently one of [qcware/cpu_simulator, qcware/gpu_simulator], defaults to qcware/cpu_simulator
+    :param backend: String describing the backend to use, defaults to qcware/cpu_simulator
     :type backend: str
 
 

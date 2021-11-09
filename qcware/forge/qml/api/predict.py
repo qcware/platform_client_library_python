@@ -26,7 +26,7 @@ def predict(
     :param fit_data: A FitData instance representing a previous fitting operation
     :type fit_data: FitData
 
-    :param backend: String describing the backend to use; currently one of [qcware/cpu_simulator, qcware/gpu_simulator], defaults to qcware/cpu_simulator
+    :param backend: String describing the backend to use, defaults to qcware/cpu_simulator
     :type backend: str
 
 
