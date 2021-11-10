@@ -110,6 +110,11 @@ register_result_transform(
     from_wire=dict_to_probability_histogram,
 )
 register_result_transform(
+    "circuits.run_measurements",
+    to_wire=lambda x: [probability_histogram_to_dict(y) for y in x],
+    from_wire=lambda x: [dict_to_probability_histogram(y) for y in x],
+)
+register_result_transform(
     "circuits.run_statevector", to_wire=ndarray_to_dict, from_wire=dict_to_ndarray
 )
 register_result_transform(
@@ -210,6 +215,12 @@ register_result_transform(
     to_wire=probability_histogram_to_dict,
     from_wire=dict_to_probability_histogram,
 )
+register_result_transform(
+    "_shadowed.run_measurements",
+    to_wire=lambda x: [probability_histogram_to_dict(y) for y in x],
+    from_wire=lambda x: [dict_to_probability_histogram(y) for y in x],
+)
+
 register_result_transform(
     "_shadowed.run_statevector", to_wire=ndarray_to_dict, from_wire=dict_to_ndarray
 )

@@ -228,6 +228,21 @@ register_argument_transform(
 )
 
 register_argument_transform(
+    "_shadowed.run_measurements",
+    to_wire={
+        "circuits": lambda x: [quasar_to_string(y) for y in x],
+    },
+    from_wire={
+        #        "circuits": lambda x: [string_to_quasar(y) for y in x],
+        # we don't actually deserialize here because this happens in
+        # the dispatcher and pickle can't handle the lambdas used in
+        # circuit gate definitions so we have to do final deserialization
+        # in the workers themselves; ugh
+    },
+)
+
+
+register_argument_transform(
     "_shadowed.run_statevector",
     to_wire={
         "circuit": quasar_to_string,
