@@ -94,7 +94,13 @@ def transform_optimization_find_optimal_qaoa_angles_from_wire(t):
 
 
 register_result_transform(
-    "qio.loader", to_wire=quasar_to_list, from_wire=sequence_to_quasar
+    "qio.loader",
+    to_wire=lambda x: (quasar_to_list(x[0]), ndarray_to_dict(x[1]))
+    if type(x) is tuple
+    else tuple([quasar_to_list(x)]),
+    from_wire=lambda x: (sequence_to_quasar(x[0]), dict_to_ndarray(x[1]))
+    if len(x) == 2
+    else sequence_to_quasar(x[0]),
 )
 register_result_transform(
     "qutils.qdot", to_wire=numeric_to_dict, from_wire=dict_to_numeric
