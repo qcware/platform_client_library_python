@@ -44,6 +44,9 @@ Functions
 .. autofunction:: qcware.forge.optimization.optimize_binary
 
 
-Optimal QAOA Angles
--------------------
+Quantum Approximate Optimization Algorithm (QAOA)
+-------------------------------------------------
+
 .. autofunction:: qcware.forge.optimization.find_optimal_qaoa_angles
+.. autofunction:: qcware.forge.optimization.qaoa_expectation_value
+.. autofunction:: qcware.forge.optimization.qaoa_sample

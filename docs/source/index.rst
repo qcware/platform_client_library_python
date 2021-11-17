@@ -54,6 +54,7 @@ Forge is a service that lets you develop and run quantum software. An interface 
    :caption: Reference
    :hidden:
 
+   Config <reference/config>
    Circuits <reference/circuits>
    Circuit I/O <reference/qio>
    Utilities <reference/qutils>
