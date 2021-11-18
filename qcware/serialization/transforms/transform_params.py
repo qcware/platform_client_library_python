@@ -201,6 +201,12 @@ register_argument_transform(
 )
 
 register_argument_transform(
+    "qutils.create_qdot_circuit",
+    to_wire={"x": numeric_to_dict, "y": numeric_to_dict},
+    from_wire={"x": dict_to_numeric, "y": dict_to_numeric},
+)
+
+register_argument_transform(
     "qutils.qdist",
     to_wire={
         "x": numeric_to_dict,

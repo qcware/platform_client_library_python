@@ -4,4 +4,6 @@
 
 from .qdot import qdot
 
+from .create_qdot_circuit import create_qdot_circuit
+
 from .qdist import qdist

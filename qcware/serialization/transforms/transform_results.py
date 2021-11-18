@@ -107,6 +107,10 @@ register_result_transform(
 )
 
 register_result_transform(
+    "qutils.create_qdot_circuit", to_wire=quasar_to_list, from_wire=sequence_to_quasar
+)
+
+register_result_transform(
     "qutils.qdist", to_wire=numeric_to_dict, from_wire=dict_to_numeric
 )
 
