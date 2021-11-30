@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from itertools import tee, takewhile
-from typing import Dict, Iterator, List, Optional, Sequence, Tuple, Union, Iterable
+from typing import Iterator, List, Optional, Tuple, Union, Iterable
 
 import numpy as np
 import pydantic
@@ -28,7 +28,14 @@ class Sample(pydantic.BaseModel):
 
     def str_bitstring(self, domain: Domain):
         """Write the sample bitstring in a format like '011' or '+--'."""
-        return binary_ints_to_binstring(bl=self.bitstring, domain=domain)
+        return binary_ints_to_binstring(bl=self.bitstring,domain=domain)
+
+    def convert(self, mapping: dict[int, int]) -> 'Sample':
+        return Sample(
+            bitstring=tuple(mapping[i] for i in self.bitstring),
+            value=self.value,
+            occurrences=self.occurrences
+        )
 
     def __add__(self, other: "Sample"):
         if other.bitstring != self.bitstring:
@@ -39,6 +46,40 @@ class Sample(pydantic.BaseModel):
             bitstring=self.bitstring,
             occurrences=self.occurrences + other.occurrences,
             value=self.value,
+        )
+
+
+def bool_sample_to_spin_sample(s: Sample):
+    """Convert a Sample with boolean variables to spin variables.
+
+    Does not change sample occurrences or value.
+    """
+    conversion = {
+        0: 1,
+        1: -1
+    }
+    try:
+        return s.convert(conversion)
+    except KeyError:
+        raise ValueError(
+            f'Expected sample to have boolean domain.\nFound: {s}'
+        )
+
+
+def spin_sample_to_bool_sample(s: Sample):
+    """Convert a Sample with spin variables to boolean variables.
+
+    Does not change sample occurrences or value.
+    """
+    conversion = {
+        1: 0,
+        -1: 1
+    }
+    try:
+        return s.convert(conversion)
+    except KeyError:
+        raise ValueError(
+            f'Expected sample to have spin domain.\nFound: {s}'
         )
 
 
