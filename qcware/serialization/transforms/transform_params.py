@@ -187,6 +187,28 @@ register_argument_transform(
 )
 
 register_argument_transform(
+    "montecarlo.nisqAE.run_schedule",
+    to_wire={
+        "initial_circuit": quasar_to_string,
+        "iteration_circuit": quasar_to_string,
+    },
+    from_wire={
+        # "initial_circuit": string_to_quasar,
+        # "iteration_circuit": string_to_quasar,
+    },
+)
+
+register_argument_transform(
+    "montecarlo.nisqAE.run_unary",
+    to_wire={
+        "circuit": quasar_to_string,
+    },
+    from_wire={
+        # "circuit": string_to_quasar,
+    },
+)
+
+register_argument_transform(
     "qutils.qdot",
     to_wire={
         "x": numeric_to_dict,

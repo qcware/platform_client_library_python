@@ -21,6 +21,7 @@ logger = logging.getLogger("qcware.forge")
 
 
 from qcware.forge import qio
+from qcware.forge import montecarlo
 from qcware.forge import qutils
 from qcware.forge import circuits
 from qcware.forge import qml

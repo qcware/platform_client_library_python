@@ -3,7 +3,7 @@
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
 import warnings
-from ...api_calls import declare_api_call
+from qcware.forge.api_calls import declare_api_call
 
 
 @declare_api_call(

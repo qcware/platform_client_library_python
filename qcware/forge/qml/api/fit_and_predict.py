@@ -7,7 +7,7 @@ import numpy
 import numpy.typing
 
 import warnings
-from ...api_calls import declare_api_call
+from qcware.forge.api_calls import declare_api_call
 
 
 @declare_api_call(name="qml.fit_and_predict", endpoint="qml/fit_and_predict")

@@ -7,7 +7,7 @@ from qcware.types.optimization import BinaryProblem, BinaryResults
 import numpy
 
 import warnings
-from ...api_calls import declare_api_call
+from qcware.forge.api_calls import declare_api_call
 
 
 @declare_api_call(name="optimization.qaoa_sample", endpoint="optimization/qaoa_sample")
