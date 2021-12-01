@@ -28,13 +28,13 @@ class Sample(pydantic.BaseModel):
 
     def str_bitstring(self, domain: Domain):
         """Write the sample bitstring in a format like '011' or '+--'."""
-        return binary_ints_to_binstring(bl=self.bitstring,domain=domain)
+        return binary_ints_to_binstring(bl=self.bitstring, domain=domain)
 
-    def convert(self, mapping: dict[int, int]) -> 'Sample':
+    def convert(self, mapping: dict[int, int]) -> "Sample":
         return Sample(
             bitstring=tuple(mapping[i] for i in self.bitstring),
             value=self.value,
-            occurrences=self.occurrences
+            occurrences=self.occurrences,
         )
 
     def __add__(self, other: "Sample"):
@@ -54,16 +54,11 @@ def bool_sample_to_spin_sample(s: Sample):
 
     Does not change sample occurrences or value.
     """
-    conversion = {
-        0: 1,
-        1: -1
-    }
+    conversion = {0: 1, 1: -1}
     try:
         return s.convert(conversion)
     except KeyError:
-        raise ValueError(
-            f'Expected sample to have boolean domain.\nFound: {s}'
-        )
+        raise ValueError(f"Expected sample to have boolean domain.\nFound: {s}")
 
 
 def spin_sample_to_bool_sample(s: Sample):
@@ -71,16 +66,11 @@ def spin_sample_to_bool_sample(s: Sample):
 
     Does not change sample occurrences or value.
     """
-    conversion = {
-        1: 0,
-        -1: 1
-    }
+    conversion = {1: 0, -1: 1}
     try:
         return s.convert(conversion)
     except KeyError:
-        raise ValueError(
-            f'Expected sample to have spin domain.\nFound: {s}'
-        )
+        raise ValueError(f"Expected sample to have spin domain.\nFound: {s}")
 
 
 class BinaryResults(pydantic.BaseModel):

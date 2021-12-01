@@ -16,6 +16,7 @@ def test_loader():
     eps = np.linalg.norm(np.abs(np.array(x) - np.abs(reduced_vec)))
     assert eps <= 1e-2
 
+
 @pytest.mark.parametrize(
     "kwparams",
     [
@@ -25,7 +26,7 @@ def test_loader():
         {"mode": "diagonal"},
         {"mode": "semi-diagonal"},
         {"mode": "semi-diagonal-middle"},
-    ]
+    ],
 )
 def test_loader_with_indices(kwparams):
     x = np.random.rand(4)

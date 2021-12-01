@@ -16,7 +16,11 @@ def test_make_schedule():
     assert isinstance(result, list)
 
 
-def test_run_schedule():
+@pytest.mark.parametrize(
+    "backend",
+    ["qcware/cpu_simulator", "awsbraket/sv1", "ibm/simulator", "qcware/gpu_simulator"],
+)
+def test_run_schedule(backend):
     circuit = quasar.Circuit().H(0).CX(0, 1)
     schedule = make_schedule(epsilon=0.1, schedule_type="powerlaw")
     result = run_schedule(
@@ -25,17 +29,19 @@ def test_run_schedule():
         target_qubits=[0],
         target_states=[1],
         schedule=schedule,
-        backend="qcware/cpu_simulator",
+        backend=backend,
     )
     assert isinstance(result, list)
 
 
-def test_run_unary():
+@pytest.mark.parametrize(
+    "backend",
+    ["qcware/cpu_simulator", "awsbraket/sv1", "ibm/simulator", "qcware/gpu_simulator"],
+)
+def test_run_unary(backend):
     circuit = quasar.Circuit().H(0).CX(0, 1)
     schedule = make_schedule(epsilon=0.1, schedule_type="powerlaw")
-    result = run_unary(
-        circuit=circuit, schedule=schedule, backend="qcware/cpu_simulator"
-    )
+    result = run_unary(circuit=circuit, schedule=schedule, backend=backend)
     assert isinstance(result, list)
 
 

@@ -40,7 +40,7 @@ def qdot(
     :param y: 1d or 2d array
     :type y: Union[float, numpy.ndarray]
 
-    :param loader_mode: , defaults to parallel
+    :param loader_mode: Type of loader to use, one of parallel, diagonal, semi-diagonal, or optimized, defaults to parallel
     :type loader_mode: str
 
     :param circuit: Circuit to use for evaluation (None to implicitly create circuit), defaults to None

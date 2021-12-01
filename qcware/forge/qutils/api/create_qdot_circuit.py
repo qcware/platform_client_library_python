@@ -4,12 +4,8 @@
 
 import numpy
 
-import quasar
-
-from typing import Union, Optional, Tuple
-
 import warnings
-from ...api_calls import declare_api_call
+from qcware.forge.api_calls import declare_api_call
 
 
 @declare_api_call(
@@ -21,7 +17,7 @@ def create_qdot_circuit(
     loader_mode: str = "parallel",
     absolute: bool = False,
 ):
-    r"""Creates a circuit which, when run, outputs the dot product of two arrays; quantum analogue of::
+    r"""Creates a circuit which, when run, outputs the dot product of two 1d arrays; quantum analogue of::
       numpy.dot
 
     Arguments:
