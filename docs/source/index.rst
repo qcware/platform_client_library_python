@@ -59,6 +59,7 @@ Forge is a service that lets you develop and run quantum software. An interface 
    Circuit I/O <reference/qio>
    Utilities <reference/qutils>
    Machine Learning <reference/classification>
+   Monte Carlo Methods <reference/montecarlo>
    Optimization <reference/optimization>
 
 .. toctree::
