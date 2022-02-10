@@ -9,3 +9,5 @@ vectors, they comprise a category we (so far) simply refer to as
 .. autofunction:: qcware.forge.qutils.qdot
 
 .. autofunction:: qcware.forge.qutils.qdist
+
+.. autofunction:: qcware.forge.qutils.create_qdot_circuit

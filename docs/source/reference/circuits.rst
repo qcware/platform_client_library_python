@@ -22,7 +22,7 @@ To use quasar to build a circuit, you can do something like the following::
 You can then run the circuit by using
 the quasar forge backend.
 
-Using the quasar Forge backend:
+Using the Quasar backend:
 ```````````````````````````````
 
 The `QuasarBackend` class provides a more integrated backend to Quasar using Forge

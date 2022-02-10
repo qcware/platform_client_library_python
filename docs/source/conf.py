@@ -20,7 +20,7 @@ import qcware.forge
 # -- Project information -----------------------------------------------------
 
 project = "qcware"
-copyright = "2019, QC Ware Corp."
+copyright = "2017, QC Ware Corp"
 author = "Bryan E. Burr (bryan@qcware.com)"
 master_doc = "index"
 version = qcware.forge.__version__
