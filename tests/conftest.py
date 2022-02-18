@@ -32,7 +32,8 @@ def pytest_collection_modifyitems(session, config, items):
             deselected_items.append(item)
         elif (
             "awsbraket/ionq" in item.nodeid
-            or "awsbraket/rigetti" in item.nodeid
+            or "awsbraket/rigetti_aspen_11" in item.nodeid
+            or "awsbraket/rigetti_aspen_m1" in item.nodeid
             or "awsbraket/tn1" in item.nodeid
         ) and not config.getoption("awsslow"):
             deselected_items.append(item)
