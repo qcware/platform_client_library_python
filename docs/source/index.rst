@@ -63,6 +63,7 @@ Forge is a service that lets you develop and run quantum software. An interface 
    :caption: Problem Classes
    :hidden:
 
+   Demos <reference/demos>
    Machine Learning <reference/classification>
    Monte Carlo <reference/montecarlo>
    Optimization <reference/optimization>

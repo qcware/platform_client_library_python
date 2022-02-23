@@ -5,6 +5,7 @@ The quickest way to get started with the Forge client library is to `register <h
 
 If you would like to work with the Forge client library locally, read on.
 
+.. _LocalInstall:
 
 Installation
 ------------
