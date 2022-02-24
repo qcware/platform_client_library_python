@@ -49,7 +49,7 @@ def test_has_statevector_input(backend: str, expected: bool):
         ("awsbraket/sv1"),
         ("awsbraket/tn1"),
         #        ("awsbraket/rigetti_aspen_11")
-        #        ("awsbraket/rigetti_aspen_m1")
+        #        ("awsbraket/rigetti_aspen_m_1")
     ],
 )
 def test_run_measurement(backend):
@@ -73,7 +73,7 @@ def test_run_measurement(backend):
     (
         ("awsbraket/ionq"),
         ("awsbraket/rigetti_aspen_11"),
-        ("awsbraket/rigetti_aspen_m1"),
+        ("awsbraket/rigetti_aspen_m_1"),
     ),
 )
 def test_smoke_backend_exception(backend):
@@ -97,7 +97,7 @@ def test_smoke_backend_exception(backend):
     (
         ("awsbraket/ionq"),
         ("awsbraket/rigetti_aspen_11"),
-        ("awsbraket/rigetti_aspen_m1"),
+        ("awsbraket/rigetti_aspen_m_1"),
     ),
 )
 def test_smoke_rescheduled_backends(backend):
@@ -116,7 +116,7 @@ def test_smoke_rescheduled_backends(backend):
         ("qcware/cpu_simulator"),
         ("qcware/gpu_simulator"),
         #        ("awsbraket/rigetti_aspen_11")
-        #        ("awsbraket/rigetti_aspen_m1")
+        #        ("awsbraket/rigetti_aspen_m_1")
     ],
 )
 def test_run_statevector(backend):
