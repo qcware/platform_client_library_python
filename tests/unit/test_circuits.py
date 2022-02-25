@@ -107,7 +107,7 @@ def test_smoke_rescheduled_backends(backend):
     q = quasar.Circuit()
     q.H(0).CX(0, 1)
     b = QuasarBackend(backend)
-    result = b.run_measurement(circuit=q, nmeasurement=1)
+    result = b.run_measurement(circuit=q, nmeasurement=10)
 
 
 @pytest.mark.parametrize(
