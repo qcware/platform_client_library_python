@@ -2,10 +2,10 @@
 #  Project: qcware
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
-from qcware.types.optimization import BinaryProblem, BinaryResults
-
 import warnings
+
 from qcware.forge.api_calls import declare_api_call
+from qcware.types.optimization import BinaryProblem, BinaryResults
 
 
 @declare_api_call(
@@ -26,6 +26,7 @@ def optimize_binary(
     return_all_solutions: bool = False,
     num_runs: int = 50,
     dwave_algorithm: str = None,
+    dwave_embedding: dict = None,
     dwave_solver_limit: str = None,
     dwave_target_energy: str = None,
     dwave_find_max: str = None,

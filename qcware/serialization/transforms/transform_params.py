@@ -37,6 +37,7 @@ from qcware.serialization.transforms.to_wire import (
     to_wire,
 )
 from qcware.types.optimization import BinaryProblem
+from toolz.dicttoolz import update_in
 
 
 def update_with_replacers(d: dict[str, Any], replacers: Mapping[str, Callable]):
@@ -114,8 +115,15 @@ def register_argument_transform(
 
 register_argument_transform(
     "optimization.optimize_binary",
-    to_wire={"instance": to_wire},
-    from_wire={"instance": binary_problem_from_wire},
+    to_wire={
+        "instance": to_wire,
+    },
+    from_wire={
+        "instance": binary_problem_from_wire,
+        "dwave_embedding": lambda y: {int(k): v for k, v in y.items()}
+        if y is not None
+        else None,
+    },
 )
 
 register_argument_transform(
