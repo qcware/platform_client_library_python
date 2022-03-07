@@ -176,6 +176,9 @@ Arguments:
 :param dwave_algorithm: , defaults to None
 :type dwave_algorithm: str
 
+:param dwave_embedding: A manual minor embedding.  This may not be compatible with anneal offsets., defaults to None
+:type dwave_embedding: dict
+
 :param dwave_solver_limit: , defaults to None
 :type dwave_solver_limit: str
 
