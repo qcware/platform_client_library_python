@@ -4,7 +4,7 @@ import sys
 from contextlib import contextmanager
 from enum import Enum
 from functools import reduce
-from typing import Annotated, Optional
+from typing import Optional
 from urllib.parse import urljoin, urlparse
 
 import colorama  # type: ignore
@@ -415,10 +415,10 @@ def set_ibmq_credentials_from_ibmq_provider(
 
 class IBMQCredentials(BaseModel):
 
-    token: Optional[Annotated[str, Field(max_length=255)]]
-    hub: Optional[Annotated[str, Field(max_length=255)]]
-    group: Optional[Annotated[str, Field(max_length=255)]]
-    project: Optional[Annotated[str, Field(max_length=255)]]
+    token: Optional[str]
+    hub: Optional[str]
+    group: Optional[str]
+    project: Optional[str]
 
     @classmethod
     def from_ibmq(cls, ibmq):
@@ -441,7 +441,7 @@ class IBMQCredentials(BaseModel):
 
 
 class ApiCredentials(BaseModel):
-    qcware_api_key: Optional[Annotated[str, Field(max_length=255)]] = None
+    qcware_api_key: Optional[str] = None
     ibmq: Optional[IBMQCredentials] = None
 
     class Config:
@@ -468,11 +468,11 @@ class Environment(BaseModel):
     This is set via the environment variable QCWARE_ENVIRONMENT_SOURCE_FILE.
     """
 
-    client: Annotated[str, Field(max_length=255)]
-    client_version: Annotated[str, Field(max_length=255)]
-    python_version: Annotated[str, Field(max_length=255)]
-    environment: Annotated[str, Field(max_length=255)]
-    source_file: Annotated[str, Field(max_length=255)]
+    client: str
+    client_version: str 
+    python_version: str
+    environment: str
+    source_file: str
 
 
 def set_environment_environment(new_environment: str):
@@ -494,12 +494,12 @@ class ApiCallContext(BaseModel):
     override only one field (or a subset).
     """
 
-    qcware_host: Optional[Annotated[str, Field(max_length=255)]] = None
+    qcware_host: Optional[str] = None
     credentials: Optional[ApiCredentials] = None
     environment: Optional[Environment] = None
-    server_timeout: Optional[Annotated[int, Field(ge=0)]] = None
-    client_timeout: Optional[Annotated[int, Field(ge=0)]] = None
-    async_interval_between_tries: Optional[Annotated[float, Field(ge=0)]] = None
+    server_timeout: Optional[int] = None
+    client_timeout: Optional[int] = None
+    async_interval_between_tries: Optional[float] = None
     scheduling_mode: Optional[SchedulingMode] = None
 
     class Config:

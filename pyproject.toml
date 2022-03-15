@@ -22,7 +22,7 @@ classifiers = [
 
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.7"
 aiohttp = ">= 3.7.4.post0"
 backoff = ">= 1.10.0"
 colorama = ">= 0.4.4"
@@ -38,3 +38,7 @@ qubovert = ">= 1.2.3"
 requests = ">= 2.25.1"
 tabulate = ">= 0.8.9"
 setuptools = ">= 57.1.0"
+
+[tool.poetry.dev-dependencies]
+tox = "^3.24.5"
+pytest = "^7.1.0"
