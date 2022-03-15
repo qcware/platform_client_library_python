@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, Tuple
 
 from qcware.forge.qml import fit, predict
 
@@ -20,7 +20,7 @@ class QNearestCentroid(Classifier):
         backend: str = "qcware/cpu_simulator",
         num_measurements: int = 100,
         absolute: bool = False,
-        opt_shape: Optional[tuple[int, int]] = None,
+        opt_shape: Optional[Tuple[int, int]] = None,
     ):
         self.parameters = dict(
             loader_mode=loader_mode,
@@ -40,7 +40,7 @@ class QNeighborsRegressor(Classifier):
         backend: str = "qcware/cpu_simulator",
         num_measurements: int = 100,
         absolute: bool = False,
-        opt_shape: Optional[tuple[int, int]] = None,
+        opt_shape: Optional[Tuple[int, int]] = None,
     ):
         self.parameters = dict(
             n_neighbors=n_neighbors,
@@ -60,7 +60,7 @@ class QNeighborsClassifier(Classifier):
         backend: str = "qcware/cpu_simulator",
         num_measurements: int = 100,
         absolute: bool = False,
-        opt_shape: Optional[tuple[int, int]] = None,
+        opt_shape: Optional[Tuple[int, int]] = None,
     ):
         self.parameters = dict(
             n_neighbors=n_neighbors,
@@ -85,7 +85,7 @@ class QMeans(Classifier):
         backend: str = "qcware/cpu_simulator",
         num_measurements: int = 100,
         absolute: bool = False,
-        opt_shape: Optional[tuple[int, int]] = None,
+        opt_shape: Optional[Tuple[int, int]] = None,
     ):
         self.parameters = dict(
             n_clusters=n_clusters,
