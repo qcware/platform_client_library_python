@@ -36,6 +36,7 @@ def test_optimize_binary(backend):
     (  # 'dwave/2000q', 'dwave/advantage',
         "dwave_direct/2000q",
         "dwave_direct/advantage",
+        "dwave/advantage",
     ),
 )
 def test_anneal_offsets(backend: str):

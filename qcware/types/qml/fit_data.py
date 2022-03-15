@@ -7,7 +7,7 @@ classes which are the basis of the quantum algorithms, as well
 as additional internal data.
 """
 
-from typing import Optional, Union, Tuple
+from typing import Optional, Union
 
 import numpy.typing
 import quasar
@@ -23,7 +23,7 @@ class FitDataBase(BaseModel):
     loader_mode: str
     num_measurements: int
     absolute: bool
-    opt_shape: Optional[Tuple[int, int]]
+    opt_shape: Optional[tuple[int, int]]
 
 
 class QNearestCentroidFitData(FitDataBase):

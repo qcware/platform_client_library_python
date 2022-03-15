@@ -7,7 +7,7 @@ transformations and functions, not so much the transformation functions
 themselves for particular types (those go in the helpers file).
 """
 from functools import wraps
-from typing import Any, Callable, Mapping, Optional, Dict
+from typing import Any, Callable, Mapping, Optional
 
 from qcware.serialization.serialize_quasar import (
     list_to_pauli,
@@ -40,7 +40,7 @@ from qcware.types.optimization import BinaryProblem
 from toolz.dicttoolz import update_in
 
 
-def update_with_replacers(d: Dict[str, Any], replacers: Mapping[str, Callable]):
+def update_with_replacers(d: dict[str, Any], replacers: Mapping[str, Callable]):
     """for all (k,f) in replacers, updates the dict entry marked by k by calling the
     function f on the value"""
     result = d.copy()
@@ -50,7 +50,7 @@ def update_with_replacers(d: Dict[str, Any], replacers: Mapping[str, Callable]):
     return result
 
 
-_to_wire_arg_replacers: Dict[str, Dict[str, Callable]] = {}
+_to_wire_arg_replacers: dict[str, dict[str, Callable]] = {}
 
 
 def client_args_to_wire(method_name: str, **kwargs):
@@ -66,7 +66,7 @@ def client_args_to_wire(method_name: str, **kwargs):
         )
 
 
-_from_wire_arg_replacers: Dict[str, Dict[str, Callable]] = {}
+_from_wire_arg_replacers: dict[str, dict[str, Callable]] = {}
 
 
 def replace_server_args_from_wire(method_name: str):

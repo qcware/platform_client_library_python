@@ -13,6 +13,9 @@ def pytest_addoption(parser):
     )
     parser.addoption("--ibmq", action="store_true", help="run test for ibmq backends")
     parser.addoption(
+        "--dwavedirect", action="store_true", help="run test for dwave_direct backends"
+    )
+    parser.addoption(
         "--awsslow",
         action="store_true",
         help="run tests for braket schedule-window backends (ionq, rigetti)",
@@ -29,6 +32,8 @@ def pytest_collection_modifyitems(session, config, items):
         ) and not config.getoption("vulcan"):
             deselected_items.append(item)
         elif "ibmq" in item.nodeid and not config.getoption("ibmq"):
+            deselected_items.append(item)
+        elif "dwave_direct" in item.nodeid and not config.getoption("dwavedirect"):
             deselected_items.append(item)
         elif (
             "awsbraket/ionq" in item.nodeid

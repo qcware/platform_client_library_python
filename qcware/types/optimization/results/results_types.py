@@ -8,7 +8,6 @@ from qcware.types.optimization import Domain
 from qcware.types.optimization.problem_spec import BinaryProblem
 from qcware.types.optimization.results import utils
 from qcware.types.optimization.variable_types import domain_bit_values
-from typing import Dict
 
 
 class Sample(pydantic.BaseModel):
@@ -16,7 +15,7 @@ class Sample(pydantic.BaseModel):
     value: int
     occurrences: int = 1
 
-    @pydantic.validator("occurrences", allow_reuse=True)
+    @pydantic.validator("occurrences")
     def positive_occurrences(cls, v):
         if v <= 0:
             raise ValueError(
@@ -31,7 +30,7 @@ class Sample(pydantic.BaseModel):
         """Write the sample bitstring in a format like '011' or '+--'."""
         return binary_ints_to_binstring(bl=self.bitstring, domain=domain)
 
-    def convert(self, mapping: Dict[int, int]) -> "Sample":
+    def convert(self, mapping: dict[int, int]) -> "Sample":
         return Sample(
             bitstring=tuple(mapping[i] for i in self.bitstring),
             value=self.value,
