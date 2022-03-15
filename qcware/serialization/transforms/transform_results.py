@@ -1,5 +1,5 @@
 import os
-from typing import Callable, Optional, cast
+from typing import Callable, Optional, cast, Dict
 
 import numpy
 from decouple import config
@@ -28,7 +28,7 @@ from .to_wire import (
     to_wire,
 )
 
-_to_wire_result_replacers: dict[str, Callable] = {}
+_to_wire_result_replacers: Dict[str, Callable] = {}
 
 
 def debug_is_set() -> bool:
@@ -61,7 +61,7 @@ def server_result_to_wire(method_name: str, worker_result: object):
         return f(worker_result)
 
 
-_from_wire_result_replacers: dict[str, Callable] = {}
+_from_wire_result_replacers: Dict[str, Callable] = {}
 
 
 def client_result_from_wire(method_name: str, worker_result: object):

@@ -469,7 +469,7 @@ class Environment(BaseModel):
     """
 
     client: str
-    client_version: str 
+    client_version: str
     python_version: str
     environment: str
     source_file: str
