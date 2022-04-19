@@ -1,10 +1,11 @@
 import inspect
-
+import rich.traceback
 from qcware.forge.config import client_timeout
 from qcware.forge.exceptions import ApiTimeoutError
 from qcware.serialization.transforms import client_args_to_wire
 
 from qcware.forge import logger
+from qcware.forge import api_calls, request
 from qcware.forge.api_calls.api_call import (
     async_post_call,
     async_retrieve_result,
@@ -13,10 +14,16 @@ from qcware.forge.api_calls.api_call import (
     wait_for_call,
 )
 
+rich.traceback.install(suppress=[api_calls, request])
+
 
 class ApiCall:
     def __call__(self, *args, **kwargs):
-        return self.do(*args, **kwargs)
+        try:
+            result = self.do(*args, **kwargs)
+            return self.do(*args, **kwargs)
+        except Exception as e:
+            raise e
 
     def data(self, *args, **kwargs):
         new_bound_kwargs = self.__signature__.bind(*args, **kwargs)

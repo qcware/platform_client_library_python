@@ -17,5 +17,6 @@ qcware-transpile[qcware-quasar,qiskit]
 qiskit
 qubovert
 requests
+rich
 tabulate
 wheel

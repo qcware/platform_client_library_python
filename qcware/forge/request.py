@@ -1,6 +1,5 @@
 import backoff
 import requests
-
 from qcware.forge.exceptions import ApiCallFailedError, ApiCallResultUnavailableError
 
 _client_session = None
@@ -38,7 +37,7 @@ def post(url, data):
     response = post_request(url, data)
     if response.status_code >= 400:
         print(response)
-        raise ApiCallFailedError(response.json()["message"])
+        raise ApiCallFailedError(response.json().get("message", "No message"))
     return response.json()
 
 

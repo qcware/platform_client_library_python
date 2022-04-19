@@ -2,10 +2,10 @@
 #  Project: qcware
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
-import warnings
-
-from qcware.forge.api_calls import declare_api_call
 from qcware.types.optimization import BinaryProblem, BinaryResults
+
+import warnings
+from qcware.forge.api_calls import declare_api_call
 
 
 @declare_api_call(

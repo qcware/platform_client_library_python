@@ -2,4 +2,4 @@
 #  Project: qcware
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
-api_semver = "8.1.0"
+api_semver = "8.3.0"
