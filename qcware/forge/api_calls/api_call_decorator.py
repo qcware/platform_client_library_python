@@ -21,7 +21,7 @@ class ApiCall:
     def __call__(self, *args, **kwargs):
         try:
             result = self.do(*args, **kwargs)
-            return self.do(*args, **kwargs)
+            return result
         except Exception as e:
             raise e
 
