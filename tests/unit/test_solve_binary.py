@@ -3,6 +3,7 @@ import itertools
 import pytest
 import qcware.forge.optimization
 from qcware.types.optimization import BinaryProblem
+from itertools import product
 
 
 def sample_q():
@@ -15,14 +16,16 @@ def is_plausible_bitstring(bs, length):
 
 @pytest.mark.parametrize(
     "backend",
-    ("qcware/cpu", "dwave/2000q", "dwave_direct/2000q", "dwave/advantage")  # ,
+    product(
+        ("qcware/cpu", "dwave/2000q", "dwave_direct/2000q", "dwave/advantage"), range(5)
+    )  # ,
     #                           'awsbraket/dwave/2000q', 'awsbraket/dwave/advantage')
 )
 def test_optimize_binary(backend):
     Q = sample_q()
     problem_instance = BinaryProblem.from_dict(Q)
     result = qcware.forge.optimization.optimize_binary(
-        instance=problem_instance, backend=backend
+        instance=problem_instance, backend=backend[0]
     )
     assert result.original_problem.objective.dict() == problem_instance.objective.dict()
     result_bitstrings = {x.bitstring for x in result.samples}

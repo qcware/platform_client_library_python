@@ -33,8 +33,7 @@ def test_fit_and_predict(backend: str):
     except ApiCallExecutionError as e:
         print(e)
         print(type(e.traceback))
-        print(type(eval(e.traceback)))
-        print("".join(eval(e.traceback)))
+        raise (e)
     # smoke test here in the client
     assert set(result).issubset({0, 1})
     assert len(result) == 4
