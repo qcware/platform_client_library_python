@@ -48,7 +48,7 @@ def test_retrieve_result_with_timeout():
         call_id = e.api_call_info["uid"]
         start = time.perf_counter()
         # 30s timeouts
-        timeout = 30
+        timeout = 60
         while ((time.perf_counter() - start) < timeout) and forge.api_calls.status(
             call_id
         )["status"] == "open":
