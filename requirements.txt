@@ -3,6 +3,7 @@ backoff
 colorama
 hypothesis[numpy]
 icontract
+ipython_genutils
 lz4
 matplotlib
 nbmake
