@@ -1,6 +1,7 @@
 from qcware.forge.qutils import qdist
 import numpy as np
 import pytest
+from qcware.forge.config import additional_config
 
 backends = (
     ("qcware/cpu_simulator", 100),
@@ -18,8 +19,8 @@ def test_qdist(backend, num_measurements):
     y = np.random.rand(4)
     x = x / np.linalg.norm(x)
     y = y / np.linalg.norm(y)
-
-    result = qdist(x, y, backend=backend, num_measurements=num_measurements)
+    with additional_config(client_timeout=5 * 60):
+        result = qdist(x, y, backend=backend, num_measurements=num_measurements)
     distance = np.linalg.norm(x - y) ** 2
     # huge atol since this is mostly a smoke test
     assert np.allclose(result, distance, atol=2)
