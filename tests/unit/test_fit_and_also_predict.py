@@ -39,7 +39,7 @@ def test_fit_and_predict(backend: str, classifier_class, params):
     X = np.array([[-1, -2], [-1, -1], [2, 1], [1, 2]])
     y = np.array([0, 0, 1, 1])
     try:
-        with qcware.forge.config.additional_config(client_timeout=5 * 60):
+        with qcware.forge.config.additional_config(client_timeout=8 * 60):
             fit_data = fit(
                 X=X,
                 y=y,

@@ -1,9 +1,9 @@
 import itertools
+from itertools import product
 
 import pytest
 import qcware.forge.optimization
 from qcware.types.optimization import BinaryProblem
-from itertools import product
 
 
 def sample_q():
@@ -14,13 +14,7 @@ def is_plausible_bitstring(bs, length):
     return set(bs).issubset({0, 1}) and len(bs) == length
 
 
-@pytest.mark.parametrize(
-    "backend",
-    product(
-        ("qcware/cpu", "dwave/2000q", "dwave_direct/2000q", "dwave/advantage"), range(5)
-    )  # ,
-    #                           'awsbraket/dwave/2000q', 'awsbraket/dwave/advantage')
-)
+@pytest.mark.parametrize("backend", product(("qcware/cpu",), range(5)))  # ,
 def test_optimize_binary(backend):
     Q = sample_q()
     problem_instance = BinaryProblem.from_dict(Q)
@@ -32,28 +26,6 @@ def test_optimize_binary(backend):
     # this is just a smoke test now
     assert all([is_plausible_bitstring(bs, 4) for bs in result_bitstrings])
     # assert ((0, 0, 1, 1) in result_bitstrings) or ((1, 1, 1, 1) in result_bitstrings)
-
-
-@pytest.mark.parametrize(
-    "backend",
-    (  # 'dwave/2000q', 'dwave/advantage',
-        "dwave_direct/2000q",
-        "dwave_direct/advantage",
-        "dwave/advantage",
-    ),
-)
-def test_anneal_offsets(backend: str):
-    """Smoke test for anneal offsets being at least callable; does not test their
-    validity
-    """
-    Q = {(0, 0): 1, (1, 1): 1, (0, 1): -2}  # sample_q()
-
-    result = qcware.forge.optimization.optimize_binary(
-        instance=BinaryProblem.from_dict(Q),
-        backend=backend,
-        dwave_num_reads=1,
-        dwave_anneal_offsets_delta=0.5,
-    )
 
 
 @pytest.mark.parametrize(

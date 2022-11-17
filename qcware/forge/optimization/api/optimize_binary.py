@@ -2,10 +2,10 @@
 #  Project: qcware
 #  Copyright (c) 2019 QC Ware Corp - All Rights Reserved
 
-from qcware.types.optimization import BinaryProblem, BinaryResults
-
 import warnings
+
 from qcware.forge.api_calls import declare_api_call
+from qcware.types.optimization import BinaryProblem, BinaryResults
 
 
 @declare_api_call(
@@ -134,7 +134,6 @@ Arguments:
 
 :param backend: The name of the backend to use for the given problem.  Currently valid values are:
 
-  * "dwave/2000q", "dwave/advantage": Run on a physical d-wave machine using quantum annealing
   * "qcware/cpu": Run on a classical computing backend using a brute-force solver
   * "qcware/cpu_simulator": Run on a classical computing simulation of a quantum computer, using QAOA
   * "qcware/gpu_simulator": Run on a gpu-accelerated simulation of a quantum computer, using QAOA
